@@ -1,0 +1,25 @@
+{
+    "name": "bearframework/bearframework",
+    "description": "PHP framework",
+    "keywords": ["framework", "routing", "error handling", "logging"],
+    "homepage": "https://github.com/bearframework/bearframework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivo Petkov",
+            "email": "ivo@ivopetkov.com",
+            "homepage": "http://ivopetkov.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "ivopetkov/object-storage": "*",
+        "ivopetkov/html-server-components-compiler": "*"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}
