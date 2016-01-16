@@ -86,16 +86,16 @@ class Config
         }
 
         if (isset($options['appDir'])) {
-            $options['appDir'] = rtrim($options['appDir'], '/\\') . DIRECTORY_SEPARATOR;
+            $options['appDir'] = rtrim($options['appDir'], '/\\') . '/';
         }
         if (isset($options['addonsDir'])) {
-            $options['addonsDir'] = rtrim($options['addonsDir'], '/\\') . DIRECTORY_SEPARATOR;
+            $options['addonsDir'] = rtrim($options['addonsDir'], '/\\') . '/';
         }
         if (isset($options['dataDir'])) {
-            $options['dataDir'] = rtrim($options['dataDir'], '/\\') . DIRECTORY_SEPARATOR;
+            $options['dataDir'] = rtrim($options['dataDir'], '/\\') . '/';
         }
         if (isset($options['logsDir'])) {
-            $options['logsDir'] = rtrim($options['logsDir'], '/\\') . DIRECTORY_SEPARATOR;
+            $options['logsDir'] = rtrim($options['logsDir'], '/\\') . '/';
         }
         $defaultOptions = [
             'handleErrors' => true,
