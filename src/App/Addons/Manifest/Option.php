@@ -1,8 +1,15 @@
 <?php
 
-namespace App\Addons;
+/*
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
+ */
 
-class ManifestOption
+namespace App\Addons\Manifest;
+
+class Option
 {
 
     /**

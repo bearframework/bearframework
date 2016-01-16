@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
+ */
+
 namespace App;
 
 class Components
@@ -50,6 +57,14 @@ class Components
         }
     }
 
+    /**
+     * 
+     * @param string $target
+     * @param string $html
+     * @param string $position
+     * @return string
+     * @throws \InvalidArgumentException
+     */
     function insertHTML($target, $html, $position = 'beforeBodyEnd')
     {
         //todo better

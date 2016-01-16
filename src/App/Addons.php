@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
+ */
+
 namespace App;
 
 class Addons
@@ -61,7 +68,7 @@ class Addons
      * @return type
      * @throws \Exception
      */
-    function getManifestData($addonID)
+    function getManifest($addonID)
     {
         global $app;
         $addonsDir = $app->config->addonsDir;
@@ -71,7 +78,7 @@ class Addons
         // todo cache
         $filename = $addonsDir . $addonID . '/manifest.json';
         if (is_file($filename)) {
-            $addonsData = \App\Addons\ManifestParser::parse(file_get_contents($filename));
+            $addonsData = \App\Addons\Manifest\Parser::parse(file_get_contents($filename));
             if ($addonsData->id === $addonID) {
                 return $addonsData;
             } else {
@@ -85,9 +92,9 @@ class Addons
     /**
      * 
      * @param array $options
-     * @param array $options
+     * @param array $values
      */
-    function validateOptions($options, $options)
+    function validateOptions($options, $values)
     {
         foreach ($options as $optionData) {
             $id = $optionData['id'];
@@ -98,7 +105,7 @@ class Addons
             foreach ($validations as $validationData) {
                 if (isset($validationData[0])) {
                     if ($validationData[0] === 'required') { // todo indexa da go nqma???
-                        if (!isset($options[$id]) || strlen($options[$id]) === 0) {
+                        if (!isset($values[$id]) || strlen($values[$id]) === 0) {
                             return false;
                         }
                     }

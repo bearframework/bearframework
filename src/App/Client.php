@@ -1,7 +1,10 @@
 <?php
 
 /*
- * Ne trqbva da ima nikakvi dependancita
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
  */
 
 namespace App;
@@ -148,7 +151,7 @@ class Client
             $manifestData = json_decode(file_get_contents($filename), true);
             if (isset($manifestData['updateUrl'])) {
                 $latestReleaseData = self::getLatestReleaseData((string) $manifestData['updateUrl']);
-                $currentVersionData = $app->addons->getManifestData($id);
+                $currentVersionData = $app->addons->getManifest($id);
                 if ($currentVersionData->id === $latestReleaseData['id']) {
                     if (version_compare($currentVersionData->version, $latestReleaseData['version']) === -1) {
                         try {

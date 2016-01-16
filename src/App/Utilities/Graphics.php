@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
+ */
+
 namespace App\Utilities;
 
 class Graphics
@@ -13,7 +20,6 @@ class Graphics
      */
     static function getImage($sourceFileName)
     {
-        global $app;
         if (!is_string($sourceFileName)) {
             throw new \InvalidArgumentException('');
         }
@@ -60,7 +66,6 @@ class Graphics
      */
     static function resize($sourceFileName, $destinationFileName, $width, $height, $outputType = null)
     {
-        global $app;
         if (!is_string($sourceFileName)) {
             throw new \InvalidArgumentException(' (sourceFileName)');
         }
@@ -99,7 +104,7 @@ class Graphics
         try {
             $resultImage = imagecreatetruecolor($width, $height);
         } catch (\Exception $e) {
-            $resultImage === false;
+            $resultImage = false;
         }
         if ($resultImage !== false) {
             $imageWidth = imagesx($image);

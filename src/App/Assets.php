@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
+ */
+
 namespace App;
 
 class Assets
@@ -31,9 +38,9 @@ class Assets
         } elseif ($type === 'p') {
             $filename = $app->config->appDir . $path;
         } elseif ($type === 'd') {
-//            if (!$app->data->isPublic($path)) {
-//                return false;
-//            }
+            if (!$app->data->isPublic($path)) {
+                return false;
+            }
             $filename = $app->config->dataDir . 'objects/' . $path;
         } else {
             return false;
@@ -97,6 +104,9 @@ class Assets
         // todo extension check za width
         global $app;
         if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
         $optionsString = '';
