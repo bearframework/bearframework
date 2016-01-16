@@ -50,13 +50,15 @@ class Components
         }
     }
 
-    function insertHTML($target, $html, $position)
+    function insertHTML($target, $html, $position = 'beforeBodyEnd')
     {
         //todo better
+        $target = $this->process($target);
+        $component = '<component src="data:base64,' . base64_encode($html) . '" />';
         if ($position === 'afterBodyBegin') {
-            //$result = str_replace('<body>', $html . '</body>', $target);
+            //$result = str_replace('<body>', $component . '</body>', $target);
         } elseif ($position === 'beforeBodyEnd') {
-            $result = str_replace('</body>', $html . '</body>', $target);
+            $result = str_replace('</body>', $component . '</body>', $target);
         } else {
             throw new \InvalidArgumentException('');
         }
