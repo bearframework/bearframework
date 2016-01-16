@@ -27,8 +27,8 @@ class PermanentRedirect extends \App\Response
             throw new \InvalidArgumentException('The url argument must be of type string');
         }
         parent::__construct('');
-        $this->headers['contentType'] = 'Content-Type: text/plain; charset=UTF-8';
-        $this->headers['movedPermanently'] = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' 301 Moved Permanently';
+        $this->setContentType('text/plain');
+        $this->setStatusCode(301);
         $this->headers['location'] = 'Location: ' . $url;
     }
 

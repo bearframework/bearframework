@@ -27,7 +27,7 @@ class JSON extends \App\Response
             throw new \InvalidArgumentException('The content argument must be of type string');
         }
         parent::__construct($content);
-        $this->headers['contentType'] = 'Content-Type: text/json; charset=UTF-8';
+        $this->setContentType('text/json');
     }
 
 }

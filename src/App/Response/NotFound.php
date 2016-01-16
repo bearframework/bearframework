@@ -27,8 +27,8 @@ class NotFound extends \App\Response
             throw new \InvalidArgumentException('The content argument must be of type string');
         }
         parent::__construct($content);
-        $this->headers['contentType'] = 'Content-Type: text/plain; charset=UTF-8';
-        $this->headers['notFound'] = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' 404 Not Found';
+        $this->setContentType('text/plain');
+        $this->setStatusCode(404);
     }
 
 }
