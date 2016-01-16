@@ -177,18 +177,43 @@ class App
 
     /**
      * 
+     * @param string $filename
+     * @return boolean
+     */
+    function load($filename)
+    {
+        if (is_string($filename)) {
+            $filename = realpath($filename);
+            if ($filename !== false) {
+                include_once $filename;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param string $path
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    function getUrl($path = '/')
+    {
+        if (!is_string($path)) {
+            throw new \InvalidArgumentException('');
+        }
+        return $this->request->base . $path;
+    }
+
+    /**
+     * 
      */
     function run()
     {
         $app = &$this; // needed for the app index file
         $context = new \App\Context();
         $context->dir = $this->config->appDir;
-        if (is_file($this->config->appDir . 'index.php')) {
-            include realpath($this->config->appDir . 'index.php');
-        } else {
-            $response = new \App\Response\TemporaryUnavailable('Add your application code in ' . $this->config->appDir . 'index.php');
-            $this->terminate($response);
-        }
 
         if ($this->config->assetsPathPrefix !== null) {
             $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
@@ -210,11 +235,16 @@ class App
         }
         $this->hooks->execute('requestStarted');
 
-        ob_start();
-        $response = $this->routes->getResponse($this->request);
-        ob_end_clean();
-        if (!($response instanceof \App\Response)) {
-            $response = new \App\Response\NotFound("Not Found");
+        if (is_file($this->config->appDir . 'index.php')) {
+            include realpath($this->config->appDir . 'index.php');
+            ob_start();
+            $response = $this->routes->getResponse($this->request);
+            ob_end_clean();
+            if (!($response instanceof \App\Response)) {
+                $response = new \App\Response\NotFound("Not Found");
+            }
+        } else {
+            $response = new \App\Response\TemporaryUnavailable('Add your application code in ' . $this->config->appDir . 'index.php');
         }
         $this->respond($response);
     }
@@ -227,10 +257,9 @@ class App
     function respond($response)
     {
         if ($response instanceof \App\Response) {
-            if ($response instanceof \App\Response\HTML) {
-                $response->content = $this->components->process($response->content);
-            }
+            $response->content = $this->components->process($response->content);
             $this->hooks->execute('responseCreated', $response);
+            $response->content = $this->components->process($response->content);
             $this->sendResponse($response);
         } else {
             throw new \InvalidArgumentException('The response argument must be of type \App\Response');
@@ -244,9 +273,6 @@ class App
     function sendResponse($response)
     {
         if ($response instanceof \App\Response) {
-            if ($response instanceof \App\Response\HTML) {
-                $response->content = $this->components->process($response->content);
-            }
             if (!headers_sent()) {
                 foreach ($response->headers as $header) {
                     header($header);
@@ -315,11 +341,13 @@ class App
             }
         }
         if ($this->config->displayErrors) {
+            ob_clean();
             $response = new \App\Response\TemporaryUnavailable($data);
+            $this->sendResponse($response);
         } else {
             $response = new \App\Response\TemporaryUnavailable();
+            $this->respond($response);
         }
-        $this->respond($response);
     }
 
 }
