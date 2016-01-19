@@ -7,22 +7,16 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace App\Context;
 
-class Context
+class Assets
 {
 
     /**
      *
      * @var string 
      */
-    public $dir = '';
-
-    /**
-     *
-     * @var \App\Context\Assets 
-     */
-    public $assets = null;
+    private $dir = '';
 
     /**
      * 
@@ -35,40 +29,25 @@ class Context
             throw new \InvalidArgumentException('');
         }
         $this->dir = $dir;
-        $this->assets = new \App\Context\Assets($dir);
     }
 
     /**
      * 
      * @param string $filename
+     * @param array $options
+     * @return string
      * @throws \InvalidArgumentException
-     * @return boolean
      */
-    function load($filename)
+    function getUrl($filename, $options = [])
     {
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
-        return $app->load($this->dir . $filename);
-    }
-
-    /**
-     * Registers a class for autoloading
-     * @param string $class
-     * @param string $filename
-     * @throws \InvalidArgumentException
-     */
-    function registerClass($class, $filename)
-    {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('');
-        }
-        if (!is_string($filename)) {
+        if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
         $app = &\App::$instance;
-        $app->classes[$class] = $this->dir . $filename;
+        return $app->assets->getUrl($this->dir . $filename, $options);
     }
 
 }
