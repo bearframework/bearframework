@@ -18,69 +18,75 @@ class App
 
     /**
      *
-     * @var \App\Config 
+     * @var App\Config 
      */
     public $config = null;
 
     /**
      *
-     * @var \App\Request
+     * @var App\Request
      */
     public $request = null;
 
     /**
      *
-     * @var \App\Routes 
+     * @var App\Routes 
      */
     public $routes = null;
 
     /**
      *
-     * @var \App\Log 
+     * @var App\Log 
      */
     public $log = null;
 
     /**
      *
-     * @var \App\Components
+     * @var App\Components
      */
     public $components = null;
 
     /**
      *
-     * @var \App\Addons
+     * @var App\Addons
      */
     public $addons = null;
 
     /**
      *
-     * @var \App\Hooks
+     * @var App\Hooks
      */
     public $hooks = null;
 
     /**
      *
-     * @var \App\Assets
+     * @var App\Assets
      */
     public $assets = null;
 
     /**
      *
-     * @var \App\Data
+     * @var App\Data
      */
     public $data = null;
 
     /**
      *
-     * @var \App\Cache 
+     * @var App\Cache 
      */
     public $cache = null;
 
     /**
      *
-     * @var boolean 
+     * @var array 
      */
-    private static $initialized = false;
+    public $classes = [];
+
+    /**
+     *
+     * @var App 
+     */
+    public static $instance = null;
 
     /**
      * 
@@ -91,7 +97,7 @@ class App
 
         $this->config = new \App\Config($config);
 
-        if (self::$initialized === false) {
+        if (self::$instance === null) {
             if (version_compare(phpversion(), '5.6.0', '<')) {
                 ini_set('default_charset', 'UTF-8');
                 ini_set('mbstring.internal_encoding', 'UTF-8');
@@ -99,18 +105,58 @@ class App
             ini_set('mbstring.func_overload', 7);
             ini_set("pcre.backtrack_limit", 100000000);
             ini_set("pcre.recursion_limit", 100000000);
-            self::$initialized = true;
+            self::$instance = &$this;
+        } else {
+            throw new \Exception('App already constructed');
         }
 
         if ($this->config->handleErrors) {
             error_reporting(E_ALL | E_STRICT);
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
-            set_exception_handler([$this, 'handleException']);
-            register_shutdown_function([$this, 'checkForErrors']);
+            $handleError = function($message, $file, $line, $trace) {
+                $data = "Error:";
+                $data .= "\nMessage: " . $message;
+                $data .= "\nFile: " . $file;
+                $data .= "\nLine: " . $line;
+                $data .= "\nTrace: " . $trace;
+                $data .= "\nGET: " . print_r($_GET, true);
+                $data .= "\nPOST: " . print_r($_POST, true);
+                $data .= "\nSERVER: " . print_r($_SERVER, true);
+                if ($this->config->logErrors && strlen($this->config->logsDir) > 0 && strlen($this->config->errorLogFilename) > 0) {
+                    try {
+                        $this->log->write($this->config->errorLogFilename, $data);
+                    } catch (\Exception $e) {
+                        
+                    }
+                }
+                if ($this->config->displayErrors) {
+                    ob_clean();
+                    $response = new \App\Response\TemporaryUnavailable($data);
+                    $response->disableHooks = true;
+                } else {
+                    $response = new \App\Response\TemporaryUnavailable();
+                }
+                $this->respond($response);
+            };
+            set_exception_handler(function($exception) use($handleError) {
+                $handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
+            });
+            register_shutdown_function(function() use($handleError) {
+                $errorData = error_get_last();
+                if (is_array($errorData)) {
+                    $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
+                    $handleError(trim($messageParts[0]), $errorData['file'], $errorData['line'], isset($messageParts[1]) ? trim(str_replace('Stack trace:', '', $messageParts[1])) : '');
+                }
+            });
             set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
                 throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
             }, E_ALL | E_STRICT);
+            spl_autoload_register(function ($class) {
+                if (isset($this->classes[$class])) {
+                    $this->load($this->classes[$class]);
+                }
+            });
         }
 
         $this->request = new \App\Request();
@@ -170,17 +216,23 @@ class App
         $this->addons = new \App\Addons();
         $this->hooks = new \App\Hooks();
         $this->assets = new \App\Assets();
-        $this->data = new \App\Data($this->config->dataDir);
-        $this->cache = new \App\Cache();
+        if ($this->config->dataDir !== null) {
+            $this->data = new \App\Data($this->config->dataDir);
+            $this->cache = new \App\Cache();
+        }
     }
 
     /**
      * 
      * @param string $filename
+     * @throws \InvalidArgumentException
      * @return boolean
      */
     function load($filename)
     {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
         if (is_string($filename)) {
             $filename = realpath($filename);
             if ($filename !== false) {
@@ -192,7 +244,24 @@ class App
     }
 
     /**
-     * 
+     * Registers a class for autoloading
+     * @param string $class
+     * @param string $filename
+     * @throws \InvalidArgumentException
+     */
+    function registerClass($class, $filename)
+    {
+        if (!is_string($class)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        $this->classes[$class] = $filename;
+    }
+
+    /**
+     * Constructs a url for the path specified
      * @param string $path
      * @return string
      * @throws \InvalidArgumentException
@@ -206,13 +275,12 @@ class App
     }
 
     /**
-     * 
+     * @return void
      */
     function run()
     {
         $app = &$this; // needed for the app index file
-        $context = new \App\Context();
-        $context->dir = $this->config->appDir;
+        $context = new \App\Context($this->config->appDir);
 
         if ($this->config->assetsPathPrefix !== null) {
             $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
@@ -250,103 +318,51 @@ class App
 
     /**
      * 
-     * @param \App\Response $response
+     * @param App\Response $response
      * @throws \InvalidArgumentException
+     * @return void
      */
     function respond($response)
     {
         if ($response instanceof \App\Response) {
-            $response->content = $this->components->process($response->content);
-            $this->hooks->execute('responseCreated', $response);
-            $response->content = $this->components->process($response->content);
-            $this->sendResponse($response);
-        } else {
-            throw new \InvalidArgumentException('The response argument must be of type \App\Response');
-        }
-    }
-
-    /**
-     * This is the default response handler. It renders the headers and the content
-     * @param \App\Response $response
-     */
-    function sendResponse($response)
-    {
-        if ($response instanceof \App\Response) {
-            if (!headers_sent()) {
-                foreach ($response->headers as $header) {
-                    header($header);
+            if (!isset($response->disableHooks) || $response->disableHooks === false) {
+                $response->content = $this->components->process($response->content);
+                $this->hooks->execute('responseCreated', $response);
+                $response->content = $this->components->process($response->content);
+            }
+            if ($response instanceof \App\Response) {
+                if (!headers_sent()) {
+                    foreach ($response->headers as $header) {
+                        header($header);
+                    }
                 }
-            }
-            if ($response instanceof \App\Response\FileReader) {
-                readfile($response->filename);
-            } else {
-                echo $response->content;
-            }
-        } else {
-            throw new \InvalidArgumentException('The response argument must be of type \App\Response');
-        }
-    }
-
-    /**
-     * 
-     */
-    function handleException($exception)
-    {
-        $this->handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
-    }
-
-    /**
-     * 
-     */
-    function checkForErrors()
-    {
-        $this->handleLastError(error_get_last());
-    }
-
-    /**
-     * 
-     * @param array $errorData
-     */
-    protected function handleLastError($errorData)
-    {
-        if (is_array($errorData)) {
-            $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
-            $this->handleError(trim($messageParts[0]), $errorData['file'], $errorData['line'], isset($messageParts[1]) ? trim(str_replace('Stack trace:', '', $messageParts[1])) : '');
-        }
-    }
-
-    /**
-     * 
-     * @param string $message
-     * @param string $file
-     * @param int $line
-     * @param string $trace
-     */
-    protected function handleError($message, $file, $line, $trace)
-    {
-        $data = "Error:";
-        $data .= "\nMessage: " . $message;
-        $data .= "\nFile: " . $file;
-        $data .= "\nLine: " . $line;
-        $data .= "\nTrace: " . $trace;
-        $data .= "\nGET: " . print_r($_GET, true);
-        $data .= "\nPOST: " . print_r($_POST, true);
-        $data .= "\nSERVER: " . print_r($_SERVER, true);
-        if ($this->config->logErrors && strlen($this->config->logsDir) > 0 && strlen($this->config->errorLogFilename) > 0) {
-            try {
-                $this->log->write($this->config->logsDir . $this->config->errorLogFilename, $data);
-            } catch (\Exception $e) {
-                
+                if ($response instanceof \App\Response\FileReader) {
+                    readfile($response->filename);
+                } else {
+                    echo $response->content;
+                }
+                return;
             }
         }
-        if ($this->config->displayErrors) {
-            ob_clean();
-            $response = new \App\Response\TemporaryUnavailable($data);
-            $this->sendResponse($response);
-        } else {
-            $response = new \App\Response\TemporaryUnavailable();
-            $this->respond($response);
-        }
+        throw new \InvalidArgumentException('The response argument must be of type \App\Response');
+    }
+
+    /**
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+        
+    }
+
+    /**
+     *
+     * @return void
+     */
+    private function __wakeup()
+    {
+        
     }
 
 }
