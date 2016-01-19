@@ -14,7 +14,6 @@ class Data extends \ObjectStorage
 
     /**
      * 
-     * @global \App $app
      * @param string $key
      * @throws \InvalidArgumentException
      */
@@ -23,7 +22,7 @@ class Data extends \ObjectStorage
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');
         }
-        global $app;
+        $app = &\App::$instance;
         $app->data->set(
                 [
                     'key' => $key,
@@ -34,7 +33,6 @@ class Data extends \ObjectStorage
 
     /**
      * 
-     * @global \App $app
      * @param string $key
      * @throws \InvalidArgumentException
      */
@@ -43,7 +41,7 @@ class Data extends \ObjectStorage
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');
         }
-        global $app;
+        $app = &\App::$instance;
         $app->data->set(
                 [
                     'key' => $key,
@@ -54,7 +52,6 @@ class Data extends \ObjectStorage
 
     /**
      * 
-     * @global \App $app
      * @param string $key
      * @return boolean
      * @throws \InvalidArgumentException
@@ -64,7 +61,7 @@ class Data extends \ObjectStorage
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');
         }
-        global $app;
+        $app = &\App::$instance;
         $result = $app->data->get(
                 [
                     'key' => $key,
@@ -76,7 +73,6 @@ class Data extends \ObjectStorage
 
     /**
      * 
-     * @global \App $app
      * @param string $key
      * @param array $options
      * @return string
@@ -90,7 +86,7 @@ class Data extends \ObjectStorage
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
-        global $app;
+        $app = &\App::$instance;
         return $app->assets->getUrl($app->config->dataDir . 'objects/' . $key, $options);
     }
 

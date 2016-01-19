@@ -35,7 +35,7 @@ class Addons
      */
     function load($id)
     {
-        global $app;
+        $app = &\App::$instance;
         $__id = $id;
         unset($id);
         if (strlen($app->config->addonsDir) === 0) {
@@ -43,8 +43,7 @@ class Addons
         }
         $__indexFile = realpath($app->config->addonsDir . $__id . '/index.php');
         if ($__indexFile !== false) {
-            $context = new \App\Context();
-            $context->dir = $app->config->addonsDir . $__id . '/';
+            $context = new \App\AddonContext($app->config->addonsDir . $__id . '/');
             include_once $__indexFile;
         }
     }
@@ -65,12 +64,12 @@ class Addons
     /**
      * 
      * @param string $addonID
-     * @return type
+     * @return App\Addons\Manifest
      * @throws \Exception
      */
     function getManifest($addonID)
     {
-        global $app;
+        $app = &\App::$instance;
         $addonsDir = $app->config->addonsDir;
         if (strlen($addonsDir) === 0) {
             throw new Exception('');
@@ -93,6 +92,7 @@ class Addons
      * 
      * @param array $options
      * @param array $values
+     * @return boolean
      */
     function validateOptions($options, $values)
     {

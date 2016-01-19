@@ -54,7 +54,7 @@ class Routes
 
     /**
      * 
-     * @param \App\Request $request
+     * @param App\Request $request
      * @return mixed
      */
     function getResponse($request)

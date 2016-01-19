@@ -55,7 +55,7 @@ class Client
      */
     static function updateFramework()
     {
-        global $app;
+        $app = &\App::$instance;
         //self::writeLog(['updateFramework', $currentVersion]);
         $latestReleaseData = self::getLatestReleaseData('http://dev/playground/addons/framework/releases.json');
         if (version_compare($app::VERSION, $latestReleaseData['version']) === -1) {
@@ -144,7 +144,7 @@ class Client
      */
     static function updateAddon($id)
     {
-        global $app;
+        $app = &\App::$instance;
         //self::writeLog(['updateAddon', $id]);
         $filename = $app->config->addonsDir . $id . '/manifest.json';
         if (is_file($filename)) {

@@ -41,13 +41,13 @@ class Request
 
     /**
      *
-     * @var \App\Request\Path 
+     * @var App\Request\Path 
      */
     public $path = null;
 
     /**
      *
-     * @var \App\Request\Query 
+     * @var App\Request\Query 
      */
     public $query = null;
 

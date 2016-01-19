@@ -19,7 +19,7 @@ class Assets
      */
     function getFilename($path)
     {
-        global $app;
+        $app = &\App::$instance;
         if ($app->config->assetsPathPrefix === null) {
             throw new \Exception('');
         }
@@ -102,7 +102,7 @@ class Assets
     function getUrl($filename, $options = [])
     {
         // todo extension check za width
-        global $app;
+        $app = &\App::$instance;
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
@@ -145,14 +145,13 @@ class Assets
 
     /**
      * 
-     * @global \BearFramework\App $app
      * @param string $filename
      * @return array
      * @throws \InvalidArgumentException
      */
     function getDimensions($filename)
     {
-        global $app;
+        $app = &\App::$instance;
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }

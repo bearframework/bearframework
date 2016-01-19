@@ -35,6 +35,46 @@ class Config
 
     /**
      * 
+     * @param array $options
+     * @throws \InvalidArgumentException
+     */
+    function __construct($options = [])
+    {
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('This options argument must be of type array');
+        }
+
+        if (isset($options['appDir'])) {
+            $options['appDir'] = rtrim($options['appDir'], '/\\') . '/';
+        }
+        if (isset($options['addonsDir'])) {
+            $options['addonsDir'] = rtrim($options['addonsDir'], '/\\') . '/';
+        }
+        if (isset($options['dataDir'])) {
+            $options['dataDir'] = rtrim($options['dataDir'], '/\\') . '/';
+        }
+        if (isset($options['logsDir'])) {
+            $options['logsDir'] = rtrim($options['logsDir'], '/\\') . '/';
+        }
+        $defaultOptions = [
+            'appDir' => null,
+            'addonsDir' => null,
+            'dataDir' => null,
+            'logsDir' => null,
+            'handleErrors' => true,
+            'displayErrors' => false,
+            'logErrors' => false,
+            'errorLogFilename' => 'errors/' . date('Y-M-d') . '.log',
+            'assetsPathPrefix' => '/assets/',
+            'assetsMaxAge' => 0,
+            'autoUpdateFramework' => false,
+            'autoUpdateAddons' => false
+        ];
+        $this->options = array_merge($defaultOptions, $options);
+    }
+
+    /**
+     * 
      * @param string $name
      * @return mixed
      * @throws \InvalidArgumentException
@@ -71,51 +111,6 @@ class Config
     function __isset($name)
     {
         return array_key_exists($name, $this->options);
-    }
-
-    /**
-     * 
-     * @param array $options
-     * @throws \InvalidArgumentException
-     */
-    function __construct($options = [])
-    {
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('This options argument must be of type array');
-        }
-
-        if (isset($options['appDir'])) {
-            $options['appDir'] = rtrim($options['appDir'], '/\\') . '/';
-        }
-        if (isset($options['addonsDir'])) {
-            $options['addonsDir'] = rtrim($options['addonsDir'], '/\\') . '/';
-        }
-        if (isset($options['dataDir'])) {
-            $options['dataDir'] = rtrim($options['dataDir'], '/\\') . '/';
-        }
-        if (isset($options['logsDir'])) {
-            $options['logsDir'] = rtrim($options['logsDir'], '/\\') . '/';
-        }
-        $defaultOptions = [
-            'handleErrors' => true,
-            'displayErrors' => false,
-            'logErrors' => false,
-            'errorLogFilename' => 'errors/' . date('Y-M-d') . '.log',
-            'assetsPathPrefix' => '/assets/',
-            'assetsMaxAge' => 0,
-            'autoUpdateFramework' => false,
-            'autoUpdateAddons' => false
-        ];
-        $this->options = array_merge($defaultOptions, $options);
-    }
-
-    /**
-     * 
-     * @return array
-     */
-    function getOptions()
-    {
-        return $this->options;
     }
 
 }
