@@ -16,7 +16,7 @@ class Parser
      * 
      * @param string $content
      * @throws \Exception
-     * @return \BearCMS\Internal\Addons\Manifest
+     * @return App\Addons\Manifest
      */
     static function parse($content)
     {
@@ -46,7 +46,7 @@ class Parser
 
         if (isset($parsedData['version'])) {
             $manifest->version = trim((string) $parsedData['version']);
-            if (preg_match('/^[0-9]+\.[0-9]+\.[0-9]+(alpha|beta){0,1}$/', $manifest->version) === 0) {
+            if (preg_match('/^[0-9]+\.[0-9]+\.[0-9]+(\-alpha|\-beta){0,1}$/', $manifest->version) === 0) {
                 throw new Exception('version is not valid');
             }
         }

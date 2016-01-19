@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Addon\Manifests;
+namespace App\Addons\Manifest;
 
 class OptionValidation
 {
