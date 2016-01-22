@@ -7,6 +7,9 @@
  * Free to use under the MIT license.
  */
 
+/**
+ * The is the class used to instantiate and configure you application.
+ */
 class App
 {
 
@@ -17,85 +20,83 @@ class App
     const VERSION = '0.5.0';
 
     /**
-     *
+     * The configuration of the application
      * @var App\Config 
      */
     public $config = null;
 
     /**
-     *
+     * This object contains information about the request
      * @var App\Request
      */
     public $request = null;
 
     /**
-     *
+     * This object hold the data about defined routes
      * @var App\Routes 
      */
     public $routes = null;
 
     /**
-     *
+     * Logs data
      * @var App\Log 
      */
     public $log = null;
 
     /**
-     *
+     * The object that is responsible for processing HTML Server Components
      * @var App\Components
      */
     public $components = null;
 
     /**
-     *
+     * The place to register addons
      * @var App\Addons
      */
     public $addons = null;
 
     /**
-     *
+     * List of hooks
      * @var App\Hooks
      */
     public $hooks = null;
 
     /**
-     *
+     * Assets utility functions
      * @var App\Assets
      */
     public $assets = null;
 
     /**
-     *
+     * Data storage
      * @var App\Data
      */
     public $data = null;
 
     /**
-     *
+     * Data cache
      * @var App\Cache 
      */
     public $cache = null;
 
     /**
-     *
+     * Registered classes for autoloading
      * @var array 
      */
     public $classes = [];
 
     /**
-     *
+     * The instance of the App object. Only one can be created.
      * @var App 
      */
     public static $instance = null;
 
     /**
-     * 
+     * The constructor
      * @param array $config
      */
     function __construct($config = [])
     {
-
-        $this->config = new \App\Config($config);
 
         if (self::$instance === null) {
             if (version_compare(phpversion(), '5.6.0', '<')) {
@@ -109,6 +110,8 @@ class App
         } else {
             throw new \Exception('App already constructed');
         }
+
+        $this->config = new \App\Config($config);
 
         if ($this->config->handleErrors) {
             error_reporting(E_ALL | E_STRICT);
@@ -223,10 +226,10 @@ class App
     }
 
     /**
-     * 
-     * @param string $filename
+     * Loads a file
+     * @param string $filename The filename to be loaded
      * @throws \InvalidArgumentException
-     * @return boolean
+     * @return boolean TRUE if file loaded successfully. Otherwise returns FALSE.
      */
     function load($filename)
     {
@@ -245,8 +248,8 @@ class App
 
     /**
      * Registers a class for autoloading
-     * @param string $class
-     * @param string $filename
+     * @param string $class The class name
+     * @param string $filename The filename that contains the class
      * @throws \InvalidArgumentException
      */
     function registerClass($class, $filename)
@@ -262,8 +265,8 @@ class App
 
     /**
      * Constructs a url for the path specified
-     * @param string $path
-     * @return string
+     * @param string $path The path
+     * @return string Absolute URL containing the base URL plus the path given
      * @throws \InvalidArgumentException
      */
     function getUrl($path = '/')
@@ -275,6 +278,7 @@ class App
     }
 
     /**
+     * Call this method to start the application. This method outputs the response.
      * @return void
      */
     function run()
@@ -282,28 +286,30 @@ class App
         $app = &$this; // needed for the app index file
         $context = new \App\Context($this->config->appDir);
 
-        if ($this->config->assetsPathPrefix !== null) {
-            $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
-                $filename = $app->assets->getFilename($app->request->path);
-                if ($filename === false) {
-                    return new \App\Response\NotFound();
-                } else {
-                    $response = new \App\Response\FileReader($filename);
-                    if ($app->config->assetsMaxAge !== null) {
-                        $response->setMaxAge((int) $app->config->assetsMaxAge);
-                    }
-                    $mimeType = $app->assets->getMimeType($filename);
-                    if ($mimeType !== null) {
-                        $response->headers[] = 'Content-Type: ' . $mimeType;
-                    }
-                    return $response;
-                }
-            });
-        }
         $this->hooks->execute('requestStarted');
 
         if (is_file($this->config->appDir . 'index.php')) {
             include realpath($this->config->appDir . 'index.php');
+
+            if ($this->config->assetsPathPrefix !== null) {
+                $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
+                    $filename = $app->assets->getFilename($app->request->path);
+                    if ($filename === false) {
+                        return new \App\Response\NotFound();
+                    } else {
+                        $response = new \App\Response\FileReader($filename);
+                        if ($app->config->assetsMaxAge !== null) {
+                            $response->setMaxAge((int) $app->config->assetsMaxAge);
+                        }
+                        $mimeType = $app->assets->getMimeType($filename);
+                        if ($mimeType !== null) {
+                            $response->headers[] = 'Content-Type: ' . $mimeType;
+                        }
+                        return $response;
+                    }
+                });
+            }
+
             ob_start();
             $response = $this->routes->getResponse($this->request);
             ob_end_clean();
@@ -317,8 +323,8 @@ class App
     }
 
     /**
-     * 
-     * @param App\Response $response
+     * Outputs a response
+     * @param App\Response $response The reponse object to output
      * @throws \InvalidArgumentException
      * @return void
      */
@@ -348,7 +354,7 @@ class App
     }
 
     /**
-     *
+     * Prevents multiple app instances
      * @return void
      */
     private function __clone()
@@ -357,7 +363,7 @@ class App
     }
 
     /**
-     *
+     * Prevents multiple app instances
      * @return void
      */
     private function __wakeup()

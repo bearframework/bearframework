@@ -22,9 +22,16 @@ class Addons
      * 
      * @param string $id
      * @param array $options
+     * @throws \InvalidArgumentException
      */
     function add($id, $options = [])
     {
+        if (!is_string($id)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('');
+        }
         $this->options[$id] = ['options' => $options];
         $this->load($id);
     }
@@ -32,9 +39,13 @@ class Addons
     /**
      * 
      * @param string $id
+     * @throws \InvalidArgumentException
      */
-    function load($id)
+    private function load($id)
     {
+        if (!is_string($id)) {
+            throw new \InvalidArgumentException('');
+        }
         $app = &\App::$instance;
         $__id = $id;
         unset($id);
@@ -52,9 +63,13 @@ class Addons
      * 
      * @param string $id
      * @return array
+     * @throws \InvalidArgumentException
      */
     function getOptions($id)
     {
+        if (!is_string($id)) {
+            throw new \InvalidArgumentException('');
+        }
         if (isset($this->options[$id])) {
             return $this->options[$id]['options'];
         }
@@ -63,28 +78,32 @@ class Addons
 
     /**
      * 
-     * @param string $addonID
+     * @param string $id
      * @return App\Addons\Manifest
      * @throws \Exception
+     * @throws \InvalidArgumentException
      */
-    function getManifest($addonID)
+    function getManifest($id)
     {
+        if (!is_string($id)) {
+            throw new \InvalidArgumentException('');
+        }
         $app = &\App::$instance;
         $addonsDir = $app->config->addonsDir;
         if (strlen($addonsDir) === 0) {
             throw new Exception('');
         }
         // todo cache
-        $filename = $addonsDir . $addonID . '/manifest.json';
+        $filename = $addonsDir . $id . '/manifest.json';
         if (is_file($filename)) {
             $addonsData = \App\Addons\Manifest\Parser::parse(file_get_contents($filename));
-            if ($addonsData->id === $addonID) {
+            if ($addonsData->id === $id) {
                 return $addonsData;
             } else {
-                throw new \Exception('Invalid addon id (' . $addonID . ')');
+                throw new \Exception('Invalid addon id (' . $id . ')');
             }
         } else {
-            throw new \Exception('Addon manifest file cannot be found (' . $addonID . ')');
+            throw new \Exception('Addon manifest file cannot be found (' . $id . ')');
         }
     }
 
@@ -93,9 +112,16 @@ class Addons
      * @param array $options
      * @param array $values
      * @return boolean
+     * @throws \InvalidArgumentException
      */
     function validateOptions($options, $values)
     {
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_array($values)) {
+            throw new \InvalidArgumentException('');
+        }
         foreach ($options as $optionData) {
             $id = $optionData['id'];
             $validations = isset($optionData['validations']) ? $optionData['validations'] : [];

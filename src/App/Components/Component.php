@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace App\Components;
 
 class Component extends \HTMLServerComponent
 {

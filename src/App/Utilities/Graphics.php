@@ -26,14 +26,22 @@ class Graphics
         $image = null;
         try {
             $image = imagecreatefromjpeg($sourceFileName);
-            if (!$image) {
-                $image = imagecreatefrompng($sourceFileName);
-            }
-            if (!$image) {
-                $image = imagecreatefromgif($sourceFileName);
-            }
         } catch (\Exception $e) {
             
+        }
+        if (!$image) {
+            try {
+                $image = imagecreatefrompng($sourceFileName);
+            } catch (\Exception $e) {
+                
+            }
+        }
+        if (!$image) {
+            try {
+                $image = imagecreatefromgif($sourceFileName);
+            } catch (\Exception $e) {
+                
+            }
         }
         if (!$image) {
             throw new \Exception('Invalid image file');

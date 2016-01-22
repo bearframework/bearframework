@@ -47,7 +47,7 @@ class Components
             throw new \InvalidArgumentException('');
         }
         if (strpos($content, '<component') !== false) {
-            $compiler = new \App\ComponentsCompiler();
+            $compiler = new \App\Components\Compiler();
             foreach ($this->aliases as $alias) {
                 $compiler->addAlias($alias['alias'], $alias['original']);
             }

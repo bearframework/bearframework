@@ -22,10 +22,12 @@ class Routes
     private $data = [];
 
     /**
-     * 
-     * @param string|string[] $pattern
-     * @param callable $callback
-     * @param array $options
+     * Registers a request hander
+     * @param string|string[] $pattern Path pattern. Can contain "?" (path part) and "*" (matches everything).
+     * @param callable $callback Function that is expected to return object of type \App\Response.
+     * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
+     * @return void No value is returned.
+     * @throws \InvalidArgumentException
      */
     function add($pattern, $callback, $options = ['GET'])
     {

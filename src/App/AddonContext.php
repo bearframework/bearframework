@@ -19,7 +19,8 @@ class AddonContext extends \App\Context
     function getOptions()
     {
         $app = &\App::$instance;
-        return $app->addons->getOptions();
+        $addonID = rtrim(str_replace($app->config->addonsDir, '', $this->dir), '/');
+        return $app->addons->getOptions($addonID);
     }
 
 }

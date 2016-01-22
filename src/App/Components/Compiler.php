@@ -7,9 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace App\Components;
 
-class ComponentsCompiler extends \HTMLServerComponentsCompiler
+class Compiler extends \HTMLServerComponentsCompiler
 {
 
     /**
@@ -21,7 +21,7 @@ class ComponentsCompiler extends \HTMLServerComponentsCompiler
     protected function constructComponent($attributes = [], $innerHTML = '')
     {
         $app = &\App::$instance;
-        $component = new \App\Component();
+        $component = new \App\Components\Component();
         $component->attributes = $attributes;
         $component->innerHTML = $innerHTML;
         $app->hooks->execute('componentCreated', $component);
