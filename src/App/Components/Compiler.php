@@ -41,7 +41,7 @@ class Compiler extends \HTMLServerComponentsCompiler
             if (strpos($file, $app->config->appDir) === 0) {
                 $context = new \App\AppContext($app->config->appDir);
             } elseif (strpos($file, $app->config->addonsDir) === 0) {
-                $context = new \App\AddonContext(substr($file, 0, strpos($file, '/', strlen($app->config->appDir)) + 1));
+                $context = new \App\AddonContext(substr($file, 0, strpos($file, '/', strlen($app->config->addonsDir)) + 1));
             } else {
                 throw new \Exception('Invalid component file path (' . $file . ')');
             }
