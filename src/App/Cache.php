@@ -32,12 +32,12 @@ class Cache
         if (isset($data['body'])) {
             if (strlen($data['metadata.t']) > 0) {
                 if ((int) $data['metadata.t'] > time()) {
-                    return gzuncompress($data['body']);
+                    return unserialize(gzuncompress($data['body']));
                 } else {
                     return $defaultValue;
                 }
             } else {
-                return gzuncompress($data['body']);
+                return unserialize(gzuncompress($data['body']));
             }
         } else {
             return $defaultValue;
@@ -59,7 +59,7 @@ class Cache
                     'result' => ['key', 'metadata.t']
                 ]
         );
-        if (isset($data)) {
+        if (isset($data['key'])) {
             if (strlen($data['metadata.t']) > 0) {
                 return (int) $data['metadata.t'] > time();
             } else {
@@ -83,7 +83,7 @@ class Cache
         $keyMD5 = md5($key);
         $data = [
             'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
-            'body' => gzcompress($value)
+            'body' => gzcompress(serialize($value))
         ];
         if ($time > 0) {
             $data['metadata.t'] = (string) (time() + $time);
