@@ -116,48 +116,50 @@ class Data
     }
 
     /**
-     * 
-     * @param string $key
+     * Marks object as public so it can be accessed as an asset
+     * @param array $parameters Parameters
      * @throws \InvalidArgumentException
+     * @return boolean TRUE on success. FALSE otherwise.
      */
-    function makePublic($key)
+    function makePublic($parameters)
     {
-        if (!is_string($key)) {
+        if (!is_array($parameters) || !isset($parameters['key']) || !is_string($parameters['key'])) {
             throw new \InvalidArgumentException('');
         }
         $instance = $this->getInstance();
-        $instance->set(
-                [
-                    'key' => $key,
-                    'metadata.public' => '1'
-                ]
+        return $instance->set(
+                        [
+                            'key' => $parameters['key'],
+                            'metadata.internalFrameworkPropertyPublic' => '1'
+                        ]
         );
     }
 
     /**
-     * 
-     * @param string $key
+     * Marks object as private so it cannot be accessed as an asset
+     * @param array $parameters Parameters
      * @throws \InvalidArgumentException
+     * @return boolean TRUE on success. FALSE otherwise.
      */
-    function makePrivate($key)
+    function makePrivate($parameters)
     {
-        if (!is_string($key)) {
+        if (!is_array($parameters) || !isset($parameters['key']) || !is_string($parameters['key'])) {
             throw new \InvalidArgumentException('');
         }
         $instance = $this->getInstance();
-        $instance->set(
-                [
-                    'key' => $key,
-                    'metadata.public' => ''
-                ]
+        return $instance->set(
+                        [
+                            'key' => $parameters['key'],
+                            'metadata.internalFrameworkPropertyPublic' => ''
+                        ]
         );
     }
 
     /**
-     * 
-     * @param string $key
-     * @return boolean
+     * Checks if an object is marked as public
+     * @param string $key The object key
      * @throws \InvalidArgumentException
+     * @return boolean TRUE if public. FALSE otherwise.
      */
     function isPublic($key)
     {
@@ -168,29 +170,25 @@ class Data
         $result = $instance->get(
                 [
                     'key' => $key,
-                    'result' => ['metadata.public']
+                    'result' => ['metadata.internalFrameworkPropertyPublic']
                 ]
         );
-        return isset($result['metadata.public']) && $result['metadata.public'] === '1';
+        return isset($result['metadata.internalFrameworkPropertyPublic']) && $result['metadata.internalFrameworkPropertyPublic'] === '1';
     }
 
     /**
-     * 
-     * @param string $key
-     * @param array $options
-     * @return string
+     * Returns the filename of the object key specified
+     * @param string $key The object key
      * @throws \InvalidArgumentException
+     * @return The filename of the object key specified
      */
-    function getUrl($key, $options = [])
+    function getFilename($key)
     {
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');
         }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
-        }
         $app = &\App::$instance;
-        return $app->assets->getUrl($app->config->dataDir . 'objects/' . $key, $options);
+        return $app->config->dataDir . 'objects/' . $key;
     }
 
 }
