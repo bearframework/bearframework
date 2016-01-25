@@ -9,6 +9,9 @@
 
 namespace App\Components;
 
+/**
+ * HTML Server Components object
+ */
 class Component extends \HTMLServerComponent
 {
     

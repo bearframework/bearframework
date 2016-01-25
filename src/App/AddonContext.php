@@ -9,12 +9,15 @@
 
 namespace App;
 
+/**
+ * Provides information about the addon location and utility functions
+ */
 class AddonContext extends \App\Context
 {
 
     /**
-     * 
-     * @return array
+     * Returns the options set for the current addon
+     * @return array The options set for the current addon
      */
     function getOptions()
     {

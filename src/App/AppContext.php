@@ -9,6 +9,9 @@
 
 namespace App;
 
+/**
+ * Provides information about the application location and utility functions
+ */
 class AppContext extends \App\Context
 {
     

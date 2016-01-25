@@ -10,14 +10,14 @@
 namespace App\Response;
 
 /**
- * 
+ * Response type that outputs JSON code. The appropriate content type is set.
  */
 class JSON extends \App\Response
 {
 
     /**
-     * 
-     * @param string $content
+     * The constructor
+     * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
     function __construct($content = '')

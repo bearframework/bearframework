@@ -9,6 +9,9 @@
 
 namespace App\Context;
 
+/**
+ * Provides utility functions for assets in the current context
+ */
 class Assets
 {
 
@@ -19,9 +22,10 @@ class Assets
     private $dir = '';
 
     /**
-     * 
-     * @param string $dir
+     * The constructor
+     * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
+     * @return void No value is returned
      */
     function __construct($dir)
     {
@@ -32,11 +36,11 @@ class Assets
     }
 
     /**
-     * 
-     * @param string $filename
-     * @param array $options
-     * @return string
+     * Returns a public URL for the specified filename in the current context
+     * @param string $filename The filename
+     * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
+     * @return string The URL for the specified filename and options
      */
     function getUrl($filename, $options = [])
     {

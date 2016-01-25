@@ -10,14 +10,14 @@
 namespace App\Response;
 
 /**
- * 
+ * Response type that sends Not Found status
  */
 class NotFound extends \App\Response
 {
 
     /**
-     * 
-     * @param string $content
+     * The constructor
+     * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
     function __construct($content = 'Not Found')

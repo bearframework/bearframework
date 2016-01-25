@@ -10,20 +10,20 @@
 namespace App\Response;
 
 /**
- * 
+ * Response type that reads file and outputs it
  */
 class FileReader extends \App\Response
 {
 
     /**
-     *
+     * The filename to output
      * @var string 
      */
     public $filename = '';
 
     /**
-     * 
-     * @param string $filename
+     * The constructor 
+     * @param string $filename The filename to output
      * @throws \InvalidArgumentException
      */
     function __construct($filename)

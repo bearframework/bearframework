@@ -10,14 +10,14 @@
 namespace App\Response;
 
 /**
- * 
+ * Response type that makes permanent redirect
  */
 class PermanentRedirect extends \App\Response
 {
 
     /**
-     * 
-     * @param string $url
+     * The constructor
+     * @param string $url The redirect url
      * @throws \InvalidArgumentException
      */
     function __construct($url)

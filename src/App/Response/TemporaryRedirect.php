@@ -10,14 +10,14 @@
 namespace App\Response;
 
 /**
- * 
+ * Response type that makes temporary redirect
  */
 class TemporaryRedirect extends \App\Response
 {
 
     /**
-     * 
-     * @param string $url
+     * The constructor
+     * @param string $url The redirect url
      * @throws \InvalidArgumentException
      */
     function __construct($url)

@@ -9,13 +9,17 @@
 
 namespace App\Utilities;
 
+/**
+ * Directory utilities
+ */
 class Dir
 {
 
     /**
-     * 
-     * @param string $pathname
+     * Creates a dir if it's missing
+     * @param string $pathname The pathname of the dir
      * @throws \Exception
+     * @return void No value is returned
      */
     static function make($pathname)
     {

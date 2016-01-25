@@ -14,55 +14,55 @@ class App
 {
 
     /**
-     * Current version
+     * Current Bear Framework version
      * @var string
      */
     const VERSION = '0.5.0';
 
     /**
-     * The configuration of the application
+     * The application configuration
      * @var App\Config 
      */
     public $config = null;
 
     /**
-     * This object contains information about the request
+     * Provides information about the current request
      * @var App\Request
      */
     public $request = null;
 
     /**
-     * This object hold the data about defined routes
+     * Stores the data about the defined routes callbacks
      * @var App\Routes 
      */
     public $routes = null;
 
     /**
-     * Logs data
+     * Provides logging functionlity
      * @var App\Log 
      */
     public $log = null;
 
     /**
-     * The object that is responsible for processing HTML Server Components
+     * HTML Server Components utilities
      * @var App\Components
      */
     public $components = null;
 
     /**
-     * The place to register addons
+     * Provides a way to enable addons and manage their options
      * @var App\Addons
      */
     public $addons = null;
 
     /**
-     * List of hooks
+     * Provides functionaly for notifications and data requests
      * @var App\Hooks
      */
     public $hooks = null;
 
     /**
-     * Assets utility functions
+     * Provides utility functions for assets
      * @var App\Assets
      */
     public $assets = null;
@@ -80,7 +80,7 @@ class App
     public $cache = null;
 
     /**
-     * Registered classes for autoloading
+     * List of registered classes for autoloading
      * @var array 
      */
     public $classes = [];
@@ -251,6 +251,7 @@ class App
      * @param string $class The class name
      * @param string $filename The filename that contains the class
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     function registerClass($class, $filename)
     {
@@ -266,8 +267,8 @@ class App
     /**
      * Constructs a url for the path specified
      * @param string $path The path
-     * @return string Absolute URL containing the base URL plus the path given
      * @throws \InvalidArgumentException
+     * @return string Absolute URL containing the base URL plus the path given
      */
     function getUrl($path = '/')
     {
@@ -279,7 +280,7 @@ class App
 
     /**
      * Call this method to start the application. This method outputs the response.
-     * @return void
+     * @return void No value is returned No value is returned
      */
     function run()
     {
@@ -326,7 +327,7 @@ class App
      * Outputs a response
      * @param App\Response $response The reponse object to output
      * @throws \InvalidArgumentException
-     * @return void
+     * @return void No value is returned No value is returned
      */
     function respond($response)
     {
@@ -355,7 +356,7 @@ class App
 
     /**
      * Prevents multiple app instances
-     * @return void
+     * @return void No value is returned No value is returned
      */
     private function __clone()
     {
@@ -364,7 +365,7 @@ class App
 
     /**
      * Prevents multiple app instances
-     * @return void
+     * @return void No value is returned No value is returned
      */
     private function __wakeup()
     {

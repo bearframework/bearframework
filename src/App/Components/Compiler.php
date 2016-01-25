@@ -9,14 +9,17 @@
 
 namespace App\Components;
 
+/**
+ * Proccess HTML code and transforms component tags
+ */
 class Compiler extends \HTMLServerComponentsCompiler
 {
 
     /**
-     * 
-     * @param array $attributes
-     * @param string $innerHTML
-     * @return \App\Component
+     * Constructs a Component object
+     * @param array $attributes The attributes of the component tag
+     * @param string $innerHTML The innerHTML of the component tag
+     * @return \App\Component A component object
      */
     protected function constructComponent($attributes = [], $innerHTML = '')
     {
@@ -29,9 +32,10 @@ class Compiler extends \HTMLServerComponentsCompiler
     }
 
     /**
-     * 
-     * @param string $file
-     * @param App\Component $component
+     * Includes the component file providing context information
+     * @param string $file The file of the component
+     * @param App\Component $component The component object for the tag specified
+     * @return void No value is returned
      */
     protected function includeComponentFile($file, $component)
     {

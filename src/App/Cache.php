@@ -9,15 +9,18 @@
 
 namespace App;
 
+/**
+ * Data cache
+ */
 class Cache
 {
 
     /**
-     * 
-     * @param string $key
-     * @param string $defaultValue
-     * @return mixed
+     * Return the saved data from the cache of the default value specified
+     * @param string $key The data key
+     * @param string $defaultValue The default value which will be returned if the data is missing from the cache
      * @throws \BearCMS\DataCache\NotFoundException
+     * @return mixed The saved data from the cache of the default value specified
      */
     static function get($key, $defaultValue = false)
     {
@@ -45,9 +48,9 @@ class Cache
     }
 
     /**
-     * 
-     * @param mixed $key
-     * @return boolean
+     * Checks if the data for the key specified exists
+     * @param mixed $key The data key
+     * @return boolean TRUE if the data for the specified key exists in the cache. FALSE otherwise.
      */
     static function exists($key)
     {
@@ -71,11 +74,12 @@ class Cache
     }
 
     /**
-     * 
-     * @param mixed $key
-     * @param mixed $value
-     * @param int $time
+     * Saves data in the cache
+     * @param mixed $key The data key
+     * @param mixed $value The data
+     * @param int $time Expiration time of the data in seconds relative to the current time. Zero mean no expiration.
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     static function set($key, $value, $time = 0)
     {
@@ -92,9 +96,10 @@ class Cache
     }
 
     /**
-     * 
-     * @param mixed $key
+     * Deletes data fom the cache
+     * @param mixed $key The data key
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     static function delete($key)
     {

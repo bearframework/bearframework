@@ -10,24 +10,24 @@
 namespace App;
 
 /**
- * 
+ * Provides functionality for registering callbacks for specific requests and executing them
  */
 class Routes
 {
 
     /**
-     *
+     * Stores the registed callbacks
      * @var array 
      */
     private $data = [];
 
     /**
-     * Registers a request hander
+     * Registers a request handler
      * @param string|string[] $pattern Path pattern. Can contain "?" (path part) and "*" (matches everything).
      * @param callable $callback Function that is expected to return object of type \App\Response.
      * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
-     * @return void No value is returned.
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     function add($pattern, $callback, $options = ['GET'])
     {
@@ -55,9 +55,9 @@ class Routes
     }
 
     /**
-     * 
-     * @param App\Request $request
-     * @return mixed
+     * Finds the matching callback and returns its result
+     * @param App\Request $request The current request object
+     * @return mixed The result of th matching callback. NULL if none.
      */
     function getResponse($request)
     {

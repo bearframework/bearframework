@@ -9,14 +9,17 @@
 
 namespace App\Utilities;
 
+/**
+ * Graphics utilities
+ */
 class Graphics
 {
 
     /**
-     * 
-     * @param string $sourceFileName
-     * @return resource
+     * Return a image resource
+     * @param string $sourceFileName The filename of the image
      * @throws \Exception
+     * @return resource The image resource
      */
     static function getImage($sourceFileName)
     {
@@ -50,10 +53,10 @@ class Graphics
     }
 
     /**
-     * 
-     * @param string $sourceFileName
-     * @return array
+     * Returns the size of the image specified
+     * @param string $sourceFileName The filename of the image
      * @throws \Exception
+     * @return array The size of the image specified
      */
     static function getSize($sourceFileName)
     {
@@ -65,12 +68,13 @@ class Graphics
     }
 
     /**
-     * 
-     * @param string $sourceFileName
-     * @param string $destinationFileName
-     * @param int $width
-     * @param int $height
-     * @param string $outputType
+     * Resizes a image file
+     * @param string $sourceFileName The image file to resize
+     * @param string $destinationFileName The filename where the result image will be saved
+     * @param int $width The width of the resized image
+     * @param int $height The height of the resized image
+     * @param string $outputType The output type of the resized image
+     * @return void No value is returned
      */
     static function resize($sourceFileName, $destinationFileName, $width, $height, $outputType = null)
     {

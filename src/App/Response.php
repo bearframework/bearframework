@@ -10,26 +10,26 @@
 namespace App;
 
 /**
- * 
+ * Response object
  */
 class Response
 {
 
     /**
-     *
+     * The content of the response
      * @var string 
      */
     public $content = '';
 
     /**
-     *
+     * The headers of the reponse
      * @var array 
      */
     public $headers = [];
 
     /**
-     * 
-     * @param string $content
+     * The constructor
+     * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
     function __construct($content = '')
@@ -42,9 +42,10 @@ class Response
     }
 
     /**
-     * 
-     * @param int $seconds
+     * Sets the max age attribute of the cache-control header
+     * @param int $seconds Time in seconds
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     function setMaxAge($seconds)
     {
@@ -55,9 +56,10 @@ class Response
     }
 
     /**
-     * 
-     * @param string $mimeType
+     * Sets the value of the content type header
+     * @param string $mimeType The mimetype of the content type header
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     function setContentType($mimeType)
     {
@@ -71,9 +73,10 @@ class Response
     }
 
     /**
-     * 
-     * @param int $code
+     * Sets the status code of the response header
+     * @param int $code The status code of the response header
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     function setStatusCode($code)
     {

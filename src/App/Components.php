@@ -9,20 +9,24 @@
 
 namespace App;
 
+/**
+ * HTML Server Components utilities
+ */
 class Components
 {
 
     /**
-     *
+     * Stores aliases
      * @var array 
      */
     private $aliases = [];
 
     /**
-     * 
-     * @param string $alias
-     * @param string $original
+     * Adds alias to a specifil source
+     * @param string $alias The alias
+     * @param string $original The original source
      * @throws \InvalidArgumentException
+     * @return void No value is returned No value is returned
      */
     function addAlias($alias, $original)
     {
@@ -36,10 +40,10 @@ class Components
     }
 
     /**
-     * 
-     * @param string $content
-     * @return string
+     * Runs the compiler over the content specified
+     * @param string $content The content to be processed
      * @throws \InvalidArgumentException
+     * @return string The processed content
      */
     function process($content)
     {
@@ -58,12 +62,12 @@ class Components
     }
 
     /**
-     * 
-     * @param string $target
-     * @param string $html
-     * @param string $position
-     * @return string
+     * Inserts HTML code (or HTML Component) in the position specified
+     * @param string $target The HTML code where the insertion will be made
+     * @param string $html The HTML code that will be inserted
+     * @param string $position The position of the insertion
      * @throws \InvalidArgumentException
+     * @return string The resulting HTML code (processed)
      */
     function insertHTML($target, $html, $position = 'beforeBodyEnd')
     {

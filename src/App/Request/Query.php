@@ -10,21 +10,22 @@
 namespace App\Request;
 
 /**
- * 
+ * Provides information about the request query string
  */
 class Query implements \ArrayAccess
 {
 
     /**
-     *
+     * The request query string
      * @var string 
      */
     private $query = '';
 
     /**
-     * 
-     * @param string $query
+     * The constructor
+     * @param string $query The request query string
      * @throws \InvalidArgumentException
+     * @return void No value is returned
      */
     public function __construct($query = '')
     {
@@ -35,8 +36,8 @@ class Query implements \ArrayAccess
     }
 
     /**
-     * 
-     * @return string
+     * Returns the full query string
+     * @return string The full query string
      */
     public function __toString()
     {
@@ -44,10 +45,11 @@ class Query implements \ArrayAccess
     }
 
     /**
-     * 
-     * @param mixed $offset
+     * Not implemented
+     * @param int $offset
      * @param string $value
-     * @throws Exception
+     * @throws \Exception
+     * @return void No value is returned
      */
     function offsetSet($offset, $value)
     {
@@ -55,9 +57,9 @@ class Query implements \ArrayAccess
     }
 
     /**
-     * 
-     * @param mixed $offset
-     * @return boolean
+     * Checks if data for the current name specified exists
+     * @param mixed $offset The name of the data
+     * @return boolean TRUE if the data exists. FALSE otherwise.
      */
     function offsetExists($offset)
     {
@@ -70,9 +72,10 @@ class Query implements \ArrayAccess
     }
 
     /**
-     * 
-     * @param mixed $offset
-     * @throws Exception
+     * Not implemented
+     * @param int $offset
+     * @throws \Exception
+     * @return void No value is returned
      */
     function offsetUnset($offset)
     {
@@ -80,9 +83,9 @@ class Query implements \ArrayAccess
     }
 
     /**
-     * 
-     * @param mixed $offset
-     * @return string|null
+     * Returns the data for the name specified
+     * @param mixed $offset The name of the data
+     * @return string|null The data for the name specified
      */
     function offsetGet($offset)
     {

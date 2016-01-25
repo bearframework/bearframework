@@ -10,7 +10,7 @@
 namespace App;
 
 /**
- * 
+ * The application configuration
  * @property-read string $appDir
  * @property-read string $addonsDir
  * @property-read string $dataDir
@@ -28,14 +28,14 @@ class Config
 {
 
     /**
-     *
+     * Stores the configuration options
      * @var array 
      */
     private $options = [];
 
     /**
-     * 
-     * @param array $options
+     * The constructor
+     * @param array $options Configuration options
      * @throws \InvalidArgumentException
      */
     function __construct($options = [])
@@ -43,7 +43,6 @@ class Config
         if (!is_array($options)) {
             throw new \InvalidArgumentException('This options argument must be of type array');
         }
-
         if (isset($options['appDir'])) {
             $options['appDir'] = rtrim($options['appDir'], '/\\') . '/';
         }
@@ -74,10 +73,10 @@ class Config
     }
 
     /**
-     * 
-     * @param string $name
-     * @return mixed
+     * Returns the value of the configuration option specified
+     * @param string $name The name of the configuration option
      * @throws \InvalidArgumentException
+     * @return mixed The value of the configuration option. If missing will return null.
      */
     function __get($name)
     {
@@ -88,10 +87,11 @@ class Config
     }
 
     /**
-     * 
-     * @param string $name
-     * @param mixed $value
+     * Sets the value of the configuration option specified
+     * @param string $name The name of the configuration option
+     * @param mixed $value The value of the configuration option
      * @throws \Exception
+     * @return void No value is returned No value is returned
      */
     function __set($name, $value)
     {
@@ -103,10 +103,10 @@ class Config
     }
 
     /**
-     * 
-     * @param string $name
-     * @return boolean
+     * Checks if the configuration option specified is set
+     * @param string $name The name of the configuration option
      * @throws \InvalidArgumentException
+     * @return boolean TRUE if the configuration option is set. FALSE otherwise.
      */
     function __isset($name)
     {

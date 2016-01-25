@@ -9,18 +9,21 @@
 
 namespace App;
 
+/**
+ * Data storage
+ */
 class Data
 {
 
     /**
-     *
+     * The instance of the data storage library
      * @var type 
      */
     private $instance = null;
 
     /**
-     * 
-     * @return \ObjectStorage
+     * Returns the instance of the data storage library
+     * @return \ObjectStorage The instance of the data storage library
      */
     private function getInstance()
     {
@@ -37,8 +40,8 @@ class Data
 
     /**
      * Retrieves object data for specified key
-     * @param array $parameters
-     * @return array
+     * @param array $parameters Parameters
+     * @return array Array containing the requested parts of the object
      */
     function get($parameters)
     {
@@ -47,9 +50,9 @@ class Data
     }
 
     /**
-     * 
-     * @param array $parameters
-     * @return boolean
+     * Saves data
+     * @param array $parameters Parameters
+     * @return boolean TRUE on success. FALSE otherwise.
      */
     function set($parameters)
     {
@@ -58,9 +61,9 @@ class Data
     }
 
     /**
-     * 
-     * @param array $parameters
-     * @return boolean
+     * Appends data to the object specified. If the object does not exist it will be created.
+     * @param array $parameters Parameters
+     * @return boolean TRUE on success. FALSE otherwise.
      */
     function append($parameters)
     {
@@ -69,9 +72,9 @@ class Data
     }
 
     /**
-     * 
-     * @param array $parameters
-     * @return boolean
+     * Creates a copy of the object specified
+     * @param array $parameters Parameters
+     * @return boolean TRUE on success. FALSE otherwise.
      */
     function duplicate($parameters)
     {
@@ -80,9 +83,9 @@ class Data
     }
 
     /**
-     * 
-     * @param array $parameters
-     * @return boolean
+     * Changes the key of the object specified
+     * @param array $parameters Parameters
+     * @return boolean TRUE on success. FALSE otherwise.
      */
     function rename($parameters)
     {
@@ -91,9 +94,9 @@ class Data
     }
 
     /**
-     * 
-     * @param array $parameters
-     * @return boolean
+     * Deletes the object specified and it's metadata
+     * @param array $parameters Parameters
+     * @return boolean TRUE on success. FALSE otherwise.
      */
     function delete($parameters)
     {
@@ -102,9 +105,9 @@ class Data
     }
 
     /**
-     * 
-     * @param array $parameters
-     * @return array
+     * Searches for items
+     * @param array $parameters Parameters
+     * @return array List of all items matching che search criteria
      */
     function search($parameters)
     {

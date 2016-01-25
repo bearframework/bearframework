@@ -9,13 +9,17 @@
 
 namespace App\Utilities;
 
+/**
+ * File utilities
+ */
 class File
 {
 
     /**
-     * 
-     * @param string $filename
+     * Creates the dir of the filename specified if it's missing
+     * @param string $filename The filename
      * @throws \Exception
+     * @return void No value is returned
      */
     static function makeDir($filename)
     {

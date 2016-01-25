@@ -10,21 +10,22 @@
 namespace App\Request;
 
 /**
- * 
+ * Provides information about the request path
  */
 class Path implements \ArrayAccess
 {
 
     /**
-     *
+     * The request path
      * @var string 
      */
     private $path = '';
 
     /**
-     * 
-     * @param string $path
+     * The constructor
+     * @param string $path The request path
      * @throws \InvalidArgumentException
+     * @return void No value is returned
      */
     public function __construct($path = '')
     {
@@ -35,8 +36,8 @@ class Path implements \ArrayAccess
     }
 
     /**
-     * 
-     * @return string
+     * Returns the full path
+     * @return string The full path
      */
     public function __toString()
     {
@@ -44,10 +45,11 @@ class Path implements \ArrayAccess
     }
 
     /**
-     * 
+     * Not implemented
      * @param int $offset
      * @param string $value
-     * @throws Exception
+     * @throws \Exception
+     * @return void No value is returned
      */
     function offsetSet($offset, $value)
     {
@@ -55,9 +57,9 @@ class Path implements \ArrayAccess
     }
 
     /**
-     * 
-     * @param int $offset
-     * @return boolean
+     * Checks if a part part for the current index specified exists
+     * @param int $offset The index of the path part
+     * @return boolean TRUE if the path part exists. FALSE otherwise.
      */
     function offsetExists($offset)
     {
@@ -73,9 +75,10 @@ class Path implements \ArrayAccess
     }
 
     /**
-     * 
+     * Not implemented
      * @param int $offset
-     * @throws Exception
+     * @throws \Exception
+     * @return void No value is returned
      */
     function offsetUnset($offset)
     {
@@ -83,9 +86,9 @@ class Path implements \ArrayAccess
     }
 
     /**
-     * 
-     * @param int $offset
-     * @return string|null
+     * Returns the path part for the index specified
+     * @param int $offset the index of the part part
+     * @return string|null The path part at the index specified
      */
     function offsetGet($offset)
     {

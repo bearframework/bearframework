@@ -9,20 +9,24 @@
 
 namespace App;
 
+/**
+ * Provides a way to enable addons and manage their options
+ */
 class Addons
 {
 
     /**
-     *
+     * Contains the options for the added addons
      * @var array 
      */
     private $options = [];
 
     /**
-     * 
-     * @param string $id
-     * @param array $options
+     * Enables an addon and saves the provided options
+     * @param string $id The id of the addon
+     * @param array $options The options of the addon
      * @throws \InvalidArgumentException
+     * @return void No value is returned
      */
     function add($id, $options = [])
     {
@@ -37,9 +41,10 @@ class Addons
     }
 
     /**
-     * 
-     * @param string $id
+     * Loads the addon index file
+     * @param string $id The id of the addon
      * @throws \InvalidArgumentException
+     * @return void No value is returned
      */
     private function load($id)
     {
@@ -60,10 +65,10 @@ class Addons
     }
 
     /**
-     * 
+     * Returns the options set for the addon specified
      * @param string $id
-     * @return array
      * @throws \InvalidArgumentException
+     * @return array The options set for the addon specified
      */
     function getOptions($id)
     {

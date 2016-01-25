@@ -9,13 +9,97 @@
 
 namespace App;
 
+/**
+ * Provides utility functions for assets
+ */
 class Assets
 {
 
     /**
-     * 
-     * @param string $path
-     * @return boolean|string
+     * Returns a public URL for the specified filename
+     * @param string $filename The filename
+     * @param array $options URL options. You can resize the file by providing "width", "height" or both.
+     * @throws \InvalidArgumentException
+     * @return string The URL for the specified filename and options
+     */
+    function getUrl($filename, $options = [])
+    {
+        // todo extension check za width
+        $app = &\App::$instance;
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('');
+        }
+        $optionsString = '';
+        ksort($options);
+        foreach ($options as $name => $value) {
+            if ($name === 'width' || $name === 'height') {
+                $value = (int) $value;
+                if ($value < 1) {
+                    $value = 1;
+                } elseif ($value > 100000) {
+                    $value = 100000;
+                }
+                $optionsString .= ($name === 'width' ? 'w' : 'h') . $value . '-';
+            }
+        }
+        $optionsString = trim($optionsString, '-');
+        $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 10);
+        $addonsDir = $app->config->addonsDir;
+        if (strlen($addonsDir) > 0 && strpos($filename, $addonsDir) === 0) {
+            if (strpos($filename, '/assets/') === false) {
+                throw new \InvalidArgumentException('Addon asset files must be in ' . $addonsDir . 'addon-name/assets/ or ' . $addonsDir . 'addon-name/*/assets/ directory. This it the only addon directory with public access.');
+            }
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($app->config->addonsDir));
+        }
+        if (strpos($filename, $app->config->appDir) === 0) {
+            if (strpos($filename, '/assets/') === false) {
+                throw new \InvalidArgumentException('App asset files must be in ' . $app->config->appDir . 'assets/ or ' . $app->config->appDir . '*/assets/ directory. This it the only addon directory with public access.');
+            }
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'p' . $optionsString . '/' . substr($filename, strlen($app->config->appDir));
+        }
+        if (strpos($filename, $app->config->dataDir) === 0) {
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . substr($filename, strlen($app->config->dataDir) + 8);
+        }
+        throw new \InvalidArgumentException('');
+    }
+
+    /**
+     * Returns the dimensions of the image speficied
+     * @param string $filename
+     * @throws \InvalidArgumentException
+     * @return array The dimensions of the image specified
+     */
+    function getDimensions($filename)
+    {
+        $app = &\App::$instance;
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        $cacheKey = 'asset-dimensions-' . $filename;
+        $data = $app->cache->get($cacheKey);
+        if ($data === false) {
+            try {
+                $data = getimagesize($filename);
+            } catch (\Exception $e) {
+                $data = null;
+            }
+            $app->cache->set($cacheKey, $data, is_array($data) ? 0 : 10);
+        }
+
+        if (is_array($data) && isset($data[0]) && isset($data[1]) && is_int($data[0]) && is_int($data[1])) {
+            return [$data[0], $data[1]];
+        } else {
+            throw new \InvalidArgumentException('File path not valid image');
+        }
+    }
+
+    /**
+     * Returns the local filename for a given url path
+     * @param string $path The path part of the asset url
+     * @return boolean|string The localfileneme or FALSE if file does not exists
      */
     function getFilename($path)
     {
@@ -93,90 +177,9 @@ class Assets
     }
 
     /**
-     * 
-     * @param string $filename
-     * @param array $options
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    function getUrl($filename, $options = [])
-    {
-        // todo extension check za width
-        $app = &\App::$instance;
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
-        }
-        $optionsString = '';
-        ksort($options);
-        foreach ($options as $name => $value) {
-            if ($name === 'width' || $name === 'height') {
-                $value = (int) $value;
-                if ($value < 1) {
-                    $value = 1;
-                } elseif ($value > 100000) {
-                    $value = 100000;
-                }
-                $optionsString .= ($name === 'width' ? 'w' : 'h') . $value . '-';
-            }
-        }
-        $optionsString = trim($optionsString, '-');
-        $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 10);
-        $addonsDir = $app->config->addonsDir;
-        if (strlen($addonsDir) > 0 && strpos($filename, $addonsDir) === 0) {
-            if (strpos($filename, '/assets/') === false) {
-                throw new \InvalidArgumentException('Addon asset files must be in ' . $addonsDir . 'addon-name/assets/ or ' . $addonsDir . 'addon-name/*/assets/ directory. This it the only addon directory with public access.');
-            }
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($app->config->addonsDir));
-        }
-        if (strpos($filename, $app->config->appDir) === 0) {
-            if (strpos($filename, '/assets/') === false) {
-                throw new \InvalidArgumentException('App asset files must be in ' . $app->config->appDir . 'assets/ or ' . $app->config->appDir . '*/assets/ directory. This it the only addon directory with public access.');
-            }
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'p' . $optionsString . '/' . substr($filename, strlen($app->config->appDir));
-        }
-        if (strpos($filename, $app->config->dataDir) === 0) {
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . substr($filename, strlen($app->config->dataDir) + 8);
-        }
-        throw new \InvalidArgumentException('');
-    }
-
-    /**
-     * 
-     * @param string $filename
-     * @return array
-     * @throws \InvalidArgumentException
-     */
-    function getDimensions($filename)
-    {
-        $app = &\App::$instance;
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        $cacheKey = 'asset-dimensions-' . $filename;
-        $data = $app->cache->get($cacheKey);
-        if ($data === false) {
-            try {
-                $data = getimagesize($filename);
-            } catch (\Exception $e) {
-                $data = null;
-            }
-            $app->cache->set($cacheKey, $data, is_array($data) ? 0 : 10);
-        }
-
-        if (is_array($data) && isset($data[0]) && isset($data[1]) && is_int($data[0]) && is_int($data[1])) {
-            return [$data[0], $data[1]];
-        } else {
-            throw new \InvalidArgumentException('File path not valid image');
-        }
-    }
-
-    /**
-     * 
-     * @param string $filename
-     * @return string|null
+     * Finds the mimetype of a filename by checking it's extension
+     * @param string $filename The filename
+     * @return string|null The mimetype of the filename specified
      */
     function getMimeType($filename)
     {
