@@ -169,12 +169,6 @@ class App
             if (isset($_SERVER['REQUEST_METHOD'])) {
                 $this->request->method = $_SERVER['REQUEST_METHOD'];
             }
-            if (isset($_SERVER['REQUEST_SCHEME'])) {
-                $this->request->scheme = $_SERVER['REQUEST_SCHEME'] === 'https' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https' : 'http';
-            }
-            if (isset($_SERVER['SERVER_NAME'])) {
-                $this->request->host = $_SERVER['SERVER_NAME'];
-            }
 
             $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? urldecode($_SERVER['REQUEST_URI']) : '/';
             $position = strpos($path, '?');
@@ -206,9 +200,12 @@ class App
                 unset($scriptName);
             }
 
-            if ($this->request->scheme !== '' && $this->request->host !== '') {
+
+            if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['SERVER_NAME'])) {
+                $scheme = $_SERVER['REQUEST_SCHEME'] === 'https' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https' : 'http';
+                $host = $_SERVER['SERVER_NAME'];
                 $this->request->path = new \App\Request\Path(isset($path{0}) ? $path : '/');
-                $this->request->base = $this->request->scheme . '://' . $this->request->host . $basePath;
+                $this->request->base = $scheme . '://' . $host . $basePath;
             }
             unset($path);
             unset($basePath);
