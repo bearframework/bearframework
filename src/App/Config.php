@@ -63,7 +63,7 @@ class Config
             'handleErrors' => true,
             'displayErrors' => false,
             'logErrors' => false,
-            'errorLogFilename' => 'errors/' . date('Y-M-d') . '.log',
+            'errorLogFilename' => 'errors/' . date('Y-m-d') . '.log',
             'assetsPathPrefix' => '/assets/',
             'assetsMaxAge' => 0,
             'autoUpdateFramework' => false,
