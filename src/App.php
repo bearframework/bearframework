@@ -287,8 +287,6 @@ class App
         $app = &$this; // needed for the app index file
         $context = new \App\Context($this->config->appDir);
 
-        $this->hooks->execute('requestStarted');
-
         if (is_file($this->config->appDir . 'index.php')) {
             include realpath($this->config->appDir . 'index.php');
 

@@ -67,36 +67,6 @@ class Assets
     }
 
     /**
-     * Returns the dimensions of the image speficied
-     * @param string $filename
-     * @throws \InvalidArgumentException
-     * @return array The dimensions of the image specified
-     */
-    function getDimensions($filename)
-    {
-        $app = &\App::$instance;
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        $cacheKey = 'asset-dimensions-' . $filename;
-        $data = $app->cache->get($cacheKey);
-        if ($data === false) {
-            try {
-                $data = getimagesize($filename);
-            } catch (\Exception $e) {
-                $data = null;
-            }
-            $app->cache->set($cacheKey, $data, is_array($data) ? 0 : 10);
-        }
-
-        if (is_array($data) && isset($data[0]) && isset($data[1]) && is_int($data[0]) && is_int($data[1])) {
-            return [$data[0], $data[1]];
-        } else {
-            throw new \InvalidArgumentException('File path not valid image');
-        }
-    }
-
-    /**
      * Returns the local filename for a given url path
      * @param string $path The path part of the asset url
      * @return boolean|string The localfileneme or FALSE if file does not exists

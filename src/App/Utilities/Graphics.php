@@ -16,45 +16,9 @@ class Graphics
 {
 
     /**
-     * Return a image resource
-     * @param string $sourceFileName The filename of the image
-     * @throws \Exception
-     * @return resource The image resource
-     */
-    static function getImage($sourceFileName)
-    {
-        if (!is_string($sourceFileName)) {
-            throw new \InvalidArgumentException('');
-        }
-        $image = null;
-        try {
-            $image = imagecreatefromjpeg($sourceFileName);
-        } catch (\Exception $e) {
-            
-        }
-        if (!$image) {
-            try {
-                $image = imagecreatefrompng($sourceFileName);
-            } catch (\Exception $e) {
-                
-            }
-        }
-        if (!$image) {
-            try {
-                $image = imagecreatefromgif($sourceFileName);
-            } catch (\Exception $e) {
-                
-            }
-        }
-        if (!$image) {
-            throw new \Exception('Invalid image file');
-        }
-        return $image;
-    }
-
-    /**
      * Returns the size of the image specified
      * @param string $sourceFileName The filename of the image
+     * @throws \InvalidArgumentException
      * @throws \Exception
      * @return array The size of the image specified
      */
@@ -63,8 +27,11 @@ class Graphics
         if (!is_string($sourceFileName)) {
             throw new \InvalidArgumentException('');
         }
-        $image = Graphics::getImage($sourceFileName);
-        return array(imagesx($image), imagesy($image));
+        $size = getimagesize($sourceFileName);
+        if (is_array($size)) {
+            return [$size[0], $size[1]];
+        }
+        throw new \Exception('');
     }
 
     /**
@@ -96,7 +63,30 @@ class Graphics
         if ($outputType === 'jpeg') {
             $outputType = 'jpg';
         }
-        $image = Graphics::getImage($sourceFileName);
+
+        $image = null;
+        try {
+            $image = imagecreatefromjpeg($sourceFileName);
+        } catch (\Exception $e) {
+            
+        }
+        if (!$image) {
+            try {
+                $image = imagecreatefrompng($sourceFileName);
+            } catch (\Exception $e) {
+                
+            }
+        }
+        if (!$image) {
+            try {
+                $image = imagecreatefromgif($sourceFileName);
+            } catch (\Exception $e) {
+                
+            }
+        }
+        if (!$image) {
+            throw new \Exception('Invalid image file');
+        }
         if ($outputType === null) {
             $pathInfo = pathinfo($destinationFileName);
             if (isset($pathInfo['extension'])) {
@@ -110,7 +100,7 @@ class Graphics
                 }
             }
         }
-        if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg' && $outputType !== 'ico') {
+        if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg') {
             throw new \InvalidArgumentException(' (outputType)');
         }
         try {
