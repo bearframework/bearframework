@@ -69,4 +69,26 @@ class Request
         return $this->base . (string) $this->path;
     }
 
+    /**
+     * Sets new host name
+     * @param string $host The new hostname
+     * @return void
+     */
+    function setHost($host)
+    {
+        $this->base = implode('://' . $host, explode('://' . $this->host, $this->base, 2));
+        $this->host = $host;
+    }
+
+    /**
+     * Sets new scheme
+     * @param string $scheme The new scheme
+     * @return void
+     */
+    function setScheme($scheme)
+    {
+        $this->base = implode($scheme . '://', explode($this->scheme . '://', $this->base, 2));
+        $this->scheme = $scheme;
+    }
+
 }
