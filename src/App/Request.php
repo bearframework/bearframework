@@ -11,8 +11,8 @@ namespace App;
 
 /**
  * Provides information about the current request
- * @property-read string $scheme The request scheme
- * @property-read string $host The request hostname
+ * @property string $scheme The request scheme
+ * @property string $host The request hostname
  */
 class Request
 {
@@ -71,7 +71,7 @@ class Request
     {
         if ($name === 'scheme' || $name === 'host') {
             $data = parse_url($this->base);
-            $this->base = ($name === 'scheme' ? $value : $data['scheme']) . '://' . ($name === 'host' ? $value : $data['host']) . (isset($data['path']) ? $data['path'] : '');
+            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . (isset($data['path']) ? $data['path'] : '');
         }
     }
 

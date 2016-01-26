@@ -27,7 +27,7 @@ class Routes
      * @param callable $callback Function that is expected to return object of type \App\Response.
      * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
      * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function add($pattern, $callback, $options = ['GET'])
     {

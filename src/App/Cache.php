@@ -77,11 +77,11 @@ class Cache
      * Saves data in the cache
      * @param mixed $key The data key
      * @param mixed $value The data
-     * @param int $time Expiration time of the data in seconds relative to the current time. Zero mean no expiration.
+     * @param int $ttl Time in seconds to stay in the cache. Zero mean no expiration.
      * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
-    static function set($key, $value, $time = 0)
+    static function set($key, $value, $ttl = 0)
     {
         $app = &\App::$instance;
         $keyMD5 = md5($key);
@@ -89,8 +89,8 @@ class Cache
             'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
             'body' => gzcompress(serialize($value))
         ];
-        if ($time > 0) {
-            $data['metadata.t'] = (string) (time() + $time);
+        if ($ttl > 0) {
+            $data['metadata.t'] = (string) (time() + $ttl);
         }
         $app->data->set($data);
     }
@@ -99,7 +99,7 @@ class Cache
      * Deletes data fom the cache
      * @param mixed $key The data key
      * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     static function delete($key)
     {

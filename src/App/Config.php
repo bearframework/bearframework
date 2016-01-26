@@ -91,7 +91,7 @@ class Config
      * @param string $name The name of the configuration option
      * @param mixed $value The value of the configuration option
      * @throws \Exception
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function __set($name, $value)
     {

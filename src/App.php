@@ -80,8 +80,8 @@ class App
     public $cache = null;
 
     /**
-     * List of registered classes for autoloading
-     * @var array 
+     * Provides functionaly for autoloading classes
+     * @var App\Classes 
      */
     public $classes = [];
 
@@ -156,9 +156,7 @@ class App
                 throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
             }, E_ALL | E_STRICT);
             spl_autoload_register(function ($class) {
-                if (isset($this->classes[$class])) {
-                    $this->load($this->classes[$class]);
-                }
+                $this->classes->load($class);
             });
         }
 
@@ -176,7 +174,6 @@ class App
                 $this->request->query = new \App\Request\Query(substr($path, $position + 1));
                 $path = substr($path, 0, $position);
             }
-            unset($position);
 
             $basePath = '';
             if (isset($_SERVER['SCRIPT_NAME'])) {
@@ -194,12 +191,8 @@ class App
                         $basePath = $dirName;
                         $path = substr($path, strlen($dirName));
                     }
-                    unset($dirName);
-                    unset($pathInfo);
                 }
-                unset($scriptName);
             }
-
 
             if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['SERVER_NAME'])) {
                 $scheme = $_SERVER['REQUEST_SCHEME'] === 'https' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https' : 'http';
@@ -207,8 +200,6 @@ class App
                 $this->request->path = new \App\Request\Path(isset($path{0}) ? $path : '/');
                 $this->request->base = $scheme . '://' . $host . $basePath;
             }
-            unset($path);
-            unset($basePath);
         }
         $this->routes = new \App\Routes();
         $this->log = new \App\Log();
@@ -218,6 +209,7 @@ class App
         $this->assets = new \App\Assets();
         $this->data = new \App\Data();
         $this->cache = new \App\Cache();
+        $this->classes = new \App\Classes();
     }
 
     /**
@@ -242,24 +234,6 @@ class App
     }
 
     /**
-     * Registers a class for autoloading
-     * @param string $class The class name
-     * @param string $filename The filename that contains the class
-     * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
-     */
-    function registerClass($class, $filename)
-    {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('');
-        }
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        $this->classes[$class] = $filename;
-    }
-
-    /**
      * Constructs a url for the path specified
      * @param string $path The path
      * @throws \InvalidArgumentException
@@ -275,7 +249,7 @@ class App
 
     /**
      * Call this method to start the application. This method outputs the response.
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function run()
     {
@@ -318,7 +292,7 @@ class App
      * Outputs a response
      * @param App\Response $response The reponse object to output
      * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function respond($response)
     {
@@ -347,7 +321,7 @@ class App
 
     /**
      * Prevents multiple app instances
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     private function __clone()
     {
@@ -356,7 +330,7 @@ class App
 
     /**
      * Prevents multiple app instances
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     private function __wakeup()
     {

@@ -28,6 +28,12 @@ class Context
     public $assets = null;
 
     /**
+     * Provides functionaly for autoloading classes in the current context
+     * @var \App\Context\Classes 
+     */
+    public $classes = null;
+
+    /**
      * The constructor
      * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
@@ -39,6 +45,7 @@ class Context
         }
         $this->dir = $dir;
         $this->assets = new \App\Context\Assets($dir);
+        $this->classes = new \App\Context\Classes($dir);
     }
 
     /**
@@ -54,25 +61,6 @@ class Context
         }
         $app = &\App::$instance;
         return $app->load($this->dir . $filename);
-    }
-
-    /**
-     * Registers a class for autoloading in the current context dir
-     * @param string $class The class name
-     * @param string $filename The filename that contains the class
-     * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
-     */
-    function registerClass($class, $filename)
-    {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('');
-        }
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        $app = &\App::$instance;
-        $app->classes[$class] = $this->dir . $filename;
     }
 
 }

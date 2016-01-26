@@ -26,7 +26,7 @@ class Components
      * @param string $alias The alias
      * @param string $original The original source
      * @throws \InvalidArgumentException
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function addAlias($alias, $original)
     {

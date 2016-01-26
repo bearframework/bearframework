@@ -25,7 +25,7 @@ class Hooks
      * Registers callback for the name specified
      * @param string $name The name
      * @param callable $callback The function to be called where the event happens
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function add($name, $callback)
     {
@@ -38,7 +38,7 @@ class Hooks
     /**
      * Triggers execution of all callbacks hooked to the name specified
      * @param string $name The name
-     * @return void No value is returned No value is returned
+     * @return void No value is returned
      */
     function execute($name)
     {
