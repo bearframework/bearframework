@@ -52,18 +52,6 @@ class LogTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testInvalidFilenameArgument2()
-    {
-        $app = new App([
-            'logsDir' => sys_get_temp_dir()
-        ]);
-
-        $this->assertFalse($app->log->write('/!@#$%^&*()', 'data'));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
     public function testInvalidDataArgument()
     {
         $app = new App([
