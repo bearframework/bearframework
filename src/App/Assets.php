@@ -76,16 +76,26 @@ class Assets
      * Returns the local filename for a given url path
      * @param string $path The path part of the asset url
      * @throws \Exception
+     * @throws \InvalidArgumentException
      * @return boolean|string The localfileneme or FALSE if file does not exists
      */
     function getFilename($path)
     {
+        if (!is_string($path)) {
+            throw new \InvalidArgumentException('');
+        }
         $app = &\App::$instance;
         if ($app->config->assetsPathPrefix === null) {
             throw new \Exception('Config option assetsPathPrefix is not set');
         }
+        if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
+            return false;
+        }
         $path = substr($path, strlen($app->config->assetsPathPrefix));
         $partParts = explode('/', $path, 2);
+        if (sizeof($partParts) !== 2) {
+            return false;
+        }
         $hash = substr($partParts[0], 0, 10);
         $type = substr($partParts[0], 10, 1);
         $optionsString = (string) substr($partParts[0], 11);
@@ -155,10 +165,14 @@ class Assets
     /**
      * Finds the mimetype of a filename by checking it's extension
      * @param string $filename The filename
+     * @throws \InvalidArgumentException
      * @return string|null The mimetype of the filename specified
      */
     function getMimeType($filename)
     {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['extension'])) {
             $extension = $pathinfo['extension'];
@@ -1184,14 +1198,6 @@ class Assets
             );
             if (isset($mimeTypes[$extension])) {
                 return $mimeTypes[$extension];
-            }
-        }
-        if (function_exists('finfo_open')) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($finfo, $filename);
-            finfo_close($finfo);
-            if ($mimeType !== false) {
-                return $mimeType;
             }
         }
         return null;

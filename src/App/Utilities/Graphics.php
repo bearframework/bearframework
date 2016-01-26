@@ -66,20 +66,26 @@ class Graphics
 
         $image = null;
         try {
-            $image = imagecreatefromjpeg($sourceFileName);
+            if (function_exists('imagecreatefromjpeg')) {
+                $image = imagecreatefromjpeg($sourceFileName);
+            }
         } catch (\Exception $e) {
             
         }
         if (!$image) {
             try {
-                $image = imagecreatefrompng($sourceFileName);
+                if (function_exists('imagecreatefrompng')) {
+                    $image = imagecreatefrompng($sourceFileName);
+                }
             } catch (\Exception $e) {
                 
             }
         }
         if (!$image) {
             try {
-                $image = imagecreatefromgif($sourceFileName);
+                if (function_exists('imagecreatefromgif')) {
+                    $image = imagecreatefromgif($sourceFileName);
+                }
             } catch (\Exception $e) {
                 
             }

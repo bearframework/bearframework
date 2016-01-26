@@ -71,11 +71,20 @@ class Components
      */
     function insertHTML($target, $html, $position = 'beforeBodyEnd')
     {
+        if (!is_string($target)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_string($html)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (!is_string($position)) {
+            throw new \InvalidArgumentException('');
+        }
         //todo better
         $target = $this->process($target);
         $component = '<component src="data:base64,' . base64_encode($html) . '" />';
         if ($position === 'afterBodyBegin') {
-            //$result = str_replace('<body>', $component . '</body>', $target);
+            $result = str_replace('<body>', '<body>' . $component, $target);
         } elseif ($position === 'beforeBodyEnd') {
             $result = str_replace('</body>', $component . '</body>', $target);
         } else {

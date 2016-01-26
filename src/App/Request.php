@@ -59,14 +59,26 @@ class Request
         return $this->base . (string) $this->path;
     }
 
+    /**
+     * Magic method
+     * @param string $name
+     * @return mixed
+     * @throws \Exception
+     */
     function __get($name)
     {
         if ($name === 'scheme' || $name === 'host') {
             $data = parse_url($this->base);
             return isset($data[$name]) ? $data[$name] : null;
         }
+        throw new \Exception('Undefined property: ' . $name);
     }
 
+    /**
+     * Magic method
+     * @param string $name
+     * @param mixed $value
+     */
     function __set($name, $value)
     {
         if ($name === 'scheme' || $name === 'host') {
@@ -75,6 +87,11 @@ class Request
         }
     }
 
+    /**
+     * Magic method
+     * @param string $name
+     * @return boolean
+     */
     function __isset($name)
     {
         return $name === 'scheme' || $name === 'host';
