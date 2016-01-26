@@ -6,3 +6,4 @@ nbproject/*
 public/*
 builds/*
 vendor/*
+composer.lock
