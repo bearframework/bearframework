@@ -43,6 +43,7 @@ class Addons
     /**
      * Loads the addon index file
      * @param string $id The id of the addon
+     * @throws \Exception
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
@@ -54,8 +55,8 @@ class Addons
         $app = &\App::$instance;
         $__id = $id;
         unset($id);
-        if (strlen($app->config->addonsDir) === 0) {
-            throw new Exception('');
+        if ($app->config->addonsDir === null) {
+            throw new \Exception('Config option addonsDir not set');
         }
         $__indexFile = realpath($app->config->addonsDir . $__id . '/index.php');
         if ($__indexFile !== false) {

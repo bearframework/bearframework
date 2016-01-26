@@ -20,8 +20,8 @@ class Log
      * @param string $filename
      * @param string $data
      * @return boolean
-     * @throws \InvalidArgumentException
      * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     function write($filename, $data)
     {
@@ -32,8 +32,8 @@ class Log
         if (!is_string($data)) {
             throw new \InvalidArgumentException('The data argument must be of type string');
         }
-        if (strlen($app->config->logsDir) === 0) {
-            throw new \Exception('logsDir config variable is not set');
+        if ($app->config->logsDir === null) {
+            throw new \Exception('Config option dataDir is not set');
         }
 
         try {

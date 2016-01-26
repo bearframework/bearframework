@@ -216,10 +216,8 @@ class App
         $this->addons = new \App\Addons();
         $this->hooks = new \App\Hooks();
         $this->assets = new \App\Assets();
-        if ($this->config->dataDir !== null) {
-            $this->data = new \App\Data($this->config->dataDir);
-            $this->cache = new \App\Cache();
-        }
+        $this->data = new \App\Data();
+        $this->cache = new \App\Cache();
     }
 
     /**
@@ -282,38 +280,36 @@ class App
     function run()
     {
         $app = &$this; // needed for the app index file
-        $context = new \App\Context($this->config->appDir);
 
-        if (is_file($this->config->appDir . 'index.php')) {
+        if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . 'index.php')) {
+            $context = new \App\AppContext($this->config->appDir);
             include realpath($this->config->appDir . 'index.php');
+        }
 
-            if ($this->config->assetsPathPrefix !== null) {
-                $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
-                    $filename = $app->assets->getFilename($app->request->path);
-                    if ($filename === false) {
-                        return new \App\Response\NotFound();
-                    } else {
-                        $response = new \App\Response\FileReader($filename);
-                        if ($app->config->assetsMaxAge !== null) {
-                            $response->setMaxAge((int) $app->config->assetsMaxAge);
-                        }
-                        $mimeType = $app->assets->getMimeType($filename);
-                        if ($mimeType !== null) {
-                            $response->headers[] = 'Content-Type: ' . $mimeType;
-                        }
-                        return $response;
+        if ($this->config->assetsPathPrefix !== null) {
+            $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
+                $filename = $app->assets->getFilename($app->request->path);
+                if ($filename === false) {
+                    return new \App\Response\NotFound();
+                } else {
+                    $response = new \App\Response\FileReader($filename);
+                    if ($app->config->assetsMaxAge !== null) {
+                        $response->setMaxAge((int) $app->config->assetsMaxAge);
                     }
-                });
-            }
+                    $mimeType = $app->assets->getMimeType($filename);
+                    if ($mimeType !== null) {
+                        $response->headers[] = 'Content-Type: ' . $mimeType;
+                    }
+                    return $response;
+                }
+            });
+        }
 
-            ob_start();
-            $response = $this->routes->getResponse($this->request);
-            ob_end_clean();
-            if (!($response instanceof \App\Response)) {
-                $response = new \App\Response\NotFound("Not Found");
-            }
-        } else {
-            $response = new \App\Response\TemporaryUnavailable('Add your application code in ' . $this->config->appDir . 'index.php');
+        ob_start();
+        $response = $this->routes->getResponse($this->request);
+        ob_end_clean();
+        if (!($response instanceof \App\Response)) {
+            $response = new \App\Response\NotFound("Not Found");
         }
         $this->respond($response);
     }

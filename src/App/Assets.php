@@ -19,6 +19,7 @@ class Assets
      * Returns a public URL for the specified filename
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
+     * @throws \Exception
      * @throws \InvalidArgumentException
      * @return string The URL for the specified filename and options
      */
@@ -31,6 +32,9 @@ class Assets
         }
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
+        }
+        if ($app->config->assetsPathPrefix === null) {
+            throw new \Exception('Config option assetsPathPrefix is not set');
         }
         $optionsString = '';
         ksort($options);
@@ -52,30 +56,33 @@ class Assets
             if (strpos($filename, '/assets/') === false) {
                 throw new \InvalidArgumentException('Addon asset files must be in ' . $addonsDir . 'addon-name/assets/ or ' . $addonsDir . 'addon-name/*/assets/ directory. This it the only addon directory with public access.');
             }
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($app->config->addonsDir));
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($addonsDir));
         }
-        if (strpos($filename, $app->config->appDir) === 0) {
+        $appDir = $app->config->appDir;
+        if (strlen($appDir) > 0 && strpos($filename, $appDir) === 0) {
             if (strpos($filename, '/assets/') === false) {
-                throw new \InvalidArgumentException('App asset files must be in ' . $app->config->appDir . 'assets/ or ' . $app->config->appDir . '*/assets/ directory. This it the only addon directory with public access.');
+                throw new \InvalidArgumentException('App asset files must be in ' . $appDir . 'assets/ or ' . $appDir . '*/assets/ directory. This it the only addon directory with public access.');
             }
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'p' . $optionsString . '/' . substr($filename, strlen($app->config->appDir));
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'p' . $optionsString . '/' . substr($filename, strlen($appDir));
         }
-        if (strpos($filename, $app->config->dataDir) === 0) {
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . substr($filename, strlen($app->config->dataDir) + 8);
+        $dataDir = $app->config->dataDir;
+        if (strlen($dataDir) > 0 && strpos($filename, $dataDir) === 0) {
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . substr($filename, strlen($dataDir) + 8);
         }
-        throw new \InvalidArgumentException('');
+        throw new \InvalidArgumentException('The filename specified is not valid (non existent file or located in dir not specified in the config)');
     }
 
     /**
      * Returns the local filename for a given url path
      * @param string $path The path part of the asset url
+     * @throws \Exception
      * @return boolean|string The localfileneme or FALSE if file does not exists
      */
     function getFilename($path)
     {
         $app = &\App::$instance;
         if ($app->config->assetsPathPrefix === null) {
-            throw new \Exception('');
+            throw new \Exception('Config option assetsPathPrefix is not set');
         }
         $path = substr($path, strlen($app->config->assetsPathPrefix));
         $partParts = explode('/', $path, 2);
@@ -83,15 +90,11 @@ class Assets
         $type = substr($partParts[0], 10, 1);
         $optionsString = (string) substr($partParts[0], 11);
         $path = $partParts[1];
-        if ($type === 'a') {
-            $addonsDir = $app->config->addonsDir;
-            if (strlen($addonsDir) === 0) {
-                throw new Exception('');
-            }
-            $filename = $addonsDir . $path;
-        } elseif ($type === 'p') {
+        if ($type === 'a' && strlen($app->config->addonsDir) > 0) {
+            $filename = $app->config->addonsDir . $path;
+        } elseif ($type === 'p' && strlen($app->config->appDir) > 0) {
             $filename = $app->config->appDir . $path;
-        } elseif ($type === 'd') {
+        } elseif ($type === 'd' && strlen($app->config->dataDir) > 0) {
             if (!$app->data->isPublic($path)) {
                 return false;
             }
@@ -104,6 +107,9 @@ class Assets
                 if ($optionsString === '') {
                     return $filename;
                 } else {
+                    if ($app->config->dataDir === null) {
+                        throw new \Exception('Config option dataDir is not set');
+                    }
                     $pathinfo = pathinfo($filename);
                     if (isset($pathinfo['extension'])) {
                         $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString));

@@ -23,17 +23,17 @@ class Data
 
     /**
      * Returns the instance of the data storage library
+     * @throws \Exception
      * @return \ObjectStorage The instance of the data storage library
      */
     private function getInstance()
     {
         if ($this->instance === null) {
             $app = &\App::$instance;
-            if ($app->config->dataDir !== null) {
-                $this->instance = new \ObjectStorage($app->config->dataDir);
-            } else {
-                throw new Exception('');
+            if ($app->config->dataDir === null) {
+                throw new \Exception('Config option dataDir is not set');
             }
+            $this->instance = new \ObjectStorage($app->config->dataDir);
         }
         return $this->instance;
     }
@@ -179,6 +179,7 @@ class Data
     /**
      * Returns the filename of the object key specified
      * @param string $key The object key
+     * @throws \Exception
      * @throws \InvalidArgumentException
      * @return The filename of the object key specified
      */
@@ -188,6 +189,9 @@ class Data
             throw new \InvalidArgumentException('');
         }
         $app = &\App::$instance;
+        if ($app->config->dataDir === null) {
+            throw new \Exception('Config option dataDir is not set');
+        }
         return $app->config->dataDir . 'objects/' . $key;
     }
 
