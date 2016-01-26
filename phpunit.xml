@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<phpunit bootstrap="tests/bootstrap.php"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="true">
+    <testsuites>
+        <testsuite name="Bear Framework Test Suite">
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>./src/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <ini name="date.timezone" value="UTC"/>
+    </php>
+</phpunit>
