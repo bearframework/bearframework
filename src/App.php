@@ -262,7 +262,7 @@ class App
 
         if ($this->config->assetsPathPrefix !== null) {
             $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
-                $filename = $app->assets->getFilename($app->request->path);
+                $filename = $app->assets->getFilename((string) $app->request->path);
                 if ($filename === false) {
                     return new \App\Response\NotFound();
                 } else {
