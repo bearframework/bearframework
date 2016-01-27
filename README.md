@@ -1,5 +1,5 @@
 <p align="center">
-<img src="http://bearframework.github.io/bearframework-logo-transparent.png" style="max-width:100px;">
+<img src="http://bearframework.github.io/bearframework-logo-transparent-small.png" style="max-width:100px;">
 </p>
 # Bear Framework
 
