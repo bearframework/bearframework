@@ -57,7 +57,7 @@ class Routes
     /**
      * Finds the matching callback and returns its result
      * @param App\Request $request The current request object
-     * @return mixed The result of th matching callback. NULL if none.
+     * @return mixed The result of the matching callback. NULL if none.
      */
     function getResponse($request)
     {
