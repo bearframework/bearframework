@@ -7,6 +7,9 @@
 
 The goal of Bear Framework is to help you start your next web project in less than a minute and help you make it successful. You've got routing, data storage, addons, logging, assets helpers, HTML Server Components and many more useful tools.
 
+[![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
+[![License](https://poser.pugx.org/bearframework/bearframework/license)](https://packagist.org/packages/bearframework/bearframework)
+
 ## Simple and powerful
 
 Bear Framework is one of the easiest PHP frameworks you can find. See for yourself. Here is a simple app that outputs 'Hi'.
@@ -41,4 +44,4 @@ Documentation is available at [http://bearframework.com/documentation/](http://b
 Bear Framework is open-sourced software. It's free to use under the MIT license. See the [license file](https://github.com/bearframework/bearframework/blob/master/LICENSE) for more information.
 
 ## Let's talk
-Follow and contact Bear Framework team at [bearframework.com](http://bearframework.com), [@bearframework (Twitter)](https://twitter.com/bearframework) and [Facebook](https://www.facebook.com/bearframework/).
+Follow and contact Bear Framework team at [bearframework.com](http://bearframework.com), [Twitter (@bearframework)](https://twitter.com/bearframework) and [Facebook](https://www.facebook.com/bearframework/).
