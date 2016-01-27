@@ -3,7 +3,7 @@
 </p>
 # Bear Framework
 
-**A true 2016 framework**
+**A framework born in 2016**
 
 The goal of Bear Framework is to help you start your next web project in less than a minute and help you make it successful. You've got routing, data storage, addons, logging, assets helpers, HTML Server Components and many more useful tools.
 
