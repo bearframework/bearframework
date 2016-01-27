@@ -14,15 +14,12 @@ Bear Framework is one of the easiest PHP frameworks you can find. See for yourse
 <?php
 require 'vendor/autoload.php';
 
-// Create the application object that will handle the request
 $app = new App();
 
-// Register a function that returns the response
 $app->routes->add('/', function() {
     return new App\Response('Hi');
 });
 
-// Sends the appropriate response to the client
 $app->run();
 ```
 
@@ -43,5 +40,5 @@ Documentation is available at [http://bearframework.com/documentation/](http://b
 ## License
 Bear Framework is open-sourced software. It's free to use under the MIT license. See the [license file](https://github.com/bearframework/bearframework/blob/master/LICENSE) for more information.
 
-## Got questions?
-You can find me at [@IvoPetkovCom](https://twitter.com/IvoPetkovCom) and [ivopetkov.com](http://ivopetkov.com)
+## Let's talk
+Follow and contact Bear Framework team at [bearframework.com](http://bearframework.com), [@bearframework (Twitter)](https://twitter.com/bearframework) and [Facebook](https://www.facebook.com/bearframework/).
