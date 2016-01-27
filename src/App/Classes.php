@@ -10,7 +10,7 @@
 namespace App;
 
 /**
- * Provides functionaly for autoloading classes
+ * Provides functionality for autoloading classes
  */
 class Classes
 {

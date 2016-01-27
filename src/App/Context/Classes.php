@@ -10,7 +10,7 @@
 namespace App\Context;
 
 /**
- * Provides functionaly for autoloading classes in the current context
+ * Provides functionality for autoloading classes in the current context
  */
 class Classes
 {

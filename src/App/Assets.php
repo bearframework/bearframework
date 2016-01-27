@@ -73,7 +73,7 @@ class Assets
     }
 
     /**
-     * Returns the local filename for a given url path
+     * Returns the local filename for a given URL path
      * @param string $path The path part of the asset url
      * @throws \Exception
      * @throws \InvalidArgumentException
@@ -163,7 +163,7 @@ class Assets
     }
 
     /**
-     * Finds the mimetype of a filename by checking it's extension
+     * Finds the mime type of a filename by checking it's extension
      * @param string $filename The filename
      * @throws \InvalidArgumentException
      * @return string|null The mimetype of the filename specified

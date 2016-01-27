@@ -22,7 +22,7 @@ class Response
     public $content = '';
 
     /**
-     * The headers of the reponse
+     * The headers of the response
      * @var array 
      */
     public $headers = [];

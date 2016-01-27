@@ -61,7 +61,7 @@ class Data
     }
 
     /**
-     * Appends data to the object specified. If the object does not exist it will be created.
+     * Appends data to the object specified. If the object does not exist, it will be created.
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
@@ -136,7 +136,7 @@ class Data
     }
 
     /**
-     * Marks object as private so it cannot be accessed as an asset
+     * Marks object as private, so it cannot be accessed as an asset
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
      * @return boolean TRUE on success. FALSE otherwise.

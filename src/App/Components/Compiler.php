@@ -10,7 +10,7 @@
 namespace App\Components;
 
 /**
- * Proccess HTML code and transforms component tags
+ * Process HTML code and transforms component tags
  */
 class Compiler extends \HTMLServerComponentsCompiler
 {

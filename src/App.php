@@ -56,7 +56,7 @@ class App
     public $addons = null;
 
     /**
-     * Provides functionaly for notifications and data requests
+     * Provides functionality for notifications and data requests
      * @var App\Hooks
      */
     public $hooks = null;
@@ -80,7 +80,7 @@ class App
     public $cache = null;
 
     /**
-     * Provides functionaly for autoloading classes
+     * Provides functionality for autoloading classes
      * @var App\Classes 
      */
     public $classes = [];
@@ -290,7 +290,7 @@ class App
 
     /**
      * Outputs a response
-     * @param App\Response $response The reponse object to output
+     * @param App\Response $response The response object to output
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */

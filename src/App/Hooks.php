@@ -10,7 +10,7 @@
 namespace App;
 
 /**
- * Provides functionaly for notifications and data requests
+ * Provides functionality for notifications and data requests
  */
 class Hooks
 {

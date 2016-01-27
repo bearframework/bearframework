@@ -28,7 +28,7 @@ class Context
     public $assets = null;
 
     /**
-     * Provides functionaly for autoloading classes in the current context
+     * Provides functionality for autoloading classes in the current context
      * @var \App\Context\Classes 
      */
     public $classes = null;
