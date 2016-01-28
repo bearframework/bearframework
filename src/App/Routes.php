@@ -55,6 +55,56 @@ class Routes
     }
 
     /**
+     * Register a GET route
+     *
+     * @param $pattern
+     * @param $callback
+     * @param array $additionalOptions\
+     */
+    public function get($pattern, $callback, $additionalOptions = [])
+    {
+        $this->add($pattern, $callback, array_merge(['GET', 'HEAD'], $additionalOptions));
+    }
+
+    /**
+     * Register a POST route
+     *
+     * @param $pattern
+     * @param $callback
+     * @param array $additionalOptions\
+     */
+    public function post($pattern, $callback, $additionalOptions = [])
+    {
+        $this->add($pattern, $callback, array_merge(['POST'], $additionalOptions));
+    }
+
+
+    /**
+     * Register a PUT route
+     *
+     * @param $pattern
+     * @param $callback
+     * @param array $additionalOptions\
+     */
+    public function put($pattern, $callback, $additionalOptions = [])
+    {
+        $this->add($pattern, $callback, array_merge(['PUT', 'PATCH'], $additionalOptions));
+    }
+
+
+    /**
+     * Register a DELETE route
+     *
+     * @param $pattern
+     * @param $callback
+     * @param array $additionalOptions\
+     */
+    public function delete($pattern, $callback, $additionalOptions = [])
+    {
+        $this->add($pattern, $callback, array_merge(['DELETE'], $additionalOptions));
+    }
+
+    /**
      * Finds the matching callback and returns its result
      * @param App\Request $request The current request object
      * @return mixed The result of the matching callback. NULL if none.

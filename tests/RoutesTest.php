@@ -479,4 +479,72 @@ class RoutesTest extends PHPUnit_Framework_TestCase
         $app->routes->getResponse(null);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRegisterGetRoute()
+    {
+        $app = new App();
+
+        $app->request->path = new \App\Request\Path('/hello-world/');
+        $app->request->method = 'GET';
+        $app->routes->get('/hello-world/', function() {
+            return new \App\Response\HTML('It\'s me');
+        });
+
+        $app->run();
+        $this->expectOutputString('It\'s me');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRegisterPostRoute()
+    {
+        $app = new App();
+
+        $app->request->path = new \App\Request\Path('/hello-world-post/');
+        $app->request->method = 'POST';
+        $app->routes->post('/hello-world-post/', function() {
+            return new \App\Response\HTML('I\'m in California dreaming about who we used to be');
+        });
+
+        $app->run();
+        $this->expectOutputString('I\'m in California dreaming about who we used to be');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRegisterPutRoute()
+    {
+        $app = new App();
+
+        $app->request->path = new \App\Request\Path('/hello-world-put/');
+        $app->request->method = 'PUT';
+        $app->routes->put('/hello-world-put/', function() {
+            return new \App\Response\HTML('Hello from the other side');
+        });
+
+        $app->run();
+        $this->expectOutputString('Hello from the other side');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRegisterDeleteRoute()
+    {
+        $app = new App();
+
+        $app->request->path = new \App\Request\Path('/hello-world-delete/');
+        $app->request->method = 'DELETE';
+        $app->routes->delete('/hello-world-delete/', function() {
+            return new \App\Response\HTML('I must have called a thousand times');
+        });
+
+        $app->run();
+        $this->expectOutputString('I must have called a thousand times');
+    }
+
 }
