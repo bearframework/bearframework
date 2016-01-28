@@ -7,7 +7,7 @@
          stopOnFailure="true">
     <testsuites>
         <testsuite name="Bear Framework Test Suite">
-            <directory>./</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
