@@ -16,6 +16,9 @@
         "ivopetkov/object-storage": "*",
         "ivopetkov/html-server-components-compiler": "*"
     },
+    "require-dev": {
+      "phpunit/phpunit": "^4.8"
+    },
     "autoload": {
         "psr-4": {
             "": "src/"
