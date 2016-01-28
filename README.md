@@ -40,6 +40,9 @@ Download the [latest release](https://github.com/bearframework/bearframework/rel
 ## Documentation
 Documentation is available at [http://bearframework.com/documentation/](http://bearframework.com/documentation/).
 
+## How to run the tests
+After installing the dependencies with Composer, you will have a local version of PHPUnit. You can run the tests like this: `vendor/bin/phpunit tests/`.
+
 ## License
 Bear Framework is open-sourced software. It's free to use under the MIT license. See the [license file](https://github.com/bearframework/bearframework/blob/master/LICENSE) for more information.
 
