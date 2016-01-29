@@ -194,12 +194,10 @@ class App
                 }
             }
 
-            if (isset($_SERVER['REQUEST_SCHEME']) && isset($_SERVER['SERVER_NAME'])) {
-                $scheme = $_SERVER['REQUEST_SCHEME'] === 'https' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https' : 'http';
-                $host = $_SERVER['SERVER_NAME'];
-                $this->request->path = new \App\Request\Path(isset($path{0}) ? $path : '/');
-                $this->request->base = $scheme . '://' . $host . $basePath;
-            }
+            $scheme = (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && $_SERVER['HTTP_X_FORWARDED_PROTOCOL'] === 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
+            $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknownhost';
+            $this->request->path = new \App\Request\Path(isset($path{0}) ? $path : '/');
+            $this->request->base = $scheme . '://' . $host . $basePath;
         }
         $this->routes = new \App\Routes();
         $this->log = new \App\Log();
