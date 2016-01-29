@@ -5,7 +5,7 @@
 
 **A framework born in 2016**
 
-The goal of Bear Framework is to help you start your next web project in less than a minute and help you make it successful. You've got routing, data storage, addons, logging, assets helpers, HTML Server Components and many more useful tools.
+The goal of Bear Framework is to help you start your next web project in less than a minute and help you make it successful. You've got <a href="http://bearframework.com/documentation/routing/">routing</a>, <a href="http://bearframework.com/documentation/data/">data storage</a>, <a href="http://bearframework.com/documentation/addons/">addons</a>, <a href="http://bearframework.com/documentation/logging/">logging</a>, <a href="http://bearframework.com/documentation/assets/">assets helpers</a> and <a href="http://bearframework.com/documentation/">many more useful tools</a>.
 
 [![Build Status](https://travis-ci.org/bearframework/bearframework.svg)](https://travis-ci.org/bearframework/bearframework)
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
