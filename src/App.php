@@ -17,7 +17,7 @@ class App
      * Current Bear Framework version
      * @var string
      */
-    const VERSION = '0.6.1';
+    const VERSION = '0.6.2';
 
     /**
      * The application configuration
