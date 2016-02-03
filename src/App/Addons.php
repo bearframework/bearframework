@@ -37,21 +37,7 @@ class Addons
             throw new \InvalidArgumentException('');
         }
         $this->options[$id] = ['options' => $options];
-        $this->load($id);
-    }
 
-    /**
-     * Loads the addon index file
-     * @param string $id The id of the addon
-     * @throws \Exception
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
-     */
-    private function load($id)
-    {
-        if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
-        }
         $app = &\App::$instance;
         $__id = $id;
         unset($id);
