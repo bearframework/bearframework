@@ -14,5 +14,13 @@ namespace App\Components;
  */
 class Component extends \HTMLServerComponent
 {
-    
+
+    /**
+     * The constructor
+     */
+    function __construct()
+    {
+        
+    }
+
 }
