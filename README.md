@@ -9,6 +9,7 @@ The goal of Bear Framework is to help you start your next web project in less th
 
 [![Build Status](https://travis-ci.org/bearframework/bearframework.svg)](https://travis-ci.org/bearframework/bearframework)
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
+[![codecov.io](https://codecov.io/github/bearframework/bearframework/coverage.svg?branch=master)](https://codecov.io/github/bearframework/bearframework?branch=master)
 [![License](https://poser.pugx.org/bearframework/bearframework/license)](https://packagist.org/packages/bearframework/bearframework)
 
 ## Simple and powerful
