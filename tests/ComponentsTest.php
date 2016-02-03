@@ -47,6 +47,28 @@ class ComponentsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
+    public function testFile()
+    {
+        $appDir = sys_get_temp_dir() . '/app' . uniqid() . '/';
+        App\Utilities\Dir::make($appDir);
+        $addonsDir = sys_get_temp_dir() . '/addons' . uniqid() . '/';
+        App\Utilities\Dir::make($addonsDir . 'addon1/');
+
+        $app = new App([
+            'appDir' => $appDir,
+            'addonsDir' => $addonsDir,
+        ]);
+
+        file_put_contents($appDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content1<component src="file:' . $addonsDir . 'addon1/component2.php" /></body></html>');
+        file_put_contents($addonsDir . 'addon1/component2.php', '<!DOCTYPE html><html><head></head><body>content2</body></html>');
+
+        $result = $app->components->process('<component src="file:' . $appDir . 'component1.php" />');
+        $this->assertTrue(str_replace(["\n\r", "\r\n", "\n"], "", $result) === '<!DOCTYPE html><html><head></head><body>content1content2</body></html>');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
     public function testInvalidArguments1()
     {
         $app = new App();
@@ -112,6 +134,32 @@ class ComponentsTest extends PHPUnit_Framework_TestCase
         $app = new App();
         $this->setExpectedException('InvalidArgumentException');
         $app->components->insertHTML('<!DOCTYPE html><html><head></head><body>content</body></html>', 'new', 'somethingWrong');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInvalidArguments7a()
+    {
+        $app = new App();
+        $this->setExpectedException('Exception');
+        $app->components->process('<component src="file:missing/dir/component1.php" />');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInvalidArguments7b()
+    {
+        $wrongDir = sys_get_temp_dir() . '/wrongdir' . uniqid() . '/';
+
+        App\Utilities\Dir::make($wrongDir);
+
+        file_put_contents($wrongDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content</body></html>');
+
+        $app = new App();
+        $this->setExpectedException('Exception');
+        $app->components->process('<component src="file:' . $wrongDir . 'component1.php" />');
     }
 
 }
