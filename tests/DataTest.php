@@ -98,4 +98,85 @@ class DataTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testFileName()
+    {
+        $dataDir = sys_get_temp_dir() . '/data' . uniqid() . '/';
+        $app = new App([
+            'dataDir' => $dataDir
+        ]);
+        $this->assertTrue($app->data->getFilename('test/key') === $dataDir . 'objects/test/key');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testFileNameInvalidArguments1()
+    {
+        $dataDir = sys_get_temp_dir() . '/data' . uniqid() . '/';
+        $app = new App([
+            'dataDir' => $dataDir
+        ]);
+
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->getFilename(1);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testFileNameInvalidArguments2()
+    {
+        $app = new App(); // missing dataDir
+
+        $this->setExpectedException('Exception');
+        $app->data->getFilename('key');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testFileNameInvalidArguments3()
+    {
+        $app = new App(); // missing dataDir
+
+        $this->setExpectedException('Exception');
+        $app->data->get([
+            'key' => 'users/1',
+            'result' => ['body', 'metadata']
+        ]);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testMakePublicInvalidArguments1()
+    {
+        $app = new App();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->makePublic(1);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testMakePrivateInvalidArguments1()
+    {
+        $app = new App();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->makePrivate(1);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testIsPublicInvalidArguments1()
+    {
+        $app = new App();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->isPublic(1);
+    }
+
 }

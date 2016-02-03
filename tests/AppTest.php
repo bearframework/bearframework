@@ -107,4 +107,24 @@ class AppTest extends PHPUnit_Framework_TestCase
         $app = new App();
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    function testClone()
+    {
+        $app = new App();
+        $this->setExpectedException('Exception');
+        clone($app);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    function testUnserialize()
+    {
+        $app = new App();
+        $this->setExpectedException('Exception');
+        unserialize(serialize($app));
+    }
+
 }

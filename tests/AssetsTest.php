@@ -171,6 +171,70 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
+    public function testGetFilenameInvalidArguments1()
+    {
+        $app = new App();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $app->assets->getFilename(1);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameInvalidArguments2()
+    {
+        $app = new App(['assetsPathPrefix' => null]);
+
+        $this->setExpectedException('Exception');
+        $app->assets->getFilename('path.png');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameInvalidArguments3()
+    {
+        $app = new App();
+
+        $this->assertTrue($app->assets->getFilename('path.png') === false);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameInvalidArguments4a()
+    {
+        $app = new App([
+            'appDir' => sys_get_temp_dir() . '/unittests/app/'
+        ]);
+        $app->request->base = 'http://example.com/www';
+
+        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
+        $path = substr($url, strlen($app->request->base));
+        $brokenPath = str_replace('/assets/', '/assets/abc', $path);
+        $this->assertTrue($app->assets->getFilename($brokenPath) === false);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameInvalidArguments4b()
+    {
+        $app = new App([
+            'appDir' => sys_get_temp_dir() . '/unittests/app/'
+        ]);
+        $app->request->base = 'http://example.com/www';
+
+        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
+        $path = substr($url, strlen($app->request->base));
+        $brokenPath = '/assets/abc' . substr($path, strlen('/assets/') + 3);
+        $this->assertTrue($app->assets->getFilename($brokenPath) === false);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
     public function testGetMimeType1()
     {
         $app = new App();
