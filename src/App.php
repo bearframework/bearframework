@@ -319,20 +319,22 @@ class App
 
     /**
      * Prevents multiple app instances
+     * @throws \Exception
      * @return void No value is returned
      */
-    private function __clone()
+    public function __clone()
     {
-        
+        throw new \Exception('App object cannot be cloned');
     }
 
     /**
      * Prevents multiple app instances
+     * @throws \Exception
      * @return void No value is returned
      */
-    private function __wakeup()
+    public function __wakeup()
     {
-        
+        throw new \Exception('App object cannot be cloned');
     }
 
 }
