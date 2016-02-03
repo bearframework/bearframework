@@ -14,7 +14,7 @@ class AppTest extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * 
+     * @runInSeparateProcess
      */
     public function testConstructor()
     {
