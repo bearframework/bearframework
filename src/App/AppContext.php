@@ -14,5 +14,18 @@ namespace App;
  */
 class AppContext extends \App\Context
 {
-    
+
+    /**
+     * The constructor
+     * @param string $dir The directory where the application is located 
+     * @throws \InvalidArgumentException
+     */
+    function __construct($dir)
+    {
+        if (!is_string($dir)) {
+            throw new \InvalidArgumentException('');
+        }
+        parent::__construct($dir);
+    }
+
 }
