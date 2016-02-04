@@ -116,9 +116,9 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     public function testGetFilename()
     {
         $app = new App([
-            'appDir' => sys_get_temp_dir() . '/unittests/app/',
-            'addonsDir' => sys_get_temp_dir() . '/unittests/addons/',
-            'dataDir' => sys_get_temp_dir() . '/unittests/data/'
+            'appDir' => sys_get_temp_dir() . '/unittests/app' . uniqid() . '/',
+            'addonsDir' => sys_get_temp_dir() . '/unittests/addons' . uniqid() . '/',
+            'dataDir' => sys_get_temp_dir() . '/unittests/data' . uniqid() . '/'
         ]);
         $app->request->base = 'http://example.com';
 
@@ -132,6 +132,7 @@ class AssetsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
         $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
+
         $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
         $this->assertTrue($size[0] === 50);
         $this->assertTrue($size[1] === 35);
