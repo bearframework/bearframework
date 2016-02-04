@@ -17,39 +17,44 @@ class Graphics
 
     /**
      * Returns the size of the image specified
-     * @param string $sourceFileName The filename of the image
+     * @param string $sourceFilename The filename of the image
      * @throws \InvalidArgumentException
-     * @throws \Exception
-     * @return array The size of the image specified
+     * @return array[int, int] The size of the image specified
      */
-    static function getSize($sourceFileName)
+    static function getSize($sourceFilename)
     {
-        if (!is_string($sourceFileName)) {
+        if (!is_string($sourceFilename)) {
             throw new \InvalidArgumentException('');
         }
-        $size = getimagesize($sourceFileName);
-        if (is_array($size)) {
-            return [$size[0], $size[1]];
+        try {
+            $size = getimagesize($sourceFilename);
+            if (is_array($size)) {
+                return [(int) $size[0], (int) $size[1]];
+            }
+        } catch (\Exception $e) {
+            
         }
-        throw new \Exception('');
+        throw new \InvalidArgumentException('');
     }
 
     /**
      * Resizes a image file
-     * @param string $sourceFileName The image file to resize
-     * @param string $destinationFileName The filename where the result image will be saved
+     * @param string $sourceFilename The image file to resize
+     * @param string $destinationFilename The filename where the result image will be saved
      * @param int $width The width of the resized image
      * @param int $height The height of the resized image
      * @param string $outputType The output type of the resized image
+     * @throws \InvalidArgumentException
+     * @throws \Exception
      * @return void No value is returned
      */
-    static function resize($sourceFileName, $destinationFileName, $width, $height, $outputType = null)
+    static function resize($sourceFilename, $destinationFilename, $width, $height, $outputType = null)
     {
-        if (!is_string($sourceFileName)) {
-            throw new \InvalidArgumentException(' (sourceFileName)');
+        if (!is_string($sourceFilename)) {
+            throw new \InvalidArgumentException(' (sourceFilename)');
         }
-        if (!is_string($destinationFileName)) {
-            throw new \InvalidArgumentException(' (destinationFileName)');
+        if (!is_string($destinationFilename)) {
+            throw new \InvalidArgumentException(' (destinationFilename)');
         }
         if (!is_int($width) || $width < 1) {
             throw new \InvalidArgumentException(' (width)');
@@ -60,30 +65,8 @@ class Graphics
         if (is_string($outputType)) {
             $outputType = strtolower($outputType);
         }
-        if ($outputType === 'jpeg') {
-            $outputType = 'jpg';
-        }
-
-        $imageInfo = getimagesize($sourceFileName);
-        if (!is_array($imageInfo) || !isset($imageInfo['mime'])) {
-            throw new \InvalidArgumentException('');
-        }
-        $mimeType = $imageInfo['mime'];
-
-        $image = null;
-        if ($mimeType === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
-            $image = imagecreatefromjpeg($sourceFileName);
-        } elseif ($mimeType === 'image/png' && function_exists('imagecreatefrompng')) {
-            $image = imagecreatefrompng($sourceFileName);
-        } elseif ($mimeType === 'image/gif' && function_exists('imagecreatefromgif')) {
-            $image = imagecreatefromgif($sourceFileName);
-        }
-
-        if (!$image) {
-            throw new \Exception('Invalid image file');
-        }
         if ($outputType === null) {
-            $pathInfo = pathinfo($destinationFileName);
+            $pathInfo = pathinfo($destinationFilename);
             if (isset($pathInfo['extension'])) {
                 $extension = $pathInfo['extension'];
                 if ($extension === 'png') {
@@ -95,61 +78,77 @@ class Graphics
                 }
             }
         }
+        if ($outputType === 'jpeg') {
+            $outputType = 'jpg';
+        }
         if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg') {
             throw new \InvalidArgumentException(' (outputType)');
         }
-        try {
-            $resultImage = imagecreatetruecolor($width, $height);
-        } catch (\Exception $e) {
-            $resultImage = false;
+        if (!is_file($sourceFilename)) {
+            throw new \InvalidArgumentException('');
         }
-        if ($resultImage !== false) {
-            $imageWidth = imagesx($image);
-            $imageHeight = imagesy($image);
-            if ($imageWidth == $width && $imageHeight == $height) {
-                copy($sourceFileName, $destinationFileName);
-                imagedestroy($resultImage);
-                return;
-            }
-            imagealphablending($resultImage, false);
-            imagesavealpha($resultImage, true);
-            imagefill($resultImage, 0, 0, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
-            $widthRatio = $imageWidth / $width;
-            $heightRatio = $imageHeight / $height;
-            $resizedImageHeight = $height;
-            $resizedImageWidth = $width;
-            if ($widthRatio > $heightRatio) {
-                $resizedImageWidth = ceil($imageWidth / $heightRatio);
-            } else {
-                $resizedImageHeight = ceil($imageHeight / $widthRatio);
-            }
-            $destinationX = - ($resizedImageWidth - $width) / 2;
-            $destinationY = - ($resizedImageHeight - $height) / 2;
 
-            if (imagecopyresampled($resultImage, $image, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $imageWidth, $imageHeight)) {
-                if ($outputType == 'jpg') {
-                    if (imagejpeg($resultImage, $destinationFileName, 100)) {
-                        imagedestroy($resultImage);
-                        imagedestroy($image);
-                        return;
-                    }
-                } elseif ($outputType == 'png') {
-                    if (imagepng($resultImage, $destinationFileName, 9)) {
-                        imagedestroy($resultImage);
-                        imagedestroy($image);
-                        return;
-                    }
-                } elseif ($outputType == 'gif') {
-                    if (imagegif($resultImage, $destinationFileName)) {
-                        imagedestroy($resultImage);
-                        imagedestroy($image);
-                        return;
+        try {
+            $sourceImageInfo = getimagesize($sourceFilename);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('');
+        }
+
+        $sourceImageWidth = $sourceImageInfo[0];
+        $sourceImageHeight = $sourceImageInfo[1];
+        if ($sourceImageWidth === $width && $sourceImageHeight === $height) {
+            copy($sourceFilename, $destinationFilename);
+        } else {
+            $sourceImageMimeType = $sourceImageInfo['mime'];
+
+            $sourceImage = null;
+            if ($sourceImageMimeType === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+                $sourceImage = imagecreatefromjpeg($sourceFilename);
+            } elseif ($sourceImageMimeType === 'image/png' && function_exists('imagecreatefrompng')) {
+                $sourceImage = imagecreatefrompng($sourceFilename);
+            } elseif ($sourceImageMimeType === 'image/gif' && function_exists('imagecreatefromgif')) {
+                $sourceImage = imagecreatefromgif($sourceFilename);
+            }
+
+            if (!$sourceImage) {
+                throw new \InvalidArgumentException('');
+            }
+            $result = false;
+            try {
+                $resultImage = imagecreatetruecolor($width, $height);
+                imagealphablending($resultImage, false);
+                imagesavealpha($resultImage, true);
+                imagefill($resultImage, 0, 0, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
+                $widthRatio = $sourceImageWidth / $width;
+                $heightRatio = $sourceImageHeight / $height;
+                $resizedImageHeight = $height;
+                $resizedImageWidth = $width;
+                if ($widthRatio > $heightRatio) {
+                    $resizedImageWidth = ceil($sourceImageWidth / $heightRatio);
+                } else {
+                    $resizedImageHeight = ceil($sourceImageHeight / $widthRatio);
+                }
+                $destinationX = - ($resizedImageWidth - $width) / 2;
+                $destinationY = - ($resizedImageHeight - $height) / 2;
+
+                if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceImageWidth, $sourceImageHeight)) {
+                    if ($outputType == 'jpg') {
+                        $result = imagejpeg($resultImage, $destinationFilename, 100);
+                    } elseif ($outputType == 'png') {
+                        $result = imagepng($resultImage, $destinationFilename, 9);
+                    } elseif ($outputType == 'gif') {
+                        $result = imagegif($resultImage, $destinationFilename);
                     }
                 }
+                imagedestroy($resultImage);
+            } catch (\Exception $e) {
+                
             }
-            imagedestroy($resultImage);
+            imagedestroy($sourceImage);
+            if (!$result) {
+                throw new \Exception('');
+            }
         }
-        imagedestroy($image);
     }
 
 }
