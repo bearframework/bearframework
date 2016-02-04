@@ -64,32 +64,21 @@ class Graphics
             $outputType = 'jpg';
         }
 
+        $imageInfo = getimagesize($sourceFileName);
+        if (!is_array($imageInfo) || !isset($imageInfo['mime'])) {
+            throw new \InvalidArgumentException('');
+        }
+        $mimeType = $imageInfo['mime'];
+
         $image = null;
-        try {
-            if (function_exists('imagecreatefromjpeg')) {
-                $image = imagecreatefromjpeg($sourceFileName);
-            }
-        } catch (\Exception $e) {
-            
+        if ($mimeType === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+            $image = imagecreatefromjpeg($sourceFileName);
+        } elseif ($mimeType === 'image/png' && function_exists('imagecreatefrompng')) {
+            $image = imagecreatefrompng($sourceFileName);
+        } elseif ($mimeType === 'image/gif' && function_exists('imagecreatefromgif')) {
+            $image = imagecreatefromgif($sourceFileName);
         }
-        if (!$image) {
-            try {
-                if (function_exists('imagecreatefrompng')) {
-                    $image = imagecreatefrompng($sourceFileName);
-                }
-            } catch (\Exception $e) {
-                
-            }
-        }
-        if (!$image) {
-            try {
-                if (function_exists('imagecreatefromgif')) {
-                    $image = imagecreatefromgif($sourceFileName);
-                }
-            } catch (\Exception $e) {
-                
-            }
-        }
+
         if (!$image) {
             throw new \Exception('Invalid image file');
         }
