@@ -10,7 +10,7 @@
 /**
  * 
  */
-class DirTest extends PHPUnit_Framework_TestCase
+class DirTest extends BearFrameworkTestCase
 {
 
     /**

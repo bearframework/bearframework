@@ -10,7 +10,7 @@
 /**
  * 
  */
-class RequestTest extends PHPUnit_Framework_TestCase
+class RequestTest extends BearFrameworkTestCase
 {
 
     /**

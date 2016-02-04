@@ -10,7 +10,7 @@
 /**
  * 
  */
-class ResponseTypesTest extends PHPUnit_Framework_TestCase
+class ResponseTypesTest extends BearFrameworkTestCase
 {
 
     /**

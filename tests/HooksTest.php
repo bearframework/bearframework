@@ -10,7 +10,7 @@
 /**
  * 
  */
-class HooksTest extends PHPUnit_Framework_TestCase
+class HooksTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,7 +18,7 @@ class HooksTest extends PHPUnit_Framework_TestCase
      */
     public function testAdd()
     {
-        $app = new App();
+        $app = $this->getApp();
         $app->hooks->add('sampleName', function() {
             echo '123';
         });
@@ -34,7 +34,7 @@ class HooksTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments1()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->hooks->add(1, function() {
             echo '123';
@@ -46,7 +46,7 @@ class HooksTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments2()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->hooks->add('sampleName', 1);
     }
@@ -56,7 +56,7 @@ class HooksTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments3()
     {
-        $app = new App();
+        $app = $this->getApp();
         $app->hooks->add('sampleName', function() {
             echo '123';
         });

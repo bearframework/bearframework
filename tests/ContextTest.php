@@ -10,7 +10,7 @@
 /**
  * 
  */
-class ContextTest extends PHPUnit_Framework_TestCase
+class ContextTest extends BearFrameworkTestCase
 {
 
     /**
@@ -19,19 +19,15 @@ class ContextTest extends PHPUnit_Framework_TestCase
     public function testAppContext()
     {
 
-        $appDir = sys_get_temp_dir() . '/app' . uniqid() . '/';
-        App\Utilities\Dir::make($appDir);
-
-        $app = new App([
-            'appDir' => $appDir
-        ]);
+        $app = $this->getApp();
         $app->request->base = 'http://example.com/www';
+        App\Utilities\Dir::make($app->config->appDir);
 
-        file_put_contents($appDir . 'index.php', '<?php ');
-        file_put_contents($appDir . 'class1.php', '<?php class TempClass1{}');
-        file_put_contents($appDir . 'class2.php', '<?php class TempClass2{}');
+        $this->createFile($app->config->appDir . 'index.php', '<?php ');
+        $this->createFile($app->config->appDir . 'class1.php', '<?php class TempClass1{}');
+        $this->createFile($app->config->appDir . 'class2.php', '<?php class TempClass2{}');
 
-        $context = new App\AppContext($appDir);
+        $context = new App\AppContext($app->config->appDir);
 
         $this->assertTrue($context->load('class1.php'));
         $this->assertTrue(class_exists('TempClass1'));
@@ -47,20 +43,15 @@ class ContextTest extends PHPUnit_Framework_TestCase
      */
     public function testAddonContext()
     {
-
-        $addonsDir = sys_get_temp_dir() . '/addons/';
+        $app = $this->getApp();
         $addonID = 'tempaddong' . uniqid();
-        $addonDir = $addonsDir . $addonID . '/';
+        $addonDir = $app->config->addonsDir . $addonID . '/';
         App\Utilities\Dir::make($addonDir);
-
-        $app = new App([
-            'addonsDir' => $addonsDir
-        ]);
         $app->request->base = 'http://example.com/www';
 
-        file_put_contents($addonDir . 'index.php', '<?php ');
-        file_put_contents($addonDir . 'class1.php', '<?php class TempClass1{}');
-        file_put_contents($addonDir . 'class2.php', '<?php class TempClass2{}');
+        $this->createFile($addonDir . 'index.php', '<?php ');
+        $this->createFile($addonDir . 'class1.php', '<?php class TempClass1{}');
+        $this->createFile($addonDir . 'class2.php', '<?php class TempClass2{}');
         $app->addons->add($addonID, ['option1' => 5]);
 
         $context = new App\AddonContext($addonDir);
@@ -101,7 +92,9 @@ class ContextTest extends PHPUnit_Framework_TestCase
      */
     public function testAddonContextInvalidArguments2()
     {
-        $app = new App(); // missing addons dir
+        $app = $this->getApp([
+            'addonsDir' => null
+        ]);
         $this->setExpectedException('Exception');
         $context = new App\AddonContext('dir');
         $context->getOptions();

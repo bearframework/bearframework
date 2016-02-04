@@ -20,7 +20,7 @@ class TestApp extends App
 
 }
 
-class ErrorsTest extends PHPUnit_Framework_TestCase
+class ErrorsTest extends BearFrameworkTestCase
 {
 
     /**

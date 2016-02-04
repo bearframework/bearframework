@@ -10,7 +10,7 @@
 /**
  * 
  */
-class AppTest extends PHPUnit_Framework_TestCase
+class AppTest extends BearFrameworkTestCase
 {
 
     /**
@@ -23,7 +23,7 @@ class AppTest extends PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_SCHEME'] = 'http';
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
-        $app = new App();
+        $app = $this->getApp();
         $this->assertTrue($app instanceof App);
         $this->assertTrue($app->request->method === 'GET');
         $this->assertTrue($app->request->scheme === 'http');
@@ -47,7 +47,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->assertTrue($app->load('src/App/Cache.php'));
         $this->assertFalse($app->load('src/App/MissingClass.php'));
         $this->setExpectedException('InvalidArgumentException');
@@ -59,7 +59,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     public function testGetUrl()
     {
-        $app = new App();
+        $app = $this->getApp();
         $app->request->base = "https://example.com/www";
         $this->assertTrue($app->getUrl('/') === "https://example.com/www/");
         $this->assertTrue($app->getUrl('/products/') === "https://example.com/www/products/");
@@ -72,7 +72,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     public function testRunNotFound()
     {
-        $app = new App();
+        $app = $this->getApp();
         $app->run();
         $this->expectOutputString('Not Found');
     }
@@ -82,7 +82,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     public function testRespond()
     {
-        $app = new App();
+        $app = $this->getApp();
         $app->respond(new \App\Response('The end'));
         $this->expectOutputString('The end');
     }
@@ -92,7 +92,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     public function testRespondInvalidArgument()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->respond(1);
     }
@@ -102,9 +102,9 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     function testMultipleApps()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('Exception');
-        $app = new App();
+        $app = $this->getApp();
     }
 
     /**
@@ -112,7 +112,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     function testClone()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('Exception');
         clone($app);
     }
@@ -122,7 +122,7 @@ class AppTest extends PHPUnit_Framework_TestCase
      */
     function testUnserialize()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('Exception');
         unserialize(serialize($app));
     }

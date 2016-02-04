@@ -10,7 +10,7 @@
 /**
  * 
  */
-class AddonsTest extends PHPUnit_Framework_TestCase
+class AddonsTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,11 +18,7 @@ class AddonsTest extends PHPUnit_Framework_TestCase
      */
     public function testGetOptions()
     {
-        $addonsDir = sys_get_temp_dir() . '/addons' . uniqid() . '/';
-        App\Utilities\Dir::make($addonsDir);
-        $app = new App([
-            'addonsDir' => $addonsDir
-        ]);
+        $app = $this->getApp();
         $app->addons->add('addon1', ['var' => 5]);
 
         $options = $app->addons->getOptions('addon1');
@@ -40,7 +36,9 @@ class AddonsTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments1()
     {
-        $app = new App(); // missing addons dir
+        $app = $this->getApp([
+            'addonsDir' => null
+        ]);
         $this->setExpectedException('Exception');
         $app->addons->add('addon1');
     }
@@ -50,11 +48,7 @@ class AddonsTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments2()
     {
-        $addonsDir = sys_get_temp_dir() . '/addons' . uniqid() . '/';
-        App\Utilities\Dir::make($addonsDir);
-        $app = new App([
-            'addonsDir' => $addonsDir
-        ]);
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->addons->add(1);
     }
@@ -64,11 +58,7 @@ class AddonsTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments3()
     {
-        $addonsDir = sys_get_temp_dir() . '/addons' . uniqid() . '/';
-        App\Utilities\Dir::make($addonsDir);
-        $app = new App([
-            'addonsDir' => $addonsDir
-        ]);
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->addons->add('addon1', 1);
     }
@@ -78,11 +68,7 @@ class AddonsTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments4()
     {
-        $addonsDir = sys_get_temp_dir() . '/addons' . uniqid() . '/';
-        App\Utilities\Dir::make($addonsDir);
-        $app = new App([
-            'addonsDir' => $addonsDir
-        ]);
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->addons->getOptions(1);
     }

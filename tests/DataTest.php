@@ -10,7 +10,7 @@
 /**
  * 
  */
-class DataTest extends PHPUnit_Framework_TestCase
+class DataTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,9 +18,7 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testAll()
     {
-        $app = new App([
-            'dataDir' => sys_get_temp_dir() . '/data' . uniqid() . '/'
-        ]);
+        $app = $this->getApp();
 
         $result = $app->data->set([
             'key' => 'users/1',
@@ -103,11 +101,8 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testFileName()
     {
-        $dataDir = sys_get_temp_dir() . '/data' . uniqid() . '/';
-        $app = new App([
-            'dataDir' => $dataDir
-        ]);
-        $this->assertTrue($app->data->getFilename('test/key') === $dataDir . 'objects/test/key');
+        $app = $this->getApp();
+        $this->assertTrue($app->data->getFilename('test/key') === $app->config->dataDir . 'objects/test/key');
     }
 
     /**
@@ -115,11 +110,7 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testFileNameInvalidArguments1()
     {
-        $dataDir = sys_get_temp_dir() . '/data' . uniqid() . '/';
-        $app = new App([
-            'dataDir' => $dataDir
-        ]);
-
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->data->getFilename(1);
     }
@@ -129,7 +120,9 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testFileNameInvalidArguments2()
     {
-        $app = new App(); // missing dataDir
+        $app = $this->getApp([
+            'dataDir' => null
+        ]);
 
         $this->setExpectedException('Exception');
         $app->data->getFilename('key');
@@ -140,7 +133,9 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testFileNameInvalidArguments3()
     {
-        $app = new App(); // missing dataDir
+        $app = $this->getApp([
+            'dataDir' => null
+        ]);
 
         $this->setExpectedException('Exception');
         $app->data->get([
@@ -154,7 +149,7 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testMakePublicInvalidArguments1()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->data->makePublic(1);
     }
@@ -164,7 +159,7 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testMakePrivateInvalidArguments1()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->data->makePrivate(1);
     }
@@ -174,7 +169,7 @@ class DataTest extends PHPUnit_Framework_TestCase
      */
     public function testIsPublicInvalidArguments1()
     {
-        $app = new App();
+        $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->data->isPublic(1);
     }

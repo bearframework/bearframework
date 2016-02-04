@@ -10,40 +10,84 @@
 /**
  * 
  */
-class AssetsTest extends PHPUnit_Framework_TestCase
+class AssetsTest extends BearFrameworkTestCase
 {
 
     /**
      * @runInSeparateProcess
      */
-    public function testGetUrl()
+    public function testGetUrlAndGetFilename()
     {
-        $app = new App([
-            'appDir' => sys_get_temp_dir() . '/unittests/app/',
-            'addonsDir' => sys_get_temp_dir() . '/unittests/addons/',
-            'dataDir' => sys_get_temp_dir() . '/unittests/data/'
-        ]);
-        $app->request->base = 'http://example.com';
+        $app = $this->getApp();
 
-        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png', ['width' => 200, 'height' => 200]);
-        $this->assertTrue(strpos($url, 'http://example.com/assets/') === 0);
+        $fileTypes = ['jpg', 'png', 'gif'];
+        $imageOptionsTypes = ['width', 'height', 'both'];
+        $sizeModifiers = [0.5, 1, 2];
 
-        $url = $app->assets->getUrl($app->config->addonsDir . 'addon1/assets/logo.png', ['width' => 200, 'height' => 200]);
-        $this->assertTrue(strpos($url, 'http://example.com/assets/') === 0);
+        foreach ($fileTypes as $fileType) {
+            foreach ($imageOptionsTypes as $imageOptionsType) {
+                foreach ($sizeModifiers as $sizeModifier) {
+                    $testImageWidth = (int) (100 * $sizeModifier);
+                    $testImageHeight = (int) (70 * $sizeModifier);
+                    if ($imageOptionsType === 'width') {
+                        $options = ['width' => $testImageWidth];
+                    } elseif ($imageOptionsType === 'height') {
+                        $options = ['height' => $testImageHeight];
+                    } elseif ($imageOptionsType === 'both') {
+                        $options = ['width' => $testImageWidth, 'height' => $testImageHeight];
+                    }
 
-        $url = $app->assets->getUrl($app->config->dataDir . 'objects/logo.png', ['width' => 200, 'height' => 200]);
-        $this->assertTrue(strpos($url, 'http://example.com/assets/') === 0);
+                    // File in app dir
+                    $filename = $app->config->appDir . 'assets/logo.' . $fileType;
+                    $this->createSampleFile($filename, $fileType);
 
-        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png', ['width' => 0, 'height' => 100001]);
-        $this->assertTrue(strpos($url, 'http://example.com/assets/') === 0);
+                    $url = $app->assets->getUrl($filename);
+                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
+
+                    $url = $app->assets->getUrl($filename, $options);
+                    $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $this->assertTrue($size[0] === $testImageWidth);
+                    $this->assertTrue($size[1] === $testImageHeight);
+
+                    // File in addon dir
+                    $filename = $app->config->addonsDir . 'addon1/assets/logo.' . $fileType;
+                    $this->createSampleFile($filename, $fileType);
+
+                    $url = $app->assets->getUrl($filename);
+                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
+
+                    $url = $app->assets->getUrl($filename, $options);
+                    $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $this->assertTrue($size[0] === $testImageWidth);
+                    $this->assertTrue($size[1] === $testImageHeight);
+
+                    // File in data dir
+                    $key = 'logo.' . $fileType;
+                    $filename = $app->config->dataDir . 'objects/' . $key;
+                    $this->createSampleFile($filename, $fileType);
+
+                    $url = $app->assets->getUrl($filename);
+                    $app->data->makePublic(['key' => $key]);
+                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
+                    $app->data->makePrivate(['key' => $key]);
+                    $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));
+
+                    $url = $app->assets->getUrl($filename, $options);
+                    $app->data->makePublic(['key' => $key]);
+                    $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $this->assertTrue($size[0] === $testImageWidth);
+                    $this->assertTrue($size[1] === $testImageHeight);
+                }
+            }
+        }
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function testGetUrlInvalidArguments1()
+    public function testGetUrlInvalidOptions1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getUrl(1);
@@ -52,9 +96,9 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGetUrlInvalidArguments2()
+    public function testGetUrlInvalidOptions2()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getUrl($app->config->appDir . 'assets/logo.png', 1);
@@ -63,118 +107,81 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGetUrlInvalidArguments3()
+    public function testGetUrlInvalidOptions3()
     {
-        $app = new App([
-            'assetsPathPrefix' => null
-        ]);
+        $app = $this->getApp();
+        $app->config->assetsPathPrefix = null;
 
         $this->setExpectedException('Exception');
         $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
     }
 
     /**
+     * Not in assets dir
      * @runInSeparateProcess
      */
-    public function testGetUrlInvalidArguments4()
+    public function testGetUrlInvalidOptions4()
     {
-        $app = new App([
-            'appDir' => sys_get_temp_dir() . '/unittests/app/'
-        ]);
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getUrl($app->config->appDir . 'logo.png');
     }
 
     /**
+     * Not in assets dir
      * @runInSeparateProcess
      */
-    public function testGetUrlInvalidArguments5()
+    public function testGetUrlInvalidOptions5()
     {
-        $app = new App([
-            'addonsDir' => sys_get_temp_dir() . '/unittests/addons/'
-        ]);
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getUrl($app->config->addonsDir . 'addon1/logo.png');
     }
 
     /**
+     * Not in assets dir
      * @runInSeparateProcess
      */
-    public function testGetUrlInvalidArguments6()
+    public function testGetUrlInvalidOptions6()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getUrl('logo.png');
     }
 
     /**
+     * Zero width
      * @runInSeparateProcess
      */
-    public function testGetFilename()
+    public function testGetUrlInvalidOptions7a()
     {
-        $app = new App([
-            'appDir' => sys_get_temp_dir() . '/unittests/app' . uniqid() . '/',
-            'addonsDir' => sys_get_temp_dir() . '/unittests/addons' . uniqid() . '/',
-            'dataDir' => sys_get_temp_dir() . '/unittests/data' . uniqid() . '/'
-        ]);
-        $app->request->base = 'http://example.com';
+        $app = $this->getApp();
 
-        $sampleFileContent = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAGQAAABGCAIAAAC15KY+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AIECCIIiEjqvwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAd0lEQVR42u3QMQEAAAgDILV/51nBzwci0CmuRoEsWbJkyZKlQJYsWbJkyVIgS5YsWbJkKZAlS5YsWbIUyJIlS5YsWQpkyZIlS5YsBbJkyZIlS5YCWbJkyZIlS4EsWbJkyZKlQJYsWbJkyVIgS5YsWbJkKZAl69sC1G0Bi52qvwoAAAAASUVORK5CYII=');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->assets->getUrl($app->config->appDir . 'assets/logo.png', ['width' => 0]);
+    }
 
-        $filename = $app->config->appDir . 'assets/logo' . uniqid() . '.png';
-        App\Utilities\File::makeDir($filename);
-        file_put_contents($filename, $sampleFileContent);
+    /**
+     * Too big width
+     * @runInSeparateProcess
+     */
+    public function testGetUrlInvalidOptions7b()
+    {
+        $app = $this->getApp();
 
-        $url = $app->assets->getUrl($filename);
-        $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
-
-        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
-
-        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
-        $this->assertTrue($size[0] === 50);
-        $this->assertTrue($size[1] === 35);
-
-        $filename = $app->config->addonsDir . 'addon1/assets/logo' . uniqid() . '.png';
-        App\Utilities\File::makeDir($filename);
-        file_put_contents($filename, $sampleFileContent);
-
-        $url = $app->assets->getUrl($filename);
-        $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
-
-        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
-        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
-        $this->assertTrue($size[0] === 50);
-        $this->assertTrue($size[1] === 35);
-
-        $key = 'logo' . uniqid() . '.png';
-        $filename = $app->config->dataDir . 'objects/' . $key;
-        App\Utilities\File::makeDir($filename);
-        file_put_contents($filename, $sampleFileContent);
-
-        $url = $app->assets->getUrl($filename);
-        $app->data->makePublic(['key' => $key]);
-        $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
-        $app->data->makePrivate(['key' => $key]);
-        $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === false);
-
-        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
-        $app->data->makePublic(['key' => $key]);
-        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
-        $this->assertTrue($size[0] === 50);
-        $this->assertTrue($size[1] === 35);
-
-        $this->assertTrue($app->assets->getFilename('/assets/missing.png') === false);
+        $this->setExpectedException('InvalidArgumentException');
+        $app->assets->getUrl($app->config->appDir . 'assets/logo.png', ['width' => 1000000]);
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function testGetFilenameInvalidArguments1()
+    public function testGetFilenameInvalidOptions1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getFilename(1);
@@ -183,9 +190,10 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGetFilenameInvalidArguments2()
+    public function testGetFilenameInvalidOptions2()
     {
-        $app = new App(['assetsPathPrefix' => null]);
+        $app = $this->getApp();
+        $app->config->assetsPathPrefix = null;
 
         $this->setExpectedException('Exception');
         $app->assets->getFilename('path.png');
@@ -194,43 +202,77 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGetFilenameInvalidArguments3()
+    public function testGetFilenameInvalidOptions3()
     {
-        $app = new App();
+        $app = $this->getApp();
 
-        $this->assertTrue($app->assets->getFilename('path.png') === false);
+        $this->assertFalse($app->assets->getFilename('path.png'));
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function testGetFilenameInvalidArguments4a()
+    public function testGetFilenameInvalidOptions4a()
     {
-        $app = new App([
-            'appDir' => sys_get_temp_dir() . '/unittests/app/'
-        ]);
-        $app->request->base = 'http://example.com/www';
+        $app = $this->getApp();
 
         $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
         $path = substr($url, strlen($app->request->base));
         $brokenPath = str_replace('/assets/', '/assets/abc', $path);
-        $this->assertTrue($app->assets->getFilename($brokenPath) === false);
+        $this->assertFalse($app->assets->getFilename($brokenPath));
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function testGetFilenameInvalidArguments4b()
+    public function testGetFilenameInvalidOptions4b()
     {
-        $app = new App([
-            'appDir' => sys_get_temp_dir() . '/unittests/app/'
-        ]);
-        $app->request->base = 'http://example.com/www';
+        $app = $this->getApp();
 
         $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
         $path = substr($url, strlen($app->request->base));
         $brokenPath = '/assets/abc' . substr($path, strlen('/assets/') + 3);
-        $this->assertTrue($app->assets->getFilename($brokenPath) === false);
+        $this->assertFalse($app->assets->getFilename($brokenPath));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameInvalidOptions4c()
+    {
+        $app = $this->getApp();
+
+        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
+        $path = substr($url, strlen($app->request->base));
+        $brokenPath = '/assets/abcd/logo.png';
+        $this->assertFalse($app->assets->getFilename($brokenPath));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameInvalidOptions4d()
+    {
+        $app = $this->getApp();
+
+        $this->assertFalse($app->assets->getFilename('/assets/brokenpath.jpg'));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testGetFilenameMissingDataDir()
+    {
+        $app = $this->getApp([
+            'dataDir' => null
+        ]);
+
+        $filename = $app->config->appDir . 'assets/logo.png';
+        $this->createSampleFile($filename, 'png');
+
+        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
+        $this->setExpectedException('Exception');
+        $app->assets->getFilename(substr($url, strlen($app->request->base)));
     }
 
     /**
@@ -238,7 +280,7 @@ class AssetsTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMimeType1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $result = $app->assets->getMimeType('logo.png');
         $this->assertTrue($result === 'image/png');
@@ -249,7 +291,7 @@ class AssetsTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMimeType2()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $result = $app->assets->getMimeType('logo.unknown');
         $this->assertTrue($result === null);
@@ -258,12 +300,26 @@ class AssetsTest extends PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGetMimeTypeInvalidArguments1()
+    public function testGetMimeTypeInvalidOptions1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getMimeType(1);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testMissingExtensionFile()
+    {
+        $app = $this->getApp();
+
+        $filename = $app->config->appDir . 'assets/logo';
+        $this->createSampleFile($filename, 'png');
+
+        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 50]);
+        $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));
     }
 
 }

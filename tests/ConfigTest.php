@@ -10,7 +10,7 @@
 /**
  * 
  */
-class ConfigTest extends PHPUnit_Framework_TestCase
+class ConfigTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,7 +18,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $config = new \App\Config([
+        $config = new App\Config([
             'displayErrors' => true
         ]);
         $this->assertTrue($config->displayErrors === true);
@@ -29,7 +29,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testSet1a()
     {
-        $config = new \App\Config();
+        $config = new App\Config();
         $config->logErrors = true;
         $this->assertTrue($config->logErrors === true);
     }
@@ -39,7 +39,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testSet1b()
     {
-        $config = new \App\Config();
+        $config = new App\Config();
         $config->customVar = 5;
         $this->assertTrue($config->customVar === 5);
     }
@@ -49,7 +49,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testSet2()
     {
-        $config = new \App\Config();
+        $config = new App\Config();
         $this->setExpectedException('Exception');
         $config->handleErrors = false;
     }
@@ -59,7 +59,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testGet1()
     {
-        $config = new \App\Config([
+        $config = new App\Config([
             'displayErrors' => true
         ]);
         $this->assertTrue($config->displayErrors === true);
@@ -70,7 +70,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testGet2()
     {
-        $config = new \App\Config([
+        $config = new App\Config([
             'customOption' => 5
         ]);
         $this->assertTrue($config->customOption === 5);
@@ -81,7 +81,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testGet3()
     {
-        $config = new \App\Config();
+        $config = new App\Config();
         $this->assertTrue($config->customOption === null);
     }
 
@@ -90,7 +90,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testIsset1a()
     {
-        $config = new \App\Config();
+        $config = new App\Config();
         $this->assertTrue(isset($config->displayErrors));
     }
 
@@ -99,7 +99,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testIsset1b()
     {
-        $config = new \App\Config([
+        $config = new App\Config([
             'displayErrors' => true
         ]);
         $this->assertTrue(isset($config->displayErrors));
@@ -110,7 +110,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testIsset2()
     {
-        $config = new \App\Config([
+        $config = new App\Config([
             'customOption' => 5
         ]);
         $this->assertTrue(isset($config->customOption));
@@ -121,7 +121,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testIsset3()
     {
-        $config = new \App\Config();
+        $config = new App\Config();
         $this->assertFalse(isset($config->customOption));
     }
 
@@ -130,7 +130,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function testDirectories()
     {
-        $config = new \App\Config([
+        $config = new App\Config([
             'appDir' => '../app',
             'addonsDir' => '../addons',
             'dataDir' => '../data',
@@ -141,7 +141,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($config->dataDir === '../data/');
         $this->assertTrue($config->logsDir === '../logs/');
 
-        $config = new \App\Config([
+        $config = new App\Config([
             'appDir' => '../app/',
             'addonsDir' => '../addons/',
             'dataDir' => '../data/',
@@ -159,7 +159,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function testInvalidArgument()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $config = new \App\Config(2);
+        new App\Config(2);
     }
 
 }

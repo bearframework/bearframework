@@ -10,7 +10,7 @@
 /**
  * 
  */
-class LogTest extends PHPUnit_Framework_TestCase
+class LogTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,20 +18,18 @@ class LogTest extends PHPUnit_Framework_TestCase
      */
     public function testWrite()
     {
-        $app = new App([
-            'logsDir' => sys_get_temp_dir()
-        ]);
+        $app = $this->getApp();
 
         $uniqueContent = md5(uniqid());
         $file = uniqid() . '.log';
-        $filename = sys_get_temp_dir() . '/' . $file;
+        $filename = $app->config->logsDir . $file;
         $this->assertTrue($app->log->write($file, $uniqueContent));
         $this->assertTrue(is_file($filename) && strpos(file_get_contents($filename), $uniqueContent) !== false);
 
         $uniqueContent = md5(uniqid());
         $dir = uniqid();
         $file = uniqid() . '.log';
-        $filename = sys_get_temp_dir() . '/' . $dir . '/' . $file . '.log';
+        $filename = $app->config->logsDir . $dir . '/' . $file . '.log';
         $this->assertTrue($app->log->write($dir . '/' . $file . '.log', $uniqueContent));
         $this->assertTrue(is_file($filename) && strpos(file_get_contents($filename), $uniqueContent) !== false);
     }
@@ -41,9 +39,7 @@ class LogTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidFilenameArgument1()
     {
-        $app = new App([
-            'logsDir' => sys_get_temp_dir()
-        ]);
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->log->write(1, 'data');
@@ -54,9 +50,7 @@ class LogTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidDataArgument()
     {
-        $app = new App([
-            'logsDir' => sys_get_temp_dir()
-        ]);
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->log->write('file.log', 1);
@@ -67,10 +61,22 @@ class LogTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidConfigOption()
     {
-        $app = new App();
+        $app = $this->getApp([
+            'logsDir' => null
+        ]);
 
         $this->setExpectedException('Exception');
         $app->log->write('file.log', 'data');
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInvalidFile()
+    {
+        $app = $this->getApp();
+        App\Utilities\Dir::make($app->config->logsDir . 'file');
+        $this->assertFalse($app->log->write('file', 'body'));
     }
 
 }

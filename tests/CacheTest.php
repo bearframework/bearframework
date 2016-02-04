@@ -10,7 +10,7 @@
 /**
  * 
  */
-class CacheTest extends PHPUnit_Framework_TestCase
+class CacheTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,16 +18,14 @@ class CacheTest extends PHPUnit_Framework_TestCase
      */
     public function testAll()
     {
-        $app = new App([
-            'dataDir' => sys_get_temp_dir() . '/unittests/data/'
-        ]);
+        $app = $this->getApp();
 
         $app->cache->delete('key1');
 
         $result = $app->cache->get('key1');
-        $this->assertTrue($result === false);
+        $this->assertFalse($result);
         $result = $app->cache->exists('key1');
-        $this->assertTrue($result === false);
+        $this->assertFalse($result);
 
         $app->cache->set('key1', 'data1');
         $result = $app->cache->get('key1');
@@ -37,9 +35,9 @@ class CacheTest extends PHPUnit_Framework_TestCase
         $app->cache->delete('key1');
 
         $result = $app->cache->get('key1');
-        $this->assertTrue($result === false);
+        $this->assertFalse($result);
         $result = $app->cache->exists('key1');
-        $this->assertTrue($result === false);
+        $this->assertFalse($result);
     }
 
     /**
@@ -47,9 +45,7 @@ class CacheTest extends PHPUnit_Framework_TestCase
      */
     public function testTTL()
     {
-        $app = new App([
-            'dataDir' => sys_get_temp_dir() . '/unittests/data/'
-        ]);
+        $app = $this->getApp();
 
         $app->cache->delete('key1');
 
@@ -60,9 +56,9 @@ class CacheTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result === true);
         sleep(3);
         $result = $app->cache->get('key1');
-        $this->assertTrue($result === false);
+        $this->assertFalse($result);
         $result = $app->cache->exists('key1');
-        $this->assertTrue($result === false);
+        $this->assertFalse($result);
         $app->cache->delete('key1');
     }
 

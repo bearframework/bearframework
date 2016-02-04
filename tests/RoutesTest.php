@@ -10,7 +10,7 @@
 /**
  * 
  */
-class RoutesTest extends PHPUnit_Framework_TestCase
+class RoutesTest extends BearFrameworkTestCase
 {
 
     /**
@@ -18,7 +18,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testHomePage()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/');
         $app->request->method = 'GET';
@@ -35,7 +35,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testPage()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/');
         $app->request->method = 'GET';
@@ -52,7 +52,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testWildcard1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/laptop/');
         $app->request->method = 'GET';
@@ -69,7 +69,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testWildcard2()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/laptop/options/');
         $app->request->method = 'GET';
@@ -86,7 +86,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testWildcard3()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/laptop/options/');
         $app->request->method = 'GET';
@@ -103,7 +103,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testWildcard4()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/laptop/options/');
         $app->request->method = 'GET';
@@ -120,7 +120,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/');
         $app->request->method = 'GET';
@@ -137,7 +137,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark1NoMatch()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/');
         $app->request->method = 'GET';
@@ -154,7 +154,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark2()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/review/');
         $app->request->method = 'GET';
@@ -171,7 +171,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark3()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/options/');
         $app->request->method = 'GET';
@@ -188,7 +188,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark4()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/options/color/blue/');
         $app->request->method = 'GET';
@@ -205,7 +205,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark5()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/options/');
         $app->request->method = 'GET';
@@ -222,7 +222,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark6()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/options/');
         $app->request->method = 'GET';
@@ -239,7 +239,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testQuestionMark7()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/product/options');
         $app->request->method = 'GET';
@@ -256,7 +256,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testMultipleRoutes1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/services/');
         $app->request->method = 'GET';
@@ -273,7 +273,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testMultipleRoutes2()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/our-services/');
         $app->request->method = 'GET';
@@ -290,7 +290,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testNotFound()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->request->path = new \App\Request\Path('/products/');
         $app->request->method = 'GET';
@@ -307,7 +307,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testRouteResponse()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->routes->add('/', function() {
             return new \App\Response\HTML('home');
@@ -325,7 +325,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testMissingRoute()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->routes->add('/', function() {
             return new \App\Response\HTML('home');
@@ -342,7 +342,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testRouteMethod()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->routes->add('/', function() {
             return new \App\Response\HTML('home');
@@ -361,7 +361,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testNotMatchingRouteMethod()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->routes->add('/', function() {
             return new \App\Response\HTML('home');
@@ -379,7 +379,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidResponse()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $app->routes->add('/', function() {
             return 3;
@@ -396,7 +396,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testMissingRoutes()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $request = new \App\Request();
         $request->path = new \App\Request\Path('/');
@@ -410,7 +410,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments1()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add(1, function() {
@@ -423,7 +423,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments2()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add([], function() {
@@ -436,7 +436,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments3()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add([1], function() {
@@ -449,7 +449,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments4()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add('/', null);
@@ -460,7 +460,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments5()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add('/', function() {
@@ -473,7 +473,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidArguments6()
     {
-        $app = new App();
+        $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->getResponse(null);
