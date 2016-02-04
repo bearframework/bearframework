@@ -25,7 +25,6 @@ class Assets
      */
     function getUrl($filename, $options = [])
     {
-        // todo extension check za width
         $app = &\App::$instance;
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
@@ -42,9 +41,9 @@ class Assets
             if ($name === 'width' || $name === 'height') {
                 $value = (int) $value;
                 if ($value < 1) {
-                    $value = 1;
+                    throw new \InvalidArgumentException('');
                 } elseif ($value > 100000) {
-                    $value = 100000;
+                    throw new \InvalidArgumentException('');
                 }
                 $optionsString .= ($name === 'width' ? 'w' : 'h') . $value . '-';
             }
@@ -112,51 +111,50 @@ class Assets
         } else {
             return false;
         }
-        if ($hash === substr(md5(md5($filename) . md5($optionsString)), 0, 10)) {
-            if (is_file($filename)) {
-                if ($optionsString === '') {
-                    return $filename;
-                } else {
-                    if ($app->config->dataDir === null) {
-                        throw new \Exception('Config option dataDir is not set');
-                    }
-                    $pathinfo = pathinfo($filename);
-                    if (isset($pathinfo['extension'])) {
-                        $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString));
-                        if (!is_file($tempFilename)) {
-                            $options = explode('-', $optionsString);
-                            $width = null;
-                            $height = null;
-                            foreach ($options as $option) {
-                                if (substr($option, 0, 1) === 'w') {
-                                    $value = (int) substr($option, 1);
-                                    if ($value >= 1 && $value <= 100000) {
-                                        $width = $value;
-                                    }
-                                }
-                                if (substr($option, 0, 1) === 'h') {
-                                    $value = (int) substr($option, 1);
-                                    if ($value >= 1 && $value <= 100000) {
-                                        $height = $value;
-                                    }
-                                }
-                            }
-                            if ($width === null && $height === null) {
-                                return false;
-                            }
-                            if ($width === null) {
-                                $imageSize = \App\Utilities\Graphics::getSize($filename);
-                                $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
-                            } elseif ($height === null) {
-                                $imageSize = \App\Utilities\Graphics::getSize($filename);
-                                $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
-                            }
-                            \App\Utilities\File::makeDir($tempFilename);
-                            \App\Utilities\Graphics::resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
-                        }
-                        return $tempFilename;
+        if ($hash === substr(md5(md5($filename) . md5($optionsString)), 0, 10) && is_file($filename)) {
+            if ($optionsString === '') {
+                return $filename;
+            }
+            $options = explode('-', $optionsString);
+            $width = null;
+            $height = null;
+            foreach ($options as $option) {
+                if (substr($option, 0, 1) === 'w') {
+                    $value = (int) substr($option, 1);
+                    if ($value >= 1 && $value <= 100000) {
+                        $width = $value;
                     }
                 }
+                if (substr($option, 0, 1) === 'h') {
+                    $value = (int) substr($option, 1);
+                    if ($value >= 1 && $value <= 100000) {
+                        $height = $value;
+                    }
+                }
+            }
+
+            if ($app->config->dataDir === null) {
+                throw new \Exception('Config option dataDir is not set');
+            }
+            $pathinfo = pathinfo($filename);
+            if (isset($pathinfo['extension'])) {
+                $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString));
+                if (!is_file($tempFilename)) {
+                    \App\Utilities\File::makeDir($tempFilename);
+                    if ($width !== null || $height !== null) {
+                        if ($width === null) {
+                            $imageSize = \App\Utilities\Graphics::getSize($filename);
+                            $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
+                        } elseif ($height === null) {
+                            $imageSize = \App\Utilities\Graphics::getSize($filename);
+                            $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
+                        }
+                        \App\Utilities\Graphics::resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
+                    }
+                }
+                return $tempFilename;
+            } else {
+                return false;
             }
         }
         return false;
