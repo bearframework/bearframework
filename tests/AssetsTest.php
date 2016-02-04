@@ -122,7 +122,7 @@ class AssetsTest extends PHPUnit_Framework_TestCase
         ]);
         $app->request->base = 'http://example.com';
 
-        $sampleFileContent = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAgMAAAAP2OW3AAAADFBMVEX/AABQOOBo4Tjx6iYiPN0wAAAADElEQVR42mMQYNgAAADkAMEZVTv7AAAAAElFTkSuQmCC');
+        $sampleFileContent = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAGQAAABGCAIAAAC15KY+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AIECCIIiEjqvwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAd0lEQVR42u3QMQEAAAgDILV/51nBzwci0CmuRoEsWbJkyZKlQJYsWbJkyVIgS5YsWbJkKZAlS5YsWbIUyJIlS5YsWQpkyZIlS5YsBbJkyZIlS5YCWbJkyZIlS4EsWbJkyZKlQJYsWbJkyVIgS5YsWbJkKZAl69sC1G0Bi52qvwoAAAAASUVORK5CYII=');
 
         $filename = $app->config->appDir . 'assets/logo' . uniqid() . '.png';
         App\Utilities\File::makeDir($filename);
@@ -131,10 +131,10 @@ class AssetsTest extends PHPUnit_Framework_TestCase
         $url = $app->assets->getUrl($filename);
         $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
-//        $url = $app->assets->getUrl($filename, ['width' => 1, 'height' => 1]);
-//        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
-//        $this->assertTrue($size[0] === 1);
-//        $this->assertTrue($size[1] === 1);
+        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
+        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+        $this->assertTrue($size[0] === 50);
+        $this->assertTrue($size[1] === 35);
 
         $filename = $app->config->addonsDir . 'addon1/assets/logo' . uniqid() . '.png';
         App\Utilities\File::makeDir($filename);
@@ -143,10 +143,10 @@ class AssetsTest extends PHPUnit_Framework_TestCase
         $url = $app->assets->getUrl($filename);
         $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
-//        $url = $app->assets->getUrl($filename, ['width' => 1, 'height' => 1]);
-//        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
-//        $this->assertTrue($size[0] === 1);
-//        $this->assertTrue($size[1] === 1);
+        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
+        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+        $this->assertTrue($size[0] === 50);
+        $this->assertTrue($size[1] === 35);
 
         $key = 'logo' . uniqid() . '.png';
         $filename = $app->config->dataDir . 'objects/' . $key;
@@ -159,11 +159,11 @@ class AssetsTest extends PHPUnit_Framework_TestCase
         $app->data->makePrivate(['key' => $key]);
         $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === false);
 
-//        $url = $app->assets->getUrl($filename, ['width' => 1, 'height' => 1]);
-//        $app->data->makePublic(['key' => $key]);
-//        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
-//        $this->assertTrue($size[0] === 1);
-//        $this->assertTrue($size[1] === 1);
+        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
+        $app->data->makePublic(['key' => $key]);
+        $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+        $this->assertTrue($size[0] === 50);
+        $this->assertTrue($size[1] === 35);
 
         $this->assertTrue($app->assets->getFilename('/assets/missing.png') === false);
     }
