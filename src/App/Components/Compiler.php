@@ -35,9 +35,10 @@ class Compiler extends \HTMLServerComponentsCompiler
      * Includes the component file providing context information
      * @param string $file The file of the component
      * @param App\Component $component The component object for the tag specified
-     * @return void No value is returned
+     * @throws \Exception
+     * @return string
      */
-    protected function includeComponentFile($file, $component)
+    protected function getComponentFileContent($file, $component)
     {
         $app = &\App::$instance;
         if (is_file($file)) {
@@ -50,7 +51,10 @@ class Compiler extends \HTMLServerComponentsCompiler
                 throw new \Exception('Invalid component file path (' . $file . ')');
             }
             unset($file);
+            ob_start();
             include $__componentFile;
+            $content = ob_get_clean();
+            return $content;
         } else {
             throw new \Exception('Invalid component file path (' . $file . ')');
         }
