@@ -8,29 +8,65 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class AppTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
-    public function testConstructor()
+    public function testConstructor1()
+    {
+        $_SERVER['REQUEST_URI'] = '/?var1=1';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_SCHEME'] = 'http';
+        $_SERVER['SERVER_NAME'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $app = new App();
+        $this->assertTrue($app instanceof App);
+        $this->assertTrue($app->request->method === 'GET');
+        $this->assertTrue($app->request->scheme === 'http');
+        $this->assertTrue($app->request->host === 'example.com');
+        $this->assertTrue($app->request->base === 'http://example.com');
+        $this->assertTrue((string) $app->request->path === '/');
+        $this->assertTrue((string) $app->request->query === 'var1=1');
+    }
+
+    /**
+     * 
+     */
+    public function testConstructor2()
     {
         $_SERVER['REQUEST_URI'] = '/www/?var1=1';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['REQUEST_SCHEME'] = 'https';
+        $_SERVER['SERVER_NAME'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/www/index.php';
+        $app = new App();
+        $this->assertTrue($app instanceof App);
+        $this->assertTrue($app->request->method === 'POST');
+        $this->assertTrue($app->request->scheme === 'https');
+        $this->assertTrue($app->request->host === 'example.com');
+        $this->assertTrue($app->request->base === 'https://example.com/www');
+        $this->assertTrue((string) $app->request->path === '/');
+        $this->assertTrue((string) $app->request->query === 'var1=1');
+    }
+
+    /**
+     * 
+     */
+    public function testUglyURLs()
+    {
+        $_SERVER['REQUEST_URI'] = '/www/index.php/path1/';
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_SCHEME'] = 'http';
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
         $app = $this->getApp();
         $this->assertTrue($app instanceof App);
-        $this->assertTrue($app->request->method === 'GET');
-        $this->assertTrue($app->request->scheme === 'http');
-        $this->assertTrue($app->request->host === 'example.com');
         $this->assertTrue($app->request->base === 'http://example.com/www');
-        $this->assertTrue((string) $app->request->path === '/');
-        $this->assertTrue((string) $app->request->query === 'var1=1');
+        $this->assertTrue((string) $app->request->path === '/path1/');
     }
 
     /**
@@ -43,7 +79,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testLoad()
     {
@@ -55,7 +91,24 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
+     */
+    public function testAppIndex()
+    {
+        $app = $this->getApp();
+        $this->createFile($app->config->appDir . 'index.php', '<?php
+
+');
+        // todo - must be inside index.php
+        $app->routes->add('/', function() {
+            return new App\Response('content');
+        });
+        $app->run();
+        $this->expectOutputString('content');
+    }
+
+    /**
+     * 
      */
     public function testGetUrl()
     {
@@ -68,7 +121,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testRunNotFound()
     {
@@ -78,7 +131,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testRespond()
     {
@@ -88,7 +141,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testRespondInvalidArgument()
     {
@@ -98,7 +151,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     function testMultipleApps()
     {
@@ -108,7 +161,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     function testClone()
     {
@@ -118,7 +171,7 @@ class AppTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     function testUnserialize()
     {

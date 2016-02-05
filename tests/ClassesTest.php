@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class ClassesTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAdd()
     {
@@ -25,7 +25,7 @@ class ClassesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments1()
     {
@@ -35,7 +35,7 @@ class ClassesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments2()
     {
@@ -45,7 +45,7 @@ class ClassesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments3()
     {

@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class LogTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testWrite()
     {
@@ -35,7 +35,7 @@ class LogTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidFilenameArgument1()
     {
@@ -46,7 +46,7 @@ class LogTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidDataArgument()
     {
@@ -57,7 +57,7 @@ class LogTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidConfigOption()
     {
@@ -70,7 +70,7 @@ class LogTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidFile()
     {

@@ -8,7 +8,7 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class ConfigTest extends BearFrameworkTestCase
 {
@@ -45,7 +45,7 @@ class ConfigTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcessy
+     * y
      */
     public function testSet2()
     {

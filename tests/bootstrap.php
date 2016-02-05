@@ -16,10 +16,11 @@ require __DIR__ . '/../vendor/autoload.php';
 class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 {
 
-    function getTestDir(){
+    function getTestDir()
+    {
         return sys_get_temp_dir() . '/bearframework/unittests/' . uniqid() . '/';
     }
-    
+
     function getApp($config = [])
     {
         $rootDir = $this->getTestDir();

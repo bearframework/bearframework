@@ -8,15 +8,15 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class ResponseTypesTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
-    public function testFileReader()
+    public function testFileReader1()
     {
         $response = new App\Response\FileReader('filename.txt');
         $this->assertTrue($response->filename === 'filename.txt');
@@ -26,7 +26,21 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
+     */
+    public function testFileReader2()
+    {
+        $app = $this->getApp();
+        $this->createFile($app->config->appDir . 'file', '123');
+        $app->routes->add('/', function() use ($app) {
+            return new App\Response\FileReader($app->config->appDir . 'file');
+        });
+        $app->run();
+        $this->expectOutputString('123');
+    }
+
+    /**
+     * 
      */
     public function testHTML()
     {
@@ -38,7 +52,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testJSON()
     {
@@ -50,7 +64,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testText()
     {
@@ -62,7 +76,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testNotFound()
     {
@@ -74,7 +88,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testTemporaryUnavailable()
     {
@@ -86,7 +100,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testPermanentRedirect()
     {
@@ -98,7 +112,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testTemporaryRedirect()
     {

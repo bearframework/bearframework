@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class AssetsTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlAndGetFilename()
     {
@@ -83,7 +83,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions1()
     {
@@ -94,7 +94,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions2()
     {
@@ -105,7 +105,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions3()
     {
@@ -118,7 +118,7 @@ class AssetsTest extends BearFrameworkTestCase
 
     /**
      * Not in assets dir
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions4()
     {
@@ -130,7 +130,7 @@ class AssetsTest extends BearFrameworkTestCase
 
     /**
      * Not in assets dir
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions5()
     {
@@ -142,7 +142,7 @@ class AssetsTest extends BearFrameworkTestCase
 
     /**
      * Not in assets dir
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions6()
     {
@@ -154,7 +154,7 @@ class AssetsTest extends BearFrameworkTestCase
 
     /**
      * Zero width
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions7a()
     {
@@ -166,7 +166,7 @@ class AssetsTest extends BearFrameworkTestCase
 
     /**
      * Too big width
-     * @runInSeparateProcess
+     * 
      */
     public function testGetUrlInvalidOptions7b()
     {
@@ -177,7 +177,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions1()
     {
@@ -188,7 +188,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions2()
     {
@@ -200,7 +200,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions3()
     {
@@ -210,7 +210,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions4a()
     {
@@ -223,7 +223,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions4b()
     {
@@ -236,7 +236,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions4c()
     {
@@ -249,7 +249,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameInvalidOptions4d()
     {
@@ -259,7 +259,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetFilenameMissingDataDir()
     {
@@ -276,7 +276,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetMimeType1()
     {
@@ -287,7 +287,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetMimeType2()
     {
@@ -298,7 +298,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetMimeTypeInvalidOptions1()
     {
@@ -309,7 +309,7 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMissingExtensionFile()
     {

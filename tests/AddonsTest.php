@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class AddonsTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetOptions()
     {
@@ -32,7 +32,7 @@ class AddonsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments1()
     {
@@ -44,7 +44,7 @@ class AddonsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments2()
     {
@@ -54,7 +54,7 @@ class AddonsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments3()
     {
@@ -64,7 +64,7 @@ class AddonsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments4()
     {

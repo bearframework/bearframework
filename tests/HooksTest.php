@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class HooksTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAdd()
     {
@@ -30,7 +30,7 @@ class HooksTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments1()
     {
@@ -42,7 +42,7 @@ class HooksTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments2()
     {
@@ -52,7 +52,7 @@ class HooksTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments3()
     {

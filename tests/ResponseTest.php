@@ -8,7 +8,7 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class ResponseTest extends BearFrameworkTestCase
 {

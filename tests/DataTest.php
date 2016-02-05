@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class DataTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAll()
     {
@@ -97,7 +97,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testFileName()
     {
@@ -106,7 +106,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testFileNameInvalidArguments1()
     {
@@ -116,7 +116,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testFileNameInvalidArguments2()
     {
@@ -129,7 +129,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testFileNameInvalidArguments3()
     {
@@ -145,7 +145,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMakePublicInvalidArguments1()
     {
@@ -155,7 +155,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMakePrivateInvalidArguments1()
     {
@@ -165,7 +165,7 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testIsPublicInvalidArguments1()
     {

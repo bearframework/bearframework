@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class RoutesTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testHomePage()
     {
@@ -31,7 +31,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testPage()
     {
@@ -48,7 +48,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testWildcard1()
     {
@@ -65,7 +65,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testWildcard2()
     {
@@ -82,7 +82,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testWildcard3()
     {
@@ -99,7 +99,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testWildcard4()
     {
@@ -116,7 +116,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark1()
     {
@@ -133,7 +133,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark1NoMatch()
     {
@@ -150,7 +150,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark2()
     {
@@ -167,7 +167,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark3()
     {
@@ -184,7 +184,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark4()
     {
@@ -201,7 +201,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark5()
     {
@@ -218,7 +218,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark6()
     {
@@ -235,7 +235,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testQuestionMark7()
     {
@@ -252,7 +252,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMultipleRoutes1()
     {
@@ -269,7 +269,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMultipleRoutes2()
     {
@@ -286,7 +286,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testNotFound()
     {
@@ -303,7 +303,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testRouteResponse()
     {
@@ -321,7 +321,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMissingRoute()
     {
@@ -338,7 +338,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testRouteMethod()
     {
@@ -357,7 +357,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testNotMatchingRouteMethod()
     {
@@ -375,7 +375,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidResponse()
     {
@@ -392,7 +392,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testMissingRoutes()
     {
@@ -406,7 +406,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments1()
     {
@@ -419,7 +419,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments2()
     {
@@ -432,7 +432,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments3()
     {
@@ -445,7 +445,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments4()
     {
@@ -456,7 +456,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments5()
     {
@@ -469,7 +469,7 @@ class RoutesTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testInvalidArguments6()
     {

@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class ContextTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAppContext()
     {
@@ -39,7 +39,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAddonContext()
     {
@@ -70,7 +70,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAppContextInvalidArguments1()
     {
@@ -79,7 +79,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAddonContextInvalidArguments1()
     {
@@ -88,7 +88,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testAddonContextInvalidArguments2()
     {
@@ -101,7 +101,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextInvalidArguments1()
     {
@@ -110,7 +110,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextInvalidArguments2()
     {
@@ -120,7 +120,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextAssetsInvalidArguments1()
     {
@@ -129,7 +129,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextAssetsInvalidArguments2()
     {
@@ -139,7 +139,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextAssetsInvalidArguments3()
     {
@@ -149,7 +149,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextClassesInvalidArguments1()
     {
@@ -158,7 +158,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextClassesInvalidArguments2()
     {
@@ -168,7 +168,7 @@ class ContextTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testContextClassesInvalidArguments3()
     {

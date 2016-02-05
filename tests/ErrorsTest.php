@@ -8,56 +8,44 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
-class TestApp extends App
-{
-
-    function testHandleLastError($errorData)
-    {
-        parent::handleLastError($errorData);
-    }
-
-}
-
 class ErrorsTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     function testException()
     {
-//        $app = new App();
+//        $app = $this->getApp();
+//        $this->setUseErrorHandler(false);
 //        echo 5 / 0;
-//        $this->expectOutputString('Temporary Unavailable');
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
-    function testDevelopmentError()
-    {
-//        $app = new App([
+//    function testDevelopmentError()
+//    {
+//        $app = $this->getApp([
 //            'displayErrors' => true
 //        ]);
-//        echo 1 / 0;
 //        $this->expectOutputRegex('/(.*)Message\:(.*)/');
-    }
+//        echo 1 / 0;
+//    }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
-    function testErrorsLog()
-    {
-//        $app = new App([
+//    function testErrorsLog()
+//    {
+//        $app = $this->getApp([
 //            'logErrors' => true,
-//            'errorLogFilename' => __DIR__ . '/error.log'
+//            'errorLogFilename' => 'error.log'
 //        ]);
 //        echo 1 / 0;
-//        $this->assertTrue(is_file(__DIR__ . '/error.log'));
-//        $this->assertTrue(strpos(file_get_contents(__DIR__ . '/error.log'), 'Message:') !== false);
-//        $this->assertTrue(unlink(__DIR__ . '/error.log'));
-    }
-
+//        $this->assertTrue(is_file($app->config->logsDir . 'error.log'));
+//        $this->assertTrue(strpos(file_get_contents($app->config->logsDir . 'error.log'), 'Message:') !== false);
+//    }
 }

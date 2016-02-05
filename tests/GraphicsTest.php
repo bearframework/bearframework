@@ -8,13 +8,13 @@
  */
 
 /**
- * 
+ * @runTestsInSeparateProcesses
  */
 class GraphicsTest extends BearFrameworkTestCase
 {
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetSize()
     {
@@ -32,7 +32,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetSizeInvalidArgument1()
     {
@@ -41,7 +41,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testGetSizeInvalidArgument2()
     {
@@ -50,7 +50,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResize()
     {
@@ -77,7 +77,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument1()
     {
@@ -86,7 +86,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument2()
     {
@@ -95,7 +95,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument3()
     {
@@ -104,7 +104,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument4()
     {
@@ -113,7 +113,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument5()
     {
@@ -122,7 +122,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument6()
     {
@@ -131,7 +131,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument7()
     {
@@ -144,7 +144,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument8()
     {
@@ -158,7 +158,7 @@ class GraphicsTest extends BearFrameworkTestCase
     }
 
     /**
-     * @runInSeparateProcess
+     * 
      */
     public function testResizeInvalidArgument9()
     {
