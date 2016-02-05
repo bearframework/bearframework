@@ -93,6 +93,7 @@ class App
 
     /**
      * The constructor
+     * @throws \Exception
      * @param array $config
      */
     function __construct($config = [])
@@ -281,7 +282,7 @@ class App
         $response = $this->routes->getResponse($this->request);
         ob_end_clean();
         if (!($response instanceof \App\Response)) {
-            $response = new \App\Response\NotFound("Not Found");
+            $response = new \App\Response\NotFound();
         }
         $this->respond($response);
     }
@@ -290,7 +291,6 @@ class App
      * Outputs a response
      * @param App\Response $response The response object to output
      * @throws \InvalidArgumentException
-     * @throws \Exception
      * @return void No value is returned
      */
     function respond($response)
@@ -323,7 +323,7 @@ class App
      */
     public function __clone()
     {
-        throw new \Exception('App object cannot be cloned');
+        throw new \Exception('Cannot have multiple App instances');
     }
 
     /**
@@ -333,7 +333,7 @@ class App
      */
     public function __wakeup()
     {
-        throw new \Exception('App object cannot be cloned');
+        throw new \Exception('Cannot have multiple App instances');
     }
 
 }
