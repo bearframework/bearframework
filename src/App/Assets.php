@@ -113,7 +113,7 @@ class Assets
         }
         if ($hash === substr(md5(md5($filename) . md5($optionsString)), 0, 10) && is_file($filename)) {
             if ($optionsString === '') {
-                return $filename;
+                return is_file($filename) ? $filename : false;
             }
             $options = explode('-', $optionsString);
             $width = null;
