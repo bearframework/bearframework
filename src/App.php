@@ -223,12 +223,10 @@ class App
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
-        if (is_string($filename)) {
-            $filename = realpath($filename);
-            if ($filename !== false) {
-                include_once $filename;
-                return true;
-            }
+        $filename = realpath($filename);
+        if ($filename !== false) {
+            include_once $filename;
+            return true;
         }
         return false;
     }
