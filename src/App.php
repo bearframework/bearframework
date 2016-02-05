@@ -251,7 +251,7 @@ class App
      */
     function run()
     {
-        $app = &$this; // needed for the app index file
+        $app = &self::$instance; // needed for the app index file
 
         if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . 'index.php')) {
             $context = new \App\AppContext($this->config->appDir);
@@ -290,6 +290,7 @@ class App
      * Outputs a response
      * @param App\Response $response The response object to output
      * @throws \InvalidArgumentException
+     * @throws \Exception
      * @return void No value is returned
      */
     function respond($response)
@@ -300,21 +301,19 @@ class App
                 $this->hooks->execute('responseCreated', $response);
                 $response->content = $this->components->process($response->content);
             }
-            if ($response instanceof \App\Response) {
-                if (!headers_sent()) {
-                    foreach ($response->headers as $header) {
-                        header($header);
-                    }
+            if (!headers_sent()) {
+                foreach ($response->headers as $header) {
+                    header($header);
                 }
-                if ($response instanceof \App\Response\FileReader) {
-                    readfile($response->filename);
-                } else {
-                    echo $response->content;
-                }
-                return;
             }
+            if ($response instanceof \App\Response\FileReader) {
+                readfile($response->filename);
+            } else {
+                echo $response->content;
+            }
+        } else {
+            throw new \InvalidArgumentException('The response argument must be of type \App\Response');
         }
-        throw new \InvalidArgumentException('The response argument must be of type \App\Response');
     }
 
     /**
