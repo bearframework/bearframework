@@ -114,6 +114,7 @@ class App
         $this->config = new \App\Config($config);
 
         if ($this->config->handleErrors) {
+            // @codeCoverageIgnoreStart
             error_reporting(E_ALL | E_STRICT);
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
@@ -155,10 +156,11 @@ class App
             set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
                 throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
             }, E_ALL | E_STRICT);
-            spl_autoload_register(function ($class) {
-                $this->classes->load($class);
-            });
+            // @codeCoverageIgnoreEnd
         }
+        spl_autoload_register(function ($class) {
+            $this->classes->load($class);
+        });
 
         $this->request = new \App\Request();
 
