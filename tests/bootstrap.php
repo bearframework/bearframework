@@ -8,6 +8,7 @@
  */
 
 require __DIR__ . '/../vendor/autoload.php';
+//require __DIR__ . '/../public/local/autoload.php';
 
 /**
  * 
@@ -15,9 +16,13 @@ require __DIR__ . '/../vendor/autoload.php';
 class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 {
 
+    function getTestDir(){
+        return sys_get_temp_dir() . '/bearframework/unittests/' . uniqid() . '/';
+    }
+    
     function getApp($config = [])
     {
-        $rootDir = sys_get_temp_dir() . '/bearframework/unittests/' . uniqid() . '/';
+        $rootDir = $this->getTestDir();
         $initialConfig = [
             'appDir' => $rootDir . 'app/',
             'addonsDir' => $rootDir . 'addons/',

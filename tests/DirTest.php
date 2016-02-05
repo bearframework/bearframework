@@ -19,8 +19,9 @@ class DirTest extends BearFrameworkTestCase
     public function testMakeDir()
     {
         $dir = uniqid();
-        App\Utilities\Dir::make(sys_get_temp_dir() . '/' . $dir);
-        $this->assertTrue(is_dir(sys_get_temp_dir() . '/' . $dir));
+        $testDir = $this->getTestDir();
+        App\Utilities\Dir::make($testDir . $dir);
+        $this->assertTrue(is_dir($testDir . $dir));
         $this->setExpectedException('InvalidArgumentException');
         App\Utilities\Dir::make(1);
     }

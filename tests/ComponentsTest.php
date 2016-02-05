@@ -145,7 +145,7 @@ class ComponentsTest extends BearFrameworkTestCase
      */
     public function testInvalidArguments7b()
     {
-        $wrongDir = sys_get_temp_dir() . '/wrongdir' . uniqid() . '/';
+        $wrongDir = $this->getTestDir() . 'wrongdir' . uniqid() . '/';
         App\Utilities\Dir::make($wrongDir);
 
         $this->createFile($wrongDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content</body></html>');
