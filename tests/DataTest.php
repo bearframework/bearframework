@@ -124,7 +124,7 @@ class DataTest extends BearFrameworkTestCase
             'dataDir' => null
         ]);
 
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('App\InvalidConfigOptionException');
         $app->data->getFilename('key');
     }
 
@@ -137,7 +137,7 @@ class DataTest extends BearFrameworkTestCase
             'dataDir' => null
         ]);
 
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('App\InvalidConfigOptionException');
         $app->data->get([
             'key' => 'users/1',
             'result' => ['body', 'metadata']

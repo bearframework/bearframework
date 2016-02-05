@@ -19,8 +19,8 @@ class Assets
      * Returns a public URL for the specified filename
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
-     * @throws \Exception
      * @throws \InvalidArgumentException
+     * @throws \App\InvalidConfigOptionException
      * @return string The URL for the specified filename and options
      */
     function getUrl($filename, $options = [])
@@ -33,7 +33,7 @@ class Assets
             throw new \InvalidArgumentException('');
         }
         if ($app->config->assetsPathPrefix === null) {
-            throw new \Exception('Config option assetsPathPrefix is not set');
+            throw new \App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
         }
         $optionsString = '';
         ksort($options);
@@ -74,8 +74,8 @@ class Assets
     /**
      * Returns the local filename for a given URL path
      * @param string $path The path part of the asset url
-     * @throws \Exception
      * @throws \InvalidArgumentException
+     * @throws \App\InvalidConfigOptionException
      * @return boolean|string The localfileneme or FALSE if file does not exists
      */
     function getFilename($path)
@@ -85,7 +85,7 @@ class Assets
         }
         $app = &\App::$instance;
         if ($app->config->assetsPathPrefix === null) {
-            throw new \Exception('Config option assetsPathPrefix is not set');
+            throw new \App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
         }
         if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
             return false;
@@ -134,7 +134,7 @@ class Assets
             }
 
             if ($app->config->dataDir === null) {
-                throw new \Exception('Config option dataDir is not set');
+                throw new \App\InvalidConfigOptionException('Config option dataDir is not set');
             }
             $pathinfo = pathinfo($filename);
             if (isset($pathinfo['extension'])) {

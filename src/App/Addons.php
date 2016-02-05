@@ -26,6 +26,7 @@ class Addons
      * @param string $id The id of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
+     * @throws \App\InvalidConfigOptionException
      * @return void No value is returned
      */
     function add($id, $options = [])
@@ -42,7 +43,7 @@ class Addons
         $__id = $id;
         unset($id);
         if ($app->config->addonsDir === null) {
-            throw new \Exception('Config option addonsDir not set');
+            throw new \App\InvalidConfigOptionException('Config option addonsDir not set');
         }
         $__indexFile = realpath($app->config->addonsDir . $__id . '/index.php');
         if ($__indexFile !== false) {

@@ -19,9 +19,9 @@ class Log
      * Appends data to the file specified. The file will be created if not exists.
      * @param string $filename
      * @param string $data
-     * @return boolean
-     * @throws \Exception
      * @throws \InvalidArgumentException
+     * @throws \App\InvalidConfigOptionException
+     * @return boolean TRUE if data is suceessfully written. FALSE otherwise.
      */
     function write($filename, $data)
     {
@@ -33,7 +33,7 @@ class Log
             throw new \InvalidArgumentException('The data argument must be of type string');
         }
         if ($app->config->logsDir === null) {
-            throw new \Exception('Config option dataDir is not set');
+            throw new \App\InvalidConfigOptionException('Config option dataDir is not set');
         }
 
         try {

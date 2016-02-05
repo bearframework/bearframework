@@ -95,7 +95,7 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp([
             'addonsDir' => null
         ]);
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('App\InvalidConfigOptionException');
         $context = new App\AddonContext('dir');
         $context->getOptions();
     }
