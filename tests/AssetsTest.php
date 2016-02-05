@@ -16,6 +16,36 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testResponse1()
+    {
+        $app = $this->getApp();
+        $filename = $app->config->appDir . 'assets/file.png';
+        $this->createSampleFile($filename, 'png');
+        $url = $app->assets->getUrl($filename);
+        $path = substr($url, strlen($app->request->base));
+        $app->request->path = new App\Request\Path($path);
+        $app->run();
+        $this->expectOutputString(file_get_contents($filename));
+    }
+    
+    
+    /**
+     * 
+     */
+    public function testResponse2()
+    {
+        $app = $this->getApp();
+        $filename = $app->config->appDir . 'assets/missing/file.png';
+        $url = $app->assets->getUrl($filename);
+        $path = substr($url, strlen($app->request->base));
+        $app->request->path = new App\Request\Path($path);
+        $app->run();
+        $this->expectOutputString('Not Found');
+    }
+
+    /**
+     * 
+     */
     public function testGetUrlAndGetFilename()
     {
         $app = $this->getApp();
