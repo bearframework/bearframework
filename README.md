@@ -32,7 +32,7 @@ $app->run();
 
 * Install via Composer
 ```
-php composer.phar require bearframework/bearframework
+composer require bearframework/bearframework
 ```
 
 * Download the zip file
