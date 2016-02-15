@@ -15,7 +15,7 @@ The goal of Bear Framework is to help you start your next web project in less th
 ## Simple and powerful
 
 Bear Framework is one of the easiest PHP frameworks you can find. See for yourself. Here is a simple app that outputs 'Hi'.
-```
+```php
 <?php
 require 'vendor/autoload.php';
 
