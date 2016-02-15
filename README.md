@@ -34,6 +34,10 @@ $app->run();
 ```
 composer require bearframework/bearframework
 ```
+or the following command to create a sleketon application
+```
+composer create-project bearframework/app [my-app-name]
+```
 
 * Download the zip file
 
