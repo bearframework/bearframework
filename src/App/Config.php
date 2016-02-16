@@ -21,8 +21,6 @@ namespace App;
  * @property string $errorLogFilename
  * @property string $assetsPathPrefix
  * @property int $assetsMaxAge
- * @property boolean $autoUpdateFramework
- * @property boolean $autoUpdateAddons
  */
 class Config
 {
@@ -65,9 +63,7 @@ class Config
             'logErrors' => false,
             'errorLogFilename' => 'errors/' . date('Y-m-d') . '.log',
             'assetsPathPrefix' => '/assets/',
-            'assetsMaxAge' => 0,
-            'autoUpdateFramework' => false,
-            'autoUpdateAddons' => false
+            'assetsMaxAge' => 0
         ];
         $this->options = array_merge($defaultOptions, $options);
     }
