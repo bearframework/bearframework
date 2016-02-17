@@ -96,28 +96,72 @@ class App
     public static $instance = null;
 
     /**
+     *
+     * @var bool 
+     */
+    private $initialized = false;
+
+    /**
      * The constructor
      * @throws \Exception
      * @param array $config
      */
     function __construct($config = [])
     {
-
         if (self::$instance === null) {
-            if (version_compare(phpversion(), '5.6.0', '<')) {
-                ini_set('default_charset', 'UTF-8');
-                ini_set('mbstring.internal_encoding', 'UTF-8');
-            }
-            ini_set('mbstring.func_overload', 7);
-            ini_set("pcre.backtrack_limit", 100000000);
-            ini_set("pcre.recursion_limit", 100000000);
             self::$instance = &$this;
         } else {
             throw new \Exception('App already constructed');
         }
 
         $this->config = new App\Config($config);
+        $this->request = new App\Request();
+        $this->routes = new App\Routes();
+        $this->log = new App\Log();
+        $this->components = new App\Components();
+        $this->addons = new App\Addons();
+        $this->hooks = new App\Hooks();
+        $this->assets = new App\Assets();
+        $this->data = new App\Data();
+        $this->cache = new App\Cache();
+        $this->classes = new App\Classes();
+    }
 
+    /**
+     * Initializes the environment and context data
+     */
+    function initialize()
+    {
+        if (!$this->initialized) {
+            spl_autoload_register(function ($class) {
+                $this->classes->load($class);
+            });
+            $this->initializeEnvironment();
+            $this->initializeErrorHandler();
+            $this->initializeRequest();
+            $this->initialized = true;
+        }
+    }
+
+    /**
+     * Sets UTF-8 as the default encoding and updates regular expressions limits
+     */
+    private function initializeEnvironment()
+    {
+        if (version_compare(phpversion(), '5.6.0', '<')) {
+            ini_set('default_charset', 'UTF-8');
+            ini_set('mbstring.internal_encoding', 'UTF-8');
+        }
+        ini_set('mbstring.func_overload', 7);
+        ini_set("pcre.backtrack_limit", 100000000);
+        ini_set("pcre.recursion_limit", 100000000);
+    }
+
+    /**
+     * Initalizes error handling
+     */
+    private function initializeErrorHandler()
+    {
         if ($this->config->handleErrors) {
             // @codeCoverageIgnoreStart
             error_reporting(E_ALL | E_STRICT);
@@ -163,12 +207,13 @@ class App
             }, E_ALL | E_STRICT);
             // @codeCoverageIgnoreEnd
         }
-        spl_autoload_register(function ($class) {
-            $this->classes->load($class);
-        });
+    }
 
-        $this->request = new App\Request();
-
+    /**
+     * Initializes the request object
+     */
+    private function initializeRequest()
+    {
         if (isset($_SERVER)) {
 
             $this->request->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
@@ -203,16 +248,6 @@ class App
             $this->request->path = new App\Request\Path(isset($path{0}) ? $path : '/');
             $this->request->base = $scheme . '://' . $host . $basePath;
         }
-
-        $this->routes = new App\Routes();
-        $this->log = new App\Log();
-        $this->components = new App\Components();
-        $this->addons = new App\Addons();
-        $this->hooks = new App\Hooks();
-        $this->assets = new App\Assets();
-        $this->data = new App\Data();
-        $this->cache = new App\Cache();
-        $this->classes = new App\Classes();
     }
 
     /**
@@ -254,6 +289,7 @@ class App
      */
     function run()
     {
+        $this->initialize();
         $app = &self::$instance; // needed for the app index file
 
         if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . 'index.php')) {

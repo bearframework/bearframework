@@ -31,6 +31,7 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
             'logsDir' => $rootDir . 'logs/',
         ];
         $app = new BearFramework\App(array_merge($initialConfig, $config));
+        $app->initialize();
         $app->request->base = 'http://example.com/www';
         $app->request->method = 'GET';
         return $app;
