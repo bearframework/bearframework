@@ -18,9 +18,9 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testRequest()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
         $request->base = 'http://example.com';
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
         $this->assertTrue((string) $request === 'http://example.com/part1/part2/');
     }
 
@@ -29,9 +29,9 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testProperties()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
         $request->base = 'http://example.com';
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
         $this->assertTrue(isset($request->method));
         $this->assertTrue(isset($request->scheme));
         $this->assertTrue(isset($request->host));
@@ -44,9 +44,9 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPath()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
 
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
         $this->assertTrue((string) $request->path === '/part1/part2/');
         $this->assertTrue(isset($request->path[0]));
         $this->assertTrue(isset($request->path[1]));
@@ -55,7 +55,7 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($request->path[1] === 'part2');
         $this->assertTrue($request->path[2] === null);
 
-        $request->path = new \App\Request\Path('part1/part2');
+        $request->path = new \BearFramework\App\Request\Path('part1/part2');
         $this->assertTrue(isset($request->path[0]));
         $this->assertTrue(isset($request->path[1]));
         $this->assertFalse(isset($request->path[2]));
@@ -63,11 +63,11 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($request->path[1] === 'part2');
         $this->assertTrue($request->path[2] === null);
 
-        $request->path = new \App\Request\Path('');
+        $request->path = new \BearFramework\App\Request\Path('');
         $this->assertFalse(isset($request->path[0]));
         $this->assertTrue($request->path[0] === null);
 
-        $request->path = new \App\Request\Path('/');
+        $request->path = new \BearFramework\App\Request\Path('/');
         $this->assertFalse(isset($request->path[0]));
         $this->assertTrue($request->path[0] === null);
     }
@@ -77,10 +77,10 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPathInvalidArguments1()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
 
         $this->setExpectedException('InvalidArgumentException');
-        $request->path = new \App\Request\Path(1);
+        $request->path = new \BearFramework\App\Request\Path(1);
     }
 
     /**
@@ -88,8 +88,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPathInvalidArguments2()
     {
-        $request = new \App\Request();
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request = new \BearFramework\App\Request();
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
 
         $this->setExpectedException('InvalidArgumentException');
         isset($request->path['test']);
@@ -100,8 +100,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPathInvalidArguments3()
     {
-        $request = new \App\Request();
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request = new \BearFramework\App\Request();
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
 
         $this->setExpectedException('InvalidArgumentException');
         echo $request->path['test'];
@@ -112,8 +112,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPathNotImplementedsMethod1()
     {
-        $request = new \App\Request();
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request = new \BearFramework\App\Request();
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
 
         $this->setExpectedException('Exception');
         $request->path['test'] = '1';
@@ -124,8 +124,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPathNotImplementedsMethod2()
     {
-        $request = new \App\Request();
-        $request->path = new \App\Request\Path('/part1/part2/');
+        $request = new \BearFramework\App\Request();
+        $request->path = new \BearFramework\App\Request\Path('/part1/part2/');
 
         $this->setExpectedException('Exception');
         unset($request->path['test']);
@@ -136,9 +136,9 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQuery()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
 
-        $request->query = new \App\Request\Query('var1=1&var2=a');
+        $request->query = new \BearFramework\App\Request\Query('var1=1&var2=a');
         $this->assertTrue((string) $request->query === 'var1=1&var2=a');
         $this->assertTrue(isset($request->query['var1']));
         $this->assertTrue(isset($request->query['var2']));
@@ -147,7 +147,7 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($request->query['var2'] === 'a');
         $this->assertTrue($request->query['var3'] === null);
 
-        $request->query = new \App\Request\Query('');
+        $request->query = new \BearFramework\App\Request\Query('');
         $this->assertFalse(isset($request->query['var1']));
         $this->assertTrue($request->query['var1'] === null);
     }
@@ -157,10 +157,10 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQueryInvalidArguments1()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
 
         $this->setExpectedException('InvalidArgumentException');
-        $request->query = new \App\Request\Query(1);
+        $request->query = new \BearFramework\App\Request\Query(1);
     }
 
     /**
@@ -168,8 +168,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQueryInvalidArguments2()
     {
-        $request = new \App\Request();
-        $request->query = new \App\Request\Query('var1=1&var2=a');
+        $request = new \BearFramework\App\Request();
+        $request->query = new \BearFramework\App\Request\Query('var1=1&var2=a');
 
         $this->setExpectedException('InvalidArgumentException');
         isset($request->query[1]);
@@ -180,8 +180,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQueryInvalidArguments3()
     {
-        $request = new \App\Request();
-        $request->query = new \App\Request\Query('var1=1&var2=a');
+        $request = new \BearFramework\App\Request();
+        $request->query = new \BearFramework\App\Request\Query('var1=1&var2=a');
 
         $this->setExpectedException('InvalidArgumentException');
         echo $request->query[1];
@@ -192,8 +192,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQueryNotImplementedsMethod1()
     {
-        $request = new \App\Request();
-        $request->query = new \App\Request\Query('var1=1&var2=a');
+        $request = new \BearFramework\App\Request();
+        $request->query = new \BearFramework\App\Request\Query('var1=1&var2=a');
 
         $this->setExpectedException('Exception');
         $request->query['test'] = '1';
@@ -204,8 +204,8 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQueryNotImplementedsMethod2()
     {
-        $request = new \App\Request();
-        $request->query = new \App\Request\Query('var1=1&var2=a');
+        $request = new \BearFramework\App\Request();
+        $request->query = new \BearFramework\App\Request\Query('var1=1&var2=a');
 
         $this->setExpectedException('Exception');
         unset($request->query['test']);
@@ -216,7 +216,7 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testInvalidGet()
     {
-        $request = new \App\Request();
+        $request = new \BearFramework\App\Request();
         $this->setExpectedException('Exception');
         echo $request->missing;
     }

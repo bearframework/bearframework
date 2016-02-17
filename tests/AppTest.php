@@ -23,8 +23,8 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['REQUEST_SCHEME'] = 'http';
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/index.php';
-        $app = new App();
-        $this->assertTrue($app instanceof App);
+        $app = new \BearFramework\App();
+        $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->method === 'GET');
         $this->assertTrue($app->request->scheme === 'http');
         $this->assertTrue($app->request->host === 'example.com');
@@ -43,8 +43,8 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['REQUEST_SCHEME'] = 'https';
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
-        $app = new App();
-        $this->assertTrue($app instanceof App);
+        $app = new \BearFramework\App();
+        $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->method === 'POST');
         $this->assertTrue($app->request->scheme === 'https');
         $this->assertTrue($app->request->host === 'example.com');
@@ -64,7 +64,7 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
         $app = $this->getApp();
-        $this->assertTrue($app instanceof App);
+        $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->base === 'http://example.com/www');
         $this->assertTrue((string) $app->request->path === '/path1/');
     }
@@ -74,8 +74,8 @@ class AppTest extends BearFrameworkTestCase
      */
     public function testAutoload()
     {
-        $this->assertTrue(class_exists('\App\Response'));
-        $this->assertFalse(class_exists('\App\MissingClass'));
+        $this->assertTrue(class_exists('\BearFramework\App\Response'));
+        $this->assertFalse(class_exists('\BearFramework\App\MissingClass'));
     }
 
     /**
@@ -101,7 +101,7 @@ class AppTest extends BearFrameworkTestCase
 ');
         // todo - must be inside index.php
         $app->routes->add('/', function() {
-            return new App\Response('content');
+            return new \BearFramework\App\Response('content');
         });
         $app->run();
         $this->expectOutputString('content');
@@ -136,7 +136,7 @@ class AppTest extends BearFrameworkTestCase
     public function testRespond()
     {
         $app = $this->getApp();
-        $app->respond(new \App\Response('The end'));
+        $app->respond(new \BearFramework\App\Response('The end'));
         $this->expectOutputString('The end');
     }
 

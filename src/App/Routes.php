@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides functionality for registering callbacks for specific requests and executing them
@@ -24,7 +26,7 @@ class Routes
     /**
      * Registers a request handler
      * @param string|string[] $pattern Path pattern. Can contain "?" (path part) and "*" (matches everything).
-     * @param callable $callback Function that is expected to return object of type \App\Response.
+     * @param callable $callback Function that is expected to return object of type \BearFramework\App\Response.
      * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -56,13 +58,13 @@ class Routes
 
     /**
      * Finds the matching callback and returns its result
-     * @param App\Request $request The current request object
+     * @param \BearFramework\App\Request $request The current request object
      * @return mixed The result of the matching callback. NULL if none.
      */
     function getResponse($request)
     {
-        if (!($request instanceof \App\Request)) {
-            throw new \InvalidArgumentException('The request argument must be of type \App\Request');
+        if (!($request instanceof App\Request)) {
+            throw new \InvalidArgumentException('The request argument must be of type \BearFramework\App\Request');
         }
         $requestPath = (string) $request->path;
         foreach ($this->data as $route) {
@@ -93,7 +95,7 @@ class Routes
                 }
                 if ($found) {
                     $response = call_user_func($route[1]);
-                    if ($response instanceof \App\Response) {
+                    if ($response instanceof App\Response) {
                         return $response;
                     } else {
                         // continue searching

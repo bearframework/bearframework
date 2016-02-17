@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides logging functionlity
@@ -20,12 +22,12 @@ class Log
      * @param string $filename
      * @param string $data
      * @throws \InvalidArgumentException
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return boolean TRUE if data is suceessfully written. FALSE otherwise.
      */
     function write($filename, $data)
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         if (!is_string($filename) || strlen($filename) === 0) {
             throw new \InvalidArgumentException('The filename argument must be of type string and must not be empty');
         }
@@ -33,14 +35,14 @@ class Log
             throw new \InvalidArgumentException('The data argument must be of type string');
         }
         if ($app->config->logsDir === null) {
-            throw new \App\InvalidConfigOptionException('Config option dataDir is not set');
+            throw new App\InvalidConfigOptionException('Config option dataDir is not set');
         }
 
         try {
             $microtime = microtime(true);
             $microtimeParts = explode('.', $microtime);
             $logData = date('H:i:s', $microtime) . ':' . (isset($microtimeParts[1]) ? $microtimeParts[1] : '0') . "\n" . $data . "\n\n";
-            \App\Utilities\File::makeDir($app->config->logsDir . $filename);
+            App\Utilities\File::makeDir($app->config->logsDir . $filename);
             $fileHandler = fopen($app->config->logsDir . $filename, 'ab');
             $result = fwrite($fileHandler, $logData);
             fclose($fileHandler);

@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Utilities;
+namespace BearFramework\App\Utilities;
 
 /**
  * Graphics utilities

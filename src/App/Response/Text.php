@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that outputs text. The appropriate content type is set.
  */
-class Text extends \App\Response
+class Text extends \BearFramework\App\Response
 {
 
     /**

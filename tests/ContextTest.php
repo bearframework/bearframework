@@ -21,13 +21,13 @@ class ContextTest extends BearFrameworkTestCase
 
         $app = $this->getApp();
         $app->request->base = 'http://example.com/www';
-        App\Utilities\Dir::make($app->config->appDir);
+        \BearFramework\App\Utilities\Dir::make($app->config->appDir);
 
         $this->createFile($app->config->appDir . 'index.php', '<?php ');
         $this->createFile($app->config->appDir . 'class1.php', '<?php class TempClass1{}');
         $this->createFile($app->config->appDir . 'class2.php', '<?php class TempClass2{}');
 
-        $context = new App\AppContext($app->config->appDir);
+        $context = new \BearFramework\App\AppContext($app->config->appDir);
 
         $this->assertTrue($context->load('class1.php'));
         $this->assertTrue(class_exists('TempClass1'));
@@ -46,7 +46,7 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $addonID = 'tempaddong' . uniqid();
         $addonDir = $app->config->addonsDir . $addonID . '/';
-        App\Utilities\Dir::make($addonDir);
+        \BearFramework\App\Utilities\Dir::make($addonDir);
         $app->request->base = 'http://example.com/www';
 
         $this->createFile($addonDir . 'index.php', '<?php ');
@@ -54,7 +54,7 @@ class ContextTest extends BearFrameworkTestCase
         $this->createFile($addonDir . 'class2.php', '<?php class TempClass2{}');
         $app->addons->add($addonID, ['option1' => 5]);
 
-        $context = new App\AddonContext($addonDir);
+        $context = new \BearFramework\App\AddonContext($addonDir);
 
         $options = $context->getOptions();
         $this->assertTrue(isset($options['option1']));
@@ -75,7 +75,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testAppContextInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new App\AppContext(1);
+        new \BearFramework\App\AppContext(1);
     }
 
     /**
@@ -84,7 +84,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testAddonContextInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new App\AddonContext(1);
+        new \BearFramework\App\AddonContext(1);
     }
 
     /**
@@ -95,8 +95,8 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp([
             'addonsDir' => null
         ]);
-        $this->setExpectedException('App\InvalidConfigOptionException');
-        $context = new App\AddonContext('dir');
+        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $context = new \BearFramework\App\AddonContext('dir');
         $context->getOptions();
     }
 
@@ -106,7 +106,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new App\Context(1);
+        new \BearFramework\App\Context(1);
     }
 
     /**
@@ -115,7 +115,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $context = new App\Context('dir');
+        $context = new \BearFramework\App\Context('dir');
         $context->load(1);
     }
 
@@ -125,7 +125,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextAssetsInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new App\Context\Assets(1);
+        new \BearFramework\App\Context\Assets(1);
     }
 
     /**
@@ -134,7 +134,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextAssetsInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $contextAssets = new App\Context\Assets('dir');
+        $contextAssets = new \BearFramework\App\Context\Assets('dir');
         $contextAssets->getUrl(1);
     }
 
@@ -144,7 +144,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextAssetsInvalidArguments3()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $contextAssets = new App\Context\Assets('dir');
+        $contextAssets = new \BearFramework\App\Context\Assets('dir');
         $contextAssets->getUrl('file.png', 1);
     }
 
@@ -154,7 +154,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextClassesInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new App\Context\Classes(1);
+        new \BearFramework\App\Context\Classes(1);
     }
 
     /**
@@ -163,7 +163,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextClassesInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $contextClasses = new App\Context\Classes('dir');
+        $contextClasses = new \BearFramework\App\Context\Classes('dir');
         $contextClasses->add(1, 'testclass.php');
     }
 
@@ -173,7 +173,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextClassesInvalidArguments3()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $contextClasses = new App\Context\Classes('dir');
+        $contextClasses = new \BearFramework\App\Context\Classes('dir');
         $contextClasses->add('TestClass', 1);
     }
 

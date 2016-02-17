@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides utility functions for assets
@@ -20,12 +22,12 @@ class Assets
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return string The URL for the specified filename and options
      */
     function getUrl($filename, $options = [])
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
@@ -33,7 +35,7 @@ class Assets
             throw new \InvalidArgumentException('');
         }
         if ($app->config->assetsPathPrefix === null) {
-            throw new \App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
+            throw new App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
         }
         $optionsString = '';
         ksort($options);
@@ -75,7 +77,7 @@ class Assets
      * Returns the local filename for a given URL path
      * @param string $path The path part of the asset url
      * @throws \InvalidArgumentException
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return boolean|string The localfileneme or FALSE if file does not exists
      */
     function getFilename($path)
@@ -83,9 +85,9 @@ class Assets
         if (!is_string($path)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
+        $app = &App::$instance;
         if ($app->config->assetsPathPrefix === null) {
-            throw new \App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
+            throw new App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
         }
         if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
             return false;
@@ -134,22 +136,22 @@ class Assets
             }
 
             if ($app->config->dataDir === null) {
-                throw new \App\InvalidConfigOptionException('Config option dataDir is not set');
+                throw new App\InvalidConfigOptionException('Config option dataDir is not set');
             }
             $pathinfo = pathinfo($filename);
             if (isset($pathinfo['extension'])) {
                 $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString));
                 if (!is_file($tempFilename)) {
-                    \App\Utilities\File::makeDir($tempFilename);
+                    App\Utilities\File::makeDir($tempFilename);
                     if ($width !== null || $height !== null) {
                         if ($width === null) {
-                            $imageSize = \App\Utilities\Graphics::getSize($filename);
+                            $imageSize = App\Utilities\Graphics::getSize($filename);
                             $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
                         } elseif ($height === null) {
-                            $imageSize = \App\Utilities\Graphics::getSize($filename);
+                            $imageSize = App\Utilities\Graphics::getSize($filename);
                             $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
                         }
-                        \App\Utilities\Graphics::resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
+                        App\Utilities\Graphics::resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
                     }
                 }
                 return $tempFilename;

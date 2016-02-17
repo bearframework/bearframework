@@ -41,7 +41,7 @@ class ClassesTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
-        $app->classes->add('App\Log', 2);
+        $app->classes->add('\BearFramework\App\Log', 2);
     }
 
     /**

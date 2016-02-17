@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Request;
+namespace BearFramework\App\Request;
 
 /**
  * Provides information about the request path

@@ -30,7 +30,7 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
             'dataDir' => $rootDir . 'data/',
             'logsDir' => $rootDir . 'logs/',
         ];
-        $app = new App(array_merge($initialConfig, $config));
+        $app = new BearFramework\App(array_merge($initialConfig, $config));
         $app->request->base = 'http://example.com/www';
         $app->request->method = 'GET';
         return $app;
@@ -38,7 +38,7 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 
     function createFile($filename, $content)
     {
-        App\Utilities\File::makeDir($filename);
+        BearFramework\App\Utilities\File::makeDir($filename);
         file_put_contents($filename, $content);
     }
 

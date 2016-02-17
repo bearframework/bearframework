@@ -7,6 +7,10 @@
  * Free to use under the MIT license.
  */
 
+namespace BearFramework;
+
+use BearFramework\App;
+
 /**
  * The is the class used to instantiate and configure you application.
  */
@@ -21,67 +25,67 @@ class App
 
     /**
      * The application configuration
-     * @var App\Config 
+     * @var BearFramework\App\Config 
      */
     public $config = null;
 
     /**
      * Provides information about the current request
-     * @var App\Request
+     * @var BearFramework\App\Request
      */
     public $request = null;
 
     /**
      * Stores the data about the defined routes callbacks
-     * @var App\Routes 
+     * @var BearFramework\App\Routes 
      */
     public $routes = null;
 
     /**
      * Provides logging functionlity
-     * @var App\Log 
+     * @var BearFramework\App\Log 
      */
     public $log = null;
 
     /**
      * HTML Server Components utilities
-     * @var App\Components
+     * @var BearFramework\App\Components
      */
     public $components = null;
 
     /**
      * Provides a way to enable addons and manage their options
-     * @var App\Addons
+     * @var BearFramework\App\Addons
      */
     public $addons = null;
 
     /**
      * Provides functionality for notifications and data requests
-     * @var App\Hooks
+     * @var BearFramework\App\Hooks
      */
     public $hooks = null;
 
     /**
      * Provides utility functions for assets
-     * @var App\Assets
+     * @var BearFramework\App\Assets
      */
     public $assets = null;
 
     /**
      * Data storage
-     * @var App\Data
+     * @var BearFramework\App\Data
      */
     public $data = null;
 
     /**
      * Data cache
-     * @var App\Cache 
+     * @var BearFramework\App\Cache 
      */
     public $cache = null;
 
     /**
      * Provides functionality for autoloading classes
-     * @var App\Classes 
+     * @var BearFramework\App\Classes 
      */
     public $classes = [];
 
@@ -112,7 +116,7 @@ class App
             throw new \Exception('App already constructed');
         }
 
-        $this->config = new \App\Config($config);
+        $this->config = new App\Config($config);
 
         if ($this->config->handleErrors) {
             // @codeCoverageIgnoreStart
@@ -137,10 +141,10 @@ class App
                 }
                 if ($this->config->displayErrors) {
                     ob_clean();
-                    $response = new \App\Response\TemporaryUnavailable($data);
+                    $response = new App\Response\TemporaryUnavailable($data);
                     $response->disableHooks = true;
                 } else {
-                    $response = new \App\Response\TemporaryUnavailable();
+                    $response = new App\Response\TemporaryUnavailable();
                 }
                 $this->respond($response);
             };
@@ -163,7 +167,7 @@ class App
             $this->classes->load($class);
         });
 
-        $this->request = new \App\Request();
+        $this->request = new App\Request();
 
         if (isset($_SERVER)) {
 
@@ -174,7 +178,7 @@ class App
             $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? urldecode($_SERVER['REQUEST_URI']) : '/';
             $position = strpos($path, '?');
             if ($position !== false) {
-                $this->request->query = new \App\Request\Query(substr($path, $position + 1));
+                $this->request->query = new App\Request\Query(substr($path, $position + 1));
                 $path = substr($path, 0, $position);
             }
 
@@ -199,18 +203,18 @@ class App
 
             $scheme = (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && $_SERVER['HTTP_X_FORWARDED_PROTOCOL'] === 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
             $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknownhost';
-            $this->request->path = new \App\Request\Path(isset($path{0}) ? $path : '/');
+            $this->request->path = new App\Request\Path(isset($path{0}) ? $path : '/');
             $this->request->base = $scheme . '://' . $host . $basePath;
         }
-        $this->routes = new \App\Routes();
-        $this->log = new \App\Log();
-        $this->components = new \App\Components();
-        $this->addons = new \App\Addons();
-        $this->hooks = new \App\Hooks();
-        $this->assets = new \App\Assets();
-        $this->data = new \App\Data();
-        $this->cache = new \App\Cache();
-        $this->classes = new \App\Classes();
+        $this->routes = new App\Routes();
+        $this->log = new App\Log();
+        $this->components = new App\Components();
+        $this->addons = new App\Addons();
+        $this->hooks = new App\Hooks();
+        $this->assets = new App\Assets();
+        $this->data = new App\Data();
+        $this->cache = new App\Cache();
+        $this->classes = new App\Classes();
     }
 
     /**
@@ -255,7 +259,7 @@ class App
         $app = &self::$instance; // needed for the app index file
 
         if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . 'index.php')) {
-            $context = new \App\AppContext($this->config->appDir);
+            $context = new App\AppContext($this->config->appDir);
             include realpath($this->config->appDir . 'index.php');
         }
 
@@ -263,9 +267,9 @@ class App
             $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
                 $filename = $app->assets->getFilename((string) $app->request->path);
                 if ($filename === false) {
-                    return new \App\Response\NotFound();
+                    return new App\Response\NotFound();
                 } else {
-                    $response = new \App\Response\FileReader($filename);
+                    $response = new App\Response\FileReader($filename);
                     if ($app->config->assetsMaxAge !== null) {
                         $response->setMaxAge((int) $app->config->assetsMaxAge);
                     }
@@ -281,21 +285,21 @@ class App
         ob_start();
         $response = $this->routes->getResponse($this->request);
         ob_end_clean();
-        if (!($response instanceof \App\Response)) {
-            $response = new \App\Response\NotFound();
+        if (!($response instanceof App\Response)) {
+            $response = new App\Response\NotFound();
         }
         $this->respond($response);
     }
 
     /**
      * Outputs a response
-     * @param App\Response $response The response object to output
+     * @param BearFramework\App\Response $response The response object to output
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
     function respond($response)
     {
-        if ($response instanceof \App\Response) {
+        if ($response instanceof App\Response) {
             if (!isset($response->disableHooks) || $response->disableHooks === false) {
                 $response->content = $this->components->process($response->content);
                 $this->hooks->execute('responseCreated', $response);
@@ -306,13 +310,13 @@ class App
                     header($header);
                 }
             }
-            if ($response instanceof \App\Response\FileReader) {
+            if ($response instanceof App\Response\FileReader) {
                 readfile($response->filename);
             } else {
                 echo $response->content;
             }
         } else {
-            throw new \InvalidArgumentException('The response argument must be of type \App\Response');
+            throw new \InvalidArgumentException('The response argument must be of type BearFramework\App\Response');
         }
     }
 

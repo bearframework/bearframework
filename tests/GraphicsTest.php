@@ -25,7 +25,7 @@ class GraphicsTest extends BearFrameworkTestCase
         foreach ($fileTypes as $fileType) {
             $filename = $app->config->appDir . 'assets/logo.' . $fileType;
             $this->createSampleFile($filename, $fileType);
-            $size = App\Utilities\Graphics::getSize($filename);
+            $size = \BearFramework\App\Utilities\Graphics::getSize($filename);
             $this->assertTrue($size[0] === 100);
             $this->assertTrue($size[1] === 70);
         }
@@ -37,7 +37,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testGetSizeInvalidArgument1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::getSize(1);
+        \BearFramework\App\Utilities\Graphics::getSize(1);
     }
 
     /**
@@ -46,7 +46,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testGetSizeInvalidArgument2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::getSize('missing/file.png');
+        \BearFramework\App\Utilities\Graphics::getSize('missing/file.png');
     }
 
     /**
@@ -63,14 +63,14 @@ class GraphicsTest extends BearFrameworkTestCase
             $this->createSampleFile($sourceFilename, $fileType);
 
             $targetFilename = $app->config->appDir . 'assets/newlogo.' . $fileType;
-            $size = App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 50, 35);
-            $size = App\Utilities\Graphics::getSize($targetFilename);
+            $size = \BearFramework\App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 50, 35);
+            $size = \BearFramework\App\Utilities\Graphics::getSize($targetFilename);
             $this->assertTrue($size[0] === 50);
             $this->assertTrue($size[1] === 35);
 
             $targetFilename = $app->config->appDir . 'assets/newlogo2.' . $fileType;
-            $size = App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 35, 45, $fileType);
-            $size = App\Utilities\Graphics::getSize($targetFilename);
+            $size = \BearFramework\App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 35, 45, $fileType);
+            $size = \BearFramework\App\Utilities\Graphics::getSize($targetFilename);
             $this->assertTrue($size[0] === 35);
             $this->assertTrue($size[1] === 45);
         }
@@ -82,7 +82,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testResizeInvalidArgument1()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize(1, 'target.png', 100, 100);
+        \BearFramework\App\Utilities\Graphics::resize(1, 'target.png', 100, 100);
     }
 
     /**
@@ -91,7 +91,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testResizeInvalidArgument2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize('source.png', 1, 100, 100);
+        \BearFramework\App\Utilities\Graphics::resize('source.png', 1, 100, 100);
     }
 
     /**
@@ -100,7 +100,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testResizeInvalidArgument3()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize('source.png', 'target.png', 0, 100);
+        \BearFramework\App\Utilities\Graphics::resize('source.png', 'target.png', 0, 100);
     }
 
     /**
@@ -109,7 +109,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testResizeInvalidArgument4()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize('source.png', 'target.png', 100, 0);
+        \BearFramework\App\Utilities\Graphics::resize('source.png', 'target.png', 100, 0);
     }
 
     /**
@@ -118,7 +118,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testResizeInvalidArgument5()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize('source.png', 'target.webp', 100, 100, 'webp');
+        \BearFramework\App\Utilities\Graphics::resize('source.png', 'target.webp', 100, 100, 'webp');
     }
 
     /**
@@ -127,7 +127,7 @@ class GraphicsTest extends BearFrameworkTestCase
     public function testResizeInvalidArgument6()
     {
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize('missing/source.png', 'target.png', 100, 100);
+        \BearFramework\App\Utilities\Graphics::resize('missing/source.png', 'target.png', 100, 100);
     }
 
     /**
@@ -140,7 +140,7 @@ class GraphicsTest extends BearFrameworkTestCase
         $filename = $app->config->appDir . 'assets/logo.txt';
         $this->createFile($filename, 'text');
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize($filename, 'target.png', 100, 100);
+        \BearFramework\App\Utilities\Graphics::resize($filename, 'target.png', 100, 100);
     }
 
     /**
@@ -154,7 +154,7 @@ class GraphicsTest extends BearFrameworkTestCase
         $targetFilename = $app->config->appDir . 'assets/missingdir/logo.png';
         $this->createSampleFile($sourceFilename, 'png');
         $this->setExpectedException('Exception');
-        App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 100, 100);
+        \BearFramework\App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 100, 100);
     }
 
     /**
@@ -168,7 +168,7 @@ class GraphicsTest extends BearFrameworkTestCase
         $targetFilename = $app->config->appDir . 'assets/newlogo.webp';
         $this->createSampleFile($sourceFilename, 'webp');
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 100, 100);
+        \BearFramework\App\Utilities\Graphics::resize($sourceFilename, $targetFilename, 100, 100);
     }
 
 }

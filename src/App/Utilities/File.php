@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Utilities;
+namespace BearFramework\App\Utilities;
+
+use BearFramework\App;
 
 /**
  * File utilities
@@ -28,7 +30,7 @@ class File
         }
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
-            \App\Utilities\Dir::make($pathinfo['dirname']);
+            App\Utilities\Dir::make($pathinfo['dirname']);
         }
     }
 

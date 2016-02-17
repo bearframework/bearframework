@@ -65,7 +65,7 @@ class LogTest extends BearFrameworkTestCase
             'logsDir' => null
         ]);
 
-        $this->setExpectedException('App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
         $app->log->write('file.log', 'data');
     }
 
@@ -75,7 +75,7 @@ class LogTest extends BearFrameworkTestCase
     public function testInvalidFile()
     {
         $app = $this->getApp();
-        App\Utilities\Dir::make($app->config->logsDir . 'file');
+        \BearFramework\App\Utilities\Dir::make($app->config->logsDir . 'file');
         $this->assertFalse($app->log->write('file', 'body'));
     }
 

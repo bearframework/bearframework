@@ -39,7 +39,7 @@ class AddonsTest extends BearFrameworkTestCase
         $app = $this->getApp([
             'addonsDir' => null
         ]);
-        $this->setExpectedException('App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
         $app->addons->add('addon1');
     }
 

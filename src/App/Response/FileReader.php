@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that reads file and outputs it
  */
-class FileReader extends \App\Response
+class FileReader extends \BearFramework\App\Response
 {
 
     /**

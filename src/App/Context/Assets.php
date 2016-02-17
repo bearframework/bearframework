@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Context;
+namespace BearFramework\App\Context;
+
+use BearFramework\App;
 
 /**
  * Provides utility functions for assets in the current context
@@ -50,7 +52,7 @@ class Assets
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
+        $app = &App::$instance;
         return $app->assets->getUrl($this->dir . $filename, $options);
     }
 

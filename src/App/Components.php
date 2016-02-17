@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * HTML Server Components utilities
@@ -51,7 +53,7 @@ class Components
             throw new \InvalidArgumentException('');
         }
         if (strpos($content, '<component') !== false) {
-            $compiler = new \App\Components\Compiler();
+            $compiler = new App\Components\Compiler();
             foreach ($this->aliases as $alias) {
                 $compiler->addAlias($alias['alias'], $alias['original']);
             }

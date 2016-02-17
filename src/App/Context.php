@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides information about addons and application location and utility functions
@@ -23,13 +25,13 @@ class Context
 
     /**
      * Provides utility functions for assets in the current context dir
-     * @var \App\Context\Assets 
+     * @var \BearFramework\App\Context\Assets 
      */
     public $assets = null;
 
     /**
      * Provides functionality for autoloading classes in the current context
-     * @var \App\Context\Classes 
+     * @var \BearFramework\App\Context\Classes 
      */
     public $classes = null;
 
@@ -44,8 +46,8 @@ class Context
             throw new \InvalidArgumentException('');
         }
         $this->dir = $dir;
-        $this->assets = new \App\Context\Assets($dir);
-        $this->classes = new \App\Context\Classes($dir);
+        $this->assets = new App\Context\Assets($dir);
+        $this->classes = new App\Context\Classes($dir);
     }
 
     /**
@@ -59,7 +61,7 @@ class Context
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
+        $app = &App::$instance;
         return $app->load($this->dir . $filename);
     }
 

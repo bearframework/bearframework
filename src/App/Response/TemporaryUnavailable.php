@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that sends Temporary Unavailable status
  */
-class TemporaryUnavailable extends \App\Response
+class TemporaryUnavailable extends \BearFramework\App\Response
 {
 
     /**

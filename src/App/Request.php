@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides information about the current request
@@ -31,13 +33,13 @@ class Request
 
     /**
      * The path of the request. The path parts can be accessed by their indexes.
-     * @var App\Request\Path 
+     * @var \BearFramework\App\Request\Path 
      */
     public $path = null;
 
     /**
      * The query string of the request. The query parts can be accessed by their names.
-     * @var App\Request\Query 
+     * @var \BearFramework\App\Request\Query 
      */
     public $query = null;
 
@@ -46,8 +48,8 @@ class Request
      */
     function __construct()
     {
-        $this->path = new \App\Request\Path();
-        $this->query = new \App\Request\Query();
+        $this->path = new App\Request\Path();
+        $this->query = new App\Request\Query();
     }
 
     /**

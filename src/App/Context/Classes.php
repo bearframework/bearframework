@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Context;
+namespace BearFramework\App\Context;
+
+use BearFramework\App;
 
 /**
  * Provides functionality for autoloading classes in the current context
@@ -50,7 +52,7 @@ class Classes
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
+        $app = &App::$instance;
         $app->classes->add($class, $this->dir . $filename);
     }
 

@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that outputs HTML code. The appropriate content type is set.
  */
-class HTML extends \App\Response
+class HTML extends \BearFramework\App\Response
 {
 
     /**

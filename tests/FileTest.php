@@ -21,10 +21,10 @@ class FileTest extends BearFrameworkTestCase
         $dir = uniqid();
         $file = uniqid() . '.txt';
         $testDir = $this->getTestDir();
-        App\Utilities\File::makeDir($testDir . $dir . '/' . $file);
+        \BearFramework\App\Utilities\File::makeDir($testDir . $dir . '/' . $file);
         $this->assertTrue(is_dir($testDir . $dir));
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\File::makeDir(1);
+        \BearFramework\App\Utilities\File::makeDir(1);
     }
 
 }

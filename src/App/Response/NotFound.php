@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that sends Not Found status
  */
-class NotFound extends \App\Response
+class NotFound extends \BearFramework\App\Response
 {
 
     /**

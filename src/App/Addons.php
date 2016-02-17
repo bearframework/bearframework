@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides a way to enable addons and manage their options
@@ -26,7 +28,7 @@ class Addons
      * @param string $id The id of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return void No value is returned
      */
     function add($id, $options = [])
@@ -39,15 +41,15 @@ class Addons
         }
         $this->options[$id] = ['options' => $options];
 
-        $app = &\App::$instance;
+        $app = &App::$instance;
         $__id = $id;
         unset($id);
         if ($app->config->addonsDir === null) {
-            throw new \App\InvalidConfigOptionException('Config option addonsDir not set');
+            throw new App\InvalidConfigOptionException('Config option addonsDir not set');
         }
         $__indexFile = realpath($app->config->addonsDir . $__id . '/index.php');
         if ($__indexFile !== false) {
-            $context = new \App\AddonContext($app->config->addonsDir . $__id . '/');
+            $context = new App\AddonContext($app->config->addonsDir . $__id . '/');
             include_once $__indexFile;
         }
     }

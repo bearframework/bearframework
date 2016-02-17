@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides functionality for autoloading classes
@@ -50,7 +52,7 @@ class Classes
         if (!is_string($class)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
+        $app = &App::$instance;
         if (isset($this->data[$class])) {
             $app->load($this->data[$class]);
         }

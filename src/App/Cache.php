@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Data cache
@@ -24,7 +26,7 @@ class Cache
      */
     static function get($key, $defaultValue = false)
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         $keyMD5 = md5($key);
         $data = $app->data->get(
                 [
@@ -54,7 +56,7 @@ class Cache
      */
     static function exists($key)
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         $keyMD5 = md5($key);
         $data = $app->data->get(
                 [
@@ -83,7 +85,7 @@ class Cache
      */
     static function set($key, $value, $ttl = 0)
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         $keyMD5 = md5($key);
         $data = [
             'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
@@ -103,7 +105,7 @@ class Cache
      */
     static function delete($key)
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         $keyMD5 = md5($key);
         $app->data->delete([
             'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),

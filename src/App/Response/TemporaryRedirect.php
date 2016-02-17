@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that makes temporary redirect
  */
-class TemporaryRedirect extends \App\Response
+class TemporaryRedirect extends \BearFramework\App\Response
 {
 
     /**

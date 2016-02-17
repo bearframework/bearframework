@@ -7,12 +7,14 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Provides information about the addon location and utility functions
  */
-class AddonContext extends \App\Context
+class AddonContext extends \BearFramework\App\Context
 {
 
     /**
@@ -30,14 +32,14 @@ class AddonContext extends \App\Context
 
     /**
      * Returns the options set for the current addon
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return array The options set for the current addon
      */
     function getOptions()
     {
-        $app = &\App::$instance;
+        $app = &App::$instance;
         if ($app->config->addonsDir === null) {
-            throw new \App\InvalidConfigOptionException('Config option addonsDir not set');
+            throw new App\InvalidConfigOptionException('Config option addonsDir not set');
         }
         $addonID = rtrim(str_replace($app->config->addonsDir, '', $this->dir), '/');
         return $app->addons->getOptions($addonID);

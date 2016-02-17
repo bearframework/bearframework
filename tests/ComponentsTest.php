@@ -50,8 +50,8 @@ class ComponentsTest extends BearFrameworkTestCase
     public function testFile()
     {
         $app = $this->getApp();
-        App\Utilities\Dir::make($app->config->appDir);
-        App\Utilities\Dir::make($app->config->addonsDir . 'addon1/');
+        \BearFramework\App\Utilities\Dir::make($app->config->appDir);
+        \BearFramework\App\Utilities\Dir::make($app->config->addonsDir . 'addon1/');
 
         $this->createFile($app->config->appDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content1<component src="file:' . $app->config->addonsDir . 'addon1/component2.php" /></body></html>');
         $this->createFile($app->config->addonsDir . 'addon1/component2.php', '<!DOCTYPE html><html><head></head><body>content2</body></html>');
@@ -146,7 +146,7 @@ class ComponentsTest extends BearFrameworkTestCase
     public function testInvalidArguments7b()
     {
         $wrongDir = $this->getTestDir() . 'wrongdir' . uniqid() . '/';
-        App\Utilities\Dir::make($wrongDir);
+        \BearFramework\App\Utilities\Dir::make($wrongDir);
 
         $this->createFile($wrongDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content</body></html>');
 

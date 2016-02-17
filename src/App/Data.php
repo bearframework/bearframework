@@ -7,7 +7,9 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
+
+use BearFramework\App;
 
 /**
  * Data storage
@@ -23,15 +25,15 @@ class Data
 
     /**
      * Returns the instance of the data storage library
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return \ObjectStorage The instance of the data storage library
      */
     private function getInstance()
     {
         if ($this->instance === null) {
-            $app = &\App::$instance;
+            $app = &App::$instance;
             if ($app->config->dataDir === null) {
-                throw new \App\InvalidConfigOptionException('Config option dataDir is not set');
+                throw new App\InvalidConfigOptionException('Config option dataDir is not set');
             }
             $this->instance = new \ObjectStorage($app->config->dataDir);
         }
@@ -180,7 +182,7 @@ class Data
      * Returns the filename of the object key specified
      * @param string $key The object key
      * @throws \InvalidArgumentException
-     * @throws \App\InvalidConfigOptionException
+     * @throws \BearFramework\App\InvalidConfigOptionException
      * @return The filename of the object key specified
      */
     function getFilename($key)
@@ -188,9 +190,9 @@ class Data
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &\App::$instance;
+        $app = &App::$instance;
         if ($app->config->dataDir === null) {
-            throw new \App\InvalidConfigOptionException('Config option dataDir is not set');
+            throw new App\InvalidConfigOptionException('Config option dataDir is not set');
         }
         return $app->config->dataDir . 'objects/' . $key;
     }

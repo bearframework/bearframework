@@ -20,10 +20,10 @@ class DirTest extends BearFrameworkTestCase
     {
         $dir = uniqid();
         $testDir = $this->getTestDir();
-        App\Utilities\Dir::make($testDir . $dir);
+        \BearFramework\App\Utilities\Dir::make($testDir . $dir);
         $this->assertTrue(is_dir($testDir . $dir));
         $this->setExpectedException('InvalidArgumentException');
-        App\Utilities\Dir::make(1);
+        \BearFramework\App\Utilities\Dir::make(1);
     }
 
 }

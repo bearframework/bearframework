@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that outputs JSON code. The appropriate content type is set.
  */
-class JSON extends \App\Response
+class JSON extends \BearFramework\App\Response
 {
 
     /**

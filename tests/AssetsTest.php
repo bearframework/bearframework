@@ -23,7 +23,7 @@ class AssetsTest extends BearFrameworkTestCase
         $this->createSampleFile($filename, 'png');
         $url = $app->assets->getUrl($filename);
         $path = substr($url, strlen($app->request->base));
-        $app->request->path = new App\Request\Path($path);
+        $app->request->path = new \BearFramework\App\Request\Path($path);
         $app->run();
         $this->expectOutputString(file_get_contents($filename));
     }
@@ -38,7 +38,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config->appDir . 'assets/missing/file.png';
         $url = $app->assets->getUrl($filename);
         $path = substr($url, strlen($app->request->base));
-        $app->request->path = new App\Request\Path($path);
+        $app->request->path = new \BearFramework\App\Request\Path($path);
         $app->run();
         $this->expectOutputString('Not Found');
     }
@@ -75,7 +75,7 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
                     $url = $app->assets->getUrl($filename, $options);
-                    $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $size = \BearFramework\App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);
 
@@ -87,7 +87,7 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
                     $url = $app->assets->getUrl($filename, $options);
-                    $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $size = \BearFramework\App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);
 
@@ -104,7 +104,7 @@ class AssetsTest extends BearFrameworkTestCase
 
                     $url = $app->assets->getUrl($filename, $options);
                     $app->data->makePublic(['key' => $key]);
-                    $size = App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $size = \BearFramework\App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);
                 }
@@ -301,7 +301,7 @@ class AssetsTest extends BearFrameworkTestCase
         $this->createSampleFile($filename, 'png');
 
         $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
-        $this->setExpectedException('App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
         $app->assets->getFilename(substr($url, strlen($app->request->base)));
     }
 

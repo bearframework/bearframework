@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Components;
+namespace BearFramework\App\Components;
 
 /**
  * HTML Server Components object

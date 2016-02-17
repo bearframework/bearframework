@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace App;
+namespace BearFramework\App;
 
 /**
  * Provides functionality for notifications and data requests

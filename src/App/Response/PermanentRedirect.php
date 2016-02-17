@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace App\Response;
+namespace BearFramework\App\Response;
 
 /**
  * Response type that makes permanent redirect
  */
-class PermanentRedirect extends \App\Response
+class PermanentRedirect extends \BearFramework\App\Response
 {
 
     /**
