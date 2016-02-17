@@ -46,7 +46,7 @@ class Request
     /**
      * The constructor
      */
-    function __construct()
+    public function __construct()
     {
         $this->path = new App\Request\Path();
         $this->query = new App\Request\Query();
@@ -56,7 +56,7 @@ class Request
      * Returns the full URL of the request
      * @return string The full URL of the request
      */
-    function __toString()
+    public function __toString()
     {
         return $this->base . (string) $this->path;
     }
@@ -67,7 +67,7 @@ class Request
      * @return mixed
      * @throws \Exception
      */
-    function __get($name)
+    public function __get($name)
     {
         if ($name === 'scheme' || $name === 'host') {
             $data = parse_url($this->base);
@@ -81,7 +81,7 @@ class Request
      * @param string $name
      * @param mixed $value
      */
-    function __set($name, $value)
+    public function __set($name, $value)
     {
         if ($name === 'scheme' || $name === 'host') {
             $data = parse_url($this->base);
@@ -94,7 +94,7 @@ class Request
      * @param string $name
      * @return boolean
      */
-    function __isset($name)
+    public function __isset($name)
     {
         return $name === 'scheme' || $name === 'host';
     }

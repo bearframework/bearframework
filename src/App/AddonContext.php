@@ -22,7 +22,7 @@ class AddonContext extends \BearFramework\App\Context
      * @param string $dir The directory where the current addond is located 
      * @throws \InvalidArgumentException
      */
-    function __construct($dir)
+    public function __construct($dir)
     {
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
@@ -35,7 +35,7 @@ class AddonContext extends \BearFramework\App\Context
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return array The options set for the current addon
      */
-    function getOptions()
+    public function getOptions()
     {
         $app = &App::$instance;
         if ($app->config->addonsDir === null) {

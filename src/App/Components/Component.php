@@ -18,7 +18,7 @@ class Component extends \HTMLServerComponent
     /**
      * The constructor
      */
-    function __construct()
+    public function __construct()
     {
         
     }

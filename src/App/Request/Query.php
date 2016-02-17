@@ -51,7 +51,7 @@ class Query implements \ArrayAccess
      * @throws \Exception
      * @return void No value is returned
      */
-    function offsetSet($offset, $value)
+    public function offsetSet($offset, $value)
     {
         throw new \Exception('Not implemented');
     }
@@ -61,7 +61,7 @@ class Query implements \ArrayAccess
      * @param mixed $offset The name of the data
      * @return boolean TRUE if the data exists. FALSE otherwise.
      */
-    function offsetExists($offset)
+    public function offsetExists($offset)
     {
         if (!is_string($offset)) {
             throw new \InvalidArgumentException('The offset argument must be of type int');
@@ -77,7 +77,7 @@ class Query implements \ArrayAccess
      * @throws \Exception
      * @return void No value is returned
      */
-    function offsetUnset($offset)
+    public function offsetUnset($offset)
     {
         throw new \Exception('Not implemented');
     }
@@ -87,7 +87,7 @@ class Query implements \ArrayAccess
      * @param mixed $offset The name of the data
      * @return string|null The data for the name specified
      */
-    function offsetGet($offset)
+    public function offsetGet($offset)
     {
         if (!is_string($offset)) {
             throw new \InvalidArgumentException('The offset argument must be of type int');

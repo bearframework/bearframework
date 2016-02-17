@@ -31,7 +31,7 @@ class Addons
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return void No value is returned
      */
-    function add($id, $options = [])
+    public function add($id, $options = [])
     {
         if (!is_string($id)) {
             throw new \InvalidArgumentException('');
@@ -60,7 +60,7 @@ class Addons
      * @throws \InvalidArgumentException
      * @return array The options set for the addon specified
      */
-    function getOptions($id)
+    public function getOptions($id)
     {
         if (!is_string($id)) {
             throw new \InvalidArgumentException('');

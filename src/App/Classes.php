@@ -30,7 +30,7 @@ class Classes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function add($class, $filename)
+    public function add($class, $filename)
     {
         if (!is_string($class)) {
             throw new \InvalidArgumentException('');
@@ -47,7 +47,7 @@ class Classes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function load($class)
+    public function load($class)
     {
         if (!is_string($class)) {
             throw new \InvalidArgumentException('');

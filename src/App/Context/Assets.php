@@ -29,7 +29,7 @@ class Assets
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function __construct($dir)
+    public function __construct($dir)
     {
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
@@ -44,7 +44,7 @@ class Assets
      * @throws \InvalidArgumentException
      * @return string The URL for the specified filename and options
      */
-    function getUrl($filename, $options = [])
+    public function getUrl($filename, $options = [])
     {
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');

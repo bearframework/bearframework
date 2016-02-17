@@ -32,7 +32,7 @@ class Response
      * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
-    function __construct($content = '')
+    public function __construct($content = '')
     {
         if (!is_string($content)) {
             throw new \InvalidArgumentException('The content argument must be of type string');
@@ -47,7 +47,7 @@ class Response
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function setMaxAge($seconds)
+    public function setMaxAge($seconds)
     {
         if (!is_int($seconds) || $seconds < 0) {
             throw new \InvalidArgumentException('The seconds argument must be of type int and non negative');
@@ -61,7 +61,7 @@ class Response
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function setContentType($mimeType)
+    public function setContentType($mimeType)
     {
         if (!is_string($mimeType)) {
             throw new \InvalidArgumentException('');
@@ -78,7 +78,7 @@ class Response
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function setStatusCode($code)
+    public function setStatusCode($code)
     {
         if (!is_int($code)) {
             throw new \InvalidArgumentException('');

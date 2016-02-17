@@ -20,7 +20,7 @@ class NotFound extends \BearFramework\App\Response
      * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
-    function __construct($content = 'Not Found')
+    public function __construct($content = 'Not Found')
     {
         if (!is_string($content)) {
             throw new \InvalidArgumentException('The content argument must be of type string');

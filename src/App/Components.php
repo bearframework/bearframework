@@ -30,7 +30,7 @@ class Components
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function addAlias($alias, $original)
+    public function addAlias($alias, $original)
     {
         if (!is_string($alias)) {
             throw new \InvalidArgumentException('');
@@ -47,7 +47,7 @@ class Components
      * @throws \InvalidArgumentException
      * @return string The processed content
      */
-    function process($content)
+    public function process($content)
     {
         if (!is_string($content)) {
             throw new \InvalidArgumentException('');
@@ -71,7 +71,7 @@ class Components
      * @throws \InvalidArgumentException
      * @return string The resulting HTML code (processed)
      */
-    function insertHTML($target, $html, $position = 'beforeBodyEnd')
+    public function insertHTML($target, $html, $position = 'beforeBodyEnd')
     {
         if (!is_string($target)) {
             throw new \InvalidArgumentException('');

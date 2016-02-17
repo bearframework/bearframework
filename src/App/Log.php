@@ -25,7 +25,7 @@ class Log
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return boolean TRUE if data is suceessfully written. FALSE otherwise.
      */
-    function write($filename, $data)
+    public function write($filename, $data)
     {
         $app = &App::$instance;
         if (!is_string($filename) || strlen($filename) === 0) {

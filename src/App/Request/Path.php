@@ -51,7 +51,7 @@ class Path implements \ArrayAccess
      * @throws \Exception
      * @return void No value is returned
      */
-    function offsetSet($offset, $value)
+    public function offsetSet($offset, $value)
     {
         throw new \Exception('Not implemented');
     }
@@ -61,7 +61,7 @@ class Path implements \ArrayAccess
      * @param int $offset The index of the path part
      * @return boolean TRUE if the path part exists. FALSE otherwise.
      */
-    function offsetExists($offset)
+    public function offsetExists($offset)
     {
         if (!is_int($offset)) {
             throw new \InvalidArgumentException('The offset argument must be of type int');
@@ -80,7 +80,7 @@ class Path implements \ArrayAccess
      * @throws \Exception
      * @return void No value is returned
      */
-    function offsetUnset($offset)
+    public function offsetUnset($offset)
     {
         throw new \Exception('Not implemented');
     }
@@ -90,7 +90,7 @@ class Path implements \ArrayAccess
      * @param int $offset the index of the part part
      * @return string|null The path part at the index specified
      */
-    function offsetGet($offset)
+    public function offsetGet($offset)
     {
         if (!is_int($offset)) {
             throw new \InvalidArgumentException('The offset argument must be of type int');

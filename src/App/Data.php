@@ -45,7 +45,7 @@ class Data
      * @param array $parameters Parameters
      * @return array Array containing the requested parts of the object
      */
-    function get($parameters)
+    public function get($parameters)
     {
         $instance = $this->getInstance();
         return $instance->get($parameters);
@@ -56,7 +56,7 @@ class Data
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function set($parameters)
+    public function set($parameters)
     {
         $instance = $this->getInstance();
         return $instance->set($parameters);
@@ -67,7 +67,7 @@ class Data
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function append($parameters)
+    public function append($parameters)
     {
         $instance = $this->getInstance();
         return $instance->append($parameters);
@@ -78,7 +78,7 @@ class Data
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function duplicate($parameters)
+    public function duplicate($parameters)
     {
         $instance = $this->getInstance();
         return $instance->duplicate($parameters);
@@ -89,7 +89,7 @@ class Data
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function rename($parameters)
+    public function rename($parameters)
     {
         $instance = $this->getInstance();
         return $instance->rename($parameters);
@@ -100,7 +100,7 @@ class Data
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function delete($parameters)
+    public function delete($parameters)
     {
         $instance = $this->getInstance();
         return $instance->delete($parameters);
@@ -111,7 +111,7 @@ class Data
      * @param array $parameters Parameters
      * @return array List of all items matching che search criteria
      */
-    function search($parameters)
+    public function search($parameters)
     {
         $instance = $this->getInstance();
         return $instance->search($parameters);
@@ -123,7 +123,7 @@ class Data
      * @throws \InvalidArgumentException
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function makePublic($parameters)
+    public function makePublic($parameters)
     {
         if (!is_array($parameters) || !isset($parameters['key']) || !is_string($parameters['key'])) {
             throw new \InvalidArgumentException('');
@@ -143,7 +143,7 @@ class Data
      * @throws \InvalidArgumentException
      * @return boolean TRUE on success. FALSE otherwise.
      */
-    function makePrivate($parameters)
+    public function makePrivate($parameters)
     {
         if (!is_array($parameters) || !isset($parameters['key']) || !is_string($parameters['key'])) {
             throw new \InvalidArgumentException('');
@@ -163,7 +163,7 @@ class Data
      * @throws \InvalidArgumentException
      * @return boolean TRUE if public. FALSE otherwise.
      */
-    function isPublic($key)
+    public function isPublic($key)
     {
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');
@@ -185,7 +185,7 @@ class Data
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return The filename of the object key specified
      */
-    function getFilename($key)
+    public function getFilename($key)
     {
         if (!is_string($key)) {
             throw new \InvalidArgumentException('');

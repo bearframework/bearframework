@@ -36,7 +36,7 @@ class Config
      * @param array $options Configuration options
      * @throws \InvalidArgumentException
      */
-    function __construct($options = [])
+    public function __construct($options = [])
     {
         if (!is_array($options)) {
             throw new \InvalidArgumentException('This options argument must be of type array');
@@ -74,7 +74,7 @@ class Config
      * @throws \InvalidArgumentException
      * @return mixed The value of the configuration option. If missing will return null.
      */
-    function __get($name)
+    public function __get($name)
     {
         if (array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -89,7 +89,7 @@ class Config
      * @throws \Exception
      * @return void No value is returned
      */
-    function __set($name, $value)
+    public function __set($name, $value)
     {
         if ($name === 'handleErrors' || $name === 'appDir' || $name === 'addonsDir' || $name === 'dataDir' || $name === 'logsDir') {
             throw new \Exception('This config option can be modified only through the constructor');
@@ -104,7 +104,7 @@ class Config
      * @throws \InvalidArgumentException
      * @return boolean TRUE if the configuration option is set. FALSE otherwise.
      */
-    function __isset($name)
+    public function __isset($name)
     {
         return array_key_exists($name, $this->options);
     }

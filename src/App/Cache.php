@@ -24,7 +24,7 @@ class Cache
      * @throws \BearCMS\DataCache\NotFoundException
      * @return mixed The saved data from the cache of the default value specified
      */
-    static function get($key, $defaultValue = false)
+    public function get($key, $defaultValue = false)
     {
         $app = &App::$instance;
         $keyMD5 = md5($key);
@@ -54,7 +54,7 @@ class Cache
      * @param mixed $key The data key
      * @return boolean TRUE if the data for the specified key exists in the cache. FALSE otherwise.
      */
-    static function exists($key)
+    public function exists($key)
     {
         $app = &App::$instance;
         $keyMD5 = md5($key);
@@ -83,7 +83,7 @@ class Cache
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    static function set($key, $value, $ttl = 0)
+    public function set($key, $value, $ttl = 0)
     {
         $app = &App::$instance;
         $keyMD5 = md5($key);
@@ -103,7 +103,7 @@ class Cache
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    static function delete($key)
+    public function delete($key)
     {
         $app = &App::$instance;
         $keyMD5 = md5($key);

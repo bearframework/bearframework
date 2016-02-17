@@ -25,67 +25,67 @@ class App
 
     /**
      * The application configuration
-     * @var BearFramework\App\Config 
+     * @var \BearFramework\App\Config 
      */
     public $config = null;
 
     /**
      * Provides information about the current request
-     * @var BearFramework\App\Request
+     * @var \BearFramework\App\Request
      */
     public $request = null;
 
     /**
      * Stores the data about the defined routes callbacks
-     * @var BearFramework\App\Routes 
+     * @var \BearFramework\App\Routes 
      */
     public $routes = null;
 
     /**
      * Provides logging functionlity
-     * @var BearFramework\App\Log 
+     * @var \BearFramework\App\Log 
      */
     public $log = null;
 
     /**
      * HTML Server Components utilities
-     * @var BearFramework\App\Components
+     * @var \BearFramework\App\Components
      */
     public $components = null;
 
     /**
      * Provides a way to enable addons and manage their options
-     * @var BearFramework\App\Addons
+     * @var \BearFramework\App\Addons
      */
     public $addons = null;
 
     /**
      * Provides functionality for notifications and data requests
-     * @var BearFramework\App\Hooks
+     * @var \BearFramework\App\Hooks
      */
     public $hooks = null;
 
     /**
      * Provides utility functions for assets
-     * @var BearFramework\App\Assets
+     * @var \BearFramework\App\Assets
      */
     public $assets = null;
 
     /**
      * Data storage
-     * @var BearFramework\App\Data
+     * @var \BearFramework\App\Data
      */
     public $data = null;
 
     /**
      * Data cache
-     * @var BearFramework\App\Cache 
+     * @var \BearFramework\App\Cache 
      */
     public $cache = null;
 
     /**
      * Provides functionality for autoloading classes
-     * @var BearFramework\App\Classes 
+     * @var \BearFramework\App\Classes 
      */
     public $classes = [];
 
@@ -106,7 +106,7 @@ class App
      * @throws \Exception
      * @param array $config
      */
-    function __construct($config = [])
+    public function __construct($config = [])
     {
         if (self::$instance === null) {
             self::$instance = &$this;
@@ -130,7 +130,7 @@ class App
     /**
      * Initializes the environment and context data
      */
-    function initialize()
+    public function initialize()
     {
         if (!$this->initialized) {
             spl_autoload_register(function ($class) {
@@ -256,7 +256,7 @@ class App
      * @throws \InvalidArgumentException
      * @return boolean TRUE if file loaded successfully. Otherwise returns FALSE.
      */
-    function load($filename)
+    public function load($filename)
     {
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
@@ -275,7 +275,7 @@ class App
      * @throws \InvalidArgumentException
      * @return string Absolute URL containing the base URL plus the path given
      */
-    function getUrl($path = '/')
+    public function getUrl($path = '/')
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException('');
@@ -287,7 +287,7 @@ class App
      * Call this method to start the application. This method outputs the response.
      * @return void No value is returned
      */
-    function run()
+    public function run()
     {
         $this->initialize();
         $app = &self::$instance; // needed for the app index file
@@ -331,7 +331,7 @@ class App
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function respond($response)
+    public function respond($response)
     {
         if ($response instanceof App\Response) {
             if (!isset($response->disableHooks) || $response->disableHooks === false) {

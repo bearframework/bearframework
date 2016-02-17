@@ -25,7 +25,7 @@ class Assets
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return string The URL for the specified filename and options
      */
-    function getUrl($filename, $options = [])
+    public function getUrl($filename, $options = [])
     {
         $app = &App::$instance;
         if (!is_string($filename)) {
@@ -80,7 +80,7 @@ class Assets
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return boolean|string The localfileneme or FALSE if file does not exists
      */
-    function getFilename($path)
+    public function getFilename($path)
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException('');
@@ -168,7 +168,7 @@ class Assets
      * @throws \InvalidArgumentException
      * @return string|null The mimetype of the filename specified
      */
-    function getMimeType($filename)
+    public function getMimeType($filename)
     {
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');

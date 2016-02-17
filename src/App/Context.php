@@ -40,7 +40,7 @@ class Context
      * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
      */
-    function __construct($dir)
+    public function __construct($dir)
     {
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
@@ -56,7 +56,7 @@ class Context
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    function load($filename)
+    public function load($filename)
     {
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');

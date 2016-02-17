@@ -31,7 +31,7 @@ class Routes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    function add($pattern, $callback, $options = ['GET'])
+    public function add($pattern, $callback, $options = ['GET'])
     {
         if (!is_callable($callback)) {
             throw new \InvalidArgumentException('The callback argument must be of type callable');
@@ -61,7 +61,7 @@ class Routes
      * @param \BearFramework\App\Request $request The current request object
      * @return mixed The result of the matching callback. NULL if none.
      */
-    function getResponse($request)
+    public function getResponse($request)
     {
         if (!($request instanceof App\Request)) {
             throw new \InvalidArgumentException('The request argument must be of type \BearFramework\App\Request');

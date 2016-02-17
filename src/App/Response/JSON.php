@@ -20,7 +20,7 @@ class JSON extends \BearFramework\App\Response
      * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
-    function __construct($content = '')
+    public function __construct($content = '')
     {
         if (!is_string($content)) {
             throw new \InvalidArgumentException('The content argument must be of type string');

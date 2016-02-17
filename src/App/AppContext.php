@@ -20,7 +20,7 @@ class AppContext extends \BearFramework\App\Context
      * @param string $dir The directory where the application is located 
      * @throws \InvalidArgumentException
      */
-    function __construct($dir)
+    public function __construct($dir)
     {
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
