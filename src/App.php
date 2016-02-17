@@ -171,9 +171,7 @@ class App
 
         if (isset($_SERVER)) {
 
-            if (isset($_SERVER['REQUEST_METHOD'])) {
-                $this->request->method = $_SERVER['REQUEST_METHOD'];
-            }
+            $this->request->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
             $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? urldecode($_SERVER['REQUEST_URI']) : '/';
             $position = strpos($path, '?');
@@ -191,7 +189,7 @@ class App
                 } else {
                     $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']);
                     $dirName = $pathInfo['dirname'];
-                    if ($dirName === DIRECTORY_SEPARATOR) {
+                    if ($dirName === DIRECTORY_SEPARATOR || $dirName === '.') {
                         $basePath = '';
                         $path = $path;
                     } else {
@@ -200,12 +198,12 @@ class App
                     }
                 }
             }
-
             $scheme = (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && $_SERVER['HTTP_X_FORWARDED_PROTOCOL'] === 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
-            $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknownhost';
+            $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
             $this->request->path = new App\Request\Path(isset($path{0}) ? $path : '/');
             $this->request->base = $scheme . '://' . $host . $basePath;
         }
+
         $this->routes = new App\Routes();
         $this->log = new App\Log();
         $this->components = new App\Components();
