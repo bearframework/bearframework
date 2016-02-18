@@ -18,6 +18,12 @@ class AddonContext extends \BearFramework\App\Context
 {
 
     /**
+     * The addon options
+     * @var array 
+     */
+    public $options;
+
+    /**
      * The constructor
      * @param string $dir The directory where the current addond is located 
      * @throws \InvalidArgumentException
@@ -28,21 +34,6 @@ class AddonContext extends \BearFramework\App\Context
             throw new \InvalidArgumentException('');
         }
         parent::__construct($dir);
-    }
-
-    /**
-     * Returns the options set for the current addon
-     * @throws \BearFramework\App\InvalidConfigOptionException
-     * @return array The options set for the current addon
-     */
-    public function getOptions()
-    {
-        $app = &App::$instance;
-        if ($app->config->addonsDir === null) {
-            throw new App\InvalidConfigOptionException('Config option addonsDir not set');
-        }
-        $addonID = rtrim(str_replace($app->config->addonsDir, '', $this->dir), '/');
-        return $app->addons->getOptions($addonID);
     }
 
 }

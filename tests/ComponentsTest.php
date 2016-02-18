@@ -50,11 +50,9 @@ class ComponentsTest extends BearFrameworkTestCase
     public function testFile()
     {
         $app = $this->getApp();
-        \BearFramework\App\Utilities\Dir::make($app->config->appDir);
-        \BearFramework\App\Utilities\Dir::make($app->config->addonsDir . 'addon1/');
 
-        $this->createFile($app->config->appDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content1<component src="file:' . $app->config->addonsDir . 'addon1/component2.php" /></body></html>');
-        $this->createFile($app->config->addonsDir . 'addon1/component2.php', '<!DOCTYPE html><html><head></head><body>content2</body></html>');
+        $this->createFile($app->config->appDir . 'component1.php', '<!DOCTYPE html><html><head></head><body>content1<component src="file:' . $app->config->appDir . 'component2.php" /></body></html>');
+        $this->createFile($app->config->appDir . 'component2.php', '<!DOCTYPE html><html><head></head><body>content2</body></html>');
 
         $result = $app->components->process('<component src="file:' . $app->config->appDir . 'component1.php" />');
         $this->assertTrue(str_replace(["\n\r", "\r\n", "\n"], "", $result) === '<!DOCTYPE html><html><head></head><body>content1content2</body></html>');

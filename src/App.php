@@ -286,6 +286,36 @@ class App
     }
 
     /**
+     * Creates a context object for the filename specified
+     * @param string $filename
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     * @return \BearFramework\App\AppContext|\BearFramework\App\AddonContext The context object
+     */
+    public function getContext($filename)
+    {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        $filename = realpath($filename);
+        if ($filename === false) {
+            throw new \Exception('File does not exists');
+        }
+        if (strpos($filename, realpath($this->config->appDir)) === 0) {
+            return new App\AppContext($this->config->appDir);
+        }
+        $addons = $this->addons->getList();
+        foreach ($addons as $data) {
+            if (strpos($filename, realpath($data['pathname'])) === 0) {
+                $context = new App\AddonContext($data['pathname']);
+                $context->options = $data['options'];
+                return $context;
+            }
+        }
+        throw new \Exception('Connot find context');
+    }
+
+    /**
      * Call this method to start the application. This method outputs the response.
      * @return void No value is returned
      */

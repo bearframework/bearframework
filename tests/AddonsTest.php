@@ -16,37 +16,25 @@ class AddonsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetOptions()
+    public function testOptions()
     {
         $app = $this->getApp();
-        $app->addons->add('addon1', ['var' => 5]);
+        $app->addons->add($app->config->addonsDir . 'addon1/', ['var' => 5]);
+        $this->createFile($app->config->addonsDir . 'addon1/index.php', '<?== ?>');
+        $context = $app->getContext($app->config->addonsDir . 'addon1/');
 
-        $options = $app->addons->getOptions('addon1');
-        $this->assertTrue(is_array($options));
-        $this->assertTrue(isset($options['var']));
-        $this->assertTrue($options['var'] === 5);
+        $this->assertTrue(is_array($context->options));
+        $this->assertTrue(isset($context->options['var']));
+        $this->assertTrue($context->options['var'] === 5);
 
-        $options = $app->addons->getOptions('addon2');
-        $this->assertTrue(is_array($options));
-        $this->assertTrue(sizeof($options) === 0);
+        $this->setExpectedException('Exception');
+        $context = $app->getContext($app->config->addonsDir . 'addon2/');
     }
 
     /**
      * 
      */
     public function testInvalidArguments1()
-    {
-        $app = $this->getApp([
-            'addonsDir' => null
-        ]);
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
-        $app->addons->add('addon1');
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments2()
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
@@ -56,21 +44,11 @@ class AddonsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testInvalidArguments3()
+    public function testInvalidArguments2()
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
-        $app->addons->add('addon1', 1);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments4()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->addons->getOptions(1);
+        $app->addons->add($app->config->addonsDir . 'addon1/', 1);
     }
 
 }

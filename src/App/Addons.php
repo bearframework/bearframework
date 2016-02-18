@@ -18,57 +18,51 @@ class Addons
 {
 
     /**
-     * Contains the options for the added addons
+     * Added addons
      * @var array 
      */
-    private $options = [];
+    private $addons = [];
 
     /**
      * Enables an addon and saves the provided options
-     * @param string $id The id of the addon
+     * @param string $pathname The directory where the addon index.php file is located
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return void No value is returned
      */
-    public function add($id, $options = [])
+    public function add($pathname, $options = [])
     {
-        if (!is_string($id)) {
+        if (!is_string($pathname)) {
             throw new \InvalidArgumentException('');
         }
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
-        $this->options[$id] = ['options' => $options];
+        $pathname = rtrim($pathname, '/\\') . '/';
+        $this->addons[] = [
+            'pathname' => $pathname,
+            'options' => $options
+        ];
 
-        $app = &App::$instance;
-        $__id = $id;
-        unset($id);
-        if ($app->config->addonsDir === null) {
-            throw new App\InvalidConfigOptionException('Config option addonsDir not set');
-        }
-        $__indexFile = realpath($app->config->addonsDir . $__id . '/index.php');
+        $__indexFile = realpath($pathname . 'index.php');
         if ($__indexFile !== false) {
-            $context = new App\AddonContext($app->config->addonsDir . $__id . '/');
+            $app = &App::$instance; // Needed for the index file
+            $context = new App\AddonContext($pathname);
+            $context->options = $options;
+            unset($pathname); // Hide this variable from the file scope
+            unset($options); // Hide this variable from the file scope
             include_once $__indexFile;
         }
     }
 
     /**
-     * Returns the options set for the addon specified
-     * @param string $id
-     * @throws \InvalidArgumentException
-     * @return array The options set for the addon specified
+     * Returns list of the added addons
+     * @return array List of the added addons
      */
-    public function getOptions($id)
+    public function getList()
     {
-        if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
-        }
-        if (isset($this->options[$id])) {
-            return $this->options[$id]['options'];
-        }
-        return [];
+        return $this->addons;
     }
 
 }

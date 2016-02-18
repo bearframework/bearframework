@@ -122,23 +122,19 @@ class ConfigTest extends BearFrameworkTestCase
     {
         $config = new \BearFramework\App\Config([
             'appDir' => '../app',
-            'addonsDir' => '../addons',
             'dataDir' => '../data',
             'logsDir' => '../logs',
         ]);
         $this->assertTrue($config->appDir === '../app/');
-        $this->assertTrue($config->addonsDir === '../addons/');
         $this->assertTrue($config->dataDir === '../data/');
         $this->assertTrue($config->logsDir === '../logs/');
 
         $config = new \BearFramework\App\Config([
             'appDir' => '../app/',
-            'addonsDir' => '../addons/',
             'dataDir' => '../data/',
             'logsDir' => '../logs/',
         ]);
         $this->assertTrue($config->appDir === '../app/');
-        $this->assertTrue($config->addonsDir === '../addons/');
         $this->assertTrue($config->dataDir === '../data/');
         $this->assertTrue($config->logsDir === '../logs/');
     }

@@ -12,7 +12,6 @@ namespace BearFramework\App;
 /**
  * The application configuration
  * @property string $appDir
- * @property string $addonsDir
  * @property string $dataDir
  * @property string $logsDir
  * @property boolean $updateEnvironment
@@ -45,9 +44,6 @@ class Config
         if (isset($options['appDir'])) {
             $options['appDir'] = rtrim($options['appDir'], '/\\') . '/';
         }
-        if (isset($options['addonsDir'])) {
-            $options['addonsDir'] = rtrim($options['addonsDir'], '/\\') . '/';
-        }
         if (isset($options['dataDir'])) {
             $options['dataDir'] = rtrim($options['dataDir'], '/\\') . '/';
         }
@@ -56,7 +52,6 @@ class Config
         }
         $defaultOptions = [
             'appDir' => null,
-            'addonsDir' => null,
             'dataDir' => null,
             'logsDir' => null,
             'updateEnvironment' => true,

@@ -21,7 +21,6 @@ class ContextTest extends BearFrameworkTestCase
 
         $app = $this->getApp();
         $app->request->base = 'http://example.com/www';
-        \BearFramework\App\Utilities\Dir::make($app->config->appDir);
 
         $this->createFile($app->config->appDir . 'index.php', '<?php ');
         $this->createFile($app->config->appDir . 'class1.php', '<?php class TempClass1{}');
@@ -46,21 +45,18 @@ class ContextTest extends BearFrameworkTestCase
     public function testAddonContext()
     {
         $app = $this->getApp();
-        $addonID = 'tempaddong' . uniqid();
-        $addonDir = $app->config->addonsDir . $addonID . '/';
-        \BearFramework\App\Utilities\Dir::make($addonDir);
+        $addonDir = $app->config->addonsDir . 'tempaddong' . uniqid() . '/';
         $app->request->base = 'http://example.com/www';
 
         $this->createFile($addonDir . 'index.php', '<?php ');
         $this->createFile($addonDir . 'class1.php', '<?php class TempClass1{}');
         $this->createFile($addonDir . 'class2.php', '<?php class TempClass2{}');
-        $app->addons->add($addonID, ['option1' => 5]);
+        $app->addons->add($addonDir, ['option1' => 5]);
 
-        $context = new \BearFramework\App\AddonContext($addonDir);
+        $context = $app->getContext($addonDir);
 
-        $options = $context->getOptions();
-        $this->assertTrue(isset($options['option1']));
-        $this->assertTrue($options['option1'] === 5);
+        $this->assertTrue(isset($context->options['option1']));
+        $this->assertTrue($context->options['option1'] === 5);
 
         $this->assertTrue($context->load('class1.php'));
         $this->assertTrue(class_exists('TempClass1'));
@@ -94,14 +90,11 @@ class ContextTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testAddonContextInvalidArguments2()
+    public function testGetContextInvalidArguments1()
     {
-        $app = $this->getApp([
-            'addonsDir' => null
-        ]);
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
-        $context = new \BearFramework\App\AddonContext('dir');
-        $context->getOptions();
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->getContext(1);
     }
 
     /**

@@ -24,11 +24,15 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
     function getApp($config = [])
     {
         $rootDir = $this->getTestDir();
+        BearFramework\App\Utilities\File::makeDir($rootDir . 'app/');
+        BearFramework\App\Utilities\File::makeDir($rootDir . 'data/');
+        BearFramework\App\Utilities\File::makeDir($rootDir . 'logs/');
+        BearFramework\App\Utilities\File::makeDir($rootDir . 'addons/');
         $initialConfig = [
             'appDir' => $rootDir . 'app/',
-            'addonsDir' => $rootDir . 'addons/',
             'dataDir' => $rootDir . 'data/',
             'logsDir' => $rootDir . 'logs/',
+            'addonsDir' => $rootDir . 'addons/'
         ];
         $app = new BearFramework\App(array_merge($initialConfig, $config));
         $app->initialize();
