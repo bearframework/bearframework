@@ -148,13 +148,15 @@ class App
      */
     private function initializeEnvironment()
     {
-        if (version_compare(phpversion(), '5.6.0', '<')) {
-            ini_set('default_charset', 'UTF-8');
-            ini_set('mbstring.internal_encoding', 'UTF-8');
+        if ($this->config->updateEnvironment) {
+            if (version_compare(phpversion(), '5.6.0', '<')) {
+                ini_set('default_charset', 'UTF-8');
+                ini_set('mbstring.internal_encoding', 'UTF-8');
+            }
+            ini_set('mbstring.func_overload', 7);
+            ini_set("pcre.backtrack_limit", 100000000);
+            ini_set("pcre.recursion_limit", 100000000);
         }
-        ini_set('mbstring.func_overload', 7);
-        ini_set("pcre.backtrack_limit", 100000000);
-        ini_set("pcre.recursion_limit", 100000000);
     }
 
     /**

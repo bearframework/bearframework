@@ -11,11 +11,12 @@ namespace BearFramework\App;
 
 /**
  * The application configuration
- * @property-read string $appDir
- * @property-read string $addonsDir
- * @property-read string $dataDir
- * @property-read string $logsDir
- * @property-read boolean $handleErrors
+ * @property string $appDir
+ * @property string $addonsDir
+ * @property string $dataDir
+ * @property string $logsDir
+ * @property boolean updateEnvironment
+ * @property boolean $handleErrors
  * @property boolean $displayErrors
  * @property boolean $logErrors
  * @property string $errorLogFilename
@@ -58,6 +59,7 @@ class Config
             'addonsDir' => null,
             'dataDir' => null,
             'logsDir' => null,
+            'updateEnvironment' => true,
             'handleErrors' => true,
             'displayErrors' => false,
             'logErrors' => false,
