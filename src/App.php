@@ -48,12 +48,6 @@ class App
     public $log = null;
 
     /**
-     * HTML Server Components utilities
-     * @var \BearFramework\App\Components
-     */
-    public $components = null;
-
-    /**
      * Provides a way to enable addons and manage their options
      * @var \BearFramework\App\Addons
      */
@@ -118,7 +112,6 @@ class App
         $this->request = new App\Request();
         $this->routes = new App\Routes();
         $this->log = new App\Log();
-        $this->components = new App\Components();
         $this->addons = new App\Addons();
         $this->hooks = new App\Hooks();
         $this->assets = new App\Assets();
@@ -367,9 +360,7 @@ class App
     {
         if ($response instanceof App\Response) {
             if (!isset($response->disableHooks) || $response->disableHooks === false) {
-                $response->content = $this->components->process($response->content);
                 $this->hooks->execute('responseCreated', $response);
-                $response->content = $this->components->process($response->content);
             }
             if (!headers_sent()) {
                 foreach ($response->headers as $header) {
