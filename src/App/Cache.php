@@ -50,32 +50,6 @@ class Cache
     }
 
     /**
-     * Checks if the data for the key specified exists
-     * @param mixed $key The data key
-     * @return boolean TRUE if the data for the specified key exists in the cache. FALSE otherwise.
-     */
-    public function exists($key)
-    {
-        $app = &App::$instance;
-        $keyMD5 = md5($key);
-        $data = $app->data->get(
-                [
-                    'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
-                    'result' => ['key', 'metadata.t']
-                ]
-        );
-        if (isset($data['key'])) {
-            if (strlen($data['metadata.t']) > 0) {
-                return (int) $data['metadata.t'] > time();
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Saves data in the cache
      * @param mixed $key The data key
      * @param mixed $value The data
