@@ -15,7 +15,7 @@ namespace BearFramework\App;
  * @property string $addonsDir
  * @property string $dataDir
  * @property string $logsDir
- * @property boolean updateEnvironment
+ * @property boolean $updateEnvironment
  * @property boolean $handleErrors
  * @property boolean $displayErrors
  * @property boolean $logErrors
@@ -88,16 +88,11 @@ class Config
      * Sets the value of the configuration option specified
      * @param string $name The name of the configuration option
      * @param mixed $value The value of the configuration option
-     * @throws \Exception
      * @return void No value is returned
      */
     public function __set($name, $value)
     {
-        if ($name === 'handleErrors' || $name === 'appDir' || $name === 'addonsDir' || $name === 'dataDir' || $name === 'logsDir') {
-            throw new \Exception('This config option can be modified only through the constructor');
-        } else {
-            $this->options[$name] = $value;
-        }
+        $this->options[$name] = $value;
     }
 
     /**
