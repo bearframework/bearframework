@@ -38,6 +38,17 @@ class Assets
     }
 
     /**
+     * Registers a directory that will be publicly accessible relative to the current addon or application location
+     * @param string $pathname The directory name
+     * @return void No value is returned
+     */
+    public function addDir($pathname)
+    {
+        $app = &App::$instance;
+        $app->assets->addDir($this->dir . $pathname);
+    }
+
+    /**
      * Returns a public URL for the specified filename in the current context
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.

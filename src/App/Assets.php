@@ -18,6 +18,22 @@ class Assets
 {
 
     /**
+     * Publicly accessible dirs
+     * @var array
+     */
+    private $dirs = [];
+
+    /**
+     * Registers a directory that will be publicly accessible
+     * @param string $pathname The directory name
+     * @return void No value is returned
+     */
+    public function addDir($pathname)
+    {
+        $this->dirs[] = rtrim($pathname, '/\\') . '/';
+    }
+
+    /**
      * Returns a public URL for the specified filename
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
@@ -51,26 +67,20 @@ class Assets
             }
         }
         $optionsString = trim($optionsString, '-');
-        $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 10);
-        $addonsDir = $app->config->addonsDir;
-        if (strlen($addonsDir) > 0 && strpos($filename, $addonsDir) === 0) {
-            if (strpos($filename, '/assets/') === false) {
-                throw new \InvalidArgumentException('Addon asset files must be in ' . $addonsDir . 'addon-name/assets/ or ' . $addonsDir . 'addon-name/*/assets/ directory. This it the only addon directory with public access.');
-            }
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($addonsDir));
-        }
-        $appDir = $app->config->appDir;
-        if (strlen($appDir) > 0 && strpos($filename, $appDir) === 0) {
-            if (strpos($filename, '/assets/') === false) {
-                throw new \InvalidArgumentException('App asset files must be in ' . $appDir . 'assets/ or ' . $appDir . '*/assets/ directory. This it the only addon directory with public access.');
-            }
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'p' . $optionsString . '/' . substr($filename, strlen($appDir));
-        }
+        $hash = md5(md5($filename) . md5($optionsString));
+
         $dataDir = $app->config->dataDir;
         if (strlen($dataDir) > 0 && strpos($filename, $dataDir) === 0) {
             return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . substr($filename, strlen($dataDir) + 8);
         }
-        throw new \InvalidArgumentException('The filename specified is not valid (non existent file or located in dir not specified in the config)');
+
+        foreach ($this->dirs as $dir) {
+            if (strlen($dir) > 0 && strpos($filename, $dir) === 0) {
+                return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($dir));
+            }
+        }
+
+        throw new \InvalidArgumentException('The filename specified is not valid (non existent file or located in a dir that is not added)');
     }
 
     /**
@@ -97,14 +107,22 @@ class Assets
         if (sizeof($partParts) !== 2) {
             return false;
         }
-        $hash = substr($partParts[0], 0, 10);
-        $type = substr($partParts[0], 10, 1);
-        $optionsString = (string) substr($partParts[0], 11);
+        $hash = substr($partParts[0], 0, 32);
+        $type = substr($partParts[0], 32, 1);
+        $optionsString = (string) substr($partParts[0], 33);
         $path = $partParts[1];
-        if ($type === 'a' && strlen($app->config->addonsDir) > 0) {
-            $filename = $app->config->addonsDir . $path;
-        } elseif ($type === 'p' && strlen($app->config->appDir) > 0) {
-            $filename = $app->config->appDir . $path;
+        if ($type === 'a') {
+            $fileDir = null;
+            foreach ($this->dirs as $dir) {
+                if ($hash === md5(md5($dir . $path) . md5($optionsString))) {
+                    $fileDir = $dir;
+                    break;
+                }
+            }
+            if ($fileDir === null) {
+                return false;
+            }
+            $filename = $fileDir . $path;
         } elseif ($type === 'd' && strlen($app->config->dataDir) > 0) {
             if (!$app->data->isPublic($path)) {
                 return false;
@@ -113,7 +131,7 @@ class Assets
         } else {
             return false;
         }
-        if ($hash === substr(md5(md5($filename) . md5($optionsString)), 0, 10) && is_file($filename)) {
+        if ($hash === md5(md5($filename) . md5($optionsString)) && is_file($filename)) {
             if ($optionsString === '') {
                 return is_file($filename) ? $filename : false;
             }

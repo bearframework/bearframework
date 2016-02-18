@@ -24,19 +24,13 @@ class CacheTest extends BearFrameworkTestCase
 
         $result = $app->cache->get('key1');
         $this->assertFalse($result);
-        $result = $app->cache->exists('key1');
-        $this->assertFalse($result);
 
         $app->cache->set('key1', 'data1');
         $result = $app->cache->get('key1');
         $this->assertTrue($result === 'data1');
-        $result = $app->cache->exists('key1');
-        $this->assertTrue($result === true);
         $app->cache->delete('key1');
 
         $result = $app->cache->get('key1');
-        $this->assertFalse($result);
-        $result = $app->cache->exists('key1');
         $this->assertFalse($result);
     }
 
@@ -52,12 +46,8 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->set('key1', 'data1', 2);
         $result = $app->cache->get('key1');
         $this->assertTrue($result === 'data1');
-        $result = $app->cache->exists('key1');
-        $this->assertTrue($result === true);
         sleep(3);
         $result = $app->cache->get('key1');
-        $this->assertFalse($result);
-        $result = $app->cache->exists('key1');
         $this->assertFalse($result);
         $app->cache->delete('key1');
     }

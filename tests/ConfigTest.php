@@ -45,16 +45,6 @@ class ConfigTest extends BearFrameworkTestCase
     }
 
     /**
-     * y
-     */
-    public function testSet2()
-    {
-        $config = new \BearFramework\App\Config();
-        $this->setExpectedException('Exception');
-        $config->handleErrors = false;
-    }
-
-    /**
      * 
      */
     public function testGet1()

@@ -35,6 +35,8 @@ class ContextTest extends BearFrameworkTestCase
         $context->classes->add('TempClass2', 'class2.php');
         $this->assertTrue(class_exists('TempClass2'));
 
+        $context->assets->addDir('assets/');
+
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
     }
 
@@ -65,6 +67,8 @@ class ContextTest extends BearFrameworkTestCase
 
         $context->classes->add('TempClass2', 'class2.php');
         $this->assertTrue(class_exists('TempClass2'));
+
+        $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
     }
