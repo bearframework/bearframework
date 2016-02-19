@@ -151,4 +151,15 @@ class ContainerTest extends BearFrameworkTestCase
         $service = $app->container->get('missingService');
     }
 
+    /**
+     * 
+     */
+    public function testIsset()
+    {
+        $app = $this->getApp();
+        $app->container->add('test1', TestClass::class);
+        $this->assertTrue(isset($app->test1) == true);
+        $this->assertTrue(isset($app->test2) == false);
+    }
+
 }
