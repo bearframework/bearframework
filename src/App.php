@@ -13,6 +13,16 @@ use BearFramework\App;
 
 /**
  * The is the class used to instantiate and configure you application.
+ * @property \BearFramework\App\Config $config The application configuration
+ * @property \BearFramework\App\Request $request Provides information about the current request
+ * @property \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks
+ * @property \BearFramework\App\Log $log Provides logging functionlity
+ * @property \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options
+ * @property \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests
+ * @property \BearFramework\App\Assets $assets Provides utility functions for assets
+ * @property \BearFramework\App\Data $data \BearFramework\App\Data
+ * @property \BearFramework\App\Cache $cache Data cache
+ * @property \BearFramework\App\Classes $classes Provides functionality for autoloading classes
  */
 class App
 {
@@ -24,64 +34,10 @@ class App
     const VERSION = '0.7.0';
 
     /**
-     * The application configuration
-     * @var \BearFramework\App\Config 
+     * Dependency Injection container
+     * @var \BearFramework\App\ServiceContainer 
      */
-    public $config = null;
-
-    /**
-     * Provides information about the current request
-     * @var \BearFramework\App\Request
-     */
-    public $request = null;
-
-    /**
-     * Stores the data about the defined routes callbacks
-     * @var \BearFramework\App\Routes 
-     */
-    public $routes = null;
-
-    /**
-     * Provides logging functionlity
-     * @var \BearFramework\App\Log 
-     */
-    public $log = null;
-
-    /**
-     * Provides a way to enable addons and manage their options
-     * @var \BearFramework\App\Addons
-     */
-    public $addons = null;
-
-    /**
-     * Provides functionality for notifications and data requests
-     * @var \BearFramework\App\Hooks
-     */
-    public $hooks = null;
-
-    /**
-     * Provides utility functions for assets
-     * @var \BearFramework\App\Assets
-     */
-    public $assets = null;
-
-    /**
-     * Data storage
-     * @var \BearFramework\App\Data
-     */
-    public $data = null;
-
-    /**
-     * Data cache
-     * @var \BearFramework\App\Cache 
-     */
-    public $cache = null;
-
-    /**
-     * Provides functionality for autoloading classes
-     * @var \BearFramework\App\Classes 
-     */
-    public $classes = [];
+    public $container = null;
 
     /**
      * The instance of the App object. Only one can be created.
@@ -90,7 +46,7 @@ class App
     public static $instance = null;
 
     /**
-     *
+     * Information about whether the application is initialized
      * @var bool 
      */
     private $initialized = false;
@@ -98,9 +54,8 @@ class App
     /**
      * The constructor
      * @throws \Exception
-     * @param array $config
      */
-    public function __construct($config = [])
+    public function __construct()
     {
         if (self::$instance === null) {
             self::$instance = &$this;
@@ -108,16 +63,18 @@ class App
             throw new \Exception('App already constructed');
         }
 
-        $this->config = new App\Config($config);
-        $this->request = new App\Request();
-        $this->routes = new App\Routes();
-        $this->log = new App\Log();
-        $this->addons = new App\Addons();
-        $this->hooks = new App\Hooks();
-        $this->assets = new App\Assets();
-        $this->data = new App\Data();
-        $this->cache = new App\Cache();
-        $this->classes = new App\Classes();
+        $this->container = new App\Container();
+
+        $this->container->add('config', App\Config::class, ['singleton']);
+        $this->container->add('request', App\Request::class, ['singleton']);
+        $this->container->add('routes', App\Routes::class, ['singleton']);
+        $this->container->add('log', App\Log::class, ['singleton']);
+        $this->container->add('addons', App\Addons::class, ['singleton']);
+        $this->container->add('hooks', App\Hooks::class, ['singleton']);
+        $this->container->add('assets', App\Assets::class, ['singleton']);
+        $this->container->add('data', App\Data::class, ['singleton']);
+        $this->container->add('cache', App\Cache::class, ['singleton']);
+        $this->container->add('classes', App\Classes::class, ['singleton']);
     }
 
     /**
@@ -126,9 +83,6 @@ class App
     public function initialize()
     {
         if (!$this->initialized) {
-            spl_autoload_register(function ($class) {
-                $this->classes->load($class);
-            });
             $this->initializeEnvironment();
             $this->initializeErrorHandler();
             $this->initializeRequest();
@@ -395,6 +349,30 @@ class App
     public function __wakeup()
     {
         throw new \Exception('Cannot have multiple App instances');
+    }
+
+    /**
+     * Returns an object from the dependency injection container
+     * @param string $name The service name
+     * @return object Object from the dependency injection container
+     * @throws \Exception
+     */
+    public function __get($name)
+    {
+        if ($this->container->has($name)) {
+            return $this->container->get($name);
+        }
+        throw new \Exception('Invalid property name');
+    }
+
+    /**
+     * Returns information about whether the service is added in the dependency injection container
+     * @param string $name The name of the service
+     * @return boolen TRUE if services is added. FALSE otherwise.
+     */
+    public function __isset($name)
+    {
+        return $this->container->has($name);
     }
 
 }

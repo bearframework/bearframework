@@ -24,6 +24,16 @@ class Classes
     private $data = [];
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        spl_autoload_register(function ($class) {
+            $this->load($class);
+        });
+    }
+
+    /**
      * Registers a class for autoloading
      * @param string $class The class name
      * @param string $filename The filename that contains the class
