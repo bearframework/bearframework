@@ -16,7 +16,7 @@ use BearFramework\App;
  * @property \BearFramework\App\Config $config The application configuration
  * @property \BearFramework\App\Request $request Provides information about the current request
  * @property \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks
- * @property \BearFramework\App\Log $log Provides logging functionlity
+ * @property \BearFramework\App\Logger $logger Provides logging functionlity
  * @property \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options
  * @property \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests
  * @property \BearFramework\App\Assets $assets Provides utility functions for assets
@@ -68,7 +68,7 @@ class App
         $this->container->add('config', App\Config::class, ['singleton']);
         $this->container->add('request', App\Request::class, ['singleton']);
         $this->container->add('routes', App\Routes::class, ['singleton']);
-        $this->container->add('log', App\Log::class, ['singleton']);
+        $this->container->add('logger', App\Logger::class, ['singleton']);
         $this->container->add('addons', App\Addons::class, ['singleton']);
         $this->container->add('hooks', App\Hooks::class, ['singleton']);
         $this->container->add('assets', App\Assets::class, ['singleton']);
@@ -117,23 +117,30 @@ class App
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
             $handleError = function($message, $file, $line, $trace) {
-                $data = "Error:";
-                $data .= "\nMessage: " . $message;
-                $data .= "\nFile: " . $file;
-                $data .= "\nLine: " . $line;
-                $data .= "\nTrace: " . $trace;
-                $data .= "\nGET: " . print_r($_GET, true);
-                $data .= "\nPOST: " . print_r($_POST, true);
-                $data .= "\nSERVER: " . print_r($_SERVER, true);
-                if ($this->config->logErrors && strlen($this->config->logsDir) > 0 && strlen($this->config->errorLogFilename) > 0) {
+                if ($this->config->logErrors && strlen($this->config->logsDir) > 0) {
                     try {
-                        $this->log->write($this->config->errorLogFilename, $data);
+                        $data = [];
+                        $data['file'] = $file;
+                        $data['line'] = $line;
+                        $data['trace'] = $trace;
+                        $data['GET'] = $_GET;
+                        $data['POST'] = $_POST;
+                        $data['SERVER'] = $_SERVER;
+                        $this->logger->log('error', $message, $data);
                     } catch (\Exception $e) {
                         
                     }
                 }
                 if ($this->config->displayErrors) {
                     ob_clean();
+                    $data = "Error:";
+                    $data .= "\nMessage: " . $message;
+                    $data .= "\nFile: " . $file;
+                    $data .= "\nLine: " . $line;
+                    $data .= "\nTrace: " . $trace;
+                    $data .= "\nGET: " . print_r($_GET, true);
+                    $data .= "\nPOST: " . print_r($_POST, true);
+                    $data .= "\nSERVER: " . print_r($_SERVER, true);
                     $response = new App\Response\TemporaryUnavailable($data);
                     $response->disableHooks = true;
                 } else {

@@ -18,7 +18,6 @@ namespace BearFramework\App;
  * @property boolean $handleErrors
  * @property boolean $displayErrors
  * @property boolean $logErrors
- * @property string $errorLogFilename
  * @property string $assetsPathPrefix
  * @property int $assetsMaxAge
  */
@@ -58,7 +57,6 @@ class Config
             'handleErrors' => true,
             'displayErrors' => false,
             'logErrors' => false,
-            'errorLogFilename' => 'errors/' . date('Y-m-d') . '.log',
             'assetsPathPrefix' => '/assets/',
             'assetsMaxAge' => 0
         ];
