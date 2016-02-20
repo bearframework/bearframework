@@ -41,6 +41,7 @@ class Routes
         }
         if (is_string($pattern)) {
             $this->data[] = [[$pattern], $callback, $options];
+            return;
         } elseif (is_array($pattern)) {
             if (empty($pattern)) {
                 throw new \InvalidArgumentException('The route argument must be of type string or array of strings');
@@ -51,9 +52,9 @@ class Routes
                 }
             }
             $this->data[] = [$pattern, $callback, $options];
-        } else {
-            throw new \InvalidArgumentException('The route argument must be of type string or array of strings');
+            return;
         }
+        throw new \InvalidArgumentException('The route argument must be of type string or array of strings');
     }
 
     /**
