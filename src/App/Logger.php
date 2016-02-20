@@ -45,7 +45,7 @@ class Logger
             $microtime = microtime(true);
             $microtimeParts = explode('.', $microtime);
             $logData = date('H:i:s', $microtime) . ':' . (isset($microtimeParts[1]) ? $microtimeParts[1] : '0') . "\n" . trim($message) . (empty($context) ? '' : "\n" . trim(print_r($context, true))) . "\n\n";
-            App\Utilities\File::makeDir($app->config->logsDir . $filename);
+            $app->filesystem->makeFileDir($app->config->logsDir . $filename);
             $fileHandler = fopen($app->config->logsDir . $filename, 'ab');
             $result = fwrite($fileHandler, $logData);
             fclose($fileHandler);

@@ -7,12 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework\App\Utilities;
+namespace BearFramework\App;
 
 /**
- * Graphics utilities
+ * Images utilities
  */
-class Graphics
+class Images
 {
 
     /**
@@ -21,7 +21,7 @@ class Graphics
      * @throws \InvalidArgumentException
      * @return array[int, int] The size of the image specified
      */
-    static function getSize($sourceFilename)
+    public function getSize($sourceFilename)
     {
         if (!is_string($sourceFilename)) {
             throw new \InvalidArgumentException('');
@@ -48,7 +48,7 @@ class Graphics
      * @throws \Exception
      * @return void No value is returned
      */
-    static function resize($sourceFilename, $destinationFilename, $width, $height, $outputType = null)
+    public function resize($sourceFilename, $destinationFilename, $width, $height, $outputType = null)
     {
         if (!is_string($sourceFilename)) {
             throw new \InvalidArgumentException(' (sourceFilename)');

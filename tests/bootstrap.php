@@ -16,38 +16,43 @@ require __DIR__ . '/../vendor/autoload.php';
 class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 {
 
+    private $app = null;
+
     function getTestDir()
     {
         return sys_get_temp_dir() . '/bearframework/unittests/' . uniqid() . '/';
     }
 
-    function getApp($config = [])
+    function getApp($config = [], $createNew = false)
     {
-        $rootDir = $this->getTestDir();
-        BearFramework\App\Utilities\File::makeDir($rootDir . 'app/');
-        BearFramework\App\Utilities\File::makeDir($rootDir . 'data/');
-        BearFramework\App\Utilities\File::makeDir($rootDir . 'logs/');
-        BearFramework\App\Utilities\File::makeDir($rootDir . 'addons/');
-        $initialConfig = [
-            'appDir' => $rootDir . 'app/',
-            'dataDir' => $rootDir . 'data/',
-            'logsDir' => $rootDir . 'logs/',
-            'addonsDir' => $rootDir . 'addons/'
-        ];
-        $config = array_merge($initialConfig, $config);
-        $app = new BearFramework\App();
-        foreach ($config as $key => $value) {
-            $app->config->$key = $value;
+        if ($this->app == null || $createNew) {
+            $rootDir = $this->getTestDir();
+            $initialConfig = [
+                'appDir' => $rootDir . 'app/',
+                'dataDir' => $rootDir . 'data/',
+                'logsDir' => $rootDir . 'logs/',
+                'addonsDir' => $rootDir . 'addons/'
+            ];
+            $config = array_merge($initialConfig, $config);
+            $this->app = new BearFramework\App();
+            $this->app->filesystem->makeDir($rootDir . 'app/');
+            $this->app->filesystem->makeDir($rootDir . 'data/');
+            $this->app->filesystem->makeDir($rootDir . 'logs/');
+            $this->app->filesystem->makeDir($rootDir . 'addons/');
+            foreach ($config as $key => $value) {
+                $this->app->config->$key = $value;
+            }
+            $this->app->initialize();
+            $this->app->request->base = 'http://example.com/www';
+            $this->app->request->method = 'GET';
         }
-        $app->initialize();
-        $app->request->base = 'http://example.com/www';
-        $app->request->method = 'GET';
-        return $app;
+
+        return $this->app;
     }
 
     function createFile($filename, $content)
     {
-        BearFramework\App\Utilities\File::makeDir($filename);
+        $this->app->filesystem->makeFileDir($filename);
         file_put_contents($filename, $content);
     }
 

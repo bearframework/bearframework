@@ -78,7 +78,7 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
                     $url = $app->assets->getUrl($filename, $options);
-                    $size = \BearFramework\App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $size = $app->images->getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);
 
@@ -90,7 +90,7 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
 
                     $url = $app->assets->getUrl($filename, $options);
-                    $size = \BearFramework\App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $size = $app->images->getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);
 
@@ -107,7 +107,7 @@ class AssetsTest extends BearFrameworkTestCase
 
                     $url = $app->assets->getUrl($filename, $options);
                     $app->data->makePublic(['key' => $key]);
-                    $size = \BearFramework\App\Utilities\Graphics::getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
+                    $size = $app->images->getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);
                 }

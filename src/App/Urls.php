@@ -12,7 +12,7 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides functionality for autoloading classes
+ * URLs utilities
  */
 class Urls
 {

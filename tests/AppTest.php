@@ -132,9 +132,9 @@ class AppTest extends BearFrameworkTestCase
      */
     function testMultipleApps()
     {
-        $app = $this->getApp();
+        $app = $this->getApp([], true);
         $this->setExpectedException('Exception');
-        $app = $this->getApp();
+        $app = $this->getApp([], true);
     }
 
     /**

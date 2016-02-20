@@ -160,16 +160,16 @@ class Assets
             if (isset($pathinfo['extension'])) {
                 $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString));
                 if (!is_file($tempFilename)) {
-                    App\Utilities\File::makeDir($tempFilename);
+                    $app->filesystem->makeFileDir($tempFilename);
                     if ($width !== null || $height !== null) {
                         if ($width === null) {
-                            $imageSize = App\Utilities\Graphics::getSize($filename);
+                            $imageSize = $app->images->getSize($filename);
                             $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
                         } elseif ($height === null) {
-                            $imageSize = App\Utilities\Graphics::getSize($filename);
+                            $imageSize = $app->images->getSize($filename);
                             $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
                         }
-                        App\Utilities\Graphics::resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
+                        $app->images->resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
                     }
                 }
                 return $tempFilename;
