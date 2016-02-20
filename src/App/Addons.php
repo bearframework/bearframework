@@ -21,7 +21,7 @@ class Addons
      * Added addons
      * @var array 
      */
-    private $addons = [];
+    private $data = [];
 
     /**
      * Enables an addon and saves the provided options
@@ -41,7 +41,7 @@ class Addons
         }
         $pathname = \BearFramework\Addons::getDir($name);
         $pathname = rtrim($pathname, '/\\') . '/';
-        $this->addons[$name] = [
+        $this->data[$name] = [
             'pathname' => $pathname,
             'options' => $options
         ];
@@ -64,7 +64,11 @@ class Addons
      */
     public function getList()
     {
-        return $this->addons;
+        $result = [];
+        foreach ($this->data as $name => $data) {
+            $result[] = array_merge(['name' => $name], $data);
+        }
+        return $result;
     }
 
 }

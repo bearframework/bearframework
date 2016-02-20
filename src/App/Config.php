@@ -28,7 +28,7 @@ class Config
      * Stores the configuration options
      * @var array 
      */
-    private $options = [];
+    private $data = [];
 
     /**
      * The constructor
@@ -60,7 +60,7 @@ class Config
             'assetsPathPrefix' => '/assets/',
             'assetsMaxAge' => 0
         ];
-        $this->options = array_merge($defaultOptions, $options);
+        $this->data = array_merge($defaultOptions, $options);
     }
 
     /**
@@ -71,8 +71,8 @@ class Config
      */
     public function __get($name)
     {
-        if (array_key_exists($name, $this->options)) {
-            return $this->options[$name];
+        if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
         }
         return null;
     }
@@ -85,7 +85,7 @@ class Config
      */
     public function __set($name, $value)
     {
-        $this->options[$name] = $value;
+        $this->data[$name] = $value;
     }
 
     /**
@@ -96,7 +96,7 @@ class Config
      */
     public function __isset($name)
     {
-        return array_key_exists($name, $this->options);
+        return array_key_exists($name, $this->data);
     }
 
 }

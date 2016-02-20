@@ -9,8 +9,6 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App;
-
 /**
  * Provides information about the addon location and utility functions
  */
