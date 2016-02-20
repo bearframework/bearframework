@@ -173,9 +173,8 @@ class Assets
                     }
                 }
                 return $tempFilename;
-            } else {
-                return false;
             }
+            return false;
         }
         return false;
     }

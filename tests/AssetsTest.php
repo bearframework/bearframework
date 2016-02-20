@@ -263,7 +263,7 @@ class AssetsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->assets->addDir($app->config->appDir . 'assets/');
-        
+
         $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
         $path = substr($url, strlen($app->request->base));
         $brokenPath = '/assets/abc' . substr($path, strlen('/assets/') + 3);
@@ -277,9 +277,7 @@ class AssetsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->assets->addDir($app->config->appDir . 'assets/');
-        
-        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
-        $path = substr($url, strlen($app->request->base));
+
         $brokenPath = '/assets/abcd/logo.png';
         $this->assertFalse($app->assets->getFilename($brokenPath));
     }

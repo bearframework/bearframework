@@ -138,7 +138,7 @@ class ContainerTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('Exception');
-        $service = $app->missingService;
+        $app->missingService->property;
     }
 
     /**
@@ -148,7 +148,7 @@ class ContainerTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('Exception');
-        $service = $app->container->get('missingService');
+        $app->container->get('missingService');
     }
 
     /**

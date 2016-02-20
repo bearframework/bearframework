@@ -38,15 +38,12 @@ class Cache
             if (strlen($data['metadata.t']) > 0) {
                 if ((int) $data['metadata.t'] > time()) {
                     return unserialize(gzuncompress($data['body']));
-                } else {
-                    return $defaultValue;
                 }
-            } else {
-                return unserialize(gzuncompress($data['body']));
+                return $defaultValue;
             }
-        } else {
-            return $defaultValue;
+            return unserialize(gzuncompress($data['body']));
         }
+        return $defaultValue;
     }
 
     /**
