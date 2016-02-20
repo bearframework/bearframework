@@ -65,17 +65,17 @@ class App
 
         $this->container = new App\Container();
 
-        $this->container->add('config', App\Config::class, ['singleton']);
-        $this->container->add('request', App\Request::class, ['singleton']);
-        $this->container->add('routes', App\Routes::class, ['singleton']);
-        $this->container->add('logger', App\Logger::class, ['singleton']);
-        $this->container->add('addons', App\Addons::class, ['singleton']);
-        $this->container->add('hooks', App\Hooks::class, ['singleton']);
-        $this->container->add('assets', App\Assets::class, ['singleton']);
-        $this->container->add('data', App\Data::class, ['singleton']);
-        $this->container->add('cache', App\Cache::class, ['singleton']);
-        $this->container->add('classes', App\Classes::class, ['singleton']);
-        $this->container->add('urls', App\Urls::class, ['singleton']);
+        $this->container->set('config', App\Config::class, ['singleton']);
+        $this->container->set('request', App\Request::class, ['singleton']);
+        $this->container->set('routes', App\Routes::class, ['singleton']);
+        $this->container->set('logger', App\Logger::class, ['singleton']);
+        $this->container->set('addons', App\Addons::class, ['singleton']);
+        $this->container->set('hooks', App\Hooks::class, ['singleton']);
+        $this->container->set('assets', App\Assets::class, ['singleton']);
+        $this->container->set('data', App\Data::class, ['singleton']);
+        $this->container->set('cache', App\Cache::class, ['singleton']);
+        $this->container->set('classes', App\Classes::class, ['singleton']);
+        $this->container->set('urls', App\Urls::class, ['singleton']);
     }
 
     /**

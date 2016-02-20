@@ -29,7 +29,7 @@ class Container
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function add($name, $value, $options = [])
+    public function set($name, $value, $options = [])
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('');
