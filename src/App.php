@@ -207,25 +207,6 @@ class App
     }
 
     /**
-     * Loads a file
-     * @param string $filename The filename to be loaded
-     * @throws \InvalidArgumentException
-     * @return boolean TRUE if file loaded successfully. Otherwise returns FALSE.
-     */
-    public function load($filename)
-    {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        $filename = realpath($filename);
-        if ($filename !== false) {
-            include_once $filename;
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Constructs a url for the path specified
      * @param string $path The path
      * @throws \InvalidArgumentException

@@ -83,18 +83,6 @@ class AppTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testLoad()
-    {
-        $app = $this->getApp();
-        $this->assertTrue($app->load('src/App/Cache.php'));
-        $this->assertFalse($app->load('src/App/MissingClass.php'));
-        $this->setExpectedException('InvalidArgumentException');
-        $app->load(1);
-    }
-
-    /**
-     * 
-     */
     public function testAppIndex()
     {
         $app = $this->getApp();

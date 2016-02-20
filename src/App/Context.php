@@ -50,19 +50,4 @@ class Context
         $this->classes = new App\Context\Classes($dir);
     }
 
-    /**
-     * Loads a file from the current context dir
-     * @param string $filename The filename to be loaded
-     * @throws \InvalidArgumentException
-     * @return boolean
-     */
-    public function load($filename)
-    {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
-        }
-        $app = &App::$instance;
-        return $app->load($this->dir . $filename);
-    }
-
 }

@@ -24,15 +24,11 @@ class ContextTest extends BearFrameworkTestCase
 
         $this->createFile($app->config->appDir . 'index.php', '<?php ');
         $this->createFile($app->config->appDir . 'class1.php', '<?php class TempClass1{}');
-        $this->createFile($app->config->appDir . 'class2.php', '<?php class TempClass2{}');
 
         $context = $app->getContext($app->config->appDir);
 
-        $this->assertTrue($context->load('class1.php'));
+        $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
-
-        $context->classes->add('TempClass2', 'class2.php');
-        $this->assertTrue(class_exists('TempClass2'));
 
         $context->assets->addDir('assets/');
 
@@ -50,7 +46,6 @@ class ContextTest extends BearFrameworkTestCase
 
         $this->createFile($addonDir . 'index.php', '<?php ');
         $this->createFile($addonDir . 'class1.php', '<?php class TempClass1{}');
-        $this->createFile($addonDir . 'class2.php', '<?php class TempClass2{}');
 
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon', ['option1' => 5]);
@@ -60,11 +55,8 @@ class ContextTest extends BearFrameworkTestCase
         $this->assertTrue(isset($context->options['option1']));
         $this->assertTrue($context->options['option1'] === 5);
 
-        $this->assertTrue($context->load('class1.php'));
+        $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
-
-        $context->classes->add('TempClass2', 'class2.php');
-        $this->assertTrue(class_exists('TempClass2'));
 
         $context->assets->addDir('assets/');
 
@@ -119,16 +111,6 @@ class ContextTest extends BearFrameworkTestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         new \BearFramework\App\Context(1);
-    }
-
-    /**
-     * 
-     */
-    public function testContextInvalidArguments2()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $context = new \BearFramework\App\Context('dir');
-        $context->load(1);
     }
 
     /**

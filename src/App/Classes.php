@@ -62,9 +62,8 @@ class Classes
         if (!is_string($class)) {
             throw new \InvalidArgumentException('');
         }
-        $app = &App::$instance;
         if (isset($this->data[$class])) {
-            $app->load($this->data[$class]);
+            include_once $this->data[$class];
         }
     }
 
