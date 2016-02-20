@@ -53,4 +53,55 @@ class AddonsTest extends BearFrameworkTestCase
         $app->addons->add('addon1', 1);
     }
 
+    /**
+     * 
+     */
+    public function testRegister()
+    {
+        BearFramework\Addons::register('name1', 'dir1');
+        $this->assertTrue(BearFramework\Addons::exists('name1'));
+        $this->assertTrue(BearFramework\Addons::getDir('name1') === 'dir1');
+        $this->assertTrue(BearFramework\Addons::exists('name2') === false);
+        $this->setExpectedException('Exception');
+        BearFramework\Addons::getDir('name2');
+    }
+
+    /**
+     * 
+     */
+    public function testRegisterInvalidArguments1()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        BearFramework\Addons::register(1, 'dir1');
+    }
+
+    /**
+     * 
+     */
+    public function testRegisterInvalidArguments2()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        BearFramework\Addons::register('name1', 2);
+    }
+
+    /**
+     * 
+     */
+    public function testRegisterInvalidArguments3()
+    {
+        BearFramework\Addons::register('name1', 'dir1');
+        $this->setExpectedException('InvalidArgumentException');
+        BearFramework\Addons::exists(1);
+    }
+
+    /**
+     * 
+     */
+    public function testRegisterInvalidArguments4()
+    {
+        BearFramework\Addons::register('name1', 'dir1');
+        $this->setExpectedException('InvalidArgumentException');
+        BearFramework\Addons::getDir(1);
+    }
+
 }
