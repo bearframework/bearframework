@@ -259,7 +259,7 @@ class App
             return new App\AppContext($this->config->appDir);
         }
         $addons = $this->addons->getList();
-        foreach ($addons as $data) {
+        foreach ($addons as $name => $data) {
             if (strpos($filename, realpath($data['pathname'])) === 0) {
                 $context = new App\AddonContext($data['pathname']);
                 $context->options = $data['options'];

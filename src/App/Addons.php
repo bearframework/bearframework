@@ -25,22 +25,23 @@ class Addons
 
     /**
      * Enables an addon and saves the provided options
-     * @param string $pathname The directory where the addon index.php file is located
+     * @param string $name The name of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return void No value is returned
      */
-    public function add($pathname, $options = [])
+    public function add($name, $options = [])
     {
-        if (!is_string($pathname)) {
+        if (!is_string($name)) {
             throw new \InvalidArgumentException('');
         }
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
+        $pathname = \BearFramework\Addons::getDir($name);
         $pathname = rtrim($pathname, '/\\') . '/';
-        $this->addons[] = [
+        $this->addons[$name] = [
             'pathname' => $pathname,
             'options' => $options
         ];
@@ -50,6 +51,7 @@ class Addons
             $app = &App::$instance; // Needed for the index file
             $context = new App\AddonContext($pathname);
             $context->options = $options;
+            unset($name); // Hide this variable from the file scope
             unset($pathname); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
             include_once $__indexFile;

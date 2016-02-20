@@ -19,7 +19,9 @@ class AddonsTest extends BearFrameworkTestCase
     public function testOptions()
     {
         $app = $this->getApp();
-        $app->addons->add($app->config->addonsDir . 'addon1/', ['var' => 5]);
+        BearFramework\Addons::register('addon1', $app->config->addonsDir . 'addon1/');
+
+        $app->addons->add('addon1', ['var' => 5]);
         $this->createFile($app->config->addonsDir . 'addon1/index.php', '<?== ?>');
         $context = $app->getContext($app->config->addonsDir . 'addon1/');
 
@@ -48,7 +50,7 @@ class AddonsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
-        $app->addons->add($app->config->addonsDir . 'addon1/', 1);
+        $app->addons->add('addon1', 1);
     }
 
 }

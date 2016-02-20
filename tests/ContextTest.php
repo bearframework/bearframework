@@ -45,13 +45,15 @@ class ContextTest extends BearFrameworkTestCase
     public function testAddonContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . 'tempaddong' . uniqid() . '/';
+        $addonDir = $app->config->addonsDir . 'tempaddon' . uniqid() . '/';
         $app->request->base = 'http://example.com/www';
 
         $this->createFile($addonDir . 'index.php', '<?php ');
         $this->createFile($addonDir . 'class1.php', '<?php class TempClass1{}');
         $this->createFile($addonDir . 'class2.php', '<?php class TempClass2{}');
-        $app->addons->add($addonDir, ['option1' => 5]);
+
+        BearFramework\Addons::register('tempaddon', $addonDir);
+        $app->addons->add('tempaddon', ['option1' => 5]);
 
         $context = $app->getContext($addonDir);
 
