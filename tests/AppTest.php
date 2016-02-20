@@ -100,19 +100,6 @@ class AppTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetUrl()
-    {
-        $app = $this->getApp();
-        $app->request->base = "https://example.com/www";
-        $this->assertTrue($app->getUrl('/') === "https://example.com/www/");
-        $this->assertTrue($app->getUrl('/products/') === "https://example.com/www/products/");
-        $this->setExpectedException('InvalidArgumentException');
-        $app->getUrl(1);
-    }
-
-    /**
-     * 
-     */
     public function testRunNotFound()
     {
         $app = $this->getApp();

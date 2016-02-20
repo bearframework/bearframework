@@ -75,6 +75,7 @@ class App
         $this->container->add('data', App\Data::class, ['singleton']);
         $this->container->add('cache', App\Cache::class, ['singleton']);
         $this->container->add('classes', App\Classes::class, ['singleton']);
+        $this->container->add('urls', App\Urls::class, ['singleton']);
     }
 
     /**
@@ -204,20 +205,6 @@ class App
             $this->request->path = new App\Request\Path(isset($path{0}) ? $path : '/');
             $this->request->base = $scheme . '://' . $host . $basePath;
         }
-    }
-
-    /**
-     * Constructs a url for the path specified
-     * @param string $path The path
-     * @throws \InvalidArgumentException
-     * @return string Absolute URL containing the base URL plus the path given
-     */
-    public function getUrl($path = '/')
-    {
-        if (!is_string($path)) {
-            throw new \InvalidArgumentException('');
-        }
-        return $this->request->base . $path;
     }
 
     /**
