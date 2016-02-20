@@ -59,14 +59,12 @@ class Container
             if (isset($this->data[$name]['result'])) {
                 return $this->data[$name]['result'];
             }
-            $value = $this->data[$name]['value'];
+            $result = $this->data[$name]['value'];
             $options = $this->data[$name]['options'];
-            if (is_string($value)) {
-                $result = new $value();
-            } elseif (is_callable($value)) {
-                $result = $value();
-            } else {
-                $result = $value;
+            if (is_string($result)) {
+                $result = new $result();
+            } elseif (is_callable($result)) {
+                $result = call_user_func($result);
             }
             if (array_search('singleton', $options) !== false) {
                 $this->data[$name]['result'] = $result;
