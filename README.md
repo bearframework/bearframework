@@ -11,6 +11,7 @@ The goal of Bear Framework is to help you start your next web project in less th
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
 [![codecov.io](https://codecov.io/github/bearframework/bearframework/coverage.svg?branch=master)](https://codecov.io/github/bearframework/bearframework?branch=master)
 [![License](https://poser.pugx.org/bearframework/bearframework/license)](https://packagist.org/packages/bearframework/bearframework)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/36a41361218145539175d0fc7b153f0f)](https://www.codacy.com/app/ivo_2/bearframework)
 
 ## Simple and powerful
 
