@@ -158,7 +158,7 @@ class Assets
             }
             $pathinfo = pathinfo($filename);
             if (isset($pathinfo['extension'])) {
-                $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString));
+                $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString)) . '.' . $pathinfo['extension'];
                 if (!is_file($tempFilename)) {
                     $app->filesystem->makeFileDir($tempFilename);
                     if ($width !== null || $height !== null) {
