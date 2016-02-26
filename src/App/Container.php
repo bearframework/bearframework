@@ -40,7 +40,7 @@ class Container
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
-        $this->data[$name] = ['value' => $value, 'options' => $options];
+        $this->data[$name] = [$value, $options];
     }
 
     /**
@@ -56,18 +56,18 @@ class Container
             throw new \InvalidArgumentException('');
         }
         if (isset($this->data[$name])) {
-            if (isset($this->data[$name]['result'])) {
-                return $this->data[$name]['result'];
+            if (isset($this->data[$name][2])) {
+                return $this->data[$name][2];
             }
-            $result = $this->data[$name]['value'];
-            $options = $this->data[$name]['options'];
+            $result = $this->data[$name][0];
+            $options = array_map('strtoupper', $this->data[$name][1]);
             if (is_string($result)) {
                 $result = new $result();
             } elseif (is_callable($result)) {
                 $result = call_user_func($result);
             }
-            if (array_search('singleton', $options) !== false) {
-                $this->data[$name]['result'] = $result;
+            if (array_search('SINGLETON', $options) !== false) {
+                $this->data[$name][2] = $result;
             }
             return $result;
         }
