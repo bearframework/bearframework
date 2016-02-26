@@ -68,19 +68,19 @@ class App
 
         $this->container = new App\Container();
 
-        $this->container->set('config', App\Config::class, ['singleton']);
-        $this->container->set('request', App\Request::class, ['singleton']);
-        $this->container->set('routes', App\Routes::class, ['singleton']);
-        $this->container->set('logger', App\Logger::class, ['singleton']);
-        $this->container->set('addons', App\Addons::class, ['singleton']);
-        $this->container->set('hooks', App\Hooks::class, ['singleton']);
-        $this->container->set('assets', App\Assets::class, ['singleton']);
-        $this->container->set('data', App\Data::class, ['singleton']);
-        $this->container->set('cache', App\Cache::class, ['singleton']);
-        $this->container->set('classes', App\Classes::class, ['singleton']);
-        $this->container->set('urls', App\Urls::class, ['singleton']);
-        $this->container->set('filesystem', App\Filesystem::class, ['singleton']);
-        $this->container->set('images', App\Images::class, ['singleton']);
+        $this->container->set('config', App\Config::class, ['SINGLETON']);
+        $this->container->set('request', App\Request::class, ['SINGLETON']);
+        $this->container->set('routes', App\Routes::class, ['SINGLETON']);
+        $this->container->set('logger', App\Logger::class, ['SINGLETON']);
+        $this->container->set('addons', App\Addons::class, ['SINGLETON']);
+        $this->container->set('hooks', App\Hooks::class, ['SINGLETON']);
+        $this->container->set('assets', App\Assets::class, ['SINGLETON']);
+        $this->container->set('data', App\Data::class, ['SINGLETON']);
+        $this->container->set('cache', App\Cache::class, ['SINGLETON']);
+        $this->container->set('classes', App\Classes::class, ['SINGLETON']);
+        $this->container->set('urls', App\Urls::class, ['SINGLETON']);
+        $this->container->set('filesystem', App\Filesystem::class, ['SINGLETON']);
+        $this->container->set('images', App\Images::class, ['SINGLETON']);
     }
 
     /**
