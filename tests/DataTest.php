@@ -99,6 +99,36 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testExeccute()
+    {
+        $app = $this->getApp();
+        $result = $app->data->execute([
+            [
+                'command' => 'set',
+                'key' => 'products/1',
+                'body' => '{"name":"Product 1"}'
+            ],
+            [
+                'command' => 'set',
+                'key' => 'products/2',
+                'body' => '{"name":"Product 2"}'
+            ],
+            [
+                'command' => 'get',
+                'key' => 'products/1',
+                'result' => ['body']
+            ]
+        ]);
+        $this->assertTrue($result[0] === true);
+        $this->assertTrue($result[1] === true);
+        $this->assertTrue($result[2] === array(
+            'body' => '{"name":"Product 1"}'
+        ));
+    }
+
+    /**
+     * 
+     */
     public function testFileName()
     {
         $app = $this->getApp();

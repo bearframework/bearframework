@@ -118,6 +118,17 @@ class Data
     }
 
     /**
+     * Executes multiple commands
+     * @param array $commands Commands
+     * @return array List of commands results
+     */
+    public function execute($commands)
+    {
+        $instance = $this->getInstance();
+        return $instance->execute($commands);
+    }
+
+    /**
      * Marks object as public so it can be accessed as an asset
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
