@@ -28,8 +28,8 @@ class Addons
      * @param string $name The name of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\InvalidConfigOptionException
-     * @return void No value is returned
+     * @throws \Exception
+     * @return boolean TRUE if successfully loaded. FALSE otherwise.
      */
     public function add($name, $options = [])
     {
@@ -39,6 +39,17 @@ class Addons
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
+        if (isset($this->data[$name])) {
+            return false;
+        }
+        $addonDefinitionOptions = \BearFramework\Addons::getOptions($name);
+        if (isset($addonDefinitionOptions['require']) && is_array($addonDefinitionOptions['require'])) {
+            foreach ($addonDefinitionOptions['require'] as $requiredAddonName) {
+                if (is_string($requiredAddonName)) {
+                    $this->add($requiredAddonName);
+                }
+            }
+        }
         $pathname = \BearFramework\Addons::getDir($name);
         $pathname = rtrim($pathname, '/\\') . '/';
         $this->data[$name] = [
@@ -46,15 +57,19 @@ class Addons
             'options' => $options
         ];
 
-        $__indexFile = realpath($pathname . 'index.php');
-        if ($__indexFile !== false) {
+        $__indexFilename = realpath($pathname . 'index.php');
+        if ($__indexFilename !== false) {
             $app = &App::$instance; // Needed for the index file
             $context = new App\AddonContext($pathname);
             $context->options = $options;
             unset($name); // Hide this variable from the file scope
             unset($pathname); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
-            include_once $__indexFile;
+            unset($addonDefinitionOptions); // Hide this variable from the file scope
+            include_once $__indexFilename;
+            return true;
+        } else {
+            throw new \Exception('Addon index file not found');
         }
     }
 

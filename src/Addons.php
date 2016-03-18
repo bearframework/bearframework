@@ -19,16 +19,17 @@ class Addons
      * Registered addons data
      * @var array 
      */
-    static $data = [];
+    static private $data = [];
 
     /**
      * Registers an addon
      * @param string $name The addon name
      * @param string $dir The addon location
+     * @param array $options Addon options
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    static function register($name, $dir)
+    static function register($name, $dir, $options = [])
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('');
@@ -36,7 +37,10 @@ class Addons
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
         }
-        self::$data[$name] = $dir;
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('');
+        }
+        self::$data[$name] = [$dir, $options];
     }
 
     /**
@@ -66,7 +70,25 @@ class Addons
             throw new \InvalidArgumentException('');
         }
         if (isset(self::$data[$name])) {
-            return self::$data[$name];
+            return self::$data[$name][0];
+        }
+        throw new \Exception('');
+    }
+
+    /**
+     * Returns the addon options
+     * @param string $name The addon name
+     * @return string The location of the addon
+     * @throws \Exception
+     * @throws \InvalidArgumentException
+     */
+    static function getOptions($name)
+    {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException('');
+        }
+        if (isset(self::$data[$name])) {
+            return self::$data[$name][1];
         }
         throw new \Exception('');
     }
