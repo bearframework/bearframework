@@ -25,11 +25,10 @@ class Container
      * Registeres a value for the specified name
      * @param string $name The service name.
      * @param string|object|callable $value The object that will be returned when requested.
-     * @param array $options Array options. Currently there is only one - singleton
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function set($name, $value, $options = [])
+    public function set($name, $value)
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('');
@@ -37,10 +36,7 @@ class Container
         if (!is_string($value) && !is_object($value) && !is_callable($value)) {
             throw new \InvalidArgumentException('');
         }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
-        }
-        $this->data[$name] = [$value, $options];
+        $this->data[$name] = [$value];
     }
 
     /**
@@ -56,19 +52,16 @@ class Container
             throw new \InvalidArgumentException('');
         }
         if (isset($this->data[$name])) {
-            if (isset($this->data[$name][2])) {
-                return $this->data[$name][2];
+            if (isset($this->data[$name][1])) {
+                return $this->data[$name][1];
             }
             $result = $this->data[$name][0];
-            $options = array_map('strtoupper', $this->data[$name][1]);
             if (is_string($result)) {
                 $result = new $result();
             } elseif (is_callable($result)) {
                 $result = call_user_func($result);
             }
-            if (array_search('SINGLETON', $options) !== false) {
-                $this->data[$name][2] = $result;
-            }
+            $this->data[$name][1] = $result;
             return $result;
         }
         throw new \Exception('');

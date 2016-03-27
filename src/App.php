@@ -68,19 +68,19 @@ class App
 
         $this->container = new App\Container();
 
-        $this->container->set('config', App\Config::class, ['SINGLETON']);
-        $this->container->set('request', App\Request::class, ['SINGLETON']);
-        $this->container->set('routes', App\Routes::class, ['SINGLETON']);
-        $this->container->set('logger', App\Logger::class, ['SINGLETON']);
-        $this->container->set('addons', App\Addons::class, ['SINGLETON']);
-        $this->container->set('hooks', App\Hooks::class, ['SINGLETON']);
-        $this->container->set('assets', App\Assets::class, ['SINGLETON']);
-        $this->container->set('data', App\Data::class, ['SINGLETON']);
-        $this->container->set('cache', App\Cache::class, ['SINGLETON']);
-        $this->container->set('classes', App\Classes::class, ['SINGLETON']);
-        $this->container->set('urls', App\Urls::class, ['SINGLETON']);
-        $this->container->set('filesystem', App\Filesystem::class, ['SINGLETON']);
-        $this->container->set('images', App\Images::class, ['SINGLETON']);
+        $this->container->set('config', App\Config::class);
+        $this->container->set('request', App\Request::class);
+        $this->container->set('routes', App\Routes::class);
+        $this->container->set('logger', App\Logger::class);
+        $this->container->set('addons', App\Addons::class);
+        $this->container->set('hooks', App\Hooks::class);
+        $this->container->set('assets', App\Assets::class);
+        $this->container->set('data', App\Data::class);
+        $this->container->set('cache', App\Cache::class);
+        $this->container->set('classes', App\Classes::class);
+        $this->container->set('urls', App\Urls::class);
+        $this->container->set('filesystem', App\Filesystem::class);
+        $this->container->set('images', App\Images::class);
     }
 
     /**

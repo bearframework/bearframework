@@ -26,14 +26,7 @@ class ContainerTest extends BearFrameworkTestCase
     public function testAddString()
     {
         $app = $this->getApp();
-        $app->container->set('test1', TestClass::class);
-        $this->assertTrue($app->test1 instanceof TestClass);
-        $this->assertTrue($app->test1->property1 === 1);
-        $app->test1->property1 = 2;
-        $this->assertTrue($app->test1 instanceof TestClass);
-        $this->assertTrue($app->test1->property1 === 1);
-
-        $app->container->set('test2', TestClass::class, ['singleton']);
+        $app->container->set('test2', TestClass::class);
         $this->assertTrue($app->test2 instanceof TestClass);
         $this->assertTrue($app->test2->property1 === 1);
         $app->test2->property1 = 2;
@@ -47,18 +40,9 @@ class ContainerTest extends BearFrameworkTestCase
     public function testAddCallable()
     {
         $app = $this->getApp();
-        $app->container->set('test1', function() {
-            return new TestClass();
-        });
-        $this->assertTrue($app->test1 instanceof TestClass);
-        $this->assertTrue($app->test1->property1 === 1);
-        $app->test1->property1 = 2;
-        $this->assertTrue($app->test1 instanceof TestClass);
-        $this->assertTrue($app->test1->property1 === 1);
-
         $app->container->set('test2', function() {
             return new TestClass();
-        }, ['singleton']);
+        });
         $this->assertTrue($app->test2 instanceof TestClass);
         $this->assertTrue($app->test2->property1 === 1);
         $app->test2->property1 = 2;
@@ -99,16 +83,6 @@ class ContainerTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->container->set('test1', 1);
-    }
-
-    /**
-     * 
-     */
-    public function testAddInvalidArgument3()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->container->set('test1', TestClass::class, 1);
     }
 
     /**
