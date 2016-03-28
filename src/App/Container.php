@@ -60,6 +60,8 @@ class Container
                 $result = new $result();
             } elseif (is_callable($result)) {
                 $result = call_user_func($result);
+            } elseif (is_object($result)) {
+                return $result;
             }
             $this->data[$name][1] = $result;
             return $result;
