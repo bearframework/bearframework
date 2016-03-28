@@ -101,6 +101,7 @@ class App
      */
     private function initializeEnvironment()
     {
+        // @codeCoverageIgnoreStart
         if ($this->config->updateEnvironment) {
             if (version_compare(phpversion(), '5.6.0', '<')) {
                 ini_set('default_charset', 'UTF-8');
@@ -110,6 +111,7 @@ class App
             ini_set("pcre.backtrack_limit", 100000000);
             ini_set("pcre.recursion_limit", 100000000);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
