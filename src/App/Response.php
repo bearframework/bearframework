@@ -125,7 +125,7 @@ class Response
         if (!isset($statusCodes[$code])) {
             throw new \InvalidArgumentException('');
         }
-        $this->headers['statusCode'] = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $code . ' ' . $statusCodes[$code];
+        $this->headers['statusCode'] = (isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $code . ' ' . $statusCodes[$code];
     }
 
 }

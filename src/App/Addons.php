@@ -42,9 +42,9 @@ class Addons
         if (isset($this->data[$name])) {
             return false;
         }
-        $addonDefinitionOptions = \BearFramework\Addons::getOptions($name);
-        if (isset($addonDefinitionOptions['require']) && is_array($addonDefinitionOptions['require'])) {
-            foreach ($addonDefinitionOptions['require'] as $requiredAddonName) {
+        $definitionOptions = \BearFramework\Addons::getOptions($name);
+        if (isset($definitionOptions['require']) && is_array($definitionOptions['require'])) {
+            foreach ($definitionOptions['require'] as $requiredAddonName) {
                 if (is_string($requiredAddonName)) {
                     $this->add($requiredAddonName);
                 }
@@ -65,7 +65,7 @@ class Addons
             unset($name); // Hide this variable from the file scope
             unset($pathname); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
-            unset($addonDefinitionOptions); // Hide this variable from the file scope
+            unset($definitionOptions); // Hide this variable from the file scope
             include_once $__indexFilename;
             return true;
         } else {

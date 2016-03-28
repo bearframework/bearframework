@@ -98,9 +98,8 @@ class Routes
                     $response = call_user_func($route[1]);
                     if ($response instanceof App\Response) {
                         return $response;
-                    } else {
-                        // continue searching
                     }
+                    // continue searching
                 }
             }
         }

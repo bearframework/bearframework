@@ -131,9 +131,9 @@ class App
                         $data['file'] = $file;
                         $data['line'] = $line;
                         $data['trace'] = $trace;
-                        $data['GET'] = $_GET;
-                        $data['POST'] = $_POST;
-                        $data['SERVER'] = $_SERVER;
+                        $data['GET'] = isset($_GET) ? $_GET : null;
+                        $data['POST'] = isset($_POST) ? $_POST : null;
+                        $data['SERVER'] = isset($_SERVER) ? $_SERVER : null;
                         $this->logger->log('error', $message, $data);
                     } catch (\Exception $e) {
                         
@@ -146,9 +146,9 @@ class App
                     $data .= "\nFile: " . $file;
                     $data .= "\nLine: " . $line;
                     $data .= "\nTrace: " . $trace;
-                    $data .= "\nGET: " . print_r($_GET, true);
-                    $data .= "\nPOST: " . print_r($_POST, true);
-                    $data .= "\nSERVER: " . print_r($_SERVER, true);
+                    $data .= "\nGET: " . print_r(isset($_GET) ? $_GET : null, true);
+                    $data .= "\nPOST: " . print_r(isset($_POST) ? $_POST : null, true);
+                    $data .= "\nSERVER: " . print_r(isset($_SERVER) ? $_SERVER : null, true);
                     $response = new App\Response\TemporaryUnavailable($data);
                     $response->disableHooks = true;
                 } else {
