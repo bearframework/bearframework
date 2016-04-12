@@ -93,4 +93,13 @@ class Addons
         throw new \Exception('');
     }
 
+    /**
+     * Returns an array containing the names of all registered addons
+     * @return array The names of all registered addons
+     */
+    static function getList()
+    {
+        return array_keys(self::$data);
+    }
+
 }

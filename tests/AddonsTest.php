@@ -94,6 +94,17 @@ class AddonsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testGetList()
+    {
+        BearFramework\Addons::register('name1', 'dir1');
+        BearFramework\Addons::register('name2', 'dir2');
+        $list = BearFramework\Addons::getList();
+        $this->assertTrue($list === ['name1', 'name2']);
+    }
+
+    /**
+     * 
+     */
     public function testGetDirError()
     {
         $this->setExpectedException('Exception');
