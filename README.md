@@ -19,6 +19,7 @@ Bear Framework is one of the easiest PHP frameworks you can find. See for yourse
 ```php
 <?php
 require 'vendor/autoload.php';
+use BearFramework\App;
 
 $app = new App();
 
