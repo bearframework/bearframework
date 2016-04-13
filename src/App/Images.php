@@ -31,6 +31,13 @@ class Images
             if (is_array($size)) {
                 return [(int) $size[0], (int) $size[1]];
             }
+            $pathInfo = pathinfo($filename);
+            if (isset($pathInfo['extension']) && $pathInfo['extension'] === 'webp' && function_exists('imagecreatefromwebp')) {
+                $sourceImage = imagecreatefromwebp($filename);
+                $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
+                imagedestroy($sourceImage);
+                return $result;
+            }
         } catch (\Exception $e) {
             
         }
@@ -64,18 +71,21 @@ class Images
             throw new \InvalidArgumentException('');
         }
         $outputType = null;
-        $pathInfo = pathinfo($destinationFilename);
-        if (isset($pathInfo['extension'])) {
-            $extension = $pathInfo['extension'];
+        $sourcePathInfo = pathinfo($sourceFilename);
+        $destinationPathInfo = pathinfo($destinationFilename);
+        if (isset($destinationPathInfo['extension'])) {
+            $extension = $destinationPathInfo['extension'];
             if ($extension === 'png') {
                 $outputType = 'png';
             } elseif ($extension === 'gif') {
                 $outputType = 'gif';
             } elseif ($extension === 'jpg' || $extension === 'jpeg') {
                 $outputType = 'jpg';
+            } elseif ($extension === 'webp') {
+                $outputType = 'webp';
             }
         }
-        if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg') {
+        if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg' && $outputType !== 'webp') {
             throw new \InvalidArgumentException('');
         }
         if (!is_file($sourceFilename)) {
@@ -83,7 +93,21 @@ class Images
         }
 
         try {
-            $sourceImageInfo = getimagesize($sourceFilename);
+            if (isset($sourcePathInfo['extension']) && $sourcePathInfo['extension'] === 'webp') {
+                $sourceImageSize = $this->getSize($sourceFilename);
+                $sourceImageWidth = $sourceImageSize[0];
+                $sourceImageHeight = $sourceImageSize[1];
+                $sourceImageMimeType = 'image/webp';
+            } else {
+                $sourceImageInfo = getimagesize($sourceFilename);
+                if (is_array($sourceImageInfo)) {
+                    $sourceImageWidth = $sourceImageInfo[0];
+                    $sourceImageHeight = $sourceImageInfo[1];
+                    $sourceImageMimeType = $sourceImageInfo['mime'];
+                } else {
+                    throw new \InvalidArgumentException('');
+                }
+            }
         } catch (\Exception $e) {
             throw new \InvalidArgumentException('');
         }
@@ -91,8 +115,6 @@ class Images
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
 
-        $sourceImageWidth = $sourceImageInfo[0];
-        $sourceImageHeight = $sourceImageInfo[1];
 
         if ($width === null && $height === null) {
             $width = $sourceImageWidth;
@@ -106,7 +128,6 @@ class Images
         if ($sourceImageWidth === $width && $sourceImageHeight === $height) {
             copy($sourceFilename, $destinationFilename);
         } else {
-            $sourceImageMimeType = $sourceImageInfo['mime'];
 
             $sourceImage = null;
             if ($sourceImageMimeType === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
@@ -115,6 +136,8 @@ class Images
                 $sourceImage = imagecreatefrompng($sourceFilename);
             } elseif ($sourceImageMimeType === 'image/gif' && function_exists('imagecreatefromgif')) {
                 $sourceImage = imagecreatefromgif($sourceFilename);
+            } elseif ($sourceImageMimeType === 'image/webp' && function_exists('imagecreatefromwebp')) {
+                $sourceImage = imagecreatefromwebp($sourceFilename);
             }
 
             if (!$sourceImage) {
@@ -145,6 +168,8 @@ class Images
                         $result = imagepng($resultImage, $destinationFilename, 9);
                     } elseif ($outputType == 'gif') {
                         $result = imagegif($resultImage, $destinationFilename);
+                    } elseif ($outputType == 'webp') {
+                        $result = imagewebp($resultImage, $destinationFilename);
                     }
                 }
                 imagedestroy($resultImage);

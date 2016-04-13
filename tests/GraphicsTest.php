@@ -20,7 +20,7 @@ class GraphicsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $fileTypes = ['jpg', 'png', 'gif'];
+        $fileTypes = ['jpg', 'png', 'gif', 'webp'];
 
         foreach ($fileTypes as $fileType) {
             $filename = $app->config->appDir . 'assets/logo.' . $fileType;
@@ -54,11 +54,23 @@ class GraphicsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testGetSizeInvalidArgument3()
+    {
+        $app = $this->getApp();
+        $sourceFilename = $app->config->appDir . 'assets/logo.webp';
+        $this->createSampleFile($sourceFilename, 'broken');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->images->getSize($sourceFilename);
+    }
+
+    /**
+     * 
+     */
     public function testResize()
     {
         $app = $this->getApp();
 
-        $fileTypes = ['jpeg', 'jpg', 'png', 'gif'];
+        $fileTypes = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
 
         foreach ($fileTypes as $fileType) {
             $sourceFilename = $app->config->appDir . 'assets/file1.' . $fileType;
@@ -158,7 +170,7 @@ class GraphicsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
-        $app->images->resize('source.png', 'target.webp', ['width' => 100, 'height' => 100]);
+        $app->images->resize('source.png', 'target.bmp', ['width' => 100, 'height' => 100]);
     }
 
     /**
@@ -204,9 +216,9 @@ class GraphicsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $sourceFilename = $app->config->appDir . 'assets/logo.webp';
-        $targetFilename = $app->config->appDir . 'assets/newlogo.webp';
-        $this->createSampleFile($sourceFilename, 'webp');
+        $sourceFilename = $app->config->appDir . 'assets/logo.bmp';
+        $targetFilename = $app->config->appDir . 'assets/newlogo.bmp';
+        $this->createSampleFile($sourceFilename, 'bmp');
         $this->setExpectedException('InvalidArgumentException');
         $app->images->resize($sourceFilename, $targetFilename, ['width' => 100, 'height' => 100]);
     }
@@ -221,6 +233,20 @@ class GraphicsTest extends BearFrameworkTestCase
         $sourceFilename = $app->config->appDir . 'assets/logo.png';
         $targetFilename = $app->config->appDir . 'assets/newlogo.png';
         $this->createSampleFile($sourceFilename, 'bmp');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->images->resize($sourceFilename, $targetFilename, ['width' => 100, 'height' => 100]);
+    }
+
+    /**
+     * 
+     */
+    public function testResizeInvalidArgument12()
+    {
+        $app = $this->getApp();
+
+        $sourceFilename = $app->config->appDir . 'assets/logo.png';
+        $targetFilename = $app->config->appDir . 'assets/newlogo.png';
+        $this->createSampleFile($sourceFilename, 'webp');
         $this->setExpectedException('InvalidArgumentException');
         $app->images->resize($sourceFilename, $targetFilename, ['width' => 100, 'height' => 100]);
     }
