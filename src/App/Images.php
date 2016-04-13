@@ -17,17 +17,17 @@ class Images
 
     /**
      * Returns the size of the image specified
-     * @param string $sourceFilename The filename of the image
+     * @param string $filename The filename of the image
      * @throws \InvalidArgumentException
      * @return array[int, int] The size of the image specified
      */
-    public function getSize($sourceFilename)
+    public function getSize($filename)
     {
-        if (!is_string($sourceFilename)) {
+        if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
         try {
-            $size = getimagesize($sourceFilename);
+            $size = getimagesize($filename);
             if (is_array($size)) {
                 return [(int) $size[0], (int) $size[1]];
             }
@@ -41,48 +41,42 @@ class Images
      * Resizes a image file
      * @param string $sourceFilename The image file to resize
      * @param string $destinationFilename The filename where the result image will be saved
-     * @param int $width The width of the resized image
-     * @param int $height The height of the resized image
-     * @param string $outputType The output type of the resized image
+     * @param array $options Resize options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @return void No value is returned
      */
-    public function resize($sourceFilename, $destinationFilename, $width, $height, $outputType = null)
+    public function resize($sourceFilename, $destinationFilename, $options = [])
     {
         if (!is_string($sourceFilename)) {
-            throw new \InvalidArgumentException(' (sourceFilename)');
+            throw new \InvalidArgumentException('');
         }
         if (!is_string($destinationFilename)) {
-            throw new \InvalidArgumentException(' (destinationFilename)');
+            throw new \InvalidArgumentException('');
         }
-        if (!is_int($width) || $width < 1) {
-            throw new \InvalidArgumentException(' (width)');
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('');
         }
-        if (!is_int($height) || $height < 1) {
-            throw new \InvalidArgumentException(' (height)');
+        if (isset($options['width']) && (!is_int($options['width']) || $options['width'] < 1 || $options['width'] > 100000)) {
+            throw new \InvalidArgumentException('');
         }
-        if (is_string($outputType)) {
-            $outputType = strtolower($outputType);
+        if (isset($options['height']) && (!is_int($options['height']) || $options['height'] < 1 || $options['height'] > 100000)) {
+            throw new \InvalidArgumentException('');
         }
-        if ($outputType === null) {
-            $pathInfo = pathinfo($destinationFilename);
-            if (isset($pathInfo['extension'])) {
-                $extension = $pathInfo['extension'];
-                if ($extension === 'png') {
-                    $outputType = 'png';
-                } elseif ($extension === 'gif') {
-                    $outputType = 'gif';
-                } else {
-                    $outputType = 'jpg';
-                }
+        $outputType = null;
+        $pathInfo = pathinfo($destinationFilename);
+        if (isset($pathInfo['extension'])) {
+            $extension = $pathInfo['extension'];
+            if ($extension === 'png') {
+                $outputType = 'png';
+            } elseif ($extension === 'gif') {
+                $outputType = 'gif';
+            } elseif ($extension === 'jpg' || $extension === 'jpeg') {
+                $outputType = 'jpg';
             }
         }
-        if ($outputType === 'jpeg') {
-            $outputType = 'jpg';
-        }
         if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg') {
-            throw new \InvalidArgumentException(' (outputType)');
+            throw new \InvalidArgumentException('');
         }
         if (!is_file($sourceFilename)) {
             throw new \InvalidArgumentException('');
@@ -94,8 +88,21 @@ class Images
             throw new \InvalidArgumentException('');
         }
 
+        $width = isset($options['width']) ? $options['width'] : null;
+        $height = isset($options['height']) ? $options['height'] : null;
+
         $sourceImageWidth = $sourceImageInfo[0];
         $sourceImageHeight = $sourceImageInfo[1];
+
+        if ($width === null && $height === null) {
+            $width = $sourceImageWidth;
+            $height = $sourceImageHeight;
+        } elseif ($width === null && $height !== null) {
+            $width = (int) floor($sourceImageWidth / $sourceImageHeight * $height);
+        } elseif ($height === null && $width !== null) {
+            $height = (int) floor($sourceImageHeight / $sourceImageWidth * $width);
+        }
+
         if ($sourceImageWidth === $width && $sourceImageHeight === $height) {
             copy($sourceFilename, $destinationFilename);
         } else {

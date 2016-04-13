@@ -169,7 +169,7 @@ class Assets
                             $imageSize = $app->images->getSize($filename);
                             $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
                         }
-                        $app->images->resize($filename, $tempFilename, $width, $height, $pathinfo['extension']);
+                        $app->images->resize($filename, $tempFilename, ['width' => $width, 'height' => $height]);
                     }
                 }
                 return $tempFilename;
