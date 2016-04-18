@@ -23,15 +23,15 @@ class Addons
 
     /**
      * Registers an addon
-     * @param string $name The addon name
+     * @param string $id The addon id
      * @param string $dir The addon location
      * @param array $options Addon options
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    static function register($name, $dir, $options = [])
+    static function register($id, $dir, $options = [])
     {
-        if (!is_string($name)) {
+        if (!is_string($id)) {
             throw new \InvalidArgumentException('');
         }
         if (!is_string($dir)) {
@@ -40,55 +40,55 @@ class Addons
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
-        self::$data[$name] = [$dir, $options];
+        self::$data[$id] = [$dir, $options];
     }
 
     /**
      * Checks whether addon is registered
-     * @param string $name The addon name
+     * @param string $id The addon id
      * @throws \InvalidArgumentException
      * @return boolean TRUE if addon is registered. FALSE otherwise.
      */
-    static function exists($name)
+    static function exists($id)
     {
-        if (!is_string($name)) {
+        if (!is_string($id)) {
             throw new \InvalidArgumentException('');
         }
-        return isset(self::$data[$name]);
+        return isset(self::$data[$id]);
     }
 
     /**
      * Returns the addon dir
-     * @param string $name The addon name
+     * @param string $id The addon id
      * @return string The location of the addon
      * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    static function getDir($name)
+    static function getDir($id)
     {
-        if (!is_string($name)) {
+        if (!is_string($id)) {
             throw new \InvalidArgumentException('');
         }
-        if (isset(self::$data[$name])) {
-            return self::$data[$name][0];
+        if (isset(self::$data[$id])) {
+            return self::$data[$id][0];
         }
         throw new \Exception('');
     }
 
     /**
      * Returns the addon options
-     * @param string $name The addon name
+     * @param string $id The addon id
      * @return string The location of the addon
      * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    static function getOptions($name)
+    static function getOptions($id)
     {
-        if (!is_string($name)) {
+        if (!is_string($id)) {
             throw new \InvalidArgumentException('');
         }
-        if (isset(self::$data[$name])) {
-            return self::$data[$name][1];
+        if (isset(self::$data[$id])) {
+            return self::$data[$id][1];
         }
         throw new \Exception('');
     }

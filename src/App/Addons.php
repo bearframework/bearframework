@@ -25,24 +25,24 @@ class Addons
 
     /**
      * Enables an addon and saves the provided options
-     * @param string $name The name of the addon
+     * @param string $id The id of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @return boolean TRUE if successfully loaded. FALSE otherwise.
      */
-    public function add($name, $options = [])
+    public function add($id, $options = [])
     {
-        if (!is_string($name)) {
+        if (!is_string($id)) {
             throw new \InvalidArgumentException('');
         }
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }
-        if (isset($this->data[$name])) {
+        if (isset($this->data[$id])) {
             return false;
         }
-        $definitionOptions = \BearFramework\Addons::getOptions($name);
+        $definitionOptions = \BearFramework\Addons::getOptions($id);
         if (isset($definitionOptions['require']) && is_array($definitionOptions['require'])) {
             foreach ($definitionOptions['require'] as $requiredAddonName) {
                 if (is_string($requiredAddonName)) {
@@ -50,9 +50,9 @@ class Addons
                 }
             }
         }
-        $pathname = \BearFramework\Addons::getDir($name);
+        $pathname = \BearFramework\Addons::getDir($id);
         $pathname = rtrim($pathname, '/\\') . '/';
-        $this->data[$name] = [
+        $this->data[$id] = [
             'pathname' => $pathname,
             'options' => $options
         ];
@@ -62,7 +62,7 @@ class Addons
             $app = &App::$instance; // Needed for the index file
             $context = new App\AddonContext($pathname);
             $context->options = $options;
-            unset($name); // Hide this variable from the file scope
+            unset($id); // Hide this variable from the file scope
             unset($pathname); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
             unset($definitionOptions); // Hide this variable from the file scope
@@ -80,8 +80,8 @@ class Addons
     public function getList()
     {
         $result = [];
-        foreach ($this->data as $name => $data) {
-            $result[] = array_merge(['name' => $name], $data);
+        foreach ($this->data as $id => $data) {
+            $result[] = array_merge(['id' => $id, 'name' => $id], $data);
         }
         return $result;
     }
