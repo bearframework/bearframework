@@ -22,14 +22,15 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $app->request->base = 'http://example.com/www';
 
-        $this->createFile($app->config->appDir . 'index.php', '<?php ');
-        $this->createFile($app->config->appDir . 'class1.php', '<?php class TempClass1{}');
+        $this->createFile($app->config->appDir . '/index.php', '<?php ');
+        $this->createFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
 
         $context = $app->getContext($app->config->appDir);
 
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
+        $this->createSampleFile($app->config->appDir . '/assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
@@ -41,7 +42,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testAddonContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . 'tempaddon' . uniqid() . '/';
+        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid() . '/';
         $app->request->base = 'http://example.com/www';
 
         $this->createFile($addonDir . 'index.php', '<?php ');
@@ -58,6 +59,7 @@ class ContextTest extends BearFrameworkTestCase
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
+        $this->createSampleFile($addonDir . 'assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
@@ -69,11 +71,29 @@ class ContextTest extends BearFrameworkTestCase
     public function testUnknownContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . 'tempaddong' . uniqid() . '/';
+        $addonDir = $app->config->addonsDir . '/tempaddong' . uniqid() . '/';
         $this->createFile($addonDir . 'index.php', '<?php ');
         // Addon is not added
         $this->setExpectedException('Exception');
         $app->getContext($addonDir);
+    }
+
+    /**
+     * 
+     */
+    public function testContextInvalidArguments1()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\Context(1);
+    }
+
+    /**
+     * 
+     */
+    public function testContextInvalidArguments2()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\Context('missing/dir');
     }
 
     /**
@@ -88,10 +108,28 @@ class ContextTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testAppContextInvalidArguments2()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\AppContext('missing/dir');
+    }
+
+    /**
+     * 
+     */
     public function testAddonContextInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
         new \BearFramework\App\AddonContext(1);
+    }
+
+    /**
+     * 
+     */
+    public function testAddonContextInvalidArguments2()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\AddonContext('missing/dir');
     }
 
     /**
@@ -102,15 +140,6 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->getContext(1);
-    }
-
-    /**
-     * 
-     */
-    public function testContextInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\Context(1);
     }
 
     /**
@@ -128,8 +157,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextAssetsInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $contextAssets = new \BearFramework\App\Context\Assets('dir');
-        $contextAssets->getUrl(1);
+        new \BearFramework\App\Context\Assets('missing/dir');
     }
 
     /**
@@ -137,9 +165,35 @@ class ContextTest extends BearFrameworkTestCase
      */
     public function testContextAssetsInvalidArguments3()
     {
+        $app = $this->getApp();
+        $this->createDir($app->config->appDir . '/dir');
+        $contextAssets = new \BearFramework\App\Context\Assets($app->config->appDir . '/dir');
         $this->setExpectedException('InvalidArgumentException');
-        $contextAssets = new \BearFramework\App\Context\Assets('dir');
+        $contextAssets->getUrl(1);
+    }
+
+    /**
+     * 
+     */
+    public function testContextAssetsInvalidArguments4()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->appDir . '/dir');
+        $contextAssets = new \BearFramework\App\Context\Assets($app->config->appDir . '/dir');
+        $this->setExpectedException('InvalidArgumentException');
         $contextAssets->getUrl('file.png', 1);
+    }
+
+    /**
+     * 
+     */
+    public function testContextAssetsInvalidArguments5()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->appDir . '/dir');
+        $contextAssets = new \BearFramework\App\Context\Assets($app->config->appDir . '/dir');
+        $this->setExpectedException('InvalidArgumentException');
+        $contextAssets->getUrl('missing/file.png');
     }
 
     /**
@@ -157,8 +211,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testContextClassesInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $contextClasses = new \BearFramework\App\Context\Classes('dir');
-        $contextClasses->add(1, 'testclass.php');
+        new \BearFramework\App\Context\Classes('missing/dir');
     }
 
     /**
@@ -166,9 +219,35 @@ class ContextTest extends BearFrameworkTestCase
      */
     public function testContextClassesInvalidArguments3()
     {
+        $app = $this->getApp();
+        $this->createDir($app->config->appDir . '/dir');
+        $contextClasses = new \BearFramework\App\Context\Classes($app->config->appDir . '/dir');
         $this->setExpectedException('InvalidArgumentException');
-        $contextClasses = new \BearFramework\App\Context\Classes('dir');
+        $contextClasses->add(1, 'testclass.php');
+    }
+
+    /**
+     * 
+     */
+    public function testContextClassesInvalidArguments4()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->appDir . '/dir');
+        $contextClasses = new \BearFramework\App\Context\Classes($app->config->appDir . '/dir');
+        $this->setExpectedException('InvalidArgumentException');
         $contextClasses->add('TestClass', 1);
+    }
+
+    /**
+     * 
+     */
+    public function testContextClassesInvalidArguments5()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->appDir . '/dir');
+        $contextClasses = new \BearFramework\App\Context\Classes($app->config->appDir . '/dir');
+        $this->setExpectedException('InvalidArgumentException');
+        $contextClasses->add('TestClass', 'testclass.php');
     }
 
 }

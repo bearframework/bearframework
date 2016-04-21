@@ -45,6 +45,10 @@ class Context
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
         }
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \InvalidArgumentException('');
+        }
         $this->dir = $dir;
         $this->assets = new App\Context\Assets($dir);
         $this->classes = new App\Context\Classes($dir);

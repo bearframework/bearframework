@@ -51,13 +51,12 @@ class Addons
             }
         }
         $pathname = \BearFramework\Addons::getDir($id);
-        $pathname = rtrim($pathname, '/\\') . '/';
         $this->data[$id] = [
             'pathname' => $pathname,
             'options' => $options
         ];
 
-        $__indexFilename = realpath($pathname . 'index.php');
+        $__indexFilename = realpath($pathname . DIRECTORY_SEPARATOR . 'index.php');
         if ($__indexFilename !== false) {
             $app = &App::$instance; // Needed for the index file
             $context = new App\AddonContext($pathname);

@@ -129,16 +129,20 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testFileName()
+    public function testGetFileName()
     {
         $app = $this->getApp();
-        $this->assertTrue($app->data->getFilename('test/key') === $app->config->dataDir . 'objects/test/key');
+        $app->data->set([
+            'key' => 'test/key',
+            'body' => '1'
+        ]);
+        $this->assertTrue($app->data->getFilename('test/key') === realpath($app->config->dataDir . '/objects/test/key'));
     }
 
     /**
      * 
      */
-    public function testFileNameInvalidArguments1()
+    public function testGetFileNameInvalidArguments1()
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
@@ -148,12 +152,22 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testFileNameInvalidArguments2()
+    public function testGetFileNameInvalidArguments2()
+    {
+        $app = $this->getApp();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->getFilename('*');
+    }
+
+    /**
+     * 
+     */
+    public function testGetFileNameInvalidArguments3()
     {
         $app = $this->getApp([
             'dataDir' => null
         ]);
-
         $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
         $app->data->getFilename('key');
     }
@@ -161,7 +175,7 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testFileNameInvalidArguments3()
+    public function testGetFileNameInvalidArguments4()
     {
         $app = $this->getApp([
             'dataDir' => null
@@ -172,6 +186,52 @@ class DataTest extends BearFrameworkTestCase
             'key' => 'users/1',
             'result' => ['body', 'metadata']
         ]);
+    }
+
+    /**
+     * 
+     */
+    public function testGetKeyFromFilenameInvalidArguments1()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->getKeyFromFilename(1);
+    }
+
+    /**
+     * 
+     */
+    public function testGetKeyFromFilenameInvalidArguments2()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->getKeyFromFilename('missing/file');
+    }
+
+    /**
+     * 
+     */
+    public function testGetKeyFromFilenameInvalidArguments3()
+    {
+        $app = $this->getApp([
+            'dataDir' => null
+        ]);
+        $filename = $app->config->appDir . '/file.png';
+        $this->createFile($filename, '123');
+        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $app->data->getKeyFromFilename($filename);
+    }
+
+    /**
+     * 
+     */
+    public function testGetKeyFromFilenameInvalidArguments4()
+    {
+        $app = $this->getApp();
+        $filename = $app->config->appDir . '/file.png';
+        $this->createFile($filename, '123');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->data->getKeyFromFilename($filename);
     }
 
     /**

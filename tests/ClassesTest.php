@@ -19,15 +19,15 @@ class ClassesTest extends BearFrameworkTestCase
     public function testAdd()
     {
         $app = $this->getApp();
-        $this->createFile($app->config->appDir . 'tempClass1.php', '<?php class TempClass1{}');
-        $app->classes->add('TempClass1', $app->config->appDir . 'tempClass1.php');
+        $this->createFile($app->config->appDir . '/tempClass1.php', '<?php class TempClass1{}');
+        $app->classes->add('TempClass1', $app->config->appDir . '/tempClass1.php');
         $this->assertTrue(class_exists('TempClass1'));
     }
 
     /**
      * 
      */
-    public function testInvalidArguments1()
+    public function testAddInvalidArguments1()
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
@@ -37,11 +37,21 @@ class ClassesTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testInvalidArguments2()
+    public function testAddInvalidArguments2()
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
         $app->classes->add('\BearFramework\App\Log', 2);
+    }
+
+    /**
+     * 
+     */
+    public function testAddInvalidArguments3()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->classes->add('\BearFramework\App\Log', '../src/App/MissingFile.php');
     }
 
     /**

@@ -26,6 +26,10 @@ class Images
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
+        $filename = realpath($filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('');
+        }
         try {
             $size = getimagesize($filename);
             if (is_array($size)) {
@@ -58,6 +62,10 @@ class Images
         if (!is_string($sourceFilename)) {
             throw new \InvalidArgumentException('');
         }
+        $sourceFilename = realpath($sourceFilename);
+        if ($sourceFilename === false) {
+            throw new \InvalidArgumentException('');
+        }
         if (!is_string($destinationFilename)) {
             throw new \InvalidArgumentException('');
         }
@@ -88,9 +96,6 @@ class Images
         if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg' && $outputType !== 'webp') {
             throw new \InvalidArgumentException('');
         }
-        if (!is_file($sourceFilename)) {
-            throw new \InvalidArgumentException('');
-        }
 
         try {
             if (isset($sourcePathInfo['extension']) && $sourcePathInfo['extension'] === 'webp') {
@@ -114,7 +119,6 @@ class Images
 
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
-
 
         if ($width === null && $height === null) {
             $width = $sourceImageWidth;

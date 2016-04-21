@@ -41,13 +41,22 @@ class Config
             throw new \InvalidArgumentException('This options argument must be of type array');
         }
         if (isset($options['appDir'])) {
-            $options['appDir'] = rtrim($options['appDir'], '/\\') . '/';
+            $options['appDir'] = realpath($options['appDir']);
+            if ($options['appDir'] === false) {
+                throw new \InvalidArgumentException('appDir is not valid');
+            }
         }
         if (isset($options['dataDir'])) {
-            $options['dataDir'] = rtrim($options['dataDir'], '/\\') . '/';
+            $options['dataDir'] = realpath($options['dataDir']);
+            if ($options['dataDir'] === false) {
+                throw new \InvalidArgumentException('appDir is not valid');
+            }
         }
         if (isset($options['logsDir'])) {
-            $options['logsDir'] = rtrim($options['logsDir'], '/\\') . '/';
+            $options['logsDir'] = realpath($options['logsDir']);
+            if ($options['logsDir'] === false) {
+                throw new \InvalidArgumentException('logsDir is not valid');
+            }
         }
         $defaultOptions = [
             'appDir' => null,
@@ -85,6 +94,12 @@ class Config
      */
     public function __set($name, $value)
     {
+        if (($name === 'appDir' || $name === 'dataDir' || $name === 'logsDir') && $value !== null) {
+            $value = realpath($value);
+            if ($value === false) {
+                throw new \InvalidArgumentException($name . ' is not valid');
+            }
+        }
         $this->data[$name] = $value;
     }
 

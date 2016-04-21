@@ -37,6 +37,10 @@ class Addons
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
         }
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \InvalidArgumentException('');
+        }
         if (!is_array($options)) {
             throw new \InvalidArgumentException('');
         }

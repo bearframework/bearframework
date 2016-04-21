@@ -31,6 +31,10 @@ class FileReader extends \BearFramework\App\Response
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('The filename argument must be of type string');
         }
+        $filename = realpath($filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('');
+        }
         $this->filename = $filename;
         parent::__construct('');
     }

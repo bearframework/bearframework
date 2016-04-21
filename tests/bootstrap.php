@@ -27,27 +27,34 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
     {
         if ($this->app == null || $createNew) {
             $rootDir = $this->getTestDir();
-            $initialConfig = [
-                'appDir' => $rootDir . 'app/',
-                'dataDir' => $rootDir . 'data/',
-                'logsDir' => $rootDir . 'logs/',
-                'addonsDir' => $rootDir . 'addons/'
-            ];
-            $config = array_merge($initialConfig, $config);
             $this->app = new BearFramework\App();
             $this->app->filesystem->makeDir($rootDir . 'app/');
             $this->app->filesystem->makeDir($rootDir . 'data/');
             $this->app->filesystem->makeDir($rootDir . 'logs/');
             $this->app->filesystem->makeDir($rootDir . 'addons/');
+
+            $initialConfig = [
+                'appDir' => $rootDir . 'app/',
+                'dataDir' => $rootDir . 'data/',
+                'logsDir' => $rootDir . 'logs/',
+                'addonsDir' => realpath($rootDir . 'addons/')
+            ];
+            $config = array_merge($initialConfig, $config);
             foreach ($config as $key => $value) {
                 $this->app->config->$key = $value;
             }
+
             $this->app->initialize();
             $this->app->request->base = 'http://example.com/www';
             $this->app->request->method = 'GET';
         }
 
         return $this->app;
+    }
+
+    function createDir($dir)
+    {
+        $this->app->filesystem->makeDir($dir);
     }
 
     function createFile($filename, $content)

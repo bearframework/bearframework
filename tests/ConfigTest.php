@@ -120,32 +120,99 @@ class ConfigTest extends BearFrameworkTestCase
      */
     public function testDirectories()
     {
+        $app = $this->getApp();
+        $rootDir = $this->getTestDir();
+        $this->createDir($rootDir . 'app');
+        $this->createDir($rootDir . 'data');
+        $this->createDir($rootDir . 'logs');
         $config = new \BearFramework\App\Config([
-            'appDir' => '../app',
-            'dataDir' => '../data',
-            'logsDir' => '../logs',
+            'appDir' => $rootDir . 'app',
+            'dataDir' => $rootDir . 'data',
+            'logsDir' => $rootDir . 'logs',
         ]);
-        $this->assertTrue($config->appDir === '../app/');
-        $this->assertTrue($config->dataDir === '../data/');
-        $this->assertTrue($config->logsDir === '../logs/');
+        $this->assertTrue($config->appDir === realpath($rootDir . 'app'));
+        $this->assertTrue($config->dataDir === realpath($rootDir . 'data'));
+        $this->assertTrue($config->logsDir === realpath($rootDir . 'logs'));
 
-        $config = new \BearFramework\App\Config([
-            'appDir' => '../app/',
-            'dataDir' => '../data/',
-            'logsDir' => '../logs/',
-        ]);
-        $this->assertTrue($config->appDir === '../app/');
-        $this->assertTrue($config->dataDir === '../data/');
-        $this->assertTrue($config->logsDir === '../logs/');
+        $config = new \BearFramework\App\Config();
+        $config->appDir = $rootDir . 'app/';
+        $config->dataDir = $rootDir . 'data/';
+        $config->logsDir = $rootDir . 'logs/';
+        $this->assertTrue($config->appDir === realpath($rootDir . 'app'));
+        $this->assertTrue($config->dataDir === realpath($rootDir . 'data'));
+        $this->assertTrue($config->logsDir === realpath($rootDir . 'logs'));
     }
 
     /**
      * 
      */
-    public function testInvalidArgument()
+    public function testInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
         new \BearFramework\App\Config(2);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments2()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\Config([
+            'appDir' => 'missing/dir'
+        ]);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments3()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\Config([
+            'dataDir' => 'missing/dir'
+        ]);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments4()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new \BearFramework\App\Config([
+            'logsDir' => 'missing/dir'
+        ]);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments5()
+    {
+        $config = new \BearFramework\App\Config();
+        $this->setExpectedException('InvalidArgumentException');
+        $config->appDir = 'missing/dir';
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments6()
+    {
+        $config = new \BearFramework\App\Config();
+        $this->setExpectedException('InvalidArgumentException');
+        $config->dataDir = 'missing/dir';
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments7()
+    {
+        $config = new \BearFramework\App\Config();
+        $this->setExpectedException('InvalidArgumentException');
+        $config->logsDir = 'missing/dir';
     }
 
 }

@@ -48,6 +48,10 @@ class Classes
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
+        $filename = realpath($filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('');
+        }
         $this->data[$class] = $filename;
     }
 

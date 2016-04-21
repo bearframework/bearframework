@@ -25,6 +25,10 @@ class AppContext extends \BearFramework\App\Context
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
         }
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \InvalidArgumentException('');
+        }
         parent::__construct($dir);
     }
 

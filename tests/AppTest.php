@@ -86,7 +86,7 @@ class AppTest extends BearFrameworkTestCase
     public function testAppIndex()
     {
         $app = $this->getApp();
-        $this->createFile($app->config->appDir . 'index.php', '<?php
+        $this->createFile($app->config->appDir . '/index.php', '<?php
 
 ');
         // todo - must be inside index.php

@@ -34,6 +34,10 @@ class Assets
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
         }
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \InvalidArgumentException('');
+        }
         $this->dir = $dir;
     }
 
@@ -45,7 +49,7 @@ class Assets
     public function addDir($pathname)
     {
         $app = &App::$instance;
-        $app->assets->addDir($this->dir . $pathname);
+        $app->assets->addDir($this->dir . DIRECTORY_SEPARATOR . $pathname);
     }
 
     /**
@@ -64,7 +68,11 @@ class Assets
             throw new \InvalidArgumentException('');
         }
         $app = &App::$instance;
-        return $app->assets->getUrl($this->dir . $filename, $options);
+        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('');
+        }
+        return $app->assets->getUrl($filename, $options);
     }
 
 }

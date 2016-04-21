@@ -190,11 +190,22 @@ class Data
     }
 
     /**
+     * Checks if an key is valid
+     * @param string $key The key to check
+     * @return boolean TRUE if valid. FALSE otherwise.
+     */
+    public function isValidKey($key)
+    {
+        $instance = $this->getInstance();
+        return $instance->isValidKey($key);
+    }
+
+    /**
      * Returns the filename of the object key specified
      * @param string $key The object key
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException
-     * @return The filename of the object key specified
+     * @return string The filename of the object key specified
      */
     public function getFilename($key)
     {
@@ -205,7 +216,37 @@ class Data
         if ($app->config->dataDir === null) {
             throw new App\InvalidConfigOptionException('Config option dataDir is not set');
         }
-        return $app->config->dataDir . 'objects/' . $key;
+        if (!$this->isValidKey($key)) {
+            throw new \InvalidArgumentException('');
+        }
+        return $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
+    }
+
+    /**
+     * Returns the key name of the object filename specified
+     * @param string $filename The filename
+     * @throws \InvalidArgumentException
+     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @return The key of the object
+     */
+    public function getKeyFromFilename($filename)
+    {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        $app = &App::$instance;
+        if ($app->config->dataDir === null) {
+            throw new App\InvalidConfigOptionException('Config option dataDir is not set');
+        }
+        $filename = realpath($filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('');
+        }
+        if (strpos($filename, $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
+            return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
+        } else {
+            throw new \InvalidArgumentException('');
+        }
     }
 
 }

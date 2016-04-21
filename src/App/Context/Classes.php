@@ -34,6 +34,10 @@ class Classes
         if (!is_string($dir)) {
             throw new \InvalidArgumentException('');
         }
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \InvalidArgumentException('');
+        }
         $this->dir = $dir;
     }
 
@@ -52,8 +56,12 @@ class Classes
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('');
         }
+        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('');
+        }
         $app = &App::$instance;
-        $app->classes->add($class, $this->dir . $filename);
+        $app->classes->add($class, $filename);
     }
 
 }

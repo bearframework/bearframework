@@ -30,7 +30,14 @@ class Assets
      */
     public function addDir($pathname)
     {
-        $this->dirs[] = rtrim($pathname, '/\\') . '/';
+        if (!is_string($pathname)) {
+            throw new \InvalidArgumentException('');
+        }
+        $pathname = realpath($pathname);
+        if ($pathname === false) {
+            throw new \InvalidArgumentException('');
+        }
+        $this->dirs[] = $pathname;
     }
 
     /**
@@ -45,6 +52,10 @@ class Assets
     {
         $app = &App::$instance;
         if (!is_string($filename)) {
+            throw new \InvalidArgumentException('');
+        }
+        $filename = realpath($filename);
+        if ($filename === false) {
             throw new \InvalidArgumentException('');
         }
         if (!is_array($options)) {
@@ -71,7 +82,7 @@ class Assets
 
         $dataDir = $app->config->dataDir;
         if (strlen($dataDir) > 0 && strpos($filename, $dataDir) === 0) {
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . substr($filename, strlen($dataDir) + 8);
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . $app->data->getKeyFromFilename($filename);
         }
 
         foreach ($this->dirs as $dir) {
@@ -111,24 +122,20 @@ class Assets
         $type = substr($partParts[0], 32, 1);
         $optionsString = (string) substr($partParts[0], 33);
         $path = $partParts[1];
+        $filename = null;
         if ($type === 'a') {
-            $fileDir = null;
             foreach ($this->dirs as $dir) {
                 if ($hash === md5(md5($dir . $path) . md5($optionsString))) {
-                    $fileDir = $dir;
+                    $filename = $dir . $path;
                     break;
                 }
             }
-            if ($fileDir === null) {
-                return false;
-            }
-            $filename = $fileDir . $path;
         } elseif ($type === 'd' && strlen($app->config->dataDir) > 0) {
-            if (!$app->data->isPublic($path)) {
-                return false;
+            if ($app->data->isValidKey($path) && $app->data->isPublic($path)) {
+                $filename = $app->data->getFilename($path);
             }
-            $filename = $app->config->dataDir . 'objects/' . $path;
-        } else {
+        }
+        if ($filename === null) {
             return false;
         }
         if ($hash === md5(md5($filename) . md5($optionsString)) && is_file($filename)) {
@@ -153,12 +160,9 @@ class Assets
                 }
             }
 
-            if ($app->config->dataDir === null) {
-                throw new App\InvalidConfigOptionException('Config option dataDir is not set');
-            }
             $pathinfo = pathinfo($filename);
             if (isset($pathinfo['extension'])) {
-                $tempFilename = $app->config->dataDir . 'objects/.temp/assets/' . md5(md5($filename) . md5($optionsString)) . '.' . $pathinfo['extension'];
+                $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5($optionsString)) . '.' . $pathinfo['extension']);
                 if (!is_file($tempFilename)) {
                     $app->filesystem->makeFileDir($tempFilename);
                     if ($width !== null || $height !== null) {

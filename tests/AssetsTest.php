@@ -19,9 +19,9 @@ class AssetsTest extends BearFrameworkTestCase
     public function testResponse1()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
-        $filename = $app->config->appDir . 'assets/file.png';
+        $filename = $app->config->appDir . '/assets/file.png';
         $this->createSampleFile($filename, 'png');
+        $app->assets->addDir($app->config->appDir . '/assets/');
         $url = $app->assets->getUrl($filename);
         $path = substr($url, strlen($app->request->base));
         $app->request->path = new \BearFramework\App\Request\Path($path);
@@ -35,9 +35,11 @@ class AssetsTest extends BearFrameworkTestCase
     public function testResponse2()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
-        $filename = $app->config->appDir . 'assets/missing/file.png';
+        $filename = $app->config->appDir . '/assets/missing/file.png';
+        $this->createSampleFile($filename, 'png');
+        $app->assets->addDir($app->config->appDir . '/assets/');
         $url = $app->assets->getUrl($filename);
+        unlink($filename);
         $path = substr($url, strlen($app->request->base));
         $app->request->path = new \BearFramework\App\Request\Path($path);
         $app->run();
@@ -50,8 +52,10 @@ class AssetsTest extends BearFrameworkTestCase
     public function testGetUrlAndGetFilename()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
-        $app->assets->addDir($app->config->addonsDir . 'addon1/assets/');
+        $this->createDir($app->config->appDir . '/assets/');
+        $this->createDir($app->config->addonsDir . '/addon1/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->addonsDir . '/addon1/assets/');
 
         $fileTypes = ['jpg', 'png', 'gif'];
         $imageOptionsTypes = ['width', 'height', 'both'];
@@ -71,11 +75,11 @@ class AssetsTest extends BearFrameworkTestCase
                     }
 
                     // File in app dir
-                    $filename = $app->config->appDir . 'assets/logo.' . $fileType;
+                    $filename = $app->config->appDir . '/assets/logo.' . $fileType;
                     $this->createSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
-                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
+                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === realpath($filename));
 
                     $url = $app->assets->getUrl($filename, $options);
                     $size = $app->images->getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
@@ -83,11 +87,11 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($size[1] === $testImageHeight);
 
                     // File in addon dir
-                    $filename = $app->config->addonsDir . 'addon1/assets/logo.' . $fileType;
+                    $filename = $app->config->addonsDir . '/addon1/assets/logo.' . $fileType;
                     $this->createSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
-                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
+                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === realpath($filename));
 
                     $url = $app->assets->getUrl($filename, $options);
                     $size = $app->images->getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
@@ -96,12 +100,12 @@ class AssetsTest extends BearFrameworkTestCase
 
                     // File in data dir
                     $key = 'logo.' . $fileType;
-                    $filename = $app->config->dataDir . 'objects/' . $key;
+                    $filename = $app->config->dataDir . '/objects/' . $key;
                     $this->createSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
                     $app->data->makePublic(['key' => $key]);
-                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === $filename);
+                    $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === realpath($filename));
                     $app->data->makePrivate(['key' => $key]);
                     $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));
 
@@ -118,7 +122,29 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetUrlInvalidOptions1()
+    public function testAddDirInvalidArguments1()
+    {
+        $app = $this->getApp();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $app->assets->addDir(1);
+    }
+
+    /**
+     * 
+     */
+    public function testAddDirInvalidArguments2()
+    {
+        $app = $this->getApp();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $app->assets->addDir('missing/dir');
+    }
+
+    /**
+     * 
+     */
+    public function testGetUrlInvalidArguments1()
     {
         $app = $this->getApp();
 
@@ -129,90 +155,86 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetUrlInvalidOptions2()
+    public function testGetUrlInvalidArguments2()
     {
         $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($app->config->appDir . 'assets/logo.png', 1);
+        $app->assets->getUrl($app->config->appDir . '/assets/logo.png', 1);
     }
 
     /**
      * 
      */
-    public function testGetUrlInvalidOptions3()
+    public function testGetUrlInvalidArguments3()
     {
         $app = $this->getApp();
         $app->config->assetsPathPrefix = null;
 
-        $this->setExpectedException('Exception');
-        $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
+        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $app->assets->getUrl($filename);
     }
 
     /**
-     * Not in assets dir
      * 
      */
-    public function testGetUrlInvalidOptions4()
+    public function testGetUrlInvalidArguments4()
     {
         $app = $this->getApp();
 
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
         $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($app->config->appDir . 'logo.png');
-    }
-
-    /**
-     * Not in assets dir
-     * 
-     */
-    public function testGetUrlInvalidOptions5()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($app->config->addonsDir . 'addon1/logo.png');
-    }
-
-    /**
-     * Not in assets dir
-     * 
-     */
-    public function testGetUrlInvalidOptions6()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl('logo.png');
+        $app->assets->getUrl($filename, 1);
     }
 
     /**
      * Zero width
      * 
      */
-    public function testGetUrlInvalidOptions7a()
+    public function testGetUrlInvalidArguments5a()
     {
         $app = $this->getApp();
 
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
         $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($app->config->appDir . 'assets/logo.png', ['width' => 0]);
+        $app->assets->getUrl($filename, ['width' => 0]);
     }
 
     /**
      * Too big width
      * 
      */
-    public function testGetUrlInvalidOptions7b()
+    public function testGetUrlInvalidArguments5b()
     {
         $app = $this->getApp();
 
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
         $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($app->config->appDir . 'assets/logo.png', ['width' => 1000000]);
+        $app->assets->getUrl($filename, ['width' => 1000000]);
     }
 
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions1()
+    public function testGetUrlInvalidArguments6()
+    {
+        $app = $this->getApp();
+
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->assets->getUrl($filename);
+    }
+
+    /**
+     * 
+     */
+    public function testGetFilenameInvalidArguments1()
     {
         $app = $this->getApp();
 
@@ -223,7 +245,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions2()
+    public function testGetFilenameInvalidArguments2()
     {
         $app = $this->getApp();
         $app->config->assetsPathPrefix = null;
@@ -235,7 +257,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions3()
+    public function testGetFilenameInvalidArguments3()
     {
         $app = $this->getApp();
 
@@ -245,12 +267,14 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions4a()
+    public function testGetFilenameInvalidArguments4a()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
+        $app->assets->addDir($app->config->appDir . '/assets/');
 
-        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
+        $url = $app->assets->getUrl($filename);
         $path = substr($url, strlen($app->request->base));
         $brokenPath = str_replace('/assets/', '/assets/abc', $path);
         $this->assertFalse($app->assets->getFilename($brokenPath));
@@ -259,12 +283,14 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions4b()
+    public function testGetFilenameInvalidArguments4b()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($filename, 'png');
+        $app->assets->addDir($app->config->appDir . '/assets/');
 
-        $url = $app->assets->getUrl($app->config->appDir . 'assets/logo.png');
+        $url = $app->assets->getUrl($filename);
         $path = substr($url, strlen($app->request->base));
         $brokenPath = '/assets/abc' . substr($path, strlen('/assets/') + 3);
         $this->assertFalse($app->assets->getFilename($brokenPath));
@@ -273,10 +299,11 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions4c()
+    public function testGetFilenameInvalidArguments4c()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
+        $this->createDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
 
         $brokenPath = '/assets/abcd/logo.png';
         $this->assertFalse($app->assets->getFilename($brokenPath));
@@ -285,29 +312,11 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFilenameInvalidOptions4d()
+    public function testGetFilenameInvalidArguments4d()
     {
         $app = $this->getApp();
 
         $this->assertFalse($app->assets->getFilename('/assets/brokenpath.jpg'));
-    }
-
-    /**
-     * 
-     */
-    public function testGetFilenameMissingDataDir()
-    {
-        $app = $this->getApp([
-            'dataDir' => null
-        ]);
-        $app->assets->addDir($app->config->appDir . 'assets/');
-
-        $filename = $app->config->appDir . 'assets/logo.png';
-        $this->createSampleFile($filename, 'png');
-
-        $url = $app->assets->getUrl($filename, ['width' => 50, 'height' => 35]);
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
-        $app->assets->getFilename(substr($url, strlen($app->request->base)));
     }
 
     /**
@@ -335,7 +344,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetMimeTypeInvalidOptions1()
+    public function testGetMimeTypeInvalidArguments1()
     {
         $app = $this->getApp();
 
@@ -349,10 +358,11 @@ class AssetsTest extends BearFrameworkTestCase
     public function testMissingExtensionFile()
     {
         $app = $this->getApp();
-        $app->assets->addDir($app->config->appDir . 'assets/');
 
-        $filename = $app->config->appDir . 'assets/logo';
+        $filename = $app->config->appDir . '/assets/logo';
         $this->createSampleFile($filename, 'png');
+
+        $app->assets->addDir($app->config->appDir . '/assets/');
 
         $url = $app->assets->getUrl($filename, ['width' => 50, 'height ' => 50]);
         $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));

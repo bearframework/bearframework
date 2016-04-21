@@ -230,12 +230,15 @@ class App
         if ($filename === false) {
             throw new \Exception('File does not exists');
         }
-        if (strpos($filename, realpath($this->config->appDir)) === 0) {
+        if (is_dir($filename)) {
+            $filename .= DIRECTORY_SEPARATOR;
+        }
+        if (strpos($filename, $this->config->appDir . DIRECTORY_SEPARATOR) === 0) {
             return new App\AppContext($this->config->appDir);
         }
         $addons = $this->addons->getList();
         foreach ($addons as $data) {
-            if (strpos($filename, realpath($data['pathname'])) === 0) {
+            if (strpos($filename, $data['pathname'] . DIRECTORY_SEPARATOR) === 0) {
                 $context = new App\AddonContext($data['pathname']);
                 $context->options = $data['options'];
                 return $context;
@@ -253,9 +256,9 @@ class App
         $this->initialize();
         $app = &self::$instance; // needed for the app index file
 
-        if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . 'index.php')) {
+        if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php')) {
             $context = new App\AppContext($this->config->appDir);
-            include realpath($this->config->appDir . 'index.php');
+            include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
         }
 
         if ($this->config->assetsPathPrefix !== null) {
