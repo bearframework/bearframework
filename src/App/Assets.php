@@ -82,12 +82,12 @@ class Assets
 
         $dataDir = $app->config->dataDir;
         if (strlen($dataDir) > 0 && strpos($filename, $dataDir) === 0) {
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . $app->data->getKeyFromFilename($filename);
+            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $app->data->getKeyFromFilename($filename));
         }
 
         foreach ($this->dirs as $dir) {
             if (strlen($dir) > 0 && strpos($filename, $dir) === 0) {
-                return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . '/' . substr($filename, strlen($dir));
+                return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
             }
         }
 
@@ -121,12 +121,12 @@ class Assets
         $hash = substr($partParts[0], 0, 32);
         $type = substr($partParts[0], 32, 1);
         $optionsString = (string) substr($partParts[0], 33);
-        $path = $partParts[1];
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
         $filename = null;
         if ($type === 'a') {
             foreach ($this->dirs as $dir) {
-                if ($hash === md5(md5($dir . $path) . md5($optionsString))) {
-                    $filename = $dir . $path;
+                if ($hash === md5(md5($dir . DIRECTORY_SEPARATOR . $path) . md5($optionsString))) {
+                    $filename = $dir . DIRECTORY_SEPARATOR . $path;
                     break;
                 }
             }
