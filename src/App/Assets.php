@@ -131,8 +131,9 @@ class Assets
                 }
             }
         } elseif ($type === 'd' && strlen($app->config->dataDir) > 0) {
-            if ($app->data->isValidKey($path) && $app->data->isPublic($path)) {
-                $filename = $app->data->getFilename($path);
+            $dataKey = str_replace(DIRECTORY_SEPARATOR, '/', $path);
+            if ($app->data->isValidKey($dataKey) && $app->data->isPublic($dataKey)) {
+                $filename = $app->data->getFilename($dataKey);
             }
         }
         if ($filename === null) {
