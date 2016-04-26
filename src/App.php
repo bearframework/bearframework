@@ -34,7 +34,7 @@ class App
      * Current Bear Framework version
      * @var string
      */
-    const VERSION = '0.8.1-dev';
+    const VERSION = '0.8.1';
 
     /**
      * Dependency Injection container
