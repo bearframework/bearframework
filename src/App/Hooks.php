@@ -46,7 +46,7 @@ class Hooks
         if (!isset($options['priority'])) {
             $options['priority'] = 100;
         }
-        $this->data[$name][] = [$callback, $options];
+        $this->data[$name][] = [$callback, $options, sizeof($this->data[$name])];
     }
 
     /**
@@ -65,8 +65,12 @@ class Hooks
             unset($arguments[0]);
             $callbacks = $this->data[$name];
             if (isset($callbacks[1])) {
-                uasort($callbacks, function($a, $b) {
-                    return (int) $a[1]['priority'] < (int) $b[1]['priority'] ? -1 : 1;
+                usort($callbacks, function($a, $b) {
+                    $difference = (int) $b[1]['priority'] - (int) $a[1]['priority'];
+                    if ($difference === 0) {
+                        return $a[2] <= $b[2] ? -1 : 1;
+                    }
+                    return $difference > 0 ? -1 : 1;
                 });
             }
             foreach ($callbacks as $callback) {
