@@ -64,9 +64,9 @@ class Hooks
             $arguments = func_get_args();
             unset($arguments[0]);
             $callbacks = $this->data[$name];
-            if(isset($callbacks[1])){
-                usort($callbacks, function($a, $b) {
-                    return $a[1]['priority'] < $b[1]['priority'] ? -1 : 1;
+            if (isset($callbacks[1])) {
+                uasort($callbacks, function($a, $b) {
+                    return (int) $a[1]['priority'] < (int) $b[1]['priority'] ? -1 : 1;
                 });
             }
             foreach ($callbacks as $callback) {
