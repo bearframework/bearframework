@@ -168,7 +168,7 @@ class App
             });
             set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
                 throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
-            }, E_ALL | E_STRICT);
+            });
             // @codeCoverageIgnoreEnd
         }
     }
