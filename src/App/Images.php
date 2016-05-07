@@ -24,11 +24,11 @@ class Images
     public function getSize($filename)
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename must be string');
         }
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException($filename . ' is not valid filename');
         }
         try {
             $size = getimagesize($filename);
@@ -43,9 +43,9 @@ class Images
                 return $result;
             }
         } catch (\Exception $e) {
-            
+            $reason = $e->getMessage();
         }
-        throw new \InvalidArgumentException('');
+        throw new \InvalidArgumentException('Cannot get size of ' . $filename . ' (reason: ' . (isset($reason) ? $reason : 'unknown') . ')');
     }
 
     /**

@@ -57,7 +57,19 @@ class ImagesTest extends BearFrameworkTestCase
     public function testGetSizeInvalidArgument3()
     {
         $app = $this->getApp();
-        $sourceFilename = $app->config->appDir . '/assets/logo.webp';
+        $sourceFilename = $app->config->appDir . '/assets/logo.png';
+        $this->createSampleFile($sourceFilename, 'broken');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->images->getSize($sourceFilename);
+    }
+
+    /**
+     * 
+     */
+    public function testGetSizeInvalidArgument4()
+    {
+        $app = $this->getApp();
+        $sourceFilename = $app->config->appDir . '/assets/file.mp3';
         $this->createSampleFile($sourceFilename, 'broken');
         $this->setExpectedException('InvalidArgumentException');
         $app->images->getSize($sourceFilename);
