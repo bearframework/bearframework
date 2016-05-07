@@ -30,19 +30,26 @@ class Cache
         $keyMD5 = md5($key);
         $data = $app->data->get(
                 [
-                    'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
-                    'result' => ['body', 'metadata.t']
+                    'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
+                    'result' => ['body']
                 ]
         );
+        // @codeCoverageIgnoreStart
         if (isset($data['body'])) {
-            if (strlen($data['metadata.t']) > 0) {
-                if ((int) $data['metadata.t'] > time()) {
-                    return unserialize(gzuncompress($data['body']));
+            try {
+                $body = unserialize(gzuncompress($data['body']));
+                if ($body[0] > 0) {
+                    if ($body[0] > time()) {
+                        return $body[1];
+                    }
+                    return $defaultValue;
                 }
-                return $defaultValue;
+                return $body[1];
+            } catch (\Exception $e) {
+                
             }
-            return unserialize(gzuncompress($data['body']));
         }
+        // @codeCoverageIgnoreEnd
         return $defaultValue;
     }
 
@@ -58,13 +65,11 @@ class Cache
     {
         $app = &App::$instance;
         $keyMD5 = md5($key);
+        $body = [$ttl > 0 ? time() + $ttl : 0, $value];
         $data = [
-            'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
-            'body' => gzcompress(serialize($value))
+            'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
+            'body' => gzcompress(serialize($body))
         ];
-        if ($ttl > 0) {
-            $data['metadata.t'] = (string) (time() + $ttl);
-        }
         $app->data->set($data);
     }
 
@@ -79,7 +84,7 @@ class Cache
         $app = &App::$instance;
         $keyMD5 = md5($key);
         $app->data->delete([
-            'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3),
+            'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
         ]);
     }
 
