@@ -20,8 +20,11 @@ class ImagesTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $fileTypes = ['jpg', 'png', 'gif', 'webp'];
-
+        $fileTypes = ['jpg', 'png', 'gif'];
+        if (function_exists('imagecreatefromwebp')) {
+            $fileTypes[] = 'webp';
+        }
+        
         foreach ($fileTypes as $fileType) {
             $filename = $app->config->appDir . '/assets/logo.' . $fileType;
             $this->createSampleFile($filename, $fileType);
@@ -82,7 +85,10 @@ class ImagesTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $fileTypes = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
+        $fileTypes = ['jpeg', 'jpg', 'png', 'gif'];
+        if (function_exists('imagecreatefromwebp')) {
+            $fileTypes[] = 'webp';
+        }
 
         foreach ($fileTypes as $fileType) {
             $sourceFilename = $app->config->appDir . '/assets/file1.' . $fileType;
