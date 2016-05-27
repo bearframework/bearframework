@@ -81,3 +81,6 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
     }
 
 }
+
+//$testCase = new BearFrameworkTestCase();
+//$app = $testCase->getApp();

@@ -87,12 +87,10 @@ class AppTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->createFile($app->config->appDir . '/index.php', '<?php
-
+$app->routes->add(\'/\', function() {
+    return new \BearFramework\App\Response(\'content\');
+});
 ');
-        // todo - must be inside index.php
-        $app->routes->add('/', function() {
-            return new \BearFramework\App\Response('content');
-        });
         $app->run();
         $this->expectOutputString('content');
     }
@@ -156,5 +154,64 @@ class AppTest extends BearFrameworkTestCase
         $this->setExpectedException('Exception');
         unserialize(serialize($app));
     }
+
+    /**
+     * 
+     */
+//    function testErrorInHooks1()
+//    {
+//        $app = $this->getApp();
+//        $app->routes->add('/', function() {
+//            return new \BearFramework\App\Response\HTML('content');
+//        });
+//        $app->hooks->add('responseCreated', function($response) {
+//            if ($response instanceof \BearFramework\App\Response\HTML) {
+//                echo 5 / 0;
+//            }
+//            if ($response instanceof \BearFramework\App\Response\TemporaryUnavailable) {
+//                $response->content = 'sorry';
+//            }
+//        });
+//        $app->run();
+//        $this->expectOutputString('sorry');
+//    }
+
+    /**
+     * 
+     */
+//    function testErrorInHooks2()
+//    {
+//        $app = $this->getApp();
+//        $app->routes->add('/', function() {
+//            return new \BearFramework\App\Response\HTML('content');
+//        });
+//        $app->hooks->add('responseCreated', function($response) {
+//            if ($response instanceof \BearFramework\App\Response) {
+//                $response->content = function() {
+//                    echo 5 / 0;
+//                };
+//            }
+//        });
+//        $app->run();
+//        $this->expectOutputString('');
+//    }
+
+    /**
+     * 
+     */
+//    function testErrorInHooks3()
+//    {
+//        $app = $this->getApp();
+//        $app->routes->add('/', function() {
+//            return new \BearFramework\App\Response\HTML('content');
+//        });
+//        $app->hooks->add('responseCreated', function($response) {
+//            if ($response instanceof \BearFramework\App\Response\HTML) {
+//                $response->headers = 1;
+//            }
+//        });
+//        $app->run();
+//        $this->expectOutputString('Temporary Unavailable');
+//    }
 
 }

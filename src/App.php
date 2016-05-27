@@ -150,11 +150,15 @@ class App
                     $data .= "\nPOST: " . print_r(isset($_POST) ? $_POST : null, true);
                     $data .= "\nSERVER: " . print_r(isset($_SERVER) ? $_SERVER : null, true);
                     $response = new App\Response\TemporaryUnavailable($data);
-                    $response->disableHooks = true;
                 } else {
                     $response = new App\Response\TemporaryUnavailable();
+                    try {
+                        $this->prepareResponse($response);
+                    } catch (\Exception $e) {
+                        // ignore
+                    }
                 }
-                $this->respond($response);
+                $this->sendResponse($response);
             };
             set_exception_handler(function($exception) use($handleError) {
                 $handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
@@ -290,6 +294,56 @@ class App
     }
 
     /**
+     * Prepares the response (hooks, validations and other operations)
+     * @param BearFramework\App\Response $response The response object to prepare
+     * @throws \Exception
+     * @return void No value is returned
+     */
+    private function prepareResponse($response)
+    {
+        $this->hooks->execute('responseCreated', $response);
+
+        // @codeCoverageIgnoreStart
+        if (!is_array($response->headers)) {
+            throw new \Exception('Invalid response headers. The proerty should be array.');
+        }
+        foreach ($response->headers as $header) {
+            if (!is_string($header)) {
+                throw new \Exception('Invalid response header. It should be string.');
+            }
+        }
+        if ($response instanceof App\Response\FileReader) {
+            if (!is_file($response->filename) || !is_readable($response->filename)) {
+                throw new \Exception('Invalid response filename. The file does not exist or is not readable.');
+            }
+        } else {
+            if (!is_string($response->content)) {
+                $response->content = (string) $response->content;
+            }
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Sends the response to the client
+     * @param \BearFramework\App\Response $response The response object to be sent
+     * @return void No value is returned
+     */
+    private function sendResponse($response)
+    {
+        if (!headers_sent()) {
+            foreach ($response->headers as $header) {
+                header($header);
+            }
+        }
+        if ($response instanceof App\Response\FileReader) {
+            readfile($response->filename);
+        } else {
+            echo $response->content;
+        }
+    }
+
+    /**
      * Outputs a response
      * @param BearFramework\App\Response $response The response object to output
      * @throws \InvalidArgumentException
@@ -298,19 +352,8 @@ class App
     public function respond($response)
     {
         if ($response instanceof App\Response) {
-            if (!isset($response->disableHooks) || $response->disableHooks === false) {
-                $this->hooks->execute('responseCreated', $response);
-            }
-            if (!headers_sent()) {
-                foreach ($response->headers as $header) {
-                    header($header);
-                }
-            }
-            if ($response instanceof App\Response\FileReader) {
-                readfile($response->filename);
-            } else {
-                echo $response->content;
-            }
+            $this->prepareResponse($response);
+            $this->sendResponse($response);
         } else {
             throw new \InvalidArgumentException('The response argument must be of type BearFramework\App\Response');
         }
