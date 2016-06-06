@@ -121,9 +121,6 @@ class App
     {
         if ($this->config->handleErrors) {
             // @codeCoverageIgnoreStart
-            error_reporting(E_ALL | E_STRICT);
-            ini_set('display_errors', 0);
-            ini_set('display_startup_errors', 0);
             $handleError = function($message, $file, $line, $trace) {
                 if ($this->config->logErrors && strlen($this->config->logsDir) > 0) {
                     try {
