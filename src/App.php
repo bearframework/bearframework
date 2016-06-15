@@ -163,6 +163,9 @@ class App
             register_shutdown_function(function() use($handleError) {
                 $errorData = error_get_last();
                 if (is_array($errorData)) {
+                    if (ob_get_length() > 0) {
+                        ob_end_clean();
+                    }
                     $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
                     $handleError(trim($messageParts[0]), $errorData['file'], $errorData['line'], isset($messageParts[1]) ? trim(str_replace('Stack trace:', '', $messageParts[1])) : '');
                 }
@@ -254,6 +257,7 @@ class App
      */
     public function run()
     {
+        ob_start();
         $this->initialize();
         $app = &self::$instance; // needed for the app index file
 
@@ -281,7 +285,6 @@ class App
             });
         }
 
-        ob_start();
         $response = $this->routes->getResponse($this->request);
         ob_end_clean();
         if (!($response instanceof App\Response)) {
