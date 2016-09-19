@@ -31,10 +31,10 @@ class Container
     public function set($name, $value)
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The name argument must be of type string');
         }
         if (!is_string($value) && !is_object($value) && !is_callable($value)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The value argument must be of type string, object or callable');
         }
         $this->data[$name] = [$value];
     }
@@ -49,7 +49,7 @@ class Container
     public function get($name)
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The name argument must be of type string');
         }
         if (isset($this->data[$name])) {
             if (isset($this->data[$name][1])) {
@@ -78,7 +78,7 @@ class Container
     public function has($name)
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The name argument must be of type string');
         }
         return isset($this->data[$name]);
     }

@@ -33,7 +33,7 @@ class FileReader extends \BearFramework\App\Response
         }
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         $this->filename = $filename;
         parent::__construct('');

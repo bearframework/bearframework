@@ -26,7 +26,7 @@ class Urls
     public function get($path = '/')
     {
         if (!is_string($path)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The path argument must be of type string');
         }
         $app = &App::$instance;
         return $app->request->base . $path;

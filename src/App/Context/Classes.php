@@ -32,11 +32,11 @@ class Classes
     public function __construct($dir)
     {
         if (!is_string($dir)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir argument must be of type string');
         }
         $dir = realpath($dir);
         if ($dir === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir specified does not exist');
         }
         $this->dir = $dir;
     }
@@ -51,14 +51,14 @@ class Classes
     public function add($class, $filename)
     {
         if (!is_string($class)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The class argument must be of type string');
         }
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         $app = &App::$instance;
         $app->classes->add($class, $filename);

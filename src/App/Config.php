@@ -38,24 +38,24 @@ class Config
     public function __construct($options = [])
     {
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('This options argument must be of type array');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if (isset($options['appDir'])) {
             $options['appDir'] = realpath($options['appDir']);
             if ($options['appDir'] === false) {
-                throw new \InvalidArgumentException('appDir is not valid');
+                throw new \InvalidArgumentException('The value in the appDir option is not a real directory');
             }
         }
         if (isset($options['dataDir'])) {
             $options['dataDir'] = realpath($options['dataDir']);
             if ($options['dataDir'] === false) {
-                throw new \InvalidArgumentException('appDir is not valid');
+                throw new \InvalidArgumentException('The value in the dataDir option is not a real directory');
             }
         }
         if (isset($options['logsDir'])) {
             $options['logsDir'] = realpath($options['logsDir']);
             if ($options['logsDir'] === false) {
-                throw new \InvalidArgumentException('logsDir is not valid');
+                throw new \InvalidArgumentException('The value in the logsDir option is not a real directory');
             }
         }
         $defaultOptions = [
@@ -97,7 +97,7 @@ class Config
         if (($name === 'appDir' || $name === 'dataDir' || $name === 'logsDir') && $value !== null) {
             $value = realpath($value);
             if ($value === false) {
-                throw new \InvalidArgumentException($name . ' is not valid');
+                throw new \InvalidArgumentException('The value in the ' . $name . ' option is not a real directory');
             }
         }
         $this->data[$name] = $value;

@@ -137,7 +137,9 @@ class App
                     }
                 }
                 if ($this->config->displayErrors) {
-                    ob_clean();
+                    if (ob_get_length() > 0) {
+                        ob_clean();
+                    }
                     $data = "Error:";
                     $data .= "\nMessage: " . $message;
                     $data .= "\nFile: " . $file;
@@ -228,7 +230,7 @@ class App
     public function getContext($filename)
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $filename = realpath($filename);
         if ($filename === false) {

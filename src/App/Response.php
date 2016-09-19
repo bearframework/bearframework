@@ -64,7 +64,7 @@ class Response
     public function setContentType($mimeType)
     {
         if (!is_string($mimeType)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The mimeType argument must be of type string');
         }
         $this->headers['contentType'] = 'Content-Type: ' . $mimeType;
         if ($mimeType === 'text/html' || $mimeType === 'text/plain' || $mimeType === 'text/json' || $mimeType === 'application/xml' || $mimeType === 'text/xml') {
@@ -81,7 +81,7 @@ class Response
     public function setStatusCode($code)
     {
         if (!is_int($code)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The code argument must be of type string');
         }
         $statusCodes = [];
         $statusCodes[200] = 'OK';
@@ -123,7 +123,7 @@ class Response
         $statusCodes[504] = 'Gateway Timeout';
         $statusCodes[505] = 'HTTP Version Not Supported';
         if (!isset($statusCodes[$code])) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The code argument is not valid');
         }
         $this->headers['statusCode'] = (isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $code . ' ' . $statusCodes[$code];
     }

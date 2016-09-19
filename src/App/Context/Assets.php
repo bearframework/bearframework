@@ -32,11 +32,11 @@ class Assets
     public function __construct($dir)
     {
         if (!is_string($dir)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir argument must be of type string');
         }
         $dir = realpath($dir);
         if ($dir === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir specified does not exist');
         }
         $this->dir = $dir;
     }
@@ -62,15 +62,15 @@ class Assets
     public function getUrl($filename, $options = [])
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         $app = &App::$instance;
         $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         return $app->assets->getUrl($filename, $options);
     }

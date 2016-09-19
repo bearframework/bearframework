@@ -24,11 +24,11 @@ class Images
     public function getSize($filename)
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename must be string');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException($filename . ' is not valid filename');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         try {
             $size = getimagesize($filename);
@@ -60,23 +60,23 @@ class Images
     public function resize($sourceFilename, $destinationFilename, $options = [])
     {
         if (!is_string($sourceFilename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The sourceFilename argument must be of type string');
         }
         $sourceFilename = realpath($sourceFilename);
         if ($sourceFilename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The sourceFilename specified does not exist');
         }
         if (!is_string($destinationFilename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The destinationFilename argument must be of type string');
         }
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if (isset($options['width']) && (!is_int($options['width']) || $options['width'] < 1 || $options['width'] > 100000)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The width value must be higher than 0 and lower than 100001');
         }
         if (isset($options['height']) && (!is_int($options['height']) || $options['height'] < 1 || $options['height'] > 100000)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The height value must be higher than 0 and lower than 100001');
         }
         $outputType = null;
         $sourcePathInfo = pathinfo($sourceFilename);
@@ -94,7 +94,7 @@ class Images
             }
         }
         if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg' && $outputType !== 'webp') {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The output format is not valid');
         }
 
         try {
@@ -110,11 +110,11 @@ class Images
                     $sourceImageHeight = $sourceImageInfo[1];
                     $sourceImageMimeType = $sourceImageInfo['mime'];
                 } else {
-                    throw new \InvalidArgumentException('');
+                    throw new \InvalidArgumentException('Cannot get source image size');
                 }
             }
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('Unknown error (' . $e->getMessage() . ')');
         }
 
         $width = isset($options['width']) ? $options['width'] : null;
@@ -145,7 +145,7 @@ class Images
             }
 
             if (!$sourceImage) {
-                throw new \InvalidArgumentException('');
+                throw new \InvalidArgumentException('Cannot read the source image');
             }
             $result = false;
             try {

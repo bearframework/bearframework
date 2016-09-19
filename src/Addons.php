@@ -32,17 +32,17 @@ class Addons
     static function register($id, $dir, $options = [])
     {
         if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The id argument must be of type string');
         }
         if (!is_string($dir)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir argument must be of type string');
         }
         $dir = realpath($dir);
         if ($dir === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir specified does not exist');
         }
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         self::$data[$id] = [$dir, $options];
     }
@@ -56,7 +56,7 @@ class Addons
     static function exists($id)
     {
         if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The id argument must be of type string');
         }
         return isset(self::$data[$id]);
     }
@@ -71,7 +71,7 @@ class Addons
     static function getDir($id)
     {
         if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The id argument must be of type string');
         }
         if (isset(self::$data[$id])) {
             return self::$data[$id][0];
@@ -89,7 +89,7 @@ class Addons
     static function getOptions($id)
     {
         if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The id argument must be of type string');
         }
         if (isset(self::$data[$id])) {
             return self::$data[$id][1];

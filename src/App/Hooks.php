@@ -32,13 +32,13 @@ class Hooks
     public function add($name, $callback, $options = [])
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The name argument must be of type string');
         }
         if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The callback argument must be of type callable');
         }
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if (!isset($this->data[$name])) {
             $this->data[$name] = [];
@@ -58,7 +58,7 @@ class Hooks
     public function execute($name)
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The name argument must be of type string');
         }
         if (isset($this->data[$name])) {
             $arguments = func_get_args();

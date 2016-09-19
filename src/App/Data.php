@@ -137,7 +137,7 @@ class Data
     public function makePublic($parameters)
     {
         if (!is_array($parameters) || !isset($parameters['key']) || !is_string($parameters['key'])) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The parameters argument must be of type array and must contain a key named \'key\'');
         }
         $instance = $this->getInstance();
         return $instance->set(
@@ -157,7 +157,7 @@ class Data
     public function makePrivate($parameters)
     {
         if (!is_array($parameters) || !isset($parameters['key']) || !is_string($parameters['key'])) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The parameters argument must be of type array and must contain a key named \'key\'');
         }
         $instance = $this->getInstance();
         return $instance->set(
@@ -177,7 +177,7 @@ class Data
     public function isPublic($key)
     {
         if (!is_string($key)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The key argument must be of type string');
         }
         $instance = $this->getInstance();
         $result = $instance->get(
@@ -210,14 +210,14 @@ class Data
     public function getFilename($key)
     {
         if (!is_string($key)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The key argument must be of type string');
         }
         $app = &App::$instance;
         if ($app->config->dataDir === null) {
             throw new App\InvalidConfigOptionException('Config option dataDir is not set');
         }
         if (!$this->isValidKey($key)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The key argument is not valid');
         }
         return $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
     }
@@ -232,7 +232,7 @@ class Data
     public function getKeyFromFilename($filename)
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $app = &App::$instance;
         if ($app->config->dataDir === null) {
@@ -240,12 +240,12 @@ class Data
         }
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         if (strpos($filename, $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
             return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
         } else {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified is not valid data object');
         }
     }
 

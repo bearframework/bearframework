@@ -29,11 +29,11 @@ class AddonContext extends \BearFramework\App\Context
     public function __construct($dir)
     {
         if (!is_string($dir)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir argument must be of type string');
         }
         $dir = realpath($dir);
         if ($dir === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The dir specified does not exist');
         }
         parent::__construct($dir);
     }

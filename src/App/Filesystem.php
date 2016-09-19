@@ -24,7 +24,7 @@ class Filesystem
     public function makeDir($pathname)
     {
         if (!is_string($pathname)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The pathname argument must be of type string');
         }
         if (!is_dir($pathname)) {
             mkdir($pathname, 0777, true);
@@ -40,7 +40,7 @@ class Filesystem
     public function makeFileDir($filename)
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {

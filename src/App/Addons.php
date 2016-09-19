@@ -34,10 +34,10 @@ class Addons
     public function add($id, $options = [])
     {
         if (!is_string($id)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The id argument must be of type string');
         }
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if (isset($this->data[$id])) {
             return false;

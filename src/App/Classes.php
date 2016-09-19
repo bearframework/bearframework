@@ -43,14 +43,14 @@ class Classes
     public function add($class, $filename)
     {
         if (!is_string($class)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The class argument must be of type string');
         }
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         $this->data[$class] = $filename;
     }
@@ -64,7 +64,7 @@ class Classes
     public function load($class)
     {
         if (!is_string($class)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The class argument must be of type string');
         }
         if (isset($this->data[$class])) {
             include_once $this->data[$class];

@@ -31,11 +31,11 @@ class Assets
     public function addDir($pathname)
     {
         if (!is_string($pathname)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The pathname argument must be of type string');
         }
         $pathname = realpath($pathname);
         if ($pathname === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The pathname specified does not exist');
         }
         $this->dirs[] = $pathname;
     }
@@ -52,14 +52,14 @@ class Assets
     {
         $app = &App::$instance;
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename specified does not exist');
         }
         if (!is_array($options)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if ($app->config->assetsPathPrefix === null) {
             throw new App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
@@ -70,9 +70,9 @@ class Assets
             if ($name === 'width' || $name === 'height') {
                 $value = (int) $value;
                 if ($value < 1) {
-                    throw new \InvalidArgumentException('');
+                    throw new \InvalidArgumentException('The value of the width option cannot be lower than 1');
                 } elseif ($value > 100000) {
-                    throw new \InvalidArgumentException('');
+                    throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000');
                 }
                 $optionsString .= ($name === 'width' ? 'w' : 'h') . $value . '-';
             }
@@ -104,7 +104,7 @@ class Assets
     public function getFilename($path)
     {
         if (!is_string($path)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The path argument must be of type string');
         }
         $app = &App::$instance;
         if ($app->config->assetsPathPrefix === null) {
@@ -193,7 +193,7 @@ class Assets
     public function getMimeType($filename)
     {
         if (!is_string($filename)) {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['extension'])) {
