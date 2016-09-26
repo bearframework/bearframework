@@ -107,13 +107,12 @@ class Images
                 $sourceImageMimeType = 'image/webp';
             } else {
                 $sourceImageInfo = getimagesize($sourceFilename);
-                if (is_array($sourceImageInfo)) {
-                    $sourceImageWidth = $sourceImageInfo[0];
-                    $sourceImageHeight = $sourceImageInfo[1];
-                    $sourceImageMimeType = $sourceImageInfo['mime'];
-                } else {
+                if (!is_array($sourceImageInfo)) {
                     throw new \InvalidArgumentException('Cannot get source image size');
                 }
+                $sourceImageWidth = $sourceImageInfo[0];
+                $sourceImageHeight = $sourceImageInfo[1];
+                $sourceImageMimeType = $sourceImageInfo['mime'];
             }
         } catch (\Exception $e) {
             throw new \InvalidArgumentException('Unknown error (' . $e->getMessage() . ')');

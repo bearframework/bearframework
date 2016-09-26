@@ -66,11 +66,10 @@ class App
      */
     public function __construct()
     {
-        if (self::$instance === null) {
-            self::$instance = &$this;
-        } else {
+        if (self::$instance !== null) {
             throw new \Exception('App already constructed');
         }
+        self::$instance = &$this;
 
         $this->container = new App\Container();
 

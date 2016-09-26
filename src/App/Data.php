@@ -260,9 +260,8 @@ class Data
         }
         if (strpos($filename, $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
             return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
-        } else {
-            throw new \InvalidArgumentException('The filename specified is not valid data object');
         }
+        throw new \InvalidArgumentException('The filename specified is not valid data object');
     }
 
 }
