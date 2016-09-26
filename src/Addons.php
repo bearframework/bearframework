@@ -44,7 +44,7 @@ class Addons
         if (!is_array($options)) {
             throw new \InvalidArgumentException('The options argument must be of type array');
         }
-        self::$data[$id] = [$dir, $options];
+        self::$data[strtolower($id)] = [$dir, $options];
     }
 
     /**
@@ -58,52 +58,45 @@ class Addons
         if (!is_string($id)) {
             throw new \InvalidArgumentException('The id argument must be of type string');
         }
-        return isset(self::$data[$id]);
+        return isset(self::$data[strtolower($id)]);
     }
 
     /**
-     * Returns the addon dir
+     * Returns information about the addon
      * @param string $id The addon id
-     * @return string The location of the addon
-     * @throws \Exception
+     * @return string Associative array containing the keys 'id', 'dir' and 'options' for the addon specified
      * @throws \InvalidArgumentException
      */
-    static function getDir($id)
+    static function get($id)
     {
         if (!is_string($id)) {
             throw new \InvalidArgumentException('The id argument must be of type string');
         }
         if (isset(self::$data[$id])) {
-            return self::$data[$id][0];
+            return [
+                'id' => $id,
+                'dir' => self::$data[$id][0],
+                'options' => self::$data[$id][1]
+            ];
         }
-        throw new \Exception('');
+        throw new \InvalidArgumentException('Addon not found');
     }
 
     /**
-     * Returns the addon options
-     * @param string $id The addon id
-     * @return string The location of the addon
-     * @throws \Exception
-     * @throws \InvalidArgumentException
-     */
-    static function getOptions($id)
-    {
-        if (!is_string($id)) {
-            throw new \InvalidArgumentException('The id argument must be of type string');
-        }
-        if (isset(self::$data[$id])) {
-            return self::$data[$id][1];
-        }
-        throw new \Exception('');
-    }
-
-    /**
-     * Returns an array containing the names of all registered addons
-     * @return array The names of all registered addons
+     * Returns an array containing the data of all registered addons
+     * @return array An array containing the data of all registered addons
      */
     static function getList()
     {
-        return array_keys(self::$data);
+        $result = [];
+        foreach (self::$data as $id => $data) {
+            $result[] = [
+                'id' => $id,
+                'dir' => $data[0],
+                'options' => $data[1]
+            ];
+        }
+        return $result;
     }
 
 }

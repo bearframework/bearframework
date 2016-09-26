@@ -244,8 +244,9 @@ class App
         }
         $addons = $this->addons->getList();
         foreach ($addons as $data) {
-            if (strpos($filename, $data['pathname'] . DIRECTORY_SEPARATOR) === 0) {
-                $context = new App\AddonContext($data['pathname']);
+            $addonData = \BearFramework\Addons::get($data['id']);
+            if (strpos($filename, $addonData['dir'] . DIRECTORY_SEPARATOR) === 0) {
+                $context = new App\AddonContext($addonData['dir']);
                 $context->options = $data['options'];
                 return $context;
             }

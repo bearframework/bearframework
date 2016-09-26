@@ -28,7 +28,6 @@ class Addons
      * @param string $id The id of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
-     * @throws \Exception
      * @return boolean TRUE if successfully loaded. FALSE otherwise.
      */
     public function add($id, $options = [])
@@ -39,10 +38,12 @@ class Addons
         if (!is_array($options)) {
             throw new \InvalidArgumentException('The options argument must be of type array');
         }
+        $id = strtolower($id);
         if (isset($this->data[$id])) {
             return false;
         }
-        $definitionOptions = \BearFramework\Addons::getOptions($id);
+        $addonData = \BearFramework\Addons::get($id);
+        $definitionOptions = $addonData['options'];
         if (isset($definitionOptions['require']) && is_array($definitionOptions['require'])) {
             foreach ($definitionOptions['require'] as $requiredAddonName) {
                 if (is_string($requiredAddonName)) {
@@ -50,26 +51,58 @@ class Addons
                 }
             }
         }
-        $pathname = \BearFramework\Addons::getDir($id);
-        $this->data[$id] = [
-            'pathname' => $pathname,
-            'options' => $options
-        ];
+        unset($definitionOptions);
 
-        $__indexFilename = realpath($pathname . DIRECTORY_SEPARATOR . 'index.php');
+        $this->data[$id] = [$options];
+
+        $dir = $addonData['dir'];
+        $__indexFilename = realpath($dir . DIRECTORY_SEPARATOR . 'index.php');
         if ($__indexFilename !== false) {
             $app = &App::$instance; // Needed for the index file
-            $context = new App\AddonContext($pathname);
+            $context = new App\AddonContext($dir);
             $context->options = $options;
             unset($id); // Hide this variable from the file scope
-            unset($pathname); // Hide this variable from the file scope
+            unset($dir); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
-            unset($definitionOptions); // Hide this variable from the file scope
             include_once $__indexFilename;
             return true;
         } else {
-            throw new \Exception('Addon index file not found');
+            throw new \InvalidArgumentException('Invalid addon (the index file is missing)');
         }
+    }
+
+    /**
+     * Checks whether addon is added
+     * @param string $id The addon id
+     * @throws \InvalidArgumentException
+     * @return boolean TRUE if addon is added. FALSE otherwise.
+     */
+    public function exists($id)
+    {
+        if (!is_string($id)) {
+            throw new \InvalidArgumentException('The id argument must be of type string');
+        }
+        return isset($this->data[strtolower($id)]);
+    }
+
+    /**
+     * Returns information about the addon
+     * @param string $id The addon id
+     * @return string Associative array containing the keys 'id' and 'options' for the addon specified
+     * @throws \InvalidArgumentException
+     */
+    public function get($id)
+    {
+        if (!is_string($id)) {
+            throw new \InvalidArgumentException('The id argument must be of type string');
+        }
+        if (isset($this->data[$id])) {
+            return [
+                'id' => $id,
+                'options' => $this->data[$id][0]
+            ];
+        }
+        throw new \InvalidArgumentException('Addon not found');
     }
 
     /**
@@ -80,7 +113,10 @@ class Addons
     {
         $result = [];
         foreach ($this->data as $id => $data) {
-            $result[] = array_merge(['id' => $id, 'name' => $id], $data);
+            $result[] = [
+                'id' => $id,
+                'options' => $data[0]
+            ];
         }
         return $result;
     }
