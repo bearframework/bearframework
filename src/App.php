@@ -404,7 +404,7 @@ class App
      */
     public function __get($name)
     {
-        if ($this->container->has($name)) {
+        if ($this->container->exists($name)) {
             return $this->container->get($name);
         }
         throw new \Exception('Invalid property name');
@@ -418,7 +418,7 @@ class App
      */
     public function __isset($name)
     {
-        return $this->container->has($name);
+        return $this->container->exists($name);
     }
 
 }

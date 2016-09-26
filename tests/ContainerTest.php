@@ -98,11 +98,11 @@ class ContainerTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testHasInvalidArgument1()
+    public function testExistsInvalidArgument1()
     {
         $app = $this->getApp();
         $this->setExpectedException('Exception');
-        $app->container->has(1);
+        $app->container->exists(1);
     }
 
     /**

@@ -79,7 +79,7 @@ class Container
      * @return boolen TRUE if services is added. FALSE otherwise.
      * @throws \InvalidArgumentException
      */
-    public function has($name)
+    public function exists($name)
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('The name argument must be of type string');
