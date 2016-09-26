@@ -19,6 +19,7 @@ class Cache
 
     /**
      * Return the saved data from the cache of the default value specified
+     * 
      * @param string $key The data key
      * @param string $defaultValue The default value which will be returned if the data is missing from the cache
      * @throws \BearCMS\DataCache\NotFoundException
@@ -55,6 +56,7 @@ class Cache
 
     /**
      * Saves data in the cache
+     * 
      * @param mixed $key The data key
      * @param mixed $value The data
      * @param int $ttl Time in seconds to stay in the cache. Zero mean no expiration.
@@ -75,6 +77,7 @@ class Cache
 
     /**
      * Deletes data fom the cache
+     * 
      * @param mixed $key The data key
      * @throws \InvalidArgumentException
      * @return void No value is returned

@@ -19,12 +19,14 @@ class Routes
 
     /**
      * Stores the registed callbacks
+     * 
      * @var array 
      */
     private $data = [];
 
     /**
      * Registers a request handler
+     * 
      * @param string|string[] $pattern Path pattern. Can contain "?" (path part) and "*" (matches everything).
      * @param callable $callback Function that is expected to return object of type \BearFramework\App\Response.
      * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
@@ -59,6 +61,7 @@ class Routes
 
     /**
      * Finds the matching callback and returns its result
+     * 
      * @param \BearFramework\App\Request $request The current request object
      * @return mixed The result of the matching callback. NULL if none.
      */

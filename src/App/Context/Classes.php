@@ -25,6 +25,7 @@ class Classes
 
     /**
      * The constructor
+     * 
      * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -43,6 +44,7 @@ class Classes
 
     /**
      * Registers a class for autoloading in the current context
+     * 
      * @param string $class The class name
      * @param string $filename The filename that contains the class
      * @throws \InvalidArgumentException

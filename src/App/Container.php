@@ -17,12 +17,14 @@ class Container
 
     /**
      * Stores added data
+     * 
      * @var array 
      */
     private $data = [];
 
     /**
      * Registeres a value for the specified name
+     * 
      * @param string $name The service name.
      * @param string|object|callable $value The object that will be returned when requested.
      * @throws \InvalidArgumentException
@@ -41,6 +43,7 @@ class Container
 
     /**
      * Returns a object and returns it
+     * 
      * @param string $name The service name.
      * @return object The object added for the name specified
      * @throws \InvalidArgumentException
@@ -71,6 +74,7 @@ class Container
 
     /**
      * Returns information about whether the service is added
+     * 
      * @param string $name The name of the service
      * @return boolen TRUE if services is added. FALSE otherwise.
      * @throws \InvalidArgumentException

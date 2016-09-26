@@ -17,12 +17,14 @@ class Query implements \ArrayAccess
 
     /**
      * The request query string
+     * 
      * @var string 
      */
     private $query = '';
 
     /**
      * The constructor
+     * 
      * @param string $query The request query string
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -37,6 +39,7 @@ class Query implements \ArrayAccess
 
     /**
      * Returns the full query string
+     * 
      * @return string The full query string
      */
     public function __toString()
@@ -46,6 +49,7 @@ class Query implements \ArrayAccess
 
     /**
      * Not implemented
+     * 
      * @param int $offset
      * @param string $value
      * @throws \Exception
@@ -58,6 +62,7 @@ class Query implements \ArrayAccess
 
     /**
      * Checks if data for the current name specified exists
+     * 
      * @param mixed $offset The name of the data
      * @return boolean TRUE if the data exists. FALSE otherwise.
      */
@@ -73,6 +78,7 @@ class Query implements \ArrayAccess
 
     /**
      * Not implemented
+     * 
      * @param int $offset
      * @throws \Exception
      * @return void No value is returned
@@ -84,6 +90,7 @@ class Query implements \ArrayAccess
 
     /**
      * Returns the data for the name specified
+     * 
      * @param mixed $offset The name of the data
      * @return string|null The data for the name specified
      */

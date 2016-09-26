@@ -17,6 +17,7 @@ class AppContext extends \BearFramework\App\Context
 
     /**
      * The constructor
+     * 
      * @param string $dir The directory where the application is located 
      * @throws \InvalidArgumentException
      */

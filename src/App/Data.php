@@ -19,12 +19,14 @@ class Data
 
     /**
      * The instance of the data storage library
+     * 
      * @var type 
      */
     private $instance = null;
 
     /**
      * Returns the instance of the data storage library
+     * 
      * @throws \BearFramework\App\InvalidConfigOptionException
      * @return \ObjectStorage The instance of the data storage library
      */
@@ -42,6 +44,7 @@ class Data
 
     /**
      * Retrieves object data for specified key
+     * 
      * @param array $parameters Parameters
      * @return array Array containing the requested parts of the object
      */
@@ -53,6 +56,7 @@ class Data
 
     /**
      * Saves data
+     * 
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
@@ -64,6 +68,7 @@ class Data
 
     /**
      * Appends data to the object specified. If the object does not exist, it will be created.
+     * 
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
@@ -75,6 +80,7 @@ class Data
 
     /**
      * Creates a copy of the object specified
+     * 
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
@@ -86,6 +92,7 @@ class Data
 
     /**
      * Changes the key of the object specified
+     * 
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
@@ -97,6 +104,7 @@ class Data
 
     /**
      * Deletes the object specified and it's metadata
+     * 
      * @param array $parameters Parameters
      * @return boolean TRUE on success. FALSE otherwise.
      */
@@ -108,6 +116,7 @@ class Data
 
     /**
      * Searches for items
+     * 
      * @param array $parameters Parameters
      * @return array List of all items matching che search criteria
      */
@@ -119,6 +128,7 @@ class Data
 
     /**
      * Executes multiple commands
+     * 
      * @param array $commands Commands
      * @return array List of commands results
      */
@@ -130,6 +140,7 @@ class Data
 
     /**
      * Marks object as public so it can be accessed as an asset
+     * 
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
      * @return boolean TRUE on success. FALSE otherwise.
@@ -150,6 +161,7 @@ class Data
 
     /**
      * Marks object as private, so it cannot be accessed as an asset
+     * 
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
      * @return boolean TRUE on success. FALSE otherwise.
@@ -170,6 +182,7 @@ class Data
 
     /**
      * Checks if an object is marked as public
+     * 
      * @param string $key The object key
      * @throws \InvalidArgumentException
      * @return boolean TRUE if public. FALSE otherwise.
@@ -191,6 +204,7 @@ class Data
 
     /**
      * Checks if an key is valid
+     * 
      * @param string $key The key to check
      * @return boolean TRUE if valid. FALSE otherwise.
      */
@@ -202,6 +216,7 @@ class Data
 
     /**
      * Returns the filename of the object key specified
+     * 
      * @param string $key The object key
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException
@@ -224,6 +239,7 @@ class Data
 
     /**
      * Returns the key name of the object filename specified
+     * 
      * @param string $filename The filename
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException

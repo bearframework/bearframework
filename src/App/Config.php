@@ -11,6 +11,7 @@ namespace BearFramework\App;
 
 /**
  * The application configuration
+ * 
  * @property string $appDir
  * @property string $dataDir
  * @property string $logsDir
@@ -26,12 +27,14 @@ class Config
 
     /**
      * Stores the configuration options
+     * 
      * @var array 
      */
     private $data = [];
 
     /**
      * The constructor
+     * 
      * @param array $options Configuration options
      * @throws \InvalidArgumentException
      */
@@ -74,6 +77,7 @@ class Config
 
     /**
      * Returns the value of the configuration option specified
+     * 
      * @param string $name The name of the configuration option
      * @throws \InvalidArgumentException
      * @return mixed The value of the configuration option. If missing will return null.
@@ -88,6 +92,7 @@ class Config
 
     /**
      * Sets the value of the configuration option specified
+     * 
      * @param string $name The name of the configuration option
      * @param mixed $value The value of the configuration option
      * @return void No value is returned
@@ -105,6 +110,7 @@ class Config
 
     /**
      * Checks if the configuration option specified is set
+     * 
      * @param string $name The name of the configuration option
      * @throws \InvalidArgumentException
      * @return boolean TRUE if the configuration option is set. FALSE otherwise.

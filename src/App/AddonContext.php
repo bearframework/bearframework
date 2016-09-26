@@ -17,12 +17,14 @@ class AddonContext extends \BearFramework\App\Context
 
     /**
      * The addon options
+     * 
      * @var array 
      */
     public $options;
 
     /**
      * The constructor
+     * 
      * @param string $dir The directory where the current addond is located 
      * @throws \InvalidArgumentException
      */

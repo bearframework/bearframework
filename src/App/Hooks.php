@@ -17,12 +17,14 @@ class Hooks
 
     /**
      * Registered hook callbacks
+     * 
      * @var array 
      */
     private $data = [];
 
     /**
      * Registers callback for the name specified
+     * 
      * @param string $name The name
      * @param callable $callback The function to be called where the event happens
      * @param array $options Contains a priority option (default value: 100). Hooks with lower priority will be executed first.
@@ -51,6 +53,7 @@ class Hooks
 
     /**
      * Triggers execution of all callbacks hooked to the name specified
+     * 
      * @param string $name The name
      * @throws \InvalidArgumentException
      * @return void No value is returned

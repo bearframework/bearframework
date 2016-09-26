@@ -17,6 +17,7 @@ class Images
 
     /**
      * Returns the size of the image specified
+     * 
      * @param string $filename The filename of the image
      * @throws \InvalidArgumentException
      * @return array[int, int] The size of the image specified
@@ -50,6 +51,7 @@ class Images
 
     /**
      * Resizes a image file
+     * 
      * @param string $sourceFilename The image file to resize
      * @param string $destinationFilename The filename where the result image will be saved
      * @param array $options Resize options. You can resize the file by providing "width", "height" or both.

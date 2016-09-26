@@ -17,18 +17,21 @@ class Response
 
     /**
      * The content of the response
+     * 
      * @var string 
      */
     public $content = '';
 
     /**
      * The headers of the response
+     * 
      * @var array 
      */
     public $headers = [];
 
     /**
      * The constructor
+     * 
      * @param string $content The content of the response
      * @throws \InvalidArgumentException
      */
@@ -43,6 +46,7 @@ class Response
 
     /**
      * Sets the max age attribute of the cache-control header
+     * 
      * @param int $seconds Time in seconds
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -57,6 +61,7 @@ class Response
 
     /**
      * Sets the value of the content type header
+     * 
      * @param string $mimeType The mimetype of the content type header
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -74,6 +79,7 @@ class Response
 
     /**
      * Sets the status code of the response header
+     * 
      * @param int $code The status code of the response header
      * @throws \InvalidArgumentException
      * @return void No value is returned

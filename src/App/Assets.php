@@ -19,12 +19,14 @@ class Assets
 
     /**
      * Publicly accessible dirs
+     * 
      * @var array
      */
     private $dirs = [];
 
     /**
      * Registers a directory that will be publicly accessible
+     * 
      * @param string $pathname The directory name
      * @return void No value is returned
      */
@@ -42,6 +44,7 @@ class Assets
 
     /**
      * Returns a public URL for the specified filename
+     * 
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
@@ -96,6 +99,7 @@ class Assets
 
     /**
      * Returns the local filename for a given URL path
+     * 
      * @param string $path The path part of the asset url
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException
@@ -186,6 +190,7 @@ class Assets
 
     /**
      * Finds the mime type of a filename by checking it's extension
+     * 
      * @param string $filename The filename
      * @throws \InvalidArgumentException
      * @return string|null The mimetype of the filename specified

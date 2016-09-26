@@ -13,6 +13,7 @@ use BearFramework\App;
 
 /**
  * The is the class used to instantiate and configure you application.
+ * 
  * @property \BearFramework\App\Config $config The application configuration
  * @property \BearFramework\App\Request $request Provides information about the current request
  * @property \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks
@@ -32,30 +33,35 @@ class App
 
     /**
      * Current Bear Framework version
+     * 
      * @var string
      */
     const VERSION = '0.8.1';
 
     /**
      * Dependency Injection container
+     * 
      * @var \BearFramework\App\ServiceContainer 
      */
     public $container = null;
 
     /**
      * The instance of the App object. Only one can be created.
+     * 
      * @var App 
      */
     public static $instance = null;
 
     /**
      * Information about whether the application is initialized
+     * 
      * @var bool 
      */
     private $initialized = false;
 
     /**
      * The constructor
+     * 
      * @throws \Exception
      */
     public function __construct()
@@ -222,6 +228,7 @@ class App
 
     /**
      * Creates a context object for the filename specified
+     * 
      * @param string $filename
      * @throws \InvalidArgumentException
      * @throws \Exception
@@ -256,6 +263,7 @@ class App
 
     /**
      * Call this method to start the application. This method outputs the response.
+     * 
      * @return void No value is returned
      */
     public function run()
@@ -298,6 +306,7 @@ class App
 
     /**
      * Prepares the response (hooks, validations and other operations)
+     * 
      * @param BearFramework\App\Response $response The response object to prepare
      * @throws \Exception
      * @return void No value is returned
@@ -329,6 +338,7 @@ class App
 
     /**
      * Sends the response to the client
+     * 
      * @param \BearFramework\App\Response $response The response object to be sent
      * @return void No value is returned
      */
@@ -348,6 +358,7 @@ class App
 
     /**
      * Outputs a response
+     * 
      * @param BearFramework\App\Response $response The response object to output
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -364,6 +375,7 @@ class App
 
     /**
      * Prevents multiple app instances
+     * 
      * @throws \Exception
      * @return void No value is returned
      */
@@ -374,6 +386,7 @@ class App
 
     /**
      * Prevents multiple app instances
+     * 
      * @throws \Exception
      * @return void No value is returned
      */
@@ -384,6 +397,7 @@ class App
 
     /**
      * Returns an object from the dependency injection container
+     * 
      * @param string $name The service name
      * @return object Object from the dependency injection container
      * @throws \Exception
@@ -398,6 +412,7 @@ class App
 
     /**
      * Returns information about whether the service is added in the dependency injection container
+     * 
      * @param string $name The name of the service
      * @return boolen TRUE if services is added. FALSE otherwise.
      */

@@ -25,6 +25,7 @@ class Assets
 
     /**
      * The constructor
+     * 
      * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -43,6 +44,7 @@ class Assets
 
     /**
      * Registers a directory that will be publicly accessible relative to the current addon or application location
+     * 
      * @param string $pathname The directory name
      * @return void No value is returned
      */
@@ -54,6 +56,7 @@ class Assets
 
     /**
      * Returns a public URL for the specified filename in the current context
+     * 
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException

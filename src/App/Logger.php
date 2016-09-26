@@ -19,6 +19,7 @@ class Logger
 
     /**
      * Appends data to the file specified. The file will be created if not exists.
+     * 
      * @param mixed $level
      * @param string $message
      * @param array $context

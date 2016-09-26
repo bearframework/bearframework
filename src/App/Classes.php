@@ -9,8 +9,6 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App;
-
 /**
  * Provides functionality for autoloading classes
  */
@@ -19,6 +17,7 @@ class Classes
 
     /**
      * Registered classes
+     * 
      * @var array 
      */
     private $data = [];
@@ -35,6 +34,7 @@ class Classes
 
     /**
      * Registers a class for autoloading
+     * 
      * @param string $class The class name
      * @param string $filename The filename that contains the class
      * @throws \InvalidArgumentException
@@ -57,6 +57,7 @@ class Classes
 
     /**
      * Loads a class if registered
+     * 
      * @param string $class
      * @throws \InvalidArgumentException
      * @return void No value is returned

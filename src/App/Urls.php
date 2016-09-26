@@ -19,6 +19,7 @@ class Urls
 
     /**
      * Constructs a url for the path specified
+     * 
      * @param string $path The path
      * @throws \InvalidArgumentException
      * @return string Absolute URL containing the base URL plus the path given

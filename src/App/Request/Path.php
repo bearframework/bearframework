@@ -17,12 +17,14 @@ class Path implements \ArrayAccess
 
     /**
      * The request path
+     * 
      * @var string 
      */
     private $path = '';
 
     /**
      * The constructor
+     * 
      * @param string $path The request path
      * @throws \InvalidArgumentException
      * @return void No value is returned
@@ -37,6 +39,7 @@ class Path implements \ArrayAccess
 
     /**
      * Returns the full path
+     * 
      * @return string The full path
      */
     public function __toString()
@@ -46,6 +49,7 @@ class Path implements \ArrayAccess
 
     /**
      * Not implemented
+     * 
      * @param int $offset
      * @param string $value
      * @throws \Exception
@@ -58,6 +62,7 @@ class Path implements \ArrayAccess
 
     /**
      * Checks if a part part for the current index specified exists
+     * 
      * @param int $offset The index of the path part
      * @return boolean TRUE if the path part exists. FALSE otherwise.
      */
@@ -76,6 +81,7 @@ class Path implements \ArrayAccess
 
     /**
      * Not implemented
+     * 
      * @param int $offset
      * @throws \Exception
      * @return void No value is returned
@@ -87,6 +93,7 @@ class Path implements \ArrayAccess
 
     /**
      * Returns the path part for the index specified
+     * 
      * @param int $offset the index of the part part
      * @return string|null The path part at the index specified
      */

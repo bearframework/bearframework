@@ -17,6 +17,7 @@ class Addons
 
     /**
      * Registered addons data
+     * 
      * @var array 
      */
     static private $data = [];
@@ -49,6 +50,7 @@ class Addons
 
     /**
      * Checks whether addon is registered
+     * 
      * @param string $id The addon id
      * @throws \InvalidArgumentException
      * @return boolean TRUE if addon is registered. FALSE otherwise.
@@ -63,6 +65,7 @@ class Addons
 
     /**
      * Returns information about the addon
+     * 
      * @param string $id The addon id
      * @return string Associative array containing the keys 'id', 'dir' and 'options' for the addon specified
      * @throws \InvalidArgumentException
@@ -84,6 +87,7 @@ class Addons
 
     /**
      * Returns an array containing the data of all registered addons
+     * 
      * @return array An array containing the data of all registered addons
      */
     static function getList()

@@ -17,12 +17,14 @@ class FileReader extends \BearFramework\App\Response
 
     /**
      * The filename to output
+     * 
      * @var string 
      */
     public $filename = '';
 
     /**
      * The constructor 
+     * 
      * @param string $filename The filename to output
      * @throws \InvalidArgumentException
      */

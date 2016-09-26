@@ -17,6 +17,7 @@ class PermanentRedirect extends \BearFramework\App\Response
 
     /**
      * The constructor
+     * 
      * @param string $url The redirect url
      * @throws \InvalidArgumentException
      */

@@ -19,12 +19,14 @@ class Addons
 
     /**
      * Added addons
+     * 
      * @var array 
      */
     private $data = [];
 
     /**
      * Enables an addon and saves the provided options
+     * 
      * @param string $id The id of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
@@ -73,6 +75,7 @@ class Addons
 
     /**
      * Checks whether addon is added
+     * 
      * @param string $id The addon id
      * @throws \InvalidArgumentException
      * @return boolean TRUE if addon is added. FALSE otherwise.
@@ -87,6 +90,7 @@ class Addons
 
     /**
      * Returns information about the addon
+     * 
      * @param string $id The addon id
      * @return string Associative array containing the keys 'id' and 'options' for the addon specified
      * @throws \InvalidArgumentException
@@ -107,6 +111,7 @@ class Addons
 
     /**
      * Returns list of the added addons
+     * 
      * @return array List of the added addons
      */
     public function getList()

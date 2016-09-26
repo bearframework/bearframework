@@ -19,24 +19,28 @@ class Context
 
     /**
      * The directory where the current addon or application are located
+     * 
      * @var string 
      */
     public $dir = '';
 
     /**
      * Provides utility functions for assets in the current context dir
+     * 
      * @var \BearFramework\App\Context\Assets 
      */
     public $assets = null;
 
     /**
      * Provides functionality for autoloading classes in the current context
+     * 
      * @var \BearFramework\App\Context\Classes 
      */
     public $classes = null;
 
     /**
      * The constructor
+     * 
      * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
      */
