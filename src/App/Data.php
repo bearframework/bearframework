@@ -58,60 +58,60 @@ class Data
      * Saves data
      * 
      * @param array $parameters Parameters
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function set($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->set($parameters);
+        $instance->set($parameters);
     }
 
     /**
      * Appends data to the object specified. If the object does not exist, it will be created.
      * 
      * @param array $parameters Parameters
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function append($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->append($parameters);
+        $instance->append($parameters);
     }
 
     /**
      * Creates a copy of the object specified
      * 
      * @param array $parameters Parameters
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function duplicate($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->duplicate($parameters);
+        $instance->duplicate($parameters);
     }
 
     /**
      * Changes the key of the object specified
      * 
      * @param array $parameters Parameters
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function rename($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->rename($parameters);
+        $instance->rename($parameters);
     }
 
     /**
      * Deletes the object specified and it's metadata
      * 
      * @param array $parameters Parameters
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function delete($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->delete($parameters);
+        $instance->delete($parameters);
     }
 
     /**
@@ -143,7 +143,7 @@ class Data
      * 
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function makePublic($parameters)
     {
@@ -151,11 +151,11 @@ class Data
             throw new \InvalidArgumentException('The parameters argument must be of type array and must contain a key named \'key\'');
         }
         $instance = $this->getInstance();
-        return $instance->set(
-                        [
-                            'key' => $parameters['key'],
-                            'metadata.internalFrameworkPropertyPublic' => '1'
-                        ]
+        $instance->set(
+                [
+                    'key' => $parameters['key'],
+                    'metadata.internalFrameworkPropertyPublic' => '1'
+                ]
         );
     }
 
@@ -164,7 +164,7 @@ class Data
      * 
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
-     * @return boolean TRUE on success. FALSE otherwise.
+     * @return void No value is returned
      */
     public function makePrivate($parameters)
     {
@@ -172,11 +172,11 @@ class Data
             throw new \InvalidArgumentException('The parameters argument must be of type array and must contain a key named \'key\'');
         }
         $instance = $this->getInstance();
-        return $instance->set(
-                        [
-                            'key' => $parameters['key'],
-                            'metadata.internalFrameworkPropertyPublic' => ''
-                        ]
+        $instance->set(
+                [
+                    'key' => $parameters['key'],
+                    'metadata.internalFrameworkPropertyPublic' => ''
+                ]
         );
     }
 
