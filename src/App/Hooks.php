@@ -52,6 +52,21 @@ class Hooks
     }
 
     /**
+     * Returns information whether there are callbacks added to the hook specified.
+     * 
+     * @param string $name The name
+     * @return boolean TRUE if there are registered callbacks to the hook specified, FALSE otherwise.
+     * @throws \InvalidArgumentException
+     */
+    public function exists($name)
+    {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException('The name argument must be of type string');
+        }
+        return isset($this->data[$name]);
+    }
+
+    /**
      * Triggers execution of all callbacks hooked to the name specified
      * 
      * @param string $name The name

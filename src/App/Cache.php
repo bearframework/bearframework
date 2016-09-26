@@ -55,6 +55,41 @@ class Cache
     }
 
     /**
+     * Returns information whether a key exists in the cache.
+     * 
+     * @param string $key The data key
+     * @return boolean TRUE if the key exists in the cache, FALSE otherwise.
+     */
+    public function exists($key)
+    {
+        $app = &App::$instance;
+        $keyMD5 = md5($key);
+        $data = $app->data->get(
+                [
+                    'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
+                    'result' => ['body']
+                ]
+        );
+        // @codeCoverageIgnoreStart
+        if (isset($data['body'])) {
+            try {
+                $body = unserialize(gzuncompress($data['body']));
+                if ($body[0] > 0) {
+                    if ($body[0] > time()) {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            } catch (\Exception $e) {
+                
+            }
+        }
+        // @codeCoverageIgnoreEnd
+        return false;
+    }
+
+    /**
      * Saves data in the cache
      * 
      * @param mixed $key The data key

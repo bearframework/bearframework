@@ -19,12 +19,14 @@ class HooksTest extends BearFrameworkTestCase
     public function testAdd()
     {
         $app = $this->getApp();
+        $this->assertFalse($app->hooks->exists('sampleName'));
         $app->hooks->add('sampleName', function() {
             echo '123';
         });
         $app->hooks->add('sampleName', function() {
             echo '456';
         });
+        $this->assertTrue($app->hooks->exists('sampleName'));
         $app->hooks->execute('sampleName');
         $this->expectOutputString('123456');
     }
@@ -96,6 +98,16 @@ class HooksTest extends BearFrameworkTestCase
         $app->hooks->add('sampleName', function() {
             
         }, 1);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments5()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->hooks->exists(1);
     }
 
 }

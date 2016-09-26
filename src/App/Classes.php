@@ -56,6 +56,21 @@ class Classes
     }
 
     /**
+     * Returns information about whether a class is registered for autoloading
+     * 
+     * @param string $class The class name
+     * @return boolen TRUE if the class is registered for autoloading. FALSE otherwise.
+     * @throws \InvalidArgumentException
+     */
+    public function exists($class)
+    {
+        if (!is_string($class)) {
+            throw new \InvalidArgumentException('The class argument must be of type string');
+        }
+        return isset($this->data[$class]);
+    }
+
+    /**
      * Loads a class if registered
      * 
      * @param string $class
