@@ -22,11 +22,14 @@ class Cache
      * 
      * @param string $key The data key
      * @param string $defaultValue The default value which will be returned if the data is missing from the cache
-     * @throws \BearCMS\DataCache\NotFoundException
+     * @throws \InvalidArgumentException
      * @return mixed The saved data from the cache of the default value specified
      */
     public function get($key, $defaultValue = false)
     {
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('The key argument must be of type string');
+        }
         $app = &App::$instance;
         $keyMD5 = md5($key);
         $data = $app->data->get(
@@ -58,10 +61,14 @@ class Cache
      * Returns information whether a key exists in the cache.
      * 
      * @param string $key The data key
+     * @throws \InvalidArgumentException
      * @return boolean TRUE if the key exists in the cache, FALSE otherwise.
      */
     public function exists($key)
     {
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('The key argument must be of type string');
+        }
         $app = &App::$instance;
         $keyMD5 = md5($key);
         $data = $app->data->get(
@@ -100,6 +107,12 @@ class Cache
      */
     public function set($key, $value, $ttl = 0)
     {
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('The key argument must be of type string');
+        }
+        if (!is_int($ttl)) {
+            throw new \InvalidArgumentException('The ttl argument must be of type int');
+        }
         $app = &App::$instance;
         $keyMD5 = md5($key);
         $body = [$ttl > 0 ? time() + $ttl : 0, $value];
@@ -119,6 +132,9 @@ class Cache
      */
     public function delete($key)
     {
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('The key argument must be of type string');
+        }
         $app = &App::$instance;
         $keyMD5 = md5($key);
         $app->data->delete([
