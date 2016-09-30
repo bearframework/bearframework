@@ -20,12 +20,11 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $result = $app->data->set([
+        $app->data->set([
             'key' => 'users/1',
             'body' => '{"name":"John Smith","email":"john@example.com"}',
             'metadata.lastAccessTime' => '1234567890'
         ]);
-        $this->assertTrue($result === true);
 
         $result = $app->data->get([
             'key' => 'users/1',
@@ -36,28 +35,24 @@ class DataTest extends BearFrameworkTestCase
             'metadata.lastAccessTime' => '1234567890',
         ));
 
-        $result = $app->data->append([
+        $app->data->append([
             'key' => 'visits/ip.log',
             'body' => "123.123.123.123\n"
         ]);
-        $this->assertTrue($result === true);
 
-        $result = $app->data->duplicate([
+        $app->data->duplicate([
             'sourceKey' => 'users/1',
             'targetKey' => 'users/2'
         ]);
-        $this->assertTrue($result === true);
 
-        $result = $app->data->rename([
+        $app->data->rename([
             'sourceKey' => 'users/2',
             'targetKey' => 'users/3'
         ]);
-        $this->assertTrue($result === true);
 
-        $result = $app->data->delete([
+        $app->data->delete([
             'key' => 'users/3'
         ]);
-        $this->assertTrue($result === true);
 
         $result = $app->data->search([
             'where' => [
