@@ -47,11 +47,16 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return array Array containing the requested parts of the object
+     * @throws \Exception
      */
     public function get($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->get($parameters);
+        try {
+            return $instance->get($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -59,11 +64,19 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function set($parameters)
     {
         $instance = $this->getInstance();
-        $instance->set($parameters);
+        try {
+            $instance->set($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
     }
 
     /**
@@ -71,11 +84,19 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function append($parameters)
     {
         $instance = $this->getInstance();
-        $instance->append($parameters);
+        try {
+            $instance->append($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
     }
 
     /**
@@ -83,11 +104,19 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function duplicate($parameters)
     {
         $instance = $this->getInstance();
-        $instance->duplicate($parameters);
+        try {
+            $instance->duplicate($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
     }
 
     /**
@@ -95,11 +124,19 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function rename($parameters)
     {
         $instance = $this->getInstance();
-        $instance->rename($parameters);
+        try {
+            $instance->rename($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
     }
 
     /**
@@ -107,11 +144,19 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function delete($parameters)
     {
         $instance = $this->getInstance();
-        $instance->delete($parameters);
+        try {
+            $instance->delete($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
     }
 
     /**
@@ -119,11 +164,16 @@ class Data
      * 
      * @param array $parameters Parameters
      * @return array List of all items matching che search criteria
+     * @throws \Exception
      */
     public function search($parameters)
     {
         $instance = $this->getInstance();
-        return $instance->search($parameters);
+        try {
+            return $instance->search($parameters);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -131,11 +181,17 @@ class Data
      * 
      * @param array $commands Commands
      * @return array List of commands results
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function execute($commands)
     {
         $instance = $this->getInstance();
-        return $instance->execute($commands);
+        try {
+            return $instance->execute($commands);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -144,6 +200,8 @@ class Data
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function makePublic($parameters)
     {
@@ -151,12 +209,16 @@ class Data
             throw new \InvalidArgumentException('The parameters argument must be of type array and must contain a key named \'key\'');
         }
         $instance = $this->getInstance();
-        $instance->set(
-                [
-                    'key' => $parameters['key'],
-                    'metadata.internalFrameworkPropertyPublic' => '1'
-                ]
-        );
+        try {
+            $instance->set(
+                    [
+                        'key' => $parameters['key'],
+                        'metadata.internalFrameworkPropertyPublic' => '1'
+                    ]
+            );
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -165,6 +227,8 @@ class Data
      * @param array $parameters Parameters
      * @throws \InvalidArgumentException
      * @return void No value is returned
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function makePrivate($parameters)
     {
@@ -172,12 +236,16 @@ class Data
             throw new \InvalidArgumentException('The parameters argument must be of type array and must contain a key named \'key\'');
         }
         $instance = $this->getInstance();
-        $instance->set(
-                [
-                    'key' => $parameters['key'],
-                    'metadata.internalFrameworkPropertyPublic' => ''
-                ]
-        );
+        try {
+            $instance->set(
+                    [
+                        'key' => $parameters['key'],
+                        'metadata.internalFrameworkPropertyPublic' => ''
+                    ]
+            );
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -185,6 +253,7 @@ class Data
      * 
      * @param string $key The object key
      * @throws \InvalidArgumentException
+     * @throws \Exception
      * @return boolean TRUE if public. FALSE otherwise.
      */
     public function isPublic($key)
@@ -193,12 +262,16 @@ class Data
             throw new \InvalidArgumentException('The key argument must be of type string');
         }
         $instance = $this->getInstance();
-        $result = $instance->get(
-                [
-                    'key' => $key,
-                    'result' => ['metadata.internalFrameworkPropertyPublic']
-                ]
-        );
+        try {
+            $result = $instance->get(
+                    [
+                        'key' => $key,
+                        'result' => ['metadata.internalFrameworkPropertyPublic']
+                    ]
+            );
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
         return isset($result['metadata.internalFrameworkPropertyPublic']) && $result['metadata.internalFrameworkPropertyPublic'] === '1';
     }
 
