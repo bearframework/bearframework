@@ -55,4 +55,54 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->delete('key1');
     }
 
+    /**
+     * 
+     */
+    public function testInvalidArguments1()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->cache->get(1);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments2()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->cache->exists(1);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments3()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->cache->set(1, 'data');
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments4()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->cache->set('key1', 1, 'wrong');
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments5()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->cache->delete(1);
+    }
+
 }
