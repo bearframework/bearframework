@@ -7,9 +7,6 @@
  * Free to use under the MIT license.
  */
 
-require __DIR__ . '/../vendor/autoload.php';
-//require __DIR__ . '/../public/local/autoload.php';
-
 /**
  * 
  */
@@ -17,6 +14,11 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 {
 
     private $app = null;
+
+    function setUp()
+    {
+        require __DIR__ . '/../vendor/autoload.php';
+    }
 
     function getTestDir()
     {
@@ -82,5 +84,12 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 
 }
 
-//$testCase = new BearFrameworkTestCase();
-//$app = $testCase->getApp();
+class BearFrameworkAutoloaderTestCase extends PHPUnit_Framework_TestCase
+{
+
+    function setUp()
+    {
+        require __DIR__ . '/../autoload.php';
+    }
+
+}
