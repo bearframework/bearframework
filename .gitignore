@@ -1,10 +1,4 @@
-data/*
-app/*
-addons/*
-logs/*
 nbproject/*
-public/*
-builds/*
 vendor/*
 composer.lock
 .idea/
