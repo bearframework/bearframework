@@ -27,7 +27,7 @@ class Data
     /**
      * Returns the instance of the data storage library
      * 
-     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return \ObjectStorage The instance of the data storage library
      */
     private function getInstance()
@@ -35,7 +35,7 @@ class Data
         if ($this->instance === null) {
             $app = &App::$instance;
             if ($app->config->dataDir === null) {
-                throw new App\InvalidConfigOptionException('Config option dataDir is not set');
+                throw new App\Config\InvalidOptionException('Config option dataDir is not set');
             }
             $this->instance = new \ObjectStorage($app->config->dataDir);
         }
@@ -292,7 +292,7 @@ class Data
      * 
      * @param string $key The object key
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The filename of the object key specified
      */
     public function getFilename($key)
@@ -302,7 +302,7 @@ class Data
         }
         $app = &App::$instance;
         if ($app->config->dataDir === null) {
-            throw new App\InvalidConfigOptionException('Config option dataDir is not set');
+            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
         }
         if (!$this->isValidKey($key)) {
             throw new \InvalidArgumentException('The key argument is not valid');
@@ -315,7 +315,7 @@ class Data
      * 
      * @param string $filename The filename
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The key of the object
      */
     public function getKeyFromFilename($filename)
@@ -325,7 +325,7 @@ class Data
         }
         $app = &App::$instance;
         if ($app->config->dataDir === null) {
-            throw new App\InvalidConfigOptionException('Config option dataDir is not set');
+            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
         }
         $filename = realpath($filename);
         if ($filename === false) {

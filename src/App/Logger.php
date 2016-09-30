@@ -24,7 +24,7 @@ class Logger
      * @param string $message
      * @param array $context
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean TRUE if data is suceessfully written. FALSE otherwise.
      */
     public function log($level, $message, $context = [])
@@ -38,7 +38,7 @@ class Logger
             throw new \InvalidArgumentException('The message argument must be of type string');
         }
         if ($app->config->logsDir === null) {
-            throw new App\InvalidConfigOptionException('Config option dataDir is not set');
+            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
         }
 
         $filename = $level . '-' . date('Y-m-d') . '.log';

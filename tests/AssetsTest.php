@@ -173,7 +173,7 @@ class AssetsTest extends BearFrameworkTestCase
 
         $filename = $app->config->appDir . '/assets/logo.png';
         $this->createSampleFile($filename, 'png');
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
         $app->assets->getUrl($filename);
     }
 

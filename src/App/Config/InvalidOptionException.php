@@ -16,7 +16,7 @@ namespace BearFramework\App;
  * @param int $code [optional] The Exception code.
  * @param Exception $previous [optional] The previous exception used for the exception chaining. 
  */
-class InvalidConfigOptionException extends \Exception
+class InvalidOptionException extends \Exception
 {
 
     public function __construct($message = "", $code = 0, \Exception $previous = null)

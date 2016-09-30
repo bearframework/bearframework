@@ -163,7 +163,7 @@ class DataTest extends BearFrameworkTestCase
         $app = $this->getApp([
             'dataDir' => null
         ]);
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
         $app->data->getFilename('key');
     }
 
@@ -176,7 +176,7 @@ class DataTest extends BearFrameworkTestCase
             'dataDir' => null
         ]);
 
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
         $app->data->get([
             'key' => 'users/1',
             'result' => ['body', 'metadata']
@@ -213,7 +213,7 @@ class DataTest extends BearFrameworkTestCase
         ]);
         $filename = $app->config->appDir . '/file.png';
         $this->createFile($filename, '123');
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
         $app->data->getKeyFromFilename($filename);
     }
 

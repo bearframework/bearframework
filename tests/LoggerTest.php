@@ -58,7 +58,7 @@ class LogTest extends BearFrameworkTestCase
             'logsDir' => null
         ]);
 
-        $this->setExpectedException('\BearFramework\App\InvalidConfigOptionException');
+        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
         $app->logger->log('warning', 'message');
     }
 

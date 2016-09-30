@@ -48,7 +48,7 @@ class Assets
      * @param string $filename The filename
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The URL for the specified filename and options
      */
     public function getUrl($filename, $options = [])
@@ -65,7 +65,7 @@ class Assets
             throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if ($app->config->assetsPathPrefix === null) {
-            throw new App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
+            throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
         }
         $optionsString = '';
         ksort($options);
@@ -102,7 +102,7 @@ class Assets
      * 
      * @param string $path The path part of the asset url
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\InvalidConfigOptionException
+     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The localfileneme or FALSE if file does not exists
      */
     public function getFilename($path)
@@ -112,7 +112,7 @@ class Assets
         }
         $app = &App::$instance;
         if ($app->config->assetsPathPrefix === null) {
-            throw new App\InvalidConfigOptionException('Config option assetsPathPrefix is not set');
+            throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
         }
         if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
             return false;
