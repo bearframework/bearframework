@@ -92,7 +92,7 @@ class Cache
     /**
      * Saves data in the cache
      * 
-     * @param mixed $key The data key
+     * @param string $key The data key
      * @param mixed $value The data
      * @param int $ttl Time in seconds to stay in the cache. Zero mean no expiration.
      * @throws \InvalidArgumentException
@@ -113,7 +113,7 @@ class Cache
     /**
      * Deletes data fom the cache
      * 
-     * @param mixed $key The data key
+     * @param string $key The data key
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */

@@ -41,14 +41,14 @@ class App
     /**
      * Dependency Injection container
      * 
-     * @var \BearFramework\App\ServiceContainer 
+     * @var \BearFramework\App\Container 
      */
     public $container = null;
 
     /**
      * The instance of the App object. Only one can be created.
      * 
-     * @var App 
+     * @var \BearFramework\App 
      */
     public static $instance = null;
 
@@ -294,7 +294,7 @@ class App
                 }
             });
         }
-
+        $this->hooks->execute('initialized');
         $response = $this->routes->getResponse($this->request);
         ob_end_clean();
         if (!($response instanceof App\Response)) {
@@ -353,6 +353,7 @@ class App
         } else {
             echo $response->content;
         }
+        $this->hooks->execute('responseSent', $response);
     }
 
     /**

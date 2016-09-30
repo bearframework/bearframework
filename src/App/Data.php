@@ -243,7 +243,7 @@ class Data
      * @param string $filename The filename
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\InvalidConfigOptionException
-     * @return The key of the object
+     * @return string The key of the object
      */
     public function getKeyFromFilename($filename)
     {

@@ -20,7 +20,7 @@ class Images
      * 
      * @param string $filename The filename of the image
      * @throws \InvalidArgumentException
-     * @return array[int, int] The size of the image specified
+     * @return array[int,int] The size of the image specified
      */
     public function getSize($filename)
     {
