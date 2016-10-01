@@ -31,7 +31,6 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
         $this->assertTrue(class_exists('BearFramework\App\Context\Classes'));
         $this->assertTrue(class_exists('BearFramework\App\Data'));
         $this->assertTrue(class_exists('BearFramework\App\Data\DataLockedException'));
-        $this->assertTrue(class_exists('BearFramework\App\Filesystem'));
         $this->assertTrue(class_exists('BearFramework\App\Hooks'));
         $this->assertTrue(class_exists('BearFramework\App\Images'));
         $this->assertTrue(class_exists('BearFramework\App\Config\InvalidOptionException'));

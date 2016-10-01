@@ -25,7 +25,6 @@ use BearFramework\App;
  * @property \BearFramework\App\Cache $cache Data cache
  * @property \BearFramework\App\Classes $classes Provides functionality for autoloading classes
  * @property \BearFramework\App\Urls $urls URLs utilities
- * @property \BearFramework\App\Filesystem $filesystem Filesystem utilities
  * @property \BearFramework\App\Images $images Images utilities
  */
 class App
@@ -84,7 +83,6 @@ class App
         $this->container->set('cache', App\Cache::class);
         $this->container->set('classes', App\Classes::class);
         $this->container->set('urls', App\Urls::class);
-        $this->container->set('filesystem', App\Filesystem::class);
         $this->container->set('images', App\Images::class);
     }
 

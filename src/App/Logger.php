@@ -43,10 +43,12 @@ class Logger
 
         $filename = $level . '-' . date('Y-m-d') . '.log';
         try {
+            if (!is_dir($app->config->logsDir)) {
+                mkdir($app->config->logsDir, 0777, true);
+            }
             $microtime = microtime(true);
             $microtimeParts = explode('.', $microtime);
             $logData = date('H:i:s', $microtime) . ':' . (isset($microtimeParts[1]) ? $microtimeParts[1] : '0') . "\n" . trim($message) . (empty($context) ? '' : "\n" . trim(print_r($context, true))) . "\n\n";
-            $app->filesystem->makeFileDir($app->config->logsDir . DIRECTORY_SEPARATOR . $filename);
             $fileHandler = fopen($app->config->logsDir . DIRECTORY_SEPARATOR . $filename, 'ab');
             $result = fwrite($fileHandler, $logData);
             fclose($fileHandler);

@@ -70,7 +70,7 @@ class LogTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $level = 'warning';
         $filename = $app->config->logsDir . DIRECTORY_SEPARATOR . $level . '-' . date('Y-m-d') . '.log';
-        $app->filesystem->makeDir($filename);
+        mkdir($filename, 0777, true);
         $this->assertFalse($app->logger->log($level, 'message'));
     }
 

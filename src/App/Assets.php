@@ -169,7 +169,12 @@ class Assets
             if (isset($pathinfo['extension'])) {
                 $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5($optionsString)) . '.' . $pathinfo['extension']);
                 if (!is_file($tempFilename)) {
-                    $app->filesystem->makeFileDir($tempFilename);
+                    $pathinfo = pathinfo($tempFilename);
+                    if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
+                        if (!is_dir($pathinfo['dirname'])) {
+                            mkdir($pathinfo['dirname'], 0777, true);
+                        }
+                    }
                     if ($width !== null || $height !== null) {
                         if ($width === null) {
                             $imageSize = $app->images->getSize($filename);
