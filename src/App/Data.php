@@ -28,7 +28,7 @@ class Data
      * Returns the instance of the data storage library
      * 
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return \ObjectStorage The instance of the data storage library
+     * @return \IvoPetkov\ObjectStorage The instance of the data storage library
      */
     private function getInstance()
     {
@@ -37,7 +37,7 @@ class Data
             if ($app->config->dataDir === null) {
                 throw new App\Config\InvalidOptionException('Config option dataDir is not set');
             }
-            $this->instance = new \ObjectStorage($app->config->dataDir);
+            $this->instance = new \IvoPetkov\ObjectStorage($app->config->dataDir);
         }
         return $this->instance;
     }
