@@ -259,4 +259,310 @@ class DataTest extends BearFrameworkTestCase
         $app->data->isPublic(1);
     }
 
+    /**
+     * 
+     */
+    public function testGetExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createFile($app->config->dataDir . '/objects', 'data');
+        $this->setExpectedException('\Exception');
+        $app->data->get(
+                [
+                    'key' => 'data1'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testSetExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->dataDir . '/objects/data1');
+        $this->setExpectedException('\Exception');
+        $app->data->set(
+                [
+                    'key' => 'data1',
+                    'body' => 'data'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testSetExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->set(
+                [
+                    'key' => 'lockeddata1',
+                    'body' => 'data'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testAppendExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->dataDir . '/objects/data1');
+        $this->setExpectedException('\Exception');
+        $app->data->append(
+                [
+                    'key' => 'data1',
+                    'body' => 'data'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testAppendExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->append(
+                [
+                    'key' => 'lockeddata1',
+                    'body' => 'data'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testDuplicateExceptions1()
+    {
+        $app = $this->getApp();
+        $app->data->set(
+                [
+                    'key' => 'data1',
+                    'body' => 'data'
+                ]
+        );
+        $this->createDir($app->config->dataDir . '/objects/data2');
+        $this->setExpectedException('\Exception');
+        $app->data->duplicate(
+                [
+                    'sourceKey' => 'data1',
+                    'targetKey' => 'data2'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testDuplicateExceptions2()
+    {
+        $app = $this->getApp();
+        $app->data->set(
+                [
+                    'key' => 'data1',
+                    'body' => 'data'
+                ]
+        );
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata2');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->duplicate(
+                [
+                    'sourceKey' => 'data1',
+                    'targetKey' => 'lockeddata2'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testRenameExceptions1()
+    {
+        $app = $this->getApp();
+        $app->data->set(
+                [
+                    'key' => 'data1',
+                    'body' => 'data'
+                ]
+        );
+        $this->createDir($app->config->dataDir . '/objects/data2');
+        $this->setExpectedException('\Exception');
+        $app->data->rename(
+                [
+                    'sourceKey' => 'data1',
+                    'targetKey' => 'data2'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testRenameExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->rename(
+                [
+                    'sourceKey' => 'lockeddata1',
+                    'targetKey' => 'data2'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testDeleteExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->dataDir . '/objects/data1');
+        $this->setExpectedException('\Exception');
+        $app->data->delete(
+                [
+                    'key' => 'data1'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testDeleteExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->delete(
+                [
+                    'key' => 'lockeddata1'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testSearchExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createFile($app->config->dataDir . '/objects', 'data');
+        $this->setExpectedException('\Exception');
+        $app->data->search(
+                [
+                    'where' => [
+                        ['key', 'data1']
+                    ]
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testExecuteExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->dataDir . '/objects/data1');
+        $this->setExpectedException('\Exception');
+        $app->data->execute(
+                [
+                    [
+                        'command' => 'set',
+                        'key' => 'data1',
+                        'body' => 'data'
+                    ]
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testExecuteExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->execute(
+                [
+                    [
+                        'command' => 'set',
+                        'key' => 'lockeddata1',
+                        'body' => 'data'
+                    ]
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testMakePublicExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->dataDir . '/objects/data1');
+        $this->setExpectedException('\Exception');
+        $app->data->makePublic(
+                [
+                    'key' => 'data1'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testMakePublicExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->makePublic(
+                [
+                    'key' => 'lockeddata1'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testMakePrivateExceptions1()
+    {
+        $app = $this->getApp();
+        $this->createDir($app->config->dataDir . '/objects/data1');
+        $this->setExpectedException('\Exception');
+        $app->data->makePrivate(
+                [
+                    'key' => 'data1'
+                ]
+        );
+    }
+
+    /**
+     * 
+     */
+    public function testMakePrivateExceptions2()
+    {
+        $app = $this->getApp();
+        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
+        $app->data->makePrivate(
+                [
+                    'key' => 'lockeddata1'
+                ]
+        );
+    }
+
 }

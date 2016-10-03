@@ -14,6 +14,7 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
 {
 
     private $app = null;
+    private $lockedFiles = null;
 
     function setUp()
     {
@@ -25,6 +26,12 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
         return sys_get_temp_dir() . '/bearframework/unittests/' . uniqid() . '/';
     }
 
+    /**
+     * 
+     * @param array $config
+     * @param boolean $createNew
+     * @return \BearFramework\App
+     */
     function getApp($config = [], $createNew = false)
     {
         if ($this->app == null || $createNew) {
@@ -87,6 +94,19 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
         } elseif ($type === 'broken') {
             $this->createFile($filename, base64_decode('broken'));
         }
+    }
+
+    public function lockFile($filename)
+    {
+        $pathinfo = pathinfo($filename);
+        if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
+            if (!is_dir($pathinfo['dirname'])) {
+                mkdir($pathinfo['dirname'], 0777, true);
+            }
+        }
+        $index = sizeof($this->lockedFiles);
+        $this->lockedFiles[$index] = fopen($filename, "c+");
+        flock($this->lockedFiles[$index], LOCK_EX | LOCK_NB);
     }
 
 }
