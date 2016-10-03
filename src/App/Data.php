@@ -191,6 +191,8 @@ class Data
             return $instance->execute($commands);
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
     }
 
@@ -218,6 +220,8 @@ class Data
             );
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
     }
 
@@ -245,6 +249,8 @@ class Data
             );
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
     }
 
