@@ -51,8 +51,8 @@ class Logger
             $logData = date('H:i:s', $microtime) . ':' . (isset($microtimeParts[1]) ? $microtimeParts[1] : '0') . "\n" . trim($message) . (empty($context) ? '' : "\n" . trim(print_r($context, true))) . "\n\n";
             $fileHandler = fopen($app->config->logsDir . DIRECTORY_SEPARATOR . $filename, 'ab');
             $result = fwrite($fileHandler, $logData);
-            fclose($fileHandler);
-            return is_int($result);
+            fclose($fileHandler); 
+           return is_int($result);
         } catch (\Exception $e) {
             return false;
         }
