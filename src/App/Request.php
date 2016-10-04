@@ -16,6 +16,7 @@ use BearFramework\App;
  * 
  * @property string $scheme The request scheme
  * @property string $host The request hostname
+ * @property int|null $port The request port
  */
 class Request
 {
@@ -76,7 +77,7 @@ class Request
      */
     public function __get($name)
     {
-        if ($name === 'scheme' || $name === 'host') {
+        if ($name === 'scheme' || $name === 'host' || $name === 'port') {
             $data = parse_url($this->base);
             return isset($data[$name]) ? $data[$name] : null;
         }
@@ -91,9 +92,18 @@ class Request
      */
     public function __set($name, $value)
     {
-        if ($name === 'scheme' || $name === 'host') {
+        if ($name === 'scheme' || $name === 'host' || $name === 'port') {
+            if ($name === 'scheme' && !is_string($value)) {
+                throw new \InvalidArgumentException('The value of the scheme property must be of type string');
+            }
+            if ($name === 'host' && !is_string($value)) {
+                throw new \InvalidArgumentException('The value of the scheme property must be of type string');
+            }
+            if ($name === 'port' && !((is_string($value) && preg_match('/^[0-9]*$/', $value) === 1) || (is_int($value) && $value > 0) || $value === null)) {
+                throw new \InvalidArgumentException('The value of the port property must be of type string (numeric), positve int or null');
+            }
             $data = parse_url($this->base);
-            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . (isset($data['path']) ? $data['path'] : '');
+            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
         }
     }
 
@@ -105,7 +115,7 @@ class Request
      */
     public function __isset($name)
     {
-        return $name === 'scheme' || $name === 'host';
+        return $name === 'scheme' || $name === 'host' || $name === 'port';
     }
 
 }

@@ -35,8 +35,50 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue(isset($request->method));
         $this->assertTrue(isset($request->scheme));
         $this->assertTrue(isset($request->host));
+        $this->assertTrue(isset($request->port));
         $this->assertTrue(isset($request->base));
         $this->assertFalse(isset($request->missing));
+    }
+
+    /**
+     * 
+     */
+    function testBase()
+    {
+        $request = new \BearFramework\App\Request();
+        $request->base = 'http://example.com';
+        $this->assertTrue($request->scheme === 'http');
+        $this->assertTrue($request->host === 'example.com');
+        $this->assertTrue($request->port === null);
+        $request->scheme = 'https';
+        $this->assertTrue($request->scheme === 'https');
+        $this->assertTrue($request->host === 'example.com');
+        $this->assertTrue($request->port === null);
+        $request->host = 'new.com';
+        $this->assertTrue($request->scheme === 'https');
+        $this->assertTrue($request->host === 'new.com');
+        $this->assertTrue($request->port === null);
+        $request->host = 'subdomain.example.com';
+        $this->assertTrue($request->scheme === 'https');
+        $this->assertTrue($request->host === 'subdomain.example.com');
+        $this->assertTrue($request->port === null);
+        $request->port = 8888;
+        $this->assertTrue($request->scheme === 'https');
+        $this->assertTrue($request->host === 'subdomain.example.com');
+        $this->assertTrue($request->port === 8888);
+        $request->port = '9999';
+        $this->assertTrue($request->scheme === 'https');
+        $this->assertTrue($request->host === 'subdomain.example.com');
+        $this->assertTrue($request->port === 9999);
+
+        $this->assertTrue($request->base === 'https://subdomain.example.com:9999');
+
+        $request->port = '';
+        $this->assertTrue($request->scheme === 'https');
+        $this->assertTrue($request->host === 'subdomain.example.com');
+        $this->assertTrue($request->port === null);
+
+        $this->assertTrue($request->base === 'https://subdomain.example.com');
     }
 
     /**
@@ -70,6 +112,83 @@ class RequestTest extends BearFrameworkTestCase
         $request->path = new \BearFramework\App\Request\Path('/');
         $this->assertFalse(isset($request->path[0]));
         $this->assertTrue($request->path[0] === null);
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments1()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->scheme = 1;
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments2()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->host = 1;
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments3a()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->port = [];
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments3b()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->port = -1;
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments3c()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->port = "wrong";
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments3d()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->port = "-33";
+    }
+
+    /**
+     * 
+     */
+    function testBaseInvalidArguments3e()
+    {
+        $request = new \BearFramework\App\Request();
+
+        $this->setExpectedException('InvalidArgumentException');
+        $request->port = 3.3;
     }
 
     /**
