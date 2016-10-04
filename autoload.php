@@ -49,4 +49,4 @@ spl_autoload_register(function ($class) use ($classes) {
     }
 }, true);
 
-//require __DIR__ . '/vendor/ivopetkov/object-storage/autoload.php';
+require __DIR__ . '/vendor/ivopetkov/object-storage/autoload.php';
