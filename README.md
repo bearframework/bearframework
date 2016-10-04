@@ -1,8 +1,8 @@
-![Bear Framework](http://bearframework.github.io/bearframework-logo-v2-transparent.png)
+![Bear Framework](http://bearframework.github.io/bearframework-logo-for-github.png)
 
 **Incredibly lightweight. Powerful enough.**
 
-An open-sourced PHP framework that can help you build successful projects better. It's also easy to install and extend. Just like you'd expect from a modern framework.
+An open-sourced **PHP framework** that can help you build successful projects better. It's also easy to install and extend. Just like you'd expect from a modern framework.
 
 Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/documentation/routing/">routing</a>, <a href="http://bearframework.com/documentation/data/">data storage</a>, <a href="http://bearframework.com/documentation/addons/">addons</a>, <a href="http://bearframework.com/documentation/logging/">logging</a>, <a href="http://bearframework.com/documentation/assets/">assets helpers</a> and <a href="http://bearframework.com/documentation/">few more useful tools</a>.
 
