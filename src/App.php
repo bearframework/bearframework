@@ -35,7 +35,7 @@ class App
      * 
      * @var string
      */
-    const VERSION = '0.9.0';
+    const VERSION = '0.9.1';
 
     /**
      * Dependency Injection container
