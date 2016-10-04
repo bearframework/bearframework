@@ -50,7 +50,7 @@ class Images
     }
 
     /**
-     * Resizes a image file
+     * Resizes an image file
      * 
      * @param string $sourceFilename The image file to resize
      * @param string $destinationFilename The filename where the result image will be saved
