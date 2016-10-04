@@ -1,11 +1,10 @@
-<p align="center">
-<img src="http://bearframework.github.io/bearframework-logo-transparent-small.png" style="max-width:100px;">
-</p>
-# Bear Framework
+![Bear Framework](http://bearframework.github.io/bearframework-logo-v2-transparent.png)
 
-**A framework born in 2016**
+**Incredibly lightweight. Powerful enough.**
 
-The goal of Bear Framework is to help you start your next web project in less than a minute and help you make it successful. You've got <a href="http://bearframework.com/documentation/routing/">routing</a>, <a href="http://bearframework.com/documentation/data/">data storage</a>, <a href="http://bearframework.com/documentation/addons/">addons</a>, <a href="http://bearframework.com/documentation/logging/">logging</a>, <a href="http://bearframework.com/documentation/assets/">assets helpers</a> and <a href="http://bearframework.com/documentation/">many more useful tools</a>.
+An open-sourced PHP framework that can help you build successful projects better. It's also easy to install and extend. Just like you'd expect from a modern framework.
+
+Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/documentation/routing/">routing</a>, <a href="http://bearframework.com/documentation/data/">data storage</a>, <a href="http://bearframework.com/documentation/addons/">addons</a>, <a href="http://bearframework.com/documentation/logging/">logging</a>, <a href="http://bearframework.com/documentation/assets/">assets helpers</a> and <a href="http://bearframework.com/documentation/">few more useful tools</a>.
 
 [![Build Status](https://travis-ci.org/bearframework/bearframework.svg)](https://travis-ci.org/bearframework/bearframework)
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
@@ -18,7 +17,7 @@ The goal of Bear Framework is to help you start your next web project in less th
 Bear Framework is one of the easiest PHP frameworks you can find. See for yourself. Here is a simple app that outputs 'Hi'.
 ```php
 <?php
-require 'vendor/autoload.php';
+require 'path/to/vendor/autoload.php';
 use BearFramework\App;
 
 $app = new App();
