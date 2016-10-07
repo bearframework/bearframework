@@ -1,6 +1,6 @@
 {
     "name": "bearframework/bearframework",
-    "description": "PHP framework",
+    "description": "An open-sourced PHP framework. Incredibly lightweight. Powerful enough.",
     "keywords": ["framework", "routing", "error handling", "logging"],
     "homepage": "https://github.com/bearframework/bearframework",
     "license": "MIT",
@@ -16,7 +16,7 @@
         "ivopetkov/object-storage": "0.2.*"
     },
     "require-dev": {
-      "phpunit/phpunit": "^4.8"
+        "phpunit/phpunit": "^4.8"
     },
     "autoload": {
         "psr-4": {
