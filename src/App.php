@@ -35,7 +35,7 @@ class App
      * 
      * @var string
      */
-    const VERSION = '0.9.1';
+    const VERSION = '0.9.2';
 
     /**
      * Dependency Injection container
@@ -84,6 +84,20 @@ class App
         $this->container->set('classes', App\Classes::class);
         $this->container->set('urls', App\Urls::class);
         $this->container->set('images', App\Images::class);
+    }
+
+    /**
+     * Returns the app instance
+     * 
+     * @return \BearFramework\App
+     * @throws \Exception
+     */
+    static function get()
+    {
+        if (self::$instance === null) {
+            throw new \Exception('App is not constructed yet');
+        }
+        return self::$instance;
     }
 
     /**
