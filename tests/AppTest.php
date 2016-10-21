@@ -26,6 +26,7 @@ class AppTest extends BearFrameworkTestCase
         $app = new \BearFramework\App();
         $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
+        $this->assertTrue(\BearFramework\App::get() instanceof \BearFramework\App);
         $this->assertTrue($app->request->method === 'GET');
         $this->assertTrue($app->request->scheme === 'http');
         $this->assertTrue($app->request->host === 'example.com');
@@ -158,6 +159,15 @@ $app->routes->add(\'/\', function() {
     /**
      * 
      */
+    public function testNotCreatedApp()
+    {
+        $this->setExpectedException('Exception');
+        \BearFramework\App::get();
+    }
+
+    /**
+     * 
+     */
 //    function testErrorInHooks1()
 //    {
 //        $app = $this->getApp();
@@ -213,5 +223,4 @@ $app->routes->add(\'/\', function() {
 //        $app->run();
 //        $this->expectOutputString('Temporary Unavailable');
 //    }
-
 }
