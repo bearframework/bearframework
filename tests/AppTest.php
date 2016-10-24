@@ -67,6 +67,7 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
         $app = $this->getApp();
+        $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->base === 'http://example.com/www');
         $this->assertTrue((string) $app->request->path === '/path1/');
@@ -112,6 +113,7 @@ $app->routes->add(\'/\', function() {
     public function testRespond()
     {
         $app = $this->getApp();
+        $app->initialize();
         $app->respond(new \BearFramework\App\Response('The end'));
         $this->expectOutputString('The end');
     }

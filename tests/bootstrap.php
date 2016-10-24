@@ -53,9 +53,11 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
                 $this->app->config->$key = $value;
             }
 
-            $this->app->initialize();
-            $this->app->request->base = 'http://example.com/www';
-            $this->app->request->method = 'GET';
+            $app = &$this->app;
+            $this->app->hooks->add('initialized', function() use ($app) {
+                $app->request->base = 'http://example.com/www';
+                $app->request->method = 'GET';
+            });
         }
 
         return $this->app;

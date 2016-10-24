@@ -35,7 +35,7 @@ class App
      * 
      * @var string
      */
-    const VERSION = '0.9.2';
+    const VERSION = '0.9.3';
 
     /**
      * Dependency Injection container
@@ -101,7 +101,7 @@ class App
     }
 
     /**
-     * Initializes the environment and context data
+     * Initializes the environment, the error handlers, includes the app index.php file, the addons index.php files, and registers the assests handler
      */
     public function initialize()
     {
@@ -109,6 +109,36 @@ class App
             $this->initializeEnvironment();
             $this->initializeErrorHandler();
             $this->initializeRequest();
+
+            ob_start();
+            $app = &self::$instance; // needed for the app index file
+
+            if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php')) {
+                $context = new App\AppContext($this->config->appDir);
+                include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
+            }
+
+            if ($this->config->assetsPathPrefix !== null) {
+                $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
+                    $filename = $app->assets->getFilename((string) $app->request->path);
+                    if ($filename === false) {
+                        return new App\Response\NotFound();
+                    } else {
+                        $response = new App\Response\FileReader($filename);
+                        if ($app->config->assetsMaxAge !== null) {
+                            $response->setMaxAge((int) $app->config->assetsMaxAge);
+                        }
+                        $mimeType = $app->assets->getMimeType($filename);
+                        if ($mimeType !== null) {
+                            $response->headers[] = 'Content-Type: ' . $mimeType;
+                        }
+                        return $response;
+                    }
+                });
+            }
+            $this->hooks->execute('initialized');
+            ob_end_clean();
+
             $this->initialized = true;
         }
     }
@@ -274,42 +304,14 @@ class App
     }
 
     /**
-     * Call this method to start the application. This method outputs the response.
+     * Call this method to start the application. This method initializes the app and outputs the response.
      * 
      * @return void No value is returned
      */
     public function run()
     {
-        ob_start();
         $this->initialize();
-        $app = &self::$instance; // needed for the app index file
-
-        if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php')) {
-            $context = new App\AppContext($this->config->appDir);
-            include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
-        }
-
-        if ($this->config->assetsPathPrefix !== null) {
-            $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
-                $filename = $app->assets->getFilename((string) $app->request->path);
-                if ($filename === false) {
-                    return new App\Response\NotFound();
-                } else {
-                    $response = new App\Response\FileReader($filename);
-                    if ($app->config->assetsMaxAge !== null) {
-                        $response->setMaxAge((int) $app->config->assetsMaxAge);
-                    }
-                    $mimeType = $app->assets->getMimeType($filename);
-                    if ($mimeType !== null) {
-                        $response->headers[] = 'Content-Type: ' . $mimeType;
-                    }
-                    return $response;
-                }
-            });
-        }
-        $this->hooks->execute('initialized');
         $response = $this->routes->getResponse($this->request);
-        ob_end_clean();
         if (!($response instanceof App\Response)) {
             $response = new App\Response\NotFound();
         }

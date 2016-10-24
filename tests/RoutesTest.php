@@ -19,6 +19,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testHomePage()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/');
         $app->request->method = 'GET';
@@ -36,6 +37,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testPage()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/');
         $app->request->method = 'GET';
@@ -53,6 +55,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testWildcard1()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/laptop/');
         $app->request->method = 'GET';
@@ -70,6 +73,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testWildcard2()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/laptop/options/');
         $app->request->method = 'GET';
@@ -87,6 +91,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testWildcard3()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/laptop/options/');
         $app->request->method = 'GET';
@@ -104,6 +109,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testWildcard4()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/laptop/options/');
         $app->request->method = 'GET';
@@ -121,6 +127,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark1()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/');
         $app->request->method = 'GET';
@@ -138,6 +145,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark1NoMatch()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/');
         $app->request->method = 'GET';
@@ -155,6 +163,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark2()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/review/');
         $app->request->method = 'GET';
@@ -172,6 +181,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark3()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/options/');
         $app->request->method = 'GET';
@@ -189,6 +199,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark4()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/options/color/blue/');
         $app->request->method = 'GET';
@@ -206,6 +217,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark5()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/options/');
         $app->request->method = 'GET';
@@ -223,6 +235,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark6()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/options/');
         $app->request->method = 'GET';
@@ -240,6 +253,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testQuestionMark7()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/product/options');
         $app->request->method = 'GET';
@@ -257,6 +271,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testMultipleRoutes1()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/services/');
         $app->request->method = 'GET';
@@ -274,6 +289,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testMultipleRoutes2()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/our-services/');
         $app->request->method = 'GET';
@@ -291,6 +307,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testNotFound()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->request->path = new \BearFramework\App\Request\Path('/products/');
         $app->request->method = 'GET';
@@ -308,6 +325,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testRouteResponse()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->routes->add('/', function() {
             return new \BearFramework\App\Response\HTML('home');
@@ -326,6 +344,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testMissingRoute()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->routes->add('/', function() {
             return new \BearFramework\App\Response\HTML('home');
@@ -343,6 +362,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testRouteMethod()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->routes->add('/', function() {
             return new \BearFramework\App\Response\HTML('home');
@@ -362,6 +382,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testNotMatchingRouteMethod()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->routes->add('/', function() {
             return new \BearFramework\App\Response\HTML('home');
@@ -380,6 +401,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidResponse()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $app->routes->add('/', function() {
             return 3;
@@ -397,6 +419,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testMissingRoutes()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $request = new \BearFramework\App\Request();
         $request->path = new \BearFramework\App\Request\Path('/');
@@ -411,6 +434,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidArguments1()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add(1, function() {
@@ -424,6 +448,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidArguments2()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add([], function() {
@@ -437,6 +462,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidArguments3()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add([1], function() {
@@ -450,6 +476,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidArguments4()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add('/', null);
@@ -461,6 +488,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidArguments5()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->add('/', function() {
@@ -474,6 +502,7 @@ class RoutesTest extends BearFrameworkTestCase
     public function testInvalidArguments6()
     {
         $app = $this->getApp();
+        $app->initialize();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->routes->getResponse(null);

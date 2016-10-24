@@ -98,7 +98,9 @@ class Routes
                     }
                 }
                 if ($found) {
+                    ob_start();
                     $response = call_user_func($route[1]);
+                    ob_end_clean();
                     if ($response instanceof App\Response) {
                         return $response;
                     }
