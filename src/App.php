@@ -131,6 +131,7 @@ class App
                         if ($mimeType !== null) {
                             $response->headers[] = 'Content-Type: ' . $mimeType;
                         }
+                        $response->headers[] = 'Content-Length: ' . filesize($filename);
                         return $response;
                     }
                 });
