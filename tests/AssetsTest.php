@@ -125,6 +125,27 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testGetContent()
+    {
+        $app = $this->getApp();
+        $app->initialize();
+        $this->createDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $filename = $app->config->appDir . '/assets/file.svg';
+        $this->createFile($filename, 'sample-svg-content');
+        $content = $app->assets->getContent($filename);
+        $this->assertTrue($content === 'sample-svg-content');
+        $content = $app->assets->getContent($filename, ['encoding' => 'base64']);
+        $this->assertTrue($content === 'c2FtcGxlLXN2Zy1jb250ZW50');
+        $content = $app->assets->getContent($filename, ['encoding' => 'data-uri']);
+        $this->assertTrue($content === 'data:image/svg+xml,sample-svg-content');
+        $content = $app->assets->getContent($filename, ['encoding' => 'data-uri-base64']);
+        $this->assertTrue($content === 'data:image/svg+xml;base64,c2FtcGxlLXN2Zy1jb250ZW50');
+    }
+
+    /**
+     * 
+     */
     public function testAddDirInvalidArguments1()
     {
         $app = $this->getApp();

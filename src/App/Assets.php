@@ -98,12 +98,59 @@ class Assets
     }
 
     /**
+     * Returns the content of the file specified
+     * 
+     * @param string $filename The filename
+     * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
+     * @throws \InvalidArgumentException
+     * @throws \BearFramework\App\Config\InvalidOptionException
+     * @return boolean|string The content of the file or FALSE if file does not exists
+     */
+    public function getContent($filename, $options = [])
+    {
+        $app = App::$instance;
+        $urlOptions = [];
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('The options argument must be of type array');
+        }
+        if (isset($options['width'])) {
+            $urlOptions['width'] = $options['width'];
+        }
+        if (isset($options['height'])) {
+            $urlOptions['height'] = $options['height'];
+        }
+        if (isset($options['encoding'])) {
+            if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
+                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'');
+            }
+        }
+        $url = $this->getUrl($filename, $urlOptions);
+        $path = substr($url, strlen($app->request->base));
+        $filename = $this->getFilename($path);
+        if ($filename === false) {
+            return false;
+        }
+        $content = file_get_contents($filename);
+        if (isset($options['encoding'])) {
+            if ($options['encoding'] === 'base64') {
+                return base64_encode($content);
+            } elseif ($options['encoding'] === 'data-uri') {
+                $mimeType = $this->getMimeType($filename);
+                return 'data:' . $mimeType . ',' . $content;
+            }
+            $mimeType = $this->getMimeType($filename);
+            return 'data:' . $mimeType . ';base64,' . base64_encode($content);
+        }
+        return $content;
+    }
+
+    /**
      * Returns the local filename for a given URL path
      * 
      * @param string $path The path part of the asset url
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return boolean|string The localfileneme or FALSE if file does not exists
+     * @return boolean|string The local fileneme or FALSE if file does not exists
      */
     public function getFilename($path)
     {
