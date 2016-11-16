@@ -62,7 +62,7 @@ class Classes
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified does not exist');
         }
-        $app = &App::$instance;
+        $app = App::$instance;
         $app->classes->add($class, $filename);
     }
 

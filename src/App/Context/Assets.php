@@ -50,7 +50,7 @@ class Assets
      */
     public function addDir($pathname)
     {
-        $app = &App::$instance;
+        $app = App::$instance;
         $app->assets->addDir($this->dir . DIRECTORY_SEPARATOR . $pathname);
     }
 
@@ -70,7 +70,7 @@ class Assets
         if (!is_array($options)) {
             throw new \InvalidArgumentException('The options argument must be of type array');
         }
-        $app = &App::$instance;
+        $app = App::$instance;
         $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified does not exist');
