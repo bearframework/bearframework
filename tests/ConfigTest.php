@@ -146,6 +146,28 @@ class ConfigTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testLoad()
+    {
+        $app = $this->getApp();
+        $rootDir = $this->getTestDir();
+        $filename = $rootDir . 'config.php';
+        $this->createFile($filename, '<?php
+return [
+    "option1" => "one",
+    "option2" => 2,
+    "option3" => [3, true]
+];
+');
+        $app->config->load($filename);
+        $this->assertTrue($app->config->option1 === "one");
+        $this->assertTrue($app->config->option2 === 2);
+        $this->assertTrue($app->config->option3[0] === 3);
+        $this->assertTrue($app->config->option3[1] === true);
+    }
+
+    /**
+     * 
+     */
     public function testInvalidArguments1()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -213,6 +235,41 @@ class ConfigTest extends BearFrameworkTestCase
         $config = new \BearFramework\App\Config();
         $this->setExpectedException('InvalidArgumentException');
         $config->logsDir = 'missing/dir';
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments8()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->config->load(1);
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments9()
+    {
+        $app = $this->getApp();
+        $this->setExpectedException('InvalidArgumentException');
+        $app->config->load('missing/file');
+    }
+
+    /**
+     * 
+     */
+    public function testInvalidArguments10()
+    {
+        $app = $this->getApp();
+        $rootDir = $this->getTestDir();
+        $filename = $rootDir . 'config.php';
+        $this->createFile($filename, '<?php
+echo 1;
+');
+        $this->setExpectedException('InvalidArgumentException');
+        $app->config->load($filename);
     }
 
 }

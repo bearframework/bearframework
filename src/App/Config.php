@@ -120,4 +120,31 @@ class Config
         return array_key_exists($name, $this->data);
     }
 
+    /**
+     * Loads a config file. The file must return PHP array containing configuration options in the format ['option1'=>'value1', 'option2'=>'value2']
+     * 
+     * @param string $filename The filename containing the configuration options
+     * @throws \InvalidArgumentException
+     */
+    public function load($filename)
+    {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('The filename must be of type string');
+        }
+        $filename = realpath($filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('The filename specified (' . $filename . ') is not valid');
+        }
+        ob_start();
+        $data = include $filename;
+        ob_end_clean();
+        if (is_array($data)) {
+            foreach ($data as $name => $value) {
+                $this->$name = $value;
+            }
+        } else {
+            throw new \InvalidArgumentException('The configuration data in ' . $filename . ' is not valid');
+        }
+    }
+
 }
