@@ -419,7 +419,7 @@ class App
         if ($this->container->exists($name)) {
             return $this->container->get($name);
         }
-        throw new \Exception('Invalid property name');
+        throw new \Exception('The object requested (' . $name . ') is not found in the dependency injection container');
     }
 
     /**
