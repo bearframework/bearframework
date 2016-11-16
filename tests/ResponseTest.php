@@ -189,4 +189,24 @@ class ResponseTest extends BearFrameworkTestCase
         $response->setStatusCode('777');
     }
 
+    /**
+     * 
+     */
+    function testResponseDownloadable()
+    {
+        $response = new \BearFramework\App\Response('content');
+        $response->setDownloadable('file.xml');
+        $this->assertTrue($response->headers['contentDisposition'] === 'Content-Disposition: attachment; filename=' . urlencode('file.xml'));
+    }
+
+    /**
+     * 
+     */
+    function testResponseInvalidDownloadable1()
+    {
+        $response = new \BearFramework\App\Response('content');
+        $this->setExpectedException('InvalidArgumentException');
+        $response->setDownloadable(3);
+    }
+
 }

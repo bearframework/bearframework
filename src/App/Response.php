@@ -78,6 +78,21 @@ class Response
     }
 
     /**
+     * Sets download header that will make the browser download the response
+     * 
+     * @param string $filename The default filename of the download response
+     * @throws \InvalidArgumentException
+     * @return void No value is returned
+     */
+    public function setDownloadable($filename)
+    {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('The filename argument must be of type string');
+        }
+        $this->headers['contentDisposition'] = 'Content-Disposition: attachment; filename=' . urlencode($filename);
+    }
+
+    /**
      * Sets the status code of the response header
      * 
      * @param int $code The status code of the response header
