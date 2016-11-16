@@ -89,6 +89,7 @@ class AppTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->createFile($app->config->appDir . '/index.php', '<?php
+$app = \BearFramework\App::get();
 $app->routes->add(\'/\', function() {
     return new \BearFramework\App\Response(\'content\');
 });

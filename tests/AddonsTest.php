@@ -47,9 +47,6 @@ class AddonsTest extends BearFrameworkTestCase
         $this->assertTrue($addon2Data['id'] === 'addon2');
         $this->assertTrue($addon2Data['options']['var'] === 5);
 
-        $context = $app->getContext($app->config->addonsDir . '/addon2/');
-        $this->assertTrue($context->options['var'] === 5);
-
         $this->setExpectedException('Exception');
         $context = $app->getContext($app->config->addonsDir . '/addon3/');
     }

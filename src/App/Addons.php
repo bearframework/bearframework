@@ -9,8 +9,6 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App;
-
 /**
  * Provides a way to enable addons and manage their options
  */
@@ -57,14 +55,9 @@ class Addons
 
         $this->data[$id] = [$options];
 
-        $dir = $addonData['dir'];
-        $__indexFilename = realpath($dir . DIRECTORY_SEPARATOR . 'index.php');
+        $__indexFilename = realpath($addonData['dir'] . DIRECTORY_SEPARATOR . 'index.php');
         if ($__indexFilename !== false) {
-            $app = &App::$instance; // Needed for the index file
-            $context = new App\AddonContext($dir);
-            $context->options = $options;
             unset($id); // Hide this variable from the file scope
-            unset($dir); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
             include_once $__indexFilename;
             return true;

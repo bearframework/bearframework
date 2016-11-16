@@ -8,9 +8,7 @@
  */
 
 $classes = array(
-    'BearFramework\App\AddonContext' => 'src/App/AddonContext.php',
     'BearFramework\App\Addons' => 'src/App/Addons.php',
-    'BearFramework\App\AppContext' => 'src/App/AppContext.php',
     'BearFramework\App\Assets' => 'src/App/Assets.php',
     'BearFramework\App\Cache' => 'src/App/Cache.php',
     'BearFramework\App\Classes' => 'src/App/Classes.php',

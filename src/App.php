@@ -111,15 +111,14 @@ class App
             $this->initializeRequest();
 
             ob_start();
-            $app = &self::$instance; // needed for the app index file
 
             if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php')) {
-                $context = new App\AppContext($this->config->appDir);
                 include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
             }
 
             if ($this->config->assetsPathPrefix !== null) {
-                $this->routes->add($this->config->assetsPathPrefix . '*', function() use ($app) {
+                $this->routes->add($this->config->assetsPathPrefix . '*', function() {
+                    $app = App::$instance;
                     $filename = $app->assets->getFilename((string) $app->request->path);
                     if ($filename === false) {
                         return new App\Response\NotFound();
@@ -274,7 +273,7 @@ class App
      * @param string $filename
      * @throws \InvalidArgumentException
      * @throws \Exception
-     * @return \BearFramework\App\AppContext|\BearFramework\App\AddonContext The context object
+     * @return \BearFramework\App\Context The context object
      */
     public function getContext($filename)
     {
@@ -289,15 +288,13 @@ class App
             $filename .= DIRECTORY_SEPARATOR;
         }
         if (strpos($filename, $this->config->appDir . DIRECTORY_SEPARATOR) === 0) {
-            return new App\AppContext($this->config->appDir);
+            return new App\Context($this->config->appDir);
         }
         $addons = $this->addons->getList();
         foreach ($addons as $data) {
             $addonData = \BearFramework\Addons::get($data['id']);
             if (strpos($filename, $addonData['dir'] . DIRECTORY_SEPARATOR) === 0) {
-                $context = new App\AddonContext($addonData['dir']);
-                $context->options = $data['options'];
-                return $context;
+                return new App\Context($addonData['dir']);
             }
         }
         throw new \Exception('Connot find context');

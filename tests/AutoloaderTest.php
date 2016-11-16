@@ -18,9 +18,7 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
      */
     public function testClasses()
     {
-        $this->assertTrue(class_exists('BearFramework\App\AddonContext'));
         $this->assertTrue(class_exists('BearFramework\App\Addons'));
-        $this->assertTrue(class_exists('BearFramework\App\AppContext'));
         $this->assertTrue(class_exists('BearFramework\App\Assets'));
         $this->assertTrue(class_exists('BearFramework\App\Cache'));
         $this->assertTrue(class_exists('BearFramework\App\Classes'));

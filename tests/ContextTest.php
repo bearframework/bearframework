@@ -53,9 +53,6 @@ class ContextTest extends BearFrameworkTestCase
 
         $context = $app->getContext($addonDir);
 
-        $this->assertTrue(isset($context->options['option1']));
-        $this->assertTrue($context->options['option1'] === 5);
-
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
@@ -94,42 +91,6 @@ class ContextTest extends BearFrameworkTestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         new \BearFramework\App\Context('missing/dir');
-    }
-
-    /**
-     * 
-     */
-    public function testAppContextInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\AppContext(1);
-    }
-
-    /**
-     * 
-     */
-    public function testAppContextInvalidArguments2()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\AppContext('missing/dir');
-    }
-
-    /**
-     * 
-     */
-    public function testAddonContextInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\AddonContext(1);
-    }
-
-    /**
-     * 
-     */
-    public function testAddonContextInvalidArguments2()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\AddonContext('missing/dir');
     }
 
     /**
