@@ -17,6 +17,10 @@ use BearFramework\App;
  * @property string $scheme The request scheme
  * @property string $host The request hostname
  * @property int|null $port The request port
+ * @property array $headers The request headers
+ * @property array $cookies The request cookies
+ * @property array $data The request POST data
+ * @property array $files The request files data
  */
 class Request
 {
@@ -50,6 +54,34 @@ class Request
     public $query = null;
 
     /**
+     * The request headers
+     * 
+     * @var array|null 
+     */
+    private $headers = null;
+
+    /**
+     * The request cookies
+     * 
+     * @var array|null 
+     */
+    private $cookies = null;
+
+    /**
+     * The request POST data
+     * 
+     * @var array|null 
+     */
+    private $data = null;
+
+    /**
+     * The request files data
+     * 
+     * @var array|null 
+     */
+    private $files = null;
+
+    /**
      * The constructor
      */
     public function __construct()
@@ -80,6 +112,31 @@ class Request
         if ($name === 'scheme' || $name === 'host' || $name === 'port') {
             $data = parse_url($this->base);
             return isset($data[$name]) ? $data[$name] : null;
+        } elseif ($name === 'headers') {
+            if ($this->headers === null) {
+                $this->headers = new \ArrayObject();
+                foreach ($_SERVER as $name => $value) {
+                    if (substr($name, 0, 5) == 'HTTP_') {
+                        $this->headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                    }
+                }
+            }
+            return $this->headers;
+        } elseif ($name === 'cookies') {
+            if ($this->cookies === null) {
+                $this->cookies = new \ArrayObject($_COOKIE);
+            }
+            return $this->cookies;
+        } elseif ($name === 'data') {
+            if ($this->data === null) {
+                $this->data = new \ArrayObject($_POST);
+            }
+            return $this->data;
+        } elseif ($name === 'files') {
+            if ($this->files === null) {
+                $this->files = new \ArrayObject($_FILES);
+            }
+            return $this->files;
         }
         throw new \Exception('Undefined property: ' . $name);
     }
@@ -104,6 +161,26 @@ class Request
             }
             $data = parse_url($this->base);
             $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
+        } elseif ($name === 'headers') {
+            if (!is_array($value)) {
+                throw new \InvalidArgumentException('The value of the headers property must be of type array');
+            }
+            $this->headers = $value;
+        } elseif ($name === 'cookies') {
+            if (!is_array($value)) {
+                throw new \InvalidArgumentException('The value of the cookies property must be of type array');
+            }
+            $this->cookies = $value;
+        } elseif ($name === 'data') {
+            if (!is_array($value)) {
+                throw new \InvalidArgumentException('The value of the data property must be of type array');
+            }
+            $this->data = $value;
+        } elseif ($name === 'files') {
+            if (!is_array($value)) {
+                throw new \InvalidArgumentException('The value of the files property must be of type array');
+            }
+            $this->files = $value;
         }
     }
 
@@ -115,7 +192,7 @@ class Request
      */
     public function __isset($name)
     {
-        return $name === 'scheme' || $name === 'host' || $name === 'port';
+        return $name === 'scheme' || $name === 'host' || $name === 'port' || $name === 'headers' || $name === 'cookies' || $name === 'data' || $name === 'files';
     }
 
 }

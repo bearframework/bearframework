@@ -340,4 +340,88 @@ class RequestTest extends BearFrameworkTestCase
         echo $request->missing;
     }
 
+    /**
+     * 
+     */
+    function testHeaders()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->assertTrue(isset($request->headers));
+        $request->headers['header1'] = '1';
+        $this->assertTrue($request->headers['header1'] === '1');
+    }
+
+    /**
+     * 
+     */
+    function testInvalidHeaders()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->setExpectedException('InvalidArgumentException');
+        echo $request->headers = 1;
+    }
+
+    /**
+     * 
+     */
+    function testCookies()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->assertTrue(isset($request->cookies));
+        $request->cookies['cookie1'] = '1';
+        $this->assertTrue($request->cookies['cookie1'] === '1');
+    }
+
+    /**
+     * 
+     */
+    function testInvalidCookies()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->setExpectedException('InvalidArgumentException');
+        echo $request->cookies = 1;
+    }
+
+    /**
+     * 
+     */
+    function testData()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->assertTrue(isset($request->data));
+        $request->data['data1'] = '1';
+        $this->assertTrue($request->data['data1'] === '1');
+    }
+
+    /**
+     * 
+     */
+    function testInvalidData()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->setExpectedException('InvalidArgumentException');
+        echo $request->data = 1;
+    }
+
+    /**
+     * 
+     */
+    function testFiles()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->assertTrue(isset($request->files));
+        $request->files['file1'] = '1';
+        $this->assertTrue($request->files['file1'] === '1');
+    }
+
+    /**
+     * 
+     */
+    function testInvalidFiles()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->setExpectedException('InvalidArgumentException');
+        echo $request->files = 1;
+    }
+
 }
