@@ -136,8 +136,13 @@ class Config
             throw new \InvalidArgumentException('The filename specified (' . $filename . ') is not valid');
         }
         ob_start();
-        $data = include $filename;
-        ob_end_clean();
+        try {
+            $data = include $filename;
+            ob_end_clean();
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
         if (is_array($data)) {
             foreach ($data as $name => $value) {
                 $this->$name = $value;

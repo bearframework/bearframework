@@ -92,7 +92,14 @@ class Hooks
                 });
             }
             foreach ($callbacks as $callback) {
-                call_user_func_array($callback[0], $arguments);
+                ob_start();
+                try {
+                    call_user_func_array($callback[0], $arguments);
+                    ob_end_clean();
+                } catch (\Exception $e) {
+                    ob_end_clean();
+                    throw $e;
+                }
             }
         }
     }

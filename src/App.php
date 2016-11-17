@@ -113,7 +113,14 @@ class App
             ob_start();
 
             if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php')) {
-                include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
+                ob_start();
+                try {
+                    include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
+                    ob_end_clean();
+                } catch (\Exception $e) {
+                    ob_end_clean();
+                    throw $e;
+                }
             }
 
             if ($this->config->assetsPathPrefix !== null) {

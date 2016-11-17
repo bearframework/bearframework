@@ -62,7 +62,14 @@ class Container
             if (is_string($result)) {
                 $result = new $result();
             } elseif (is_callable($result)) {
-                $result = call_user_func($result);
+                ob_start();
+                try {
+                    $result = call_user_func($result);
+                    ob_end_clean();
+                } catch (\Exception $e) {
+                    ob_end_clean();
+                    throw $e;
+                }
             } elseif (is_object($result)) {
                 return $result;
             }

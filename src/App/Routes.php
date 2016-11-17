@@ -99,8 +99,13 @@ class Routes
                 }
                 if ($found) {
                     ob_start();
-                    $response = call_user_func($route[1]);
-                    ob_end_clean();
+                    try {
+                        $response = call_user_func($route[1]);
+                        ob_end_clean();
+                    } catch (\Exception $e) {
+                        ob_end_clean();
+                        throw $e;
+                    }
                     if ($response instanceof App\Response) {
                         return $response;
                     }

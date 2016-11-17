@@ -59,7 +59,14 @@ class Addons
         if ($__indexFilename !== false) {
             unset($id); // Hide this variable from the file scope
             unset($options); // Hide this variable from the file scope
-            include_once $__indexFilename;
+            ob_start();
+            try {
+                include_once $__indexFilename;
+                ob_end_clean();
+            } catch (\Exception $e) {
+                ob_end_clean();
+                throw $e;
+            }
             return true;
         } else {
             throw new \InvalidArgumentException('Invalid addon (the index file is missing)');
