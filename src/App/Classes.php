@@ -83,7 +83,10 @@ class Classes
             throw new \InvalidArgumentException('The class argument must be of type string');
         }
         if (isset($this->data[$class])) {
-            include_once $this->data[$class];
+            $includeFile = static function($__filename) {
+                include_once $__filename;
+            };
+            $includeFile($this->data[$class]);
         }
     }
 

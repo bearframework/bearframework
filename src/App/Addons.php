@@ -51,17 +51,17 @@ class Addons
                 }
             }
         }
-        unset($definitionOptions);
 
         $this->data[$id] = [$options];
 
-        $__indexFilename = realpath($addonData['dir'] . DIRECTORY_SEPARATOR . 'index.php');
-        if ($__indexFilename !== false) {
-            unset($id); // Hide this variable from the file scope
-            unset($options); // Hide this variable from the file scope
+        $indexFilename = realpath($addonData['dir'] . DIRECTORY_SEPARATOR . 'index.php');
+        if ($indexFilename !== false) {
             ob_start();
             try {
-                include_once $__indexFilename;
+                $includeFile = static function($__filename) {
+                    include_once $__filename;
+                };
+                $includeFile($indexFilename);
                 ob_end_clean();
             } catch (\Exception $e) {
                 ob_end_clean();

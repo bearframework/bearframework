@@ -110,16 +110,20 @@ class App
             $this->initializeErrorHandler();
             $this->initializeRequest();
 
-            ob_start();
-
-            if (strlen($this->config->appDir) > 0 && is_file($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php')) {
-                ob_start();
-                try {
-                    include realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
-                    ob_end_clean();
-                } catch (\Exception $e) {
-                    ob_end_clean();
-                    throw $e;
+            if (strlen($this->config->appDir) > 0) {
+                $indexFilename = realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
+                if ($indexFilename !== false) {
+                    ob_start();
+                    try {
+                        $includeFile = static function($__filename) {
+                            include $__filename;
+                        };
+                        $includeFile($indexFilename);
+                        ob_end_clean();
+                    } catch (\Exception $e) {
+                        ob_end_clean();
+                        throw $e;
+                    }
                 }
             }
 
@@ -144,7 +148,6 @@ class App
                 });
             }
             $this->hooks->execute('initialized');
-            ob_end_clean();
 
             $this->initialized = true;
         }
