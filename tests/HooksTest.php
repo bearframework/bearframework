@@ -20,15 +20,16 @@ class HooksTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->assertFalse($app->hooks->exists('sampleName'));
-        $app->hooks->add('sampleName', function() {
-            echo '123';
+        $result = '';
+        $app->hooks->add('sampleName', function() use (&$result) {
+            $result .= '123';
         });
-        $app->hooks->add('sampleName', function() {
-            echo '456';
+        $app->hooks->add('sampleName', function() use (&$result) {
+            $result .= '456';
         });
         $this->assertTrue($app->hooks->exists('sampleName'));
         $app->hooks->execute('sampleName');
-        $this->expectOutputString('123456');
+        $this->assertTrue($result === '123456');
     }
 
     /**
@@ -37,20 +38,21 @@ class HooksTest extends BearFrameworkTestCase
     public function testPriority()
     {
         $app = $this->getApp();
-        $app->hooks->add('sampleName', function() {
-            echo '78';
+        $result = '';
+        $app->hooks->add('sampleName', function() use (&$result) {
+            $result .= '78';
         }, ['priority' => 101]);
-        $app->hooks->add('sampleName', function() {
-            echo '34';
+        $app->hooks->add('sampleName', function() use (&$result) {
+            $result .= '34';
         });
-        $app->hooks->add('sampleName', function() {
-            echo '56';
+        $app->hooks->add('sampleName', function() use (&$result) {
+            $result .= '56';
         });
-        $app->hooks->add('sampleName', function() {
-            echo '12';
+        $app->hooks->add('sampleName', function() use (&$result) {
+            $result .= '12';
         }, ['priority' => 99]);
         $app->hooks->execute('sampleName');
-        $this->expectOutputString('12345678');
+        $this->assertTrue($result === '12345678');
     }
 
     /**

@@ -91,15 +91,15 @@ class Hooks
                     return $difference > 0 ? -1 : 1;
                 });
             }
-            foreach ($callbacks as $callback) {
-                ob_start();
-                try {
+            ob_start();
+            try {
+                foreach ($callbacks as $callback) {
                     call_user_func_array($callback[0], $arguments);
-                    ob_end_clean();
-                } catch (\Exception $e) {
-                    ob_end_clean();
-                    throw $e;
                 }
+                ob_end_clean();
+            } catch (\Exception $e) {
+                ob_end_clean();
+                throw $e;
             }
         }
     }
