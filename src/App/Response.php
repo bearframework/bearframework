@@ -14,6 +14,9 @@ use BearFramework\App;
 /**
  * Response object
  * 
+ * @property string $content The content of the response
+ * @property string $statusCode The response status code
+ * @property string $charset The response character set
  * @property \BearFramework\App\Response\Headers $headers The response headers
  * @property \BearFramework\App\Response\Cookies $cookies The response cookies
  */
@@ -25,21 +28,21 @@ class Response
      * 
      * @var string 
      */
-    public $content = '';
+    private $content = '';
 
     /**
      * The response status code
      * 
-     * @var int 
+     * @var int|null 
      */
-    public $statusCode = 200;
+    private $statusCode = 200;
 
     /**
      * The response character set
      * 
      * @var string 
      */
-    public $charset = '';
+    private $charset = '';
 
     /**
      * Dependency Injection container
@@ -77,6 +80,15 @@ class Response
      */
     public function __get($name)
     {
+        if ($name === 'content') {
+            return $this->content;
+        }
+        if ($name === 'statusCode') {
+            return $this->statusCode;
+        }
+        if ($name === 'charset') {
+            return $this->charset;
+        }
         if ($this->container->exists($name)) {
             return $this->container->get($name);
         }
@@ -87,11 +99,57 @@ class Response
      * Magic method
      * 
      * @param string $name
+     * @param mixed $value
+     * @throws \Exception
+     */
+    public function __set($name, $value)
+    {
+        if ($name === 'content') {
+            if (!is_string($value)) {
+                throw new \Exception('The content property value must be of type string');
+            }
+            $this->content = $value;
+        } elseif ($name === 'statusCode') {
+            if (!is_int($value) && $value !== null) {
+                throw new \Exception('The statusCode property value must be of type int');
+            }
+            $this->statusCode = $value;
+        } elseif ($name === 'charset') {
+            if (!is_string($value)) {
+                throw new \Exception('The charset property value must be of type string');
+            }
+            $this->charset = $value;
+        }
+    }
+
+    /**
+     * Magic method
+     * 
+     * @param string $name
      * @return boolean
      */
     public function __isset($name)
     {
+        if ($name === 'content' || $name === 'statusCode' || $name === 'charset') {
+            return true;
+        }
         return $this->container->exists($name);
+    }
+
+    /**
+     * Magic method
+     * 
+     * @param string $name
+     */
+    public function __unset($name)
+    {
+        if ($name === 'content') {
+            $this->content = '';
+        } elseif ($name === 'statusCode') {
+            $this->statusCode = null;
+        } elseif ($name === 'charset') {
+            $this->charset = '';
+        }
     }
 
 }

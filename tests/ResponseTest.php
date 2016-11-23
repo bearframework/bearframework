@@ -20,6 +20,21 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response('content');
         $this->assertTrue($response->content === 'content');
+        $response->statusCode = 307;
+        $this->assertTrue($response->statusCode === 307);
+        $response->charset = 'UTF-8';
+        $this->assertTrue($response->charset === 'UTF-8');
+
+        $this->assertTrue(isset($response->content));
+        $this->assertTrue(isset($response->statusCode));
+        $this->assertTrue(isset($response->charset));
+
+        unset($response->content);
+        unset($response->statusCode);
+        unset($response->charset);
+        $this->assertTrue($response->content === '');
+        $this->assertTrue($response->statusCode === null);
+        $this->assertTrue($response->charset === '');
 
         $this->assertTrue(isset($response->headers));
         $this->assertTrue(isset($response->cookies));
@@ -144,6 +159,36 @@ class ResponseTest extends BearFrameworkTestCase
         $response = new \BearFramework\App\Response();
         $this->setExpectedException('Exception');
         echo $response->missing;
+    }
+
+    /**
+     * 
+     */
+    function testInvalidProperties1()
+    {
+        $response = new \BearFramework\App\Response();
+        $this->setExpectedException('Exception');
+        $response->content = 1;
+    }
+
+    /**
+     * 
+     */
+    function testInvalidProperties2()
+    {
+        $response = new \BearFramework\App\Response();
+        $this->setExpectedException('Exception');
+        $response->statusCode = '200';
+    }
+
+    /**
+     * 
+     */
+    function testInvalidProperties3()
+    {
+        $response = new \BearFramework\App\Response();
+        $this->setExpectedException('Exception');
+        $response->charset = 1;
     }
 
 }

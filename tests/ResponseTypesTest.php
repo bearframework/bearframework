@@ -22,6 +22,9 @@ class ResponseTypesTest extends BearFrameworkTestCase
         $this->createFile($app->config->appDir . '/file', '123');
         $response = new \BearFramework\App\Response\FileReader($app->config->appDir . '/file');
         $this->assertTrue($response->filename === realpath($app->config->appDir . '/file'));
+        $this->assertTrue(isset($response->filename));
+        unset($response->filename);
+        $this->assertTrue($response->filename === '');
 
         $this->setExpectedException('InvalidArgumentException');
         $response = new \BearFramework\App\Response\FileReader(1);
