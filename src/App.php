@@ -147,7 +147,9 @@ class App
                     }
                 });
             }
-            $this->hooks->execute('initialized');
+            if ($this->container->used('hooks')) { // performance optimization
+                $this->hooks->execute('initialized');
+            }
 
             $this->initialized = true;
         }
@@ -372,7 +374,9 @@ class App
      */
     private function prepareResponse($response)
     {
-        $this->hooks->execute('responseCreated', $response);
+        if ($this->container->used('hooks')) { // performance optimization
+            $this->hooks->execute('responseCreated', $response);
+        }
     }
 
     /**
@@ -426,20 +430,24 @@ class App
             if (isset($statusCodes[$response->statusCode])) {
                 header((isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $response->statusCode . ' ' . $statusCodes[$response->statusCode]);
             }
-            if (count($response->headers) > 0) {
-                $headers = $response->headers->getList();
-                foreach ($headers as $header) {
-                    if ($header['name'] === 'Content-Type') {
-                        $header['value'] .= '; charset=' . $response->charset;
+            if ($response->container->used('headers')) { // performance optimization
+                if (count($response->headers) > 0) {
+                    $headers = $response->headers->getList();
+                    foreach ($headers as $header) {
+                        if ($header['name'] === 'Content-Type') {
+                            $header['value'] .= '; charset=' . $response->charset;
+                        }
+                        header($header['name'] . ': ' . $header['value']);
                     }
-                    header($header['name'] . ': ' . $header['value']);
                 }
             }
-            if (count($response->cookies) > 0) {
-                $baseUrlParts = parse_url($this->request->base);
-                $cookies = $response->cookies->getList();
-                foreach ($cookies as $cookie) {
-                    setcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'] === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '') : $cookie['path'], $cookie['domain'] === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie['domain'], $cookie['secure'] === null ? $this->request->scheme === 'https' : $cookie['secure'], $cookie['httpOnly']);
+            if ($response->container->used('cookies')) { // performance optimization
+                if (count($response->cookies) > 0) {
+                    $baseUrlParts = parse_url($this->request->base);
+                    $cookies = $response->cookies->getList();
+                    foreach ($cookies as $cookie) {
+                        setcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'] === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '') : $cookie['path'], $cookie['domain'] === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie['domain'], $cookie['secure'] === null ? $this->request->scheme === 'https' : $cookie['secure'], $cookie['httpOnly']);
+                    }
                 }
             }
         }
@@ -448,7 +456,9 @@ class App
         } else {
             echo $response->content;
         }
-        $this->hooks->execute('responseSent', $response);
+        if ($this->container->used('hooks')) { // performance optimization
+            $this->hooks->execute('responseSent', $response);
+        }
     }
 
     /**

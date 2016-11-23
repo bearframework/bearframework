@@ -55,28 +55,32 @@ class Container
             throw new \InvalidArgumentException('The name argument must be of type string');
         }
         if (isset($this->data[$name])) {
-            if (isset($this->data[$name][1])) {
-                return $this->data[$name][1];
-            }
             $result = $this->data[$name][0];
-            if (is_string($result)) {
-                $result = new $result();
-            } elseif (is_callable($result)) {
+            if (is_string($result) || is_callable($result)) {
+                if (isset($this->data[$name][1])) {
+                    return $this->data[$name][1];
+                }
                 ob_start();
                 try {
-                    $result = call_user_func($result);
+                    if (is_string($result)) {
+                        $result = new $result();
+                    } else { // callable
+                        $result = call_user_func($result);
+                    }
                     ob_end_clean();
                 } catch (\Exception $e) {
                     ob_end_clean();
                     throw $e;
                 }
-            } elseif (is_object($result)) {
+                $this->data[$name][1] = $result;
                 return $result;
             }
-            $this->data[$name][1] = $result;
-            return $result;
+            if (is_object($result)) {
+                $this->data[$name][1] = true; // needed by the used() method
+                return $result;
+            }
         }
-        throw new \Exception('');
+        throw new \Exception('Service (' . $name . ') not found!');
     }
 
     /**
@@ -92,6 +96,21 @@ class Container
             throw new \InvalidArgumentException('The name argument must be of type string');
         }
         return isset($this->data[$name]);
+    }
+
+    /**
+     * Returns information about whether the service is added and used atleast once
+     * 
+     * @param string $name The name of the service
+     * @return boolen TRUE if services is added and used atleast once. FALSE otherwise.
+     * @throws \InvalidArgumentException
+     */
+    public function used($name)
+    {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException('The name argument must be of type string');
+        }
+        return isset($this->data[$name], $this->data[$name][1]);
     }
 
 }
