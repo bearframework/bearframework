@@ -34,6 +34,17 @@ class ContextTest extends BearFrameworkTestCase
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
+
+        $filename = 'assets/file.svg';
+        $this->createFile($context->dir . '/' . $filename, 'sample-svg-content');
+        $content = $context->assets->getContent($filename);
+        $this->assertTrue($content === 'sample-svg-content');
+        $content = $context->assets->getContent($filename, ['encoding' => 'base64']);
+        $this->assertTrue($content === 'c2FtcGxlLXN2Zy1jb250ZW50');
+        $content = $context->assets->getContent($filename, ['encoding' => 'data-uri']);
+        $this->assertTrue($content === 'data:image/svg+xml,sample-svg-content');
+        $content = $context->assets->getContent($filename, ['encoding' => 'data-uri-base64']);
+        $this->assertTrue($content === 'data:image/svg+xml;base64,c2FtcGxlLXN2Zy1jb250ZW50');
     }
 
     /**
@@ -60,6 +71,17 @@ class ContextTest extends BearFrameworkTestCase
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
+
+        $filename = 'assets/file.svg';
+        $this->createFile($context->dir . '/' . $filename, 'sample-svg-content');
+        $content = $context->assets->getContent($filename);
+        $this->assertTrue($content === 'sample-svg-content');
+        $content = $context->assets->getContent($filename, ['encoding' => 'base64']);
+        $this->assertTrue($content === 'c2FtcGxlLXN2Zy1jb250ZW50');
+        $content = $context->assets->getContent($filename, ['encoding' => 'data-uri']);
+        $this->assertTrue($content === 'data:image/svg+xml,sample-svg-content');
+        $content = $context->assets->getContent($filename, ['encoding' => 'data-uri-base64']);
+        $this->assertTrue($content === 'data:image/svg+xml;base64,c2FtcGxlLXN2Zy1jb250ZW50');
     }
 
     /**

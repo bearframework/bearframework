@@ -78,4 +78,29 @@ class Assets
         return $app->assets->getUrl($filename, $options);
     }
 
+    /**
+     * Returns the content of the file specified in the current context
+     * 
+     * @param string $filename The filename
+     * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
+     * @throws \InvalidArgumentException
+     * @throws \BearFramework\App\Config\InvalidOptionException
+     * @return boolean|string The content of the file or FALSE if file does not exists
+     */
+    public function getContent($filename, $options = [])
+    {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('The filename argument must be of type string');
+        }
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('The options argument must be of type array');
+        }
+        $app = App::$instance;
+        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
+        if ($filename === false) {
+            throw new \InvalidArgumentException('The filename specified does not exist');
+        }
+        return $app->assets->getContent($filename, $options);
+    }
+
 }
