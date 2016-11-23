@@ -26,6 +26,8 @@ class ContextTest extends BearFrameworkTestCase
         $this->createFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
 
         $context = $app->getContext($app->config->appDir);
+        $this->assertTrue(isset($context->assets));
+        $this->assertTrue(isset($context->classes));
 
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
@@ -63,6 +65,8 @@ class ContextTest extends BearFrameworkTestCase
         $app->addons->add('tempaddon', ['option1' => 5]);
 
         $context = $app->getContext($addonDir);
+        $this->assertTrue(isset($context->assets));
+        $this->assertTrue(isset($context->classes));
 
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
