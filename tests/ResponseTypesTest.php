@@ -125,7 +125,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testPermanentRedirect()
     {
         $response = new \BearFramework\App\Response\PermanentRedirect('http://example.com/');
-        $this->assertTrue($response->headers['location'] === 'Location: http://example.com/');
+        $this->assertTrue($response->headers->get('Location') === 'http://example.com/');
 
         $this->setExpectedException('InvalidArgumentException');
         $response = new \BearFramework\App\Response\PermanentRedirect(1);
@@ -137,7 +137,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testTemporaryRedirect()
     {
         $response = new \BearFramework\App\Response\TemporaryRedirect('http://example.com/');
-        $this->assertTrue($response->headers['location'] === 'Location: http://example.com/');
+        $this->assertTrue($response->headers->get('Location') === 'http://example.com/');
 
         $this->setExpectedException('InvalidArgumentException');
         $response = new \BearFramework\App\Response\TemporaryRedirect(1);

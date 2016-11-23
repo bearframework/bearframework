@@ -17,10 +17,12 @@ use BearFramework\App;
  * @property string $scheme The request scheme
  * @property string $host The request hostname
  * @property int|null $port The request port
- * @property array $headers The request headers
- * @property array $cookies The request cookies
- * @property array $data The request POST data
- * @property array $files The request files data
+ * @property \BearFramework\App\Request\Path $path The request path
+ * @property \BearFramework\App\Request\Query $query The request query string
+ * @property \BearFramework\App\Request\Headers $headers The request headers
+ * @property \BearFramework\App\Request\Cookies $cookies The request cookies
+ * @property \BearFramework\App\Request\Data $data The request POST data
+ * @property \BearFramework\App\Request\Files $files The request files data
  */
 class Request
 {
@@ -40,54 +42,25 @@ class Request
     public $base = '';
 
     /**
-     * The path of the request. The path parts can be accessed by their indexes.
+     * Dependency Injection container
      * 
-     * @var \BearFramework\App\Request\Path 
+     * @var \BearFramework\App\Container 
      */
-    public $path = null;
-
-    /**
-     * The query string of the request. The query parts can be accessed by their names.
-     * 
-     * @var \BearFramework\App\Request\Query 
-     */
-    public $query = null;
-
-    /**
-     * The request headers
-     * 
-     * @var array|null 
-     */
-    private $headers = null;
-
-    /**
-     * The request cookies
-     * 
-     * @var array|null 
-     */
-    private $cookies = null;
-
-    /**
-     * The request POST data
-     * 
-     * @var array|null 
-     */
-    private $data = null;
-
-    /**
-     * The request files data
-     * 
-     * @var array|null 
-     */
-    private $files = null;
+    public $container = null;
 
     /**
      * The constructor
      */
     public function __construct()
     {
-        $this->path = new App\Request\Path();
-        $this->query = new App\Request\Query();
+        $this->container = new App\Container();
+
+        $this->container->set('path', App\Request\Path::class);
+        $this->container->set('query', App\Request\Query::class);
+        $this->container->set('headers', App\Request\Headers::class);
+        $this->container->set('cookies', App\Request\Cookies::class);
+        $this->container->set('data', App\Request\Data::class);
+        $this->container->set('files', App\Request\Files::class);
     }
 
     /**
@@ -112,33 +85,11 @@ class Request
         if ($name === 'scheme' || $name === 'host' || $name === 'port') {
             $data = parse_url($this->base);
             return isset($data[$name]) ? $data[$name] : null;
-        } elseif ($name === 'headers') {
-            if ($this->headers === null) {
-                $this->headers = new \ArrayObject();
-                foreach ($_SERVER as $name => $value) {
-                    if (substr($name, 0, 5) == 'HTTP_') {
-                        $this->headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-                    }
-                }
-            }
-            return $this->headers;
-        } elseif ($name === 'cookies') {
-            if ($this->cookies === null) {
-                $this->cookies = new \ArrayObject($_COOKIE);
-            }
-            return $this->cookies;
-        } elseif ($name === 'data') {
-            if ($this->data === null) {
-                $this->data = new \ArrayObject($_POST);
-            }
-            return $this->data;
-        } elseif ($name === 'files') {
-            if ($this->files === null) {
-                $this->files = new \ArrayObject($_FILES);
-            }
-            return $this->files;
         }
-        throw new \Exception('Undefined property: ' . $name);
+        if ($this->container->exists($name)) {
+            return $this->container->get($name);
+        }
+        throw new \Exception('The property requested (' . $name . ') cannot be found in the dependency injection container');
     }
 
     /**
@@ -161,26 +112,6 @@ class Request
             }
             $data = parse_url($this->base);
             $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
-        } elseif ($name === 'headers') {
-            if (!is_array($value)) {
-                throw new \InvalidArgumentException('The value of the headers property must be of type array');
-            }
-            $this->headers = $value;
-        } elseif ($name === 'cookies') {
-            if (!is_array($value)) {
-                throw new \InvalidArgumentException('The value of the cookies property must be of type array');
-            }
-            $this->cookies = $value;
-        } elseif ($name === 'data') {
-            if (!is_array($value)) {
-                throw new \InvalidArgumentException('The value of the data property must be of type array');
-            }
-            $this->data = $value;
-        } elseif ($name === 'files') {
-            if (!is_array($value)) {
-                throw new \InvalidArgumentException('The value of the files property must be of type array');
-            }
-            $this->files = $value;
         }
     }
 
@@ -192,7 +123,7 @@ class Request
      */
     public function __isset($name)
     {
-        return $name === 'scheme' || $name === 'host' || $name === 'port' || $name === 'headers' || $name === 'cookies' || $name === 'data' || $name === 'files';
+        return $name === 'scheme' || $name === 'host' || $name === 'port' || $this->container->exists($name);
     }
 
 }

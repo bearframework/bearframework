@@ -34,8 +34,8 @@ class FileReader extends \BearFramework\App\Response
             throw new \InvalidArgumentException('The filename argument must be of type string');
         }
         $filename = realpath($filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
+        if ($filename === false || !is_readable($filename)) {
+            throw new \InvalidArgumentException('The filename specified does not exist or is not readable');
         }
         $this->filename = $filename;
         parent::__construct('');

@@ -48,6 +48,29 @@ class Path implements \ArrayAccess
     }
 
     /**
+     * Sets a new path
+     * 
+     * @return string The full path
+     */
+    public function set($path)
+    {
+        if (!is_string($path)) {
+            throw new \InvalidArgumentException('The path argument must be of type string');
+        }
+        $this->path = $path;
+    }
+
+    /**
+     * Returns the full path
+     * 
+     * @return string The full path
+     */
+    public function get()
+    {
+        return $this->path;
+    }
+
+    /**
      * Not implemented
      * 
      * @param int $offset

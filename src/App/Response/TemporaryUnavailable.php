@@ -27,8 +27,9 @@ class TemporaryUnavailable extends \BearFramework\App\Response
             throw new \InvalidArgumentException('The content argument must be of type string');
         }
         parent::__construct($content);
-        $this->setContentType('text/plain');
-        $this->setStatusCode(503);
+        $this->statusCode = 503;
+        $this->charset = 'UTF-8';
+        $this->headers->set('Content-Type', 'text/plain');
     }
 
 }

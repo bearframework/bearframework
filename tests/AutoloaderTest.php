@@ -34,11 +34,17 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
         $this->assertTrue(class_exists('BearFramework\App\Config\InvalidOptionException'));
         $this->assertTrue(class_exists('BearFramework\App\Logger'));
         $this->assertTrue(class_exists('BearFramework\App\Request'));
+        $this->assertTrue(class_exists('BearFramework\App\Request\Cookies'));
+        $this->assertTrue(class_exists('BearFramework\App\Request\Data'));
+        $this->assertTrue(class_exists('BearFramework\App\Request\Files'));
+        $this->assertTrue(class_exists('BearFramework\App\Request\Headers'));
         $this->assertTrue(class_exists('BearFramework\App\Request\Path'));
         $this->assertTrue(class_exists('BearFramework\App\Request\Query'));
         $this->assertTrue(class_exists('BearFramework\App\Response'));
+        $this->assertTrue(class_exists('BearFramework\App\Response\Cookies'));
         $this->assertTrue(class_exists('BearFramework\App\Response\FileReader'));
         $this->assertTrue(class_exists('BearFramework\App\Response\HTML'));
+        $this->assertTrue(class_exists('BearFramework\App\Response\Headers'));
         $this->assertTrue(class_exists('BearFramework\App\Response\JSON'));
         $this->assertTrue(class_exists('BearFramework\App\Response\NotFound'));
         $this->assertTrue(class_exists('BearFramework\App\Response\PermanentRedirect'));

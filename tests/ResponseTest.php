@@ -21,8 +21,25 @@ class ResponseTest extends BearFrameworkTestCase
         $response = new \BearFramework\App\Response('content');
         $this->assertTrue($response->content === 'content');
 
+        $this->assertTrue(isset($response->headers));
+        $this->assertTrue(isset($response->cookies));
+
         $this->setExpectedException('Exception');
         $response = new \BearFramework\App\Response(1);
+    }
+
+    /**
+     * 
+     */
+    function testResponseHeaders()
+    {
+        $app = $this->getApp();
+        $app->initialize();
+        $response = new \BearFramework\App\Response('Hi');
+        $response->cookies->set('name1', 'value1');
+        $response->headers->set('X-My-Header', '1');
+        $app->respond($response);
+        $this->expectOutputString('Hi');
     }
 
     /**
@@ -79,7 +96,7 @@ class ResponseTest extends BearFrameworkTestCase
     function testPermanentRedirectResponse()
     {
         $response = new \BearFramework\App\Response\PermanentRedirect('url');
-        $this->assertTrue($response->headers['location'] === 'Location: url');
+        $this->assertTrue($response->headers->get('Location') === 'url');
 
         $this->setExpectedException('Exception');
         $response = new \BearFramework\App\Response\PermanentRedirect(1);
@@ -91,7 +108,7 @@ class ResponseTest extends BearFrameworkTestCase
     function testTemporaryRedirectResponse()
     {
         $response = new \BearFramework\App\Response\TemporaryRedirect('url');
-        $this->assertTrue($response->headers['location'] === 'Location: url');
+        $this->assertTrue($response->headers->get('Location') === 'url');
 
         $this->setExpectedException('Exception');
         $response = new \BearFramework\App\Response\TemporaryRedirect(1);
@@ -112,101 +129,21 @@ class ResponseTest extends BearFrameworkTestCase
     /**
      * 
      */
-    function testResponseMaxAge()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $response->setMaxAge(10);
-        $this->assertTrue($response->headers['cacheControl'] === 'Cache-Control: public, max-age=10');
-    }
-
-    /**
-     * 
-     */
-    function testResponseInvalidMaxAge1()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $this->setExpectedException('InvalidArgumentException');
-        $response->setMaxAge('3');
-    }
-
-    /**
-     * 
-     */
-    function testResponseInvalidMaxAge2()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $this->setExpectedException('InvalidArgumentException');
-        $response->setMaxAge(-1);
-    }
-
-    /**
-     * 
-     */
-    function testResponseContentType()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $response->setContentType('text/json');
-        $this->assertTrue($response->headers['contentType'] === 'Content-Type: text/json; charset=UTF-8');
-    }
-
-    /**
-     * 
-     */
-    function testResponseInvalidContentType()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $this->setExpectedException('InvalidArgumentException');
-        $response->setContentType(1);
-    }
-
-    /**
-     * 
-     */
     function testResponseStatusCode()
     {
         $response = new \BearFramework\App\Response('content');
-        $response->setStatusCode(404);
-        $this->assertTrue($response->headers['statusCode'] === (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' 404 Not Found');
+        $response->statusCode = 404;
+        $this->assertTrue($response->statusCode === 404);
     }
 
     /**
      * 
      */
-    function testResponseInvalidStatusCode1()
+    function testInvalidGet()
     {
-        $response = new \BearFramework\App\Response('content');
-        $this->setExpectedException('InvalidArgumentException');
-        $response->setStatusCode(111);
-    }
-
-    /**
-     * 
-     */
-    function testResponseInvalidStatusCode2()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $this->setExpectedException('InvalidArgumentException');
-        $response->setStatusCode('777');
-    }
-
-    /**
-     * 
-     */
-    function testResponseDownloadable()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $response->setDownloadable('file.xml');
-        $this->assertTrue($response->headers['contentDisposition'] === 'Content-Disposition: attachment; filename=' . urlencode('file.xml'));
-    }
-
-    /**
-     * 
-     */
-    function testResponseInvalidDownloadable1()
-    {
-        $response = new \BearFramework\App\Response('content');
-        $this->setExpectedException('InvalidArgumentException');
-        $response->setDownloadable(3);
+        $response = new \BearFramework\App\Response();
+        $this->setExpectedException('Exception');
+        echo $response->missing;
     }
 
 }

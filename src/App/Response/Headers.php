@@ -7,16 +7,16 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework\App\Request;
+namespace BearFramework\App\Response;
 
 /**
- * Provides information about the request query string
+ * Provides information about the response headers
  */
-class Query implements \Countable
+class Headers implements \Countable
 {
 
     /**
-     * The query parameters data array
+     * The headers data array
      * 
      * @var array 
      */
@@ -31,28 +31,31 @@ class Query implements \Countable
     }
 
     /**
-     * Sets a new query parameter value
+     * Sets a new header value
      * 
-     * @param string $name The name of the query parameter
-     * @param mixed $value The value of the query parameter
+     * @param string $name The name of the header
+     * @param string $value The value of the header
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\Query A reference to the object
+     * @return \BearFramework\App\Response\Headers A reference to the object
      */
     public function set($name, $value)
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('The name argument must be of type string');
         }
+        if (!is_string($value)) {
+            throw new \InvalidArgumentException('The value argument must be of type string');
+        }
         $this->data[$name] = $value;
         return $this;
     }
 
     /**
-     * Returns the value of the query parameter if set
+     * Returns the value of the header if set
      * 
-     * @param string $name The name of the query parameter
-     * @param mixed $defaultValue The value to return if the query parameter is not found
-     * @return mixed|null The value of the query parameter if set, NULL otherwise
+     * @param string $name The name of the header
+     * @param mixed $defaultValue The value to return if the header is not found
+     * @return string|null The value of the header if set, NULL otherwise
      * @throws \InvalidArgumentException
      */
     public function get($name, $defaultValue = null)
@@ -67,10 +70,10 @@ class Query implements \Countable
     }
 
     /**
-     * Returns information whether a query parameter with the name specified exists
+     * Returns information whether a header with the name specified exists
      * 
-     * @param string $name The name of the query parameter
-     * @return boolean TRUE if a query parameter with the name specified exists, FALSE otherwise
+     * @param string $name The name of the header
+     * @return boolean TRUE if a header with the name specified exists, FALSE otherwise
      * @throws \InvalidArgumentException
      */
     public function exists($name)
@@ -82,11 +85,11 @@ class Query implements \Countable
     }
 
     /**
-     * Deletes a query parameter if exists
+     * Deletes a header if exists
      * 
-     * @param string $name The name of the query parameter to delete
+     * @param string $name The name of the header to delete
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\Query A reference to the object
+     * @return \BearFramework\App\Response\Headers A reference to the object
      */
     public function delete($name)
     {
@@ -100,9 +103,9 @@ class Query implements \Countable
     }
 
     /**
-     * Returns a list of all query parameters
+     * Returns a list of all headers
      * 
-     * @return array An array containing all query parameters in the following format [['name'=>..., 'value'=>...], ...]
+     * @return array An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
@@ -117,33 +120,13 @@ class Query implements \Countable
     }
 
     /**
-     * Returns the number of query parameters
+     * Returns the number of headers
      * 
-     * @return int The number of query parameters
+     * @return int The number of headers
      */
     public function count()
     {
         return sizeof($this->data);
-    }
-
-    /**
-     * Returns the full path
-     * 
-     * @return string The full path
-     */
-    public function __toString()
-    {
-        return $this->toString();
-    }
-
-    /**
-     * Returns the full path
-     * 
-     * @return string The full path
-     */
-    public function toString()
-    {
-        return http_build_query($this->data);
     }
 
 }

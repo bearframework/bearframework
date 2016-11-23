@@ -27,7 +27,8 @@ class HTML extends \BearFramework\App\Response
             throw new \InvalidArgumentException('The content argument must be of type string');
         }
         parent::__construct($content);
-        $this->setContentType('text/html');
+        $this->charset = 'UTF-8';
+        $this->headers->set('Content-Type', 'text/html');
     }
 
 }

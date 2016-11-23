@@ -9,8 +9,13 @@
 
 namespace BearFramework\App;
 
+use BearFramework\App;
+
 /**
  * Response object
+ * 
+ * @property \BearFramework\App\Response\Headers $headers The response headers
+ * @property \BearFramework\App\Response\Cookies $cookies The response cookies
  */
 class Response
 {
@@ -23,11 +28,25 @@ class Response
     public $content = '';
 
     /**
-     * The headers of the response
+     * The response status code
      * 
-     * @var array 
+     * @var int 
      */
-    public $headers = [];
+    public $statusCode = 200;
+
+    /**
+     * The response character set
+     * 
+     * @var string 
+     */
+    public $charset = '';
+
+    /**
+     * Dependency Injection container
+     * 
+     * @var \BearFramework\App\Container 
+     */
+    public $container = null;
 
     /**
      * The constructor
@@ -40,113 +59,39 @@ class Response
         if (!is_string($content)) {
             throw new \InvalidArgumentException('The content argument must be of type string');
         }
-        $this->headers['cacheControl'] = 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0';
+
         $this->content = $content;
+
+        $this->container = new App\Container();
+
+        $this->container->set('headers', App\Response\Headers::class);
+        $this->container->set('cookies', App\Response\Cookies::class);
     }
 
     /**
-     * Sets the max age attribute of the cache-control header
+     * Magic method
      * 
-     * @param int $seconds Time in seconds
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @param string $name
+     * @return mixed
+     * @throws \Exception
      */
-    public function setMaxAge($seconds)
+    public function __get($name)
     {
-        if (!is_int($seconds) || $seconds < 0) {
-            throw new \InvalidArgumentException('The seconds argument must be of type int and non negative');
+        if ($this->container->exists($name)) {
+            return $this->container->get($name);
         }
-        $this->headers['cacheControl'] = 'Cache-Control: public, max-age=' . $seconds;
+        throw new \Exception('The property requested (' . $name . ') cannot be found in the dependency injection container');
     }
 
     /**
-     * Sets the value of the content type header
+     * Magic method
      * 
-     * @param string $mimeType The mimetype of the content type header
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @param string $name
+     * @return boolean
      */
-    public function setContentType($mimeType)
+    public function __isset($name)
     {
-        if (!is_string($mimeType)) {
-            throw new \InvalidArgumentException('The mimeType argument must be of type string');
-        }
-        $this->headers['contentType'] = 'Content-Type: ' . $mimeType;
-        if ($mimeType === 'text/html' || $mimeType === 'text/plain' || $mimeType === 'text/json' || $mimeType === 'application/xml' || $mimeType === 'text/xml') {
-            $this->headers['contentType'] .= '; charset=UTF-8';
-        }
-    }
-
-    /**
-     * Sets download header that will make the browser download the response
-     * 
-     * @param string $filename The default filename of the download response
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
-     */
-    public function setDownloadable($filename)
-    {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
-        $this->headers['contentDisposition'] = 'Content-Disposition: attachment; filename=' . urlencode($filename);
-    }
-
-    /**
-     * Sets the status code of the response header
-     * 
-     * @param int $code The status code of the response header
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
-     */
-    public function setStatusCode($code)
-    {
-        if (!is_int($code)) {
-            throw new \InvalidArgumentException('The code argument must be of type string');
-        }
-        $statusCodes = [];
-        $statusCodes[200] = 'OK';
-        $statusCodes[201] = 'Created';
-        $statusCodes[202] = 'Accepted';
-        $statusCodes[203] = 'Non-Authoritative Information';
-        $statusCodes[204] = 'No Content';
-        $statusCodes[205] = 'Reset Content';
-        $statusCodes[206] = 'Partial Content';
-        $statusCodes[300] = 'Multiple Choices';
-        $statusCodes[301] = 'Moved Permanently';
-        $statusCodes[302] = 'Found';
-        $statusCodes[303] = 'See Other';
-        $statusCodes[304] = 'Not Modified';
-        $statusCodes[305] = 'Use Proxy';
-        $statusCodes[307] = 'Temporary Redirect';
-        $statusCodes[400] = 'Bad Request';
-        $statusCodes[401] = 'Unauthorized';
-        $statusCodes[402] = 'Payment Required';
-        $statusCodes[403] = 'Forbidden';
-        $statusCodes[404] = 'Not Found';
-        $statusCodes[405] = 'Method Not Allowed';
-        $statusCodes[406] = 'Not Acceptable';
-        $statusCodes[407] = 'Proxy Authentication Required';
-        $statusCodes[408] = 'Request Timeout';
-        $statusCodes[409] = 'Conflict';
-        $statusCodes[410] = 'Gone';
-        $statusCodes[411] = 'Length Required';
-        $statusCodes[412] = 'Precondition Failed';
-        $statusCodes[413] = 'Request Entity Too Large';
-        $statusCodes[414] = 'Request-URI Too Long';
-        $statusCodes[415] = 'Unsupported Media Type';
-        $statusCodes[416] = 'Requested Range Not Satisfiable';
-        $statusCodes[417] = 'Expectation Failed';
-        $statusCodes[500] = 'Internal Server Error';
-        $statusCodes[501] = 'Not Implemented';
-        $statusCodes[502] = 'Bad Gateway';
-        $statusCodes[503] = 'Service Unavailable';
-        $statusCodes[504] = 'Gateway Timeout';
-        $statusCodes[505] = 'HTTP Version Not Supported';
-        if (!isset($statusCodes[$code])) {
-            throw new \InvalidArgumentException('The code argument is not valid');
-        }
-        $this->headers['statusCode'] = (isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $code . ' ' . $statusCodes[$code];
+        return $this->container->exists($name);
     }
 
 }

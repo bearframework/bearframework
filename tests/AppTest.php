@@ -18,11 +18,15 @@ class AppTest extends BearFrameworkTestCase
      */
     public function testConstructor1()
     {
-        $_SERVER['REQUEST_URI'] = '/?var1=1';
+        $_SERVER['REQUEST_URI'] = '/';
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_SCHEME'] = 'http';
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTP_X_CUSTOM_HEADER'] = '123';
+        $_COOKIE['cookie1'] = 'value1';
+        $_POST['name1'] = 'value1';
+        $_GET['var1'] = '1';
         $app = new \BearFramework\App();
         $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
@@ -33,6 +37,10 @@ class AppTest extends BearFrameworkTestCase
         $this->assertTrue($app->request->base === 'http://example.com');
         $this->assertTrue((string) $app->request->path === '/');
         $this->assertTrue((string) $app->request->query === 'var1=1');
+        $this->assertTrue($app->request->headers->get('X-Custom-Header') === '123');
+        $this->assertTrue($app->request->cookies->get('cookie1') === 'value1');
+        $this->assertTrue($app->request->data->get('name1') === 'value1');
+        $this->assertTrue(count($app->request->files) === 0);
     }
 
     /**
@@ -40,11 +48,12 @@ class AppTest extends BearFrameworkTestCase
      */
     public function testConstructor2()
     {
-        $_SERVER['REQUEST_URI'] = '/www/?var1=1';
+        $_SERVER['REQUEST_URI'] = '/www/';
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_SCHEME'] = 'https';
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
+        $_GET['var1'] = '1';
         $app = new \BearFramework\App();
         $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);

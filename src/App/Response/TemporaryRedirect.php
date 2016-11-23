@@ -27,9 +27,9 @@ class TemporaryRedirect extends \BearFramework\App\Response
             throw new \InvalidArgumentException('The url argument must be of type string');
         }
         parent::__construct('');
-        $this->setContentType('text/plain');
-        $this->setStatusCode(307);
-        $this->headers['location'] = 'Location: ' . $url;
+        $this->statusCode = 307;
+        $this->headers->set('Content-Type', 'text/plain');
+        $this->headers->set('Location', $url);
     }
 
 }

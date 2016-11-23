@@ -27,8 +27,9 @@ class NotFound extends \BearFramework\App\Response
             throw new \InvalidArgumentException('The content argument must be of type string');
         }
         parent::__construct($content);
-        $this->setContentType('text/plain');
-        $this->setStatusCode(404);
+        $this->statusCode = 404;
+        $this->charset = 'UTF-8';
+        $this->headers->set('Content-Type', 'text/plain');
     }
 
 }

@@ -25,7 +25,7 @@ class AssetsTest extends BearFrameworkTestCase
         $app->assets->addDir($app->config->appDir . '/assets/');
         $url = $app->assets->getUrl($filename);
         $path = substr($url, strlen($app->request->base));
-        $app->request->path = new \BearFramework\App\Request\Path($path);
+        $app->request->path->set($path);
         $app->run();
         $this->expectOutputString(file_get_contents($filename));
     }
@@ -43,7 +43,7 @@ class AssetsTest extends BearFrameworkTestCase
         $url = $app->assets->getUrl($filename);
         unlink($filename);
         $path = substr($url, strlen($app->request->base));
-        $app->request->path = new \BearFramework\App\Request\Path($path);
+        $app->request->path->set($path);
         $app->run();
         $this->expectOutputString('Not Found');
     }

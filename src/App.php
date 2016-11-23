@@ -136,13 +136,13 @@ class App
                     } else {
                         $response = new App\Response\FileReader($filename);
                         if ($app->config->assetsMaxAge !== null) {
-                            $response->setMaxAge((int) $app->config->assetsMaxAge);
+                            $response->headers->set('Cache-Control', 'public, max-age=' . (int) $app->config->assetsMaxAge);
                         }
                         $mimeType = $app->assets->getMimeType($filename);
                         if ($mimeType !== null) {
-                            $response->headers[] = 'Content-Type: ' . $mimeType;
+                            $response->headers->set('Content-Type', $mimeType);
                         }
-                        $response->headers[] = 'Content-Length: ' . filesize($filename);
+                        $response->headers->set('Content-Length', (string) filesize($filename));
                         return $response;
                     }
                 });
@@ -242,16 +242,12 @@ class App
     private function initializeRequest()
     {
         if (isset($_SERVER)) {
-
             $this->request->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-
             $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? urldecode($_SERVER['REQUEST_URI']) : '/';
             $position = strpos($path, '?');
             if ($position !== false) {
-                $this->request->query = new App\Request\Query(substr($path, $position + 1));
                 $path = substr($path, 0, $position);
             }
-
             $basePath = '';
             if (isset($_SERVER['SCRIPT_NAME'])) {
                 $scriptName = $_SERVER['SCRIPT_NAME'];
@@ -273,8 +269,49 @@ class App
             $scheme = (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && $_SERVER['HTTP_X_FORWARDED_PROTOCOL'] === 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
             $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
             $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : '';
-            $this->request->path = new App\Request\Path(isset($path{0}) ? $path : '/');
             $this->request->base = $scheme . '://' . $host . ($port !== '' && $port !== '80' ? ':' . $port : '') . $basePath;
+            $this->request->container->set('path', function() use ($path) {
+                return new App\Request\Path(isset($path{0}) ? $path : '/');
+            });
+            $this->request->container->set('query', function() {
+                $query = new App\Request\Query();
+                foreach ($_GET as $name => $value) {
+                    $query->set($name, $value);
+                }
+                return $query;
+            });
+            $this->request->container->set('headers', function() {
+                $headers = new App\Request\Headers();
+                foreach ($_SERVER as $name => $value) {
+                    if (substr($name, 0, 5) == 'HTTP_') {
+                        $headers->set(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value);
+                    }
+                }
+                return $headers;
+            });
+            $this->request->container->set('cookies', function() {
+                $cookies = new App\Request\Cookies();
+                foreach ($_COOKIE as $name => $value) {
+                    $cookies->set($name, $value);
+                }
+                return $cookies;
+            });
+            $this->request->container->set('data', function() {
+                $data = new App\Request\Data();
+                foreach ($_POST as $name => $value) {
+                    $data->set($name, $value);
+                }
+                return $data;
+            });
+            $this->request->container->set('files', function() {
+                $files = new App\Request\Files();
+                foreach ($_FILES as $name => $value) {
+                    if (is_uploaded_file($value['tmp_name'])) {
+                        $files->set($name, $value['name'], $value['tmp_name'], $value['size'], $value['type'], $value['error']);
+                    }
+                }
+                return $files;
+            });
         }
     }
 
@@ -336,26 +373,6 @@ class App
     private function prepareResponse($response)
     {
         $this->hooks->execute('responseCreated', $response);
-
-        // @codeCoverageIgnoreStart
-        if (!is_array($response->headers)) {
-            throw new \Exception('Invalid response headers. The proerty should be array.');
-        }
-        foreach ($response->headers as $header) {
-            if (!is_string($header)) {
-                throw new \Exception('Invalid response header. It should be string.');
-            }
-        }
-        if ($response instanceof App\Response\FileReader) {
-            if (!is_file($response->filename) || !is_readable($response->filename)) {
-                throw new \Exception('Invalid response filename. The file does not exist or is not readable.');
-            }
-        } else {
-            if (!is_string($response->content)) {
-                $response->content = (string) $response->content;
-            }
-        }
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -367,8 +384,63 @@ class App
     private function sendResponse($response)
     {
         if (!headers_sent()) {
-            foreach ($response->headers as $header) {
-                header($header);
+            $statusCodes = [];
+            $statusCodes[200] = 'OK';
+            $statusCodes[201] = 'Created';
+            $statusCodes[202] = 'Accepted';
+            $statusCodes[203] = 'Non-Authoritative Information';
+            $statusCodes[204] = 'No Content';
+            $statusCodes[205] = 'Reset Content';
+            $statusCodes[206] = 'Partial Content';
+            $statusCodes[300] = 'Multiple Choices';
+            $statusCodes[301] = 'Moved Permanently';
+            $statusCodes[302] = 'Found';
+            $statusCodes[303] = 'See Other';
+            $statusCodes[304] = 'Not Modified';
+            $statusCodes[305] = 'Use Proxy';
+            $statusCodes[307] = 'Temporary Redirect';
+            $statusCodes[400] = 'Bad Request';
+            $statusCodes[401] = 'Unauthorized';
+            $statusCodes[402] = 'Payment Required';
+            $statusCodes[403] = 'Forbidden';
+            $statusCodes[404] = 'Not Found';
+            $statusCodes[405] = 'Method Not Allowed';
+            $statusCodes[406] = 'Not Acceptable';
+            $statusCodes[407] = 'Proxy Authentication Required';
+            $statusCodes[408] = 'Request Timeout';
+            $statusCodes[409] = 'Conflict';
+            $statusCodes[410] = 'Gone';
+            $statusCodes[411] = 'Length Required';
+            $statusCodes[412] = 'Precondition Failed';
+            $statusCodes[413] = 'Request Entity Too Large';
+            $statusCodes[414] = 'Request-URI Too Long';
+            $statusCodes[415] = 'Unsupported Media Type';
+            $statusCodes[416] = 'Requested Range Not Satisfiable';
+            $statusCodes[417] = 'Expectation Failed';
+            $statusCodes[500] = 'Internal Server Error';
+            $statusCodes[501] = 'Not Implemented';
+            $statusCodes[502] = 'Bad Gateway';
+            $statusCodes[503] = 'Service Unavailable';
+            $statusCodes[504] = 'Gateway Timeout';
+            $statusCodes[505] = 'HTTP Version Not Supported';
+            if (isset($statusCodes[$response->statusCode])) {
+                header((isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $response->statusCode . ' ' . $statusCodes[$response->statusCode]);
+            }
+            if (count($response->headers) > 0) {
+                $headers = $response->headers->getList();
+                foreach ($headers as $header) {
+                    if ($header['name'] === 'Content-Type') {
+                        $header['value'] .= '; charset=' . $response->charset;
+                    }
+                    header($header['name'] . ': ' . $header['value']);
+                }
+            }
+            if (count($response->cookies) > 0) {
+                $baseUrlParts = parse_url($this->request->base);
+                $cookies = $response->cookies->getList();
+                foreach ($cookies as $cookie) {
+                    setcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'] === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '') : $cookie['path'], $cookie['domain'] === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie['domain'], $cookie['secure'] === null ? $this->request->scheme === 'https' : $cookie['secure'], $cookie['httpOnly']);
+                }
             }
         }
         if ($response instanceof App\Response\FileReader) {
@@ -430,7 +502,7 @@ class App
         if ($this->container->exists($name)) {
             return $this->container->get($name);
         }
-        throw new \Exception('The object requested (' . $name . ') is not found in the dependency injection container');
+        throw new \Exception('The object requested (' . $name . ') cannot be found in the dependency injection container');
     }
 
     /**

@@ -10,13 +10,13 @@
 namespace BearFramework\App\Request;
 
 /**
- * Provides information about the request query string
+ * Provides information about the request POST data
  */
-class Query implements \Countable
+class Data implements \Countable
 {
 
     /**
-     * The query parameters data array
+     * The POST data array
      * 
      * @var array 
      */
@@ -31,12 +31,12 @@ class Query implements \Countable
     }
 
     /**
-     * Sets a new query parameter value
+     * Sets a new POST parameter value
      * 
-     * @param string $name The name of the query parameter
-     * @param mixed $value The value of the query parameter
+     * @param string $name The name of the POST parameter
+     * @param mixed $value The value of the POST parameter
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\Query A reference to the object
+     * @return \BearFramework\App\Request\Data A reference to the object
      */
     public function set($name, $value)
     {
@@ -48,11 +48,11 @@ class Query implements \Countable
     }
 
     /**
-     * Returns the value of the query parameter if set
+     * Returns the value of the POST parameter if set
      * 
-     * @param string $name The name of the query parameter
-     * @param mixed $defaultValue The value to return if the query parameter is not found
-     * @return mixed|null The value of the query parameter if set, NULL otherwise
+     * @param string $name The name of the POST parameter
+     * @param mixed $defaultValue The value to return if the POST parameter is not found
+     * @return mixed|null The value of the POST parameter if set, NULL otherwise
      * @throws \InvalidArgumentException
      */
     public function get($name, $defaultValue = null)
@@ -67,10 +67,10 @@ class Query implements \Countable
     }
 
     /**
-     * Returns information whether a query parameter with the name specified exists
+     * Returns information whether a POST parameter with the name specified exists
      * 
-     * @param string $name The name of the query parameter
-     * @return boolean TRUE if a query parameter with the name specified exists, FALSE otherwise
+     * @param string $name The name of the POST parameter
+     * @return boolean TRUE if a POST parameter with the name specified exists, FALSE otherwise
      * @throws \InvalidArgumentException
      */
     public function exists($name)
@@ -82,11 +82,11 @@ class Query implements \Countable
     }
 
     /**
-     * Deletes a query parameter if exists
+     * Deletes a POST parameter if exists
      * 
-     * @param string $name The name of the query parameter to delete
+     * @param string $name The name of the POST parameter to delete
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\Query A reference to the object
+     * @return \BearFramework\App\Request\Data A reference to the object
      */
     public function delete($name)
     {
@@ -100,9 +100,9 @@ class Query implements \Countable
     }
 
     /**
-     * Returns a list of all query parameters
+     * Returns a list of all POST parameters
      * 
-     * @return array An array containing all query parameters in the following format [['name'=>..., 'value'=>...], ...]
+     * @return array An array containing all POST parameters in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
@@ -117,33 +117,13 @@ class Query implements \Countable
     }
 
     /**
-     * Returns the number of query parameters
+     * Returns the number of POST parameter
      * 
-     * @return int The number of query parameters
+     * @return int The number of POST parameter
      */
     public function count()
     {
         return sizeof($this->data);
-    }
-
-    /**
-     * Returns the full path
-     * 
-     * @return string The full path
-     */
-    public function __toString()
-    {
-        return $this->toString();
-    }
-
-    /**
-     * Returns the full path
-     * 
-     * @return string The full path
-     */
-    public function toString()
-    {
-        return http_build_query($this->data);
     }
 
 }
