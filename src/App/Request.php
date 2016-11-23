@@ -42,7 +42,7 @@ class Request
     public $base = '';
 
     /**
-     * Dependency Injection container
+     * Services container
      * 
      * @var \BearFramework\App\Container 
      */
@@ -89,7 +89,7 @@ class Request
         if ($this->container->exists($name)) {
             return $this->container->get($name);
         }
-        throw new \Exception('The property requested (' . $name . ') cannot be found in the dependency injection container');
+        throw new \Exception('The property requested (' . $name . ') cannot be found in the services container');
     }
 
     /**

@@ -38,7 +38,7 @@ class App
     const VERSION = '0.9.3';
 
     /**
-     * Dependency Injection container
+     * Services container
      * 
      * @var \BearFramework\App\Container 
      */
@@ -491,10 +491,10 @@ class App
     }
 
     /**
-     * Returns an object from the dependency injection container
+     * Returns an object from the services container
      * 
      * @param string $name The service name
-     * @return object Object from the dependency injection container
+     * @return object Object from the services container
      * @throws \Exception
      */
     public function __get($name)
@@ -502,11 +502,11 @@ class App
         if ($this->container->exists($name)) {
             return $this->container->get($name);
         }
-        throw new \Exception('The object requested (' . $name . ') cannot be found in the dependency injection container');
+        throw new \Exception('The object requested (' . $name . ') cannot be found in the services container');
     }
 
     /**
-     * Returns information about whether the service is added in the dependency injection container
+     * Returns information about whether the service is added in the services container
      * 
      * @param string $name The name of the service
      * @return boolen TRUE if services is added. FALSE otherwise.

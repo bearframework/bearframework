@@ -10,7 +10,7 @@
 namespace BearFramework\App;
 
 /**
- * Dependency Injection container
+ * Services container
  */
 class Container
 {
