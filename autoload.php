@@ -20,6 +20,7 @@ $classes = array(
     'BearFramework\App\Context\Classes' => 'src/App/Context/Classes.php',
     'BearFramework\App\Data' => 'src/App/Data.php',
     'BearFramework\App\Data\DataLockedException' => 'src/App/Data/DataLockedException.php',
+    'BearFramework\App\DynamicProperties' => 'src/App/DynamicProperties.php',
     'BearFramework\App\Hooks' => 'src/App/Hooks.php',
     'BearFramework\App\Images' => 'src/App/Images.php',
     'BearFramework\App\Logger' => 'src/App/Logger.php',

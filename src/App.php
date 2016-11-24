@@ -30,6 +30,8 @@ use BearFramework\App;
 class App
 {
 
+    use \BearFramework\App\DynamicProperties;
+
     /**
      * Current Bear Framework version
      * 
@@ -72,18 +74,91 @@ class App
 
         $this->container = new App\Container();
 
-        $this->container->set('config', App\Config::class);
-        $this->container->set('request', App\Request::class);
-        $this->container->set('routes', App\Routes::class);
-        $this->container->set('logger', App\Logger::class);
-        $this->container->set('addons', App\Addons::class);
-        $this->container->set('hooks', App\Hooks::class);
-        $this->container->set('assets', App\Assets::class);
-        $this->container->set('data', App\Data::class);
-        $this->container->set('cache', App\Cache::class);
-        $this->container->set('classes', App\Classes::class);
-        $this->container->set('urls', App\Urls::class);
-        $this->container->set('images', App\Images::class);
+        $this->container->set('app.config', App\Config::class);
+        $this->container->set('app.request', App\Request::class);
+        $this->container->set('app.routes', App\Routes::class);
+        $this->container->set('app.logger', App\Logger::class);
+        $this->container->set('app.addons', App\Addons::class);
+        $this->container->set('app.hooks', App\Hooks::class);
+        $this->container->set('app.assets', App\Assets::class);
+        $this->container->set('app.data', App\Data::class);
+        $this->container->set('app.cache', App\Cache::class);
+        $this->container->set('app.classes', App\Classes::class);
+        $this->container->set('app.urls', App\Urls::class);
+        $this->container->set('app.images', App\Images::class);
+
+        $this->defineProperty('config', [
+            'get' => function() {
+                return $this->container->get('app.config');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('request', [
+            'get' => function() {
+                return $this->container->get('app.request');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('routes', [
+            'get' => function() {
+                return $this->container->get('app.routes');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('logger', [
+            'get' => function() {
+                return $this->container->get('app.logger');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('addons', [
+            'get' => function() {
+                return $this->container->get('app.addons');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('hooks', [
+            'get' => function() {
+                return $this->container->get('app.hooks');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('assets', [
+            'get' => function() {
+                return $this->container->get('app.assets');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('data', [
+            'get' => function() {
+                return $this->container->get('app.data');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('cache', [
+            'get' => function() {
+                return $this->container->get('app.cache');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('classes', [
+            'get' => function() {
+                return $this->container->get('app.classes');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('urls', [
+            'get' => function() {
+                return $this->container->get('app.urls');
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('images', [
+            'get' => function() {
+                return $this->container->get('app.images');
+            },
+            'readonly' => true
+        ]);
     }
 
     /**
@@ -147,7 +222,7 @@ class App
                     }
                 });
             }
-            if ($this->container->used('hooks')) { // performance optimization
+            if ($this->isPropertyUsed('hooks')) { // performance optimization
                 $this->hooks->execute('initialized');
             }
 
@@ -272,48 +347,67 @@ class App
             $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
             $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : '';
             $this->request->base = $scheme . '://' . $host . ($port !== '' && $port !== '80' ? ':' . $port : '') . $basePath;
-            $this->request->container->set('path', function() use ($path) {
-                return new App\Request\Path(isset($path{0}) ? $path : '/');
-            });
-            $this->request->container->set('query', function() {
-                $query = new App\Request\Query();
-                foreach ($_GET as $name => $value) {
-                    $query->set($name, $value);
-                }
-                return $query;
-            });
-            $this->request->container->set('headers', function() {
-                $headers = new App\Request\Headers();
-                foreach ($_SERVER as $name => $value) {
-                    if (substr($name, 0, 5) == 'HTTP_') {
-                        $headers->set(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value);
+
+            $this->request->defineProperty('path', [
+                'init' => function() use ($path) {
+                    return new App\Request\Path(isset($path{0}) ? $path : '/');
+                },
+                'readonly' => true
+            ]);
+            $this->request->defineProperty('query', [
+                'init' => function() {
+                    $query = new App\Request\Query();
+                    foreach ($_GET as $name => $value) {
+                        $query->set($name, $value);
                     }
-                }
-                return $headers;
-            });
-            $this->request->container->set('cookies', function() {
-                $cookies = new App\Request\Cookies();
-                foreach ($_COOKIE as $name => $value) {
-                    $cookies->set($name, $value);
-                }
-                return $cookies;
-            });
-            $this->request->container->set('data', function() {
-                $data = new App\Request\Data();
-                foreach ($_POST as $name => $value) {
-                    $data->set($name, $value);
-                }
-                return $data;
-            });
-            $this->request->container->set('files', function() {
-                $files = new App\Request\Files();
-                foreach ($_FILES as $name => $value) {
-                    if (is_uploaded_file($value['tmp_name'])) {
-                        $files->set($name, $value['name'], $value['tmp_name'], $value['size'], $value['type'], $value['error']);
+                    return $query;
+                },
+                'readonly' => true
+            ]);
+            $this->request->defineProperty('headers', [
+                'init' => function() {
+                    $headers = new App\Request\Headers();
+                    foreach ($_SERVER as $name => $value) {
+                        if (substr($name, 0, 5) == 'HTTP_') {
+                            $headers->set(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value);
+                        }
                     }
-                }
-                return $files;
-            });
+                    return $headers;
+                },
+                'readonly' => true
+            ]);
+            $this->request->defineProperty('cookies', [
+                'init' => function() {
+                    $cookies = new App\Request\Cookies();
+                    foreach ($_COOKIE as $name => $value) {
+                        $cookies->set($name, $value);
+                    }
+                    return $cookies;
+                },
+                'readonly' => true
+            ]);
+            $this->request->defineProperty('data', [
+                'init' => function() {
+                    $data = new App\Request\Data();
+                    foreach ($_POST as $name => $value) {
+                        $data->set($name, $value);
+                    }
+                    return $data;
+                },
+                'readonly' => true
+            ]);
+            $this->request->defineProperty('files', [
+                'init' => function() {
+                    $files = new App\Request\Files();
+                    foreach ($_FILES as $name => $value) {
+                        if (is_uploaded_file($value['tmp_name'])) {
+                            $files->set($name, $value['name'], $value['tmp_name'], $value['size'], $value['type'], $value['error']);
+                        }
+                    }
+                    return $files;
+                },
+                'readonly' => true
+            ]);
         }
     }
 
@@ -374,7 +468,7 @@ class App
      */
     private function prepareResponse($response)
     {
-        if ($this->container->used('hooks')) { // performance optimization
+        if ($this->isPropertyUsed('hooks')) { // performance optimization
             $this->hooks->execute('responseCreated', $response);
         }
     }
@@ -430,7 +524,7 @@ class App
             if (isset($statusCodes[$response->statusCode])) {
                 header((isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $response->statusCode . ' ' . $statusCodes[$response->statusCode]);
             }
-            if ($response->container->used('headers')) { // performance optimization
+            if ($response->isPropertyUsed('headers')) { // performance optimization
                 if (count($response->headers) > 0) {
                     $headers = $response->headers->getList();
                     foreach ($headers as $header) {
@@ -441,7 +535,7 @@ class App
                     }
                 }
             }
-            if ($response->container->used('cookies')) { // performance optimization
+            if ($response->isPropertyUsed('cookies')) { // performance optimization
                 if (count($response->cookies) > 0) {
                     $baseUrlParts = parse_url($this->request->base);
                     $cookies = $response->cookies->getList();
@@ -456,7 +550,7 @@ class App
         } else {
             echo $response->content;
         }
-        if ($this->container->used('hooks')) { // performance optimization
+        if ($this->isPropertyUsed('hooks')) { // performance optimization
             $this->hooks->execute('responseSent', $response);
         }
     }
@@ -498,32 +592,6 @@ class App
     public function __wakeup()
     {
         throw new \Exception('Cannot have multiple App instances');
-    }
-
-    /**
-     * Returns an object from the services container
-     * 
-     * @param string $name The service name
-     * @return object Object from the services container
-     * @throws \Exception
-     */
-    public function __get($name)
-    {
-        if ($this->container->exists($name)) {
-            return $this->container->get($name);
-        }
-        throw new \Exception('The object requested (' . $name . ') cannot be found in the services container');
-    }
-
-    /**
-     * Returns information about whether the service is added in the services container
-     * 
-     * @param string $name The name of the service
-     * @return boolen TRUE if services is added. FALSE otherwise.
-     */
-    public function __isset($name)
-    {
-        return $this->container->exists($name);
     }
 
 }

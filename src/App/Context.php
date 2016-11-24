@@ -20,19 +20,14 @@ use BearFramework\App;
 class Context
 {
 
+    use \BearFramework\App\DynamicProperties;
+
     /**
      * The directory where the current addon or application are located
      * 
      * @var string 
      */
     public $dir = '';
-
-    /**
-     * Services container
-     * 
-     * @var \BearFramework\App\Container 
-     */
-    public $container = null;
 
     /**
      * The constructor
@@ -51,40 +46,18 @@ class Context
         }
         $this->dir = $dir;
 
-        $this->container = new App\Container();
-
-        $this->container->set('assets', function() use($dir) {
-            return new App\Context\Assets($dir);
-        });
-        $this->container->set('classes', function() use($dir) {
-            return new App\Context\Classes($dir);
-        });
-    }
-
-    /**
-     * Magic method
-     * 
-     * @param string $name
-     * @return mixed
-     * @throws \Exception
-     */
-    public function __get($name)
-    {
-        if ($this->container->exists($name)) {
-            return $this->container->get($name);
-        }
-        throw new \Exception('The property requested (' . $name . ') cannot be found in the services container');
-    }
-
-    /**
-     * Magic method
-     * 
-     * @param string $name
-     * @return boolean
-     */
-    public function __isset($name)
-    {
-        return $this->container->exists($name);
+        $this->defineProperty('assets', [
+            'init' => function() use ($dir) {
+                return new App\Context\Assets($dir);
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('classes', [
+            'init' => function() use ($dir) {
+                return new App\Context\Classes($dir);
+            },
+            'readonly' => true
+        ]);
     }
 
 }

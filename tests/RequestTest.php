@@ -198,16 +198,6 @@ class RequestTest extends BearFrameworkTestCase
     /**
      * 
      */
-    function testInvalidGet()
-    {
-        $request = new \BearFramework\App\Request();
-        $this->setExpectedException('Exception');
-        echo $request->missing;
-    }
-
-    /**
-     * 
-     */
     function testQuery()
     {
         $query = new \BearFramework\App\Request\Query();

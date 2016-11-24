@@ -154,16 +154,6 @@ class ResponseTest extends BearFrameworkTestCase
     /**
      * 
      */
-    function testInvalidGet()
-    {
-        $response = new \BearFramework\App\Response();
-        $this->setExpectedException('Exception');
-        echo $response->missing;
-    }
-
-    /**
-     * 
-     */
     function testInvalidProperties1()
     {
         $response = new \BearFramework\App\Response();

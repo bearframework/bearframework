@@ -27,6 +27,8 @@ use BearFramework\App;
 class Request
 {
 
+    use \BearFramework\App\DynamicProperties;
+
     /**
      * The request method
      * 
@@ -42,25 +44,100 @@ class Request
     public $base = '';
 
     /**
-     * Services container
-     * 
-     * @var \BearFramework\App\Container 
-     */
-    public $container = null;
-
-    /**
      * The constructor
      */
     public function __construct()
     {
-        $this->container = new App\Container();
 
-        $this->container->set('path', App\Request\Path::class);
-        $this->container->set('query', App\Request\Query::class);
-        $this->container->set('headers', App\Request\Headers::class);
-        $this->container->set('cookies', App\Request\Cookies::class);
-        $this->container->set('data', App\Request\Data::class);
-        $this->container->set('files', App\Request\Files::class);
+        $updateBase = function($name, $value) {
+            $data = parse_url($this->base);
+            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
+        };
+
+        $this->defineProperty('scheme', [
+            'get' => function() {
+                $data = parse_url($this->base);
+                return isset($data['scheme']) ? $data['scheme'] : null;
+            },
+            'set' => function($value) use (&$updateBase) {
+                if (!is_string($value)) {
+                    throw new \InvalidArgumentException('The value of the scheme property must be of type string');
+                }
+                $updateBase('scheme', $value);
+            },
+            'unset' => function() use (&$updateBase) {
+                $updateBase('scheme', '');
+            }
+        ]);
+
+        $this->defineProperty('host', [
+            'get' => function() {
+                $data = parse_url($this->base);
+                return isset($data['host']) ? $data['host'] : null;
+            },
+            'set' => function($value) use (&$updateBase) {
+                if (!is_string($value)) {
+                    throw new \InvalidArgumentException('The value of the host property must be of type string');
+                }
+                $updateBase('host', $value);
+            },
+            'unset' => function() use (&$updateBase) {
+                $updateBase('host', '');
+            }
+        ]);
+
+        $this->defineProperty('port', [
+            'get' => function() {
+                $data = parse_url($this->base);
+                return isset($data['port']) ? $data['port'] : null;
+            },
+            'set' => function($value) use (&$updateBase) {
+                if (!((is_string($value) && preg_match('/^[0-9]*$/', $value) === 1) || (is_int($value) && $value > 0) || $value === null)) {
+                    throw new \InvalidArgumentException('The value of the port property must be of type string (numeric), positve int or null');
+                }
+                $updateBase('port', $value);
+            },
+            'unset' => function() use (&$updateBase) {
+                $updateBase('port', '');
+            }
+        ]);
+
+        $this->defineProperty('path', [
+            'init' => function() {
+                return new App\Request\Path();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('query', [
+            'init' => function() {
+                return new App\Request\Query();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('headers', [
+            'init' => function() {
+               return new App\Request\Headers();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('cookies', [
+            'init' => function() {
+                return new App\Request\Cookies();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('data', [
+            'init' => function() {
+                return new App\Request\Data();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('files', [
+            'init' => function() {
+                return new App\Request\Files();
+            },
+            'readonly' => true
+        ]);
     }
 
     /**
@@ -71,59 +148,6 @@ class Request
     public function __toString()
     {
         return $this->base . (string) $this->path;
-    }
-
-    /**
-     * Magic method
-     * 
-     * @param string $name
-     * @return mixed
-     * @throws \Exception
-     */
-    public function __get($name)
-    {
-        if ($name === 'scheme' || $name === 'host' || $name === 'port') {
-            $data = parse_url($this->base);
-            return isset($data[$name]) ? $data[$name] : null;
-        }
-        if ($this->container->exists($name)) {
-            return $this->container->get($name);
-        }
-        throw new \Exception('The property requested (' . $name . ') cannot be found in the services container');
-    }
-
-    /**
-     * Magic method
-     * 
-     * @param string $name
-     * @param mixed $value
-     */
-    public function __set($name, $value)
-    {
-        if ($name === 'scheme' || $name === 'host' || $name === 'port') {
-            if ($name === 'scheme' && !is_string($value)) {
-                throw new \InvalidArgumentException('The value of the scheme property must be of type string');
-            }
-            if ($name === 'host' && !is_string($value)) {
-                throw new \InvalidArgumentException('The value of the scheme property must be of type string');
-            }
-            if ($name === 'port' && !((is_string($value) && preg_match('/^[0-9]*$/', $value) === 1) || (is_int($value) && $value > 0) || $value === null)) {
-                throw new \InvalidArgumentException('The value of the port property must be of type string (numeric), positve int or null');
-            }
-            $data = parse_url($this->base);
-            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
-        }
-    }
-
-    /**
-     * Magic method
-     * 
-     * @param string $name
-     * @return boolean
-     */
-    public function __isset($name)
-    {
-        return $name === 'scheme' || $name === 'host' || $name === 'port' || $this->container->exists($name);
     }
 
 }

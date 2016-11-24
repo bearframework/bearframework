@@ -27,11 +27,11 @@ class ContainerTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->container->set('test2', TestClass::class);
-        $this->assertTrue($app->test2 instanceof TestClass);
-        $this->assertTrue($app->test2->property1 === 1);
-        $app->test2->property1 = 2;
-        $this->assertTrue($app->test2 instanceof TestClass);
-        $this->assertTrue($app->test2->property1 === 2);
+        $this->assertTrue($app->container->get('test2') instanceof TestClass);
+        $this->assertTrue($app->container->get('test2')->property1 === 1);
+        $app->container->get('test2')->property1 = 2;
+        $this->assertTrue($app->container->get('test2') instanceof TestClass);
+        $this->assertTrue($app->container->get('test2')->property1 === 2);
     }
 
     /**
@@ -43,11 +43,11 @@ class ContainerTest extends BearFrameworkTestCase
         $app->container->set('test2', function() {
             return new TestClass();
         });
-        $this->assertTrue($app->test2 instanceof TestClass);
-        $this->assertTrue($app->test2->property1 === 1);
-        $app->test2->property1 = 2;
-        $this->assertTrue($app->test2 instanceof TestClass);
-        $this->assertTrue($app->test2->property1 === 2);
+        $this->assertTrue($app->container->get('test2') instanceof TestClass);
+        $this->assertTrue($app->container->get('test2')->property1 === 1);
+        $app->container->get('test2')->property1 = 2;
+        $this->assertTrue($app->container->get('test2') instanceof TestClass);
+        $this->assertTrue($app->container->get('test2')->property1 === 2);
     }
 
     /**
@@ -58,11 +58,11 @@ class ContainerTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $object = new TestClass();
         $app->container->set('test', $object);
-        $this->assertTrue($app->test instanceof TestClass);
-        $this->assertTrue($app->test->property1 === 1);
-        $app->test->property1 = 2;
-        $this->assertTrue($app->test instanceof TestClass);
-        $this->assertTrue($app->test->property1 === 2);
+        $this->assertTrue($app->container->get('test') instanceof TestClass);
+        $this->assertTrue($app->container->get('test')->property1 === 1);
+        $app->container->get('test')->property1 = 2;
+        $this->assertTrue($app->container->get('test') instanceof TestClass);
+        $this->assertTrue($app->container->get('test')->property1 === 2);
     }
 
     /**
@@ -112,28 +112,7 @@ class ContainerTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('Exception');
-        $app->missingService->property;
-    }
-
-    /**
-     * 
-     */
-    public function testGetMissingService2()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('Exception');
         $app->container->get('missingService');
-    }
-
-    /**
-     * 
-     */
-    public function testIsset()
-    {
-        $app = $this->getApp();
-        $app->container->set('test1', TestClass::class);
-        $this->assertTrue(isset($app->test1) == true);
-        $this->assertTrue(isset($app->test2) == false);
     }
 
     /**
@@ -144,7 +123,7 @@ class ContainerTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $app->container->set('test1', TestClass::class);
         $this->assertFalse($app->container->used('test1'));
-        $a = $app->test1;
+        $test1 = $app->container->get('test1');
         $this->assertTrue($app->container->used('test1'));
     }
 
