@@ -76,7 +76,6 @@ class Container
                 return $result;
             }
             if (is_object($result)) {
-                $this->data[$name][1] = true; // needed by the used() method
                 return $result;
             }
         }
@@ -96,21 +95,6 @@ class Container
             throw new \InvalidArgumentException('The name argument must be of type string');
         }
         return isset($this->data[$name]);
-    }
-
-    /**
-     * Returns information about whether the service is added and used atleast once
-     * 
-     * @param string $name The name of the service
-     * @return boolen TRUE if services is added and used atleast once. FALSE otherwise.
-     * @throws \InvalidArgumentException
-     */
-    public function used($name)
-    {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException('The name argument must be of type string');
-        }
-        return isset($this->data[$name], $this->data[$name][1]);
     }
 
 }
