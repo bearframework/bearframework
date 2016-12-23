@@ -14,18 +14,18 @@ use BearFramework\App;
 /**
  * The is the class used to instantiate and configure you application.
  * 
- * @property \BearFramework\App\Config $config The application configuration
- * @property \BearFramework\App\Request $request Provides information about the current request
- * @property \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks
- * @property \BearFramework\App\Logger $logger Provides logging functionlity
- * @property \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options
- * @property \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests
- * @property \BearFramework\App\Assets $assets Provides utility functions for assets
- * @property \BearFramework\App\Data $data \BearFramework\App\Data
- * @property \BearFramework\App\Cache $cache Data cache
- * @property \BearFramework\App\Classes $classes Provides functionality for autoloading classes
- * @property \BearFramework\App\Urls $urls URLs utilities
- * @property \BearFramework\App\Images $images Images utilities
+ * @property-read \BearFramework\App\Config $config The application configuration
+ * @property-read \BearFramework\App\Request $request Provides information about the current request
+ * @property-read \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks
+ * @property-read \BearFramework\App\Logger $logger Provides logging functionlity
+ * @property-read \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options
+ * @property-read \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests
+ * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets
+ * @property-read \BearFramework\App\Data $data \BearFramework\App\Data
+ * @property-read \BearFramework\App\Cache $cache Data cache
+ * @property-read \BearFramework\App\Classes $classes Provides functionality for autoloading classes
+ * @property-read \BearFramework\App\Urls $urls URLs utilities
+ * @property-read \BearFramework\App\Images $images Images utilities
  */
 class App
 {

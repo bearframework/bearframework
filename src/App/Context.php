@@ -14,8 +14,8 @@ use BearFramework\App;
 /**
  * Provides information about addons and application location and utility functions
  * 
- * @property \BearFramework\App\Context\Assets $assets Provides utility functions for assets in the current context dir
- * @property \BearFramework\App\Context\Classes $classes Provides functionality for autoloading classes in the current context
+ * @property-read \BearFramework\App\Context\Assets $assets Provides utility functions for assets in the current context dir
+ * @property-read \BearFramework\App\Context\Classes $classes Provides functionality for autoloading classes in the current context
  */
 class Context
 {

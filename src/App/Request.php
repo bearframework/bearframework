@@ -17,12 +17,12 @@ use BearFramework\App;
  * @property string $scheme The request scheme
  * @property string $host The request hostname
  * @property int|null $port The request port
- * @property \BearFramework\App\Request\Path $path The request path
- * @property \BearFramework\App\Request\Query $query The request query string
- * @property \BearFramework\App\Request\Headers $headers The request headers
- * @property \BearFramework\App\Request\Cookies $cookies The request cookies
- * @property \BearFramework\App\Request\Data $data The request POST data
- * @property \BearFramework\App\Request\Files $files The request files data
+ * @property-read \BearFramework\App\Request\Path $path The request path
+ * @property-read \BearFramework\App\Request\Query $query The request query string
+ * @property-read \BearFramework\App\Request\Headers $headers The request headers
+ * @property-read \BearFramework\App\Request\Cookies $cookies The request cookies
+ * @property-read \BearFramework\App\Request\Data $data The request POST data
+ * @property-read \BearFramework\App\Request\Files $files The request files data
  */
 class Request
 {
