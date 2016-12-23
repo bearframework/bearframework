@@ -61,14 +61,8 @@ trait DynamicProperties
             isset($options['get']) ? $options['get'] : null,
             isset($options['set']) ? $options['set'] : null,
             isset($options['unset']) ? $options['unset'] : null,
-            false, // property used status,
             isset($options['readonly']) && $options['readonly'] === true, // readonly
         ];
-    }
-
-    public function isPropertyUsed($name)
-    {
-        return isset($this->dynamicProperties[$name]) && $this->dynamicProperties[$name][4] === true;
     }
 
     /**
@@ -80,7 +74,6 @@ trait DynamicProperties
     public function __get($name)
     {
         if (isset($this->dynamicProperties[$name]) && isset($this->dynamicProperties[$name][1])) { // get exists
-            $this->dynamicProperties[$name][4] = true; // used
             return call_user_func($this->dynamicProperties[$name][1]);
         }
         if (array_key_exists($name, $this->dynamicData)) {
@@ -88,7 +81,6 @@ trait DynamicProperties
         } else {
             if (isset($this->dynamicProperties[$name]) && isset($this->dynamicProperties[$name][0])) { // init exists
                 $this->dynamicData[$name] = call_user_func($this->dynamicProperties[$name][0]);
-                $this->dynamicProperties[$name][4] = true; // used
                 return $this->dynamicData[$name];
             }
             return null;
@@ -105,7 +97,7 @@ trait DynamicProperties
     public function __set($name, $value)
     {
         if (isset($this->dynamicProperties[$name])) {
-            if ($this->dynamicProperties[$name][5]) { // readonly
+            if ($this->dynamicProperties[$name][4]) { // readonly
                 throw new \Exception('The property ' . get_class($this) . '::$' . $name . ' is readonly');
             }
             if (isset($this->dynamicProperties[$name][2])) { // set exists
@@ -136,7 +128,7 @@ trait DynamicProperties
     {
 
         if (isset($this->dynamicProperties[$name])) {
-            if ($this->dynamicProperties[$name][5]) { // readonly
+            if ($this->dynamicProperties[$name][4]) { // readonly
                 throw new \Exception('The property ' . get_class($this) . '::$' . $name . ' is readonly');
             }
             if (isset($this->dynamicProperties[$name][3])) { // unset exists
