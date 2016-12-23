@@ -115,14 +115,4 @@ class ContainerTest extends BearFrameworkTestCase
         $app->container->get('missingService');
     }
 
-    /**
-     * 
-     */
-    public function testUsedInvalidArgument1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->container->used(1);
-    }
-
 }
