@@ -540,7 +540,7 @@ class App
                     $baseUrlParts = parse_url($this->request->base);
                     $cookies = $response->cookies->getList();
                     foreach ($cookies as $cookie) {
-                        setcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'] === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '') : $cookie['path'], $cookie['domain'] === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie['domain'], $cookie['secure'] === null ? $this->request->scheme === 'https' : $cookie['secure'], $cookie['httpOnly']);
+                        setcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'] === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '/') : $cookie['path'], $cookie['domain'] === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie['domain'], $cookie['secure'] === null ? $this->request->scheme === 'https' : $cookie['secure'], $cookie['httpOnly']);
                     }
                 }
             }
