@@ -37,7 +37,7 @@ class App
      * 
      * @var string
      */
-    const VERSION = '0.9.3';
+    const VERSION = 'dev';
 
     /**
      * Services container
