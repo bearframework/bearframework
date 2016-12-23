@@ -118,18 +118,6 @@ class ContainerTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testUsed()
-    {
-        $app = $this->getApp();
-        $app->container->set('test1', TestClass::class);
-        $this->assertFalse($app->container->used('test1'));
-        $test1 = $app->container->get('test1');
-        $this->assertTrue($app->container->used('test1'));
-    }
-
-    /**
-     * 
-     */
     public function testUsedInvalidArgument1()
     {
         $app = $this->getApp();
