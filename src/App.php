@@ -247,7 +247,7 @@ class App
     }
 
     /**
-     * Initalizes error handling
+     * Initializes error handling
      */
     private function initializeErrorHandler()
     {
