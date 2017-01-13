@@ -126,7 +126,6 @@ trait DynamicProperties
      */
     public function __unset($name)
     {
-
         if (isset($this->dynamicProperties[$name])) {
             if ($this->dynamicProperties[$name][4]) { // readonly
                 throw new \Exception('The property ' . get_class($this) . '::$' . $name . ' is readonly');

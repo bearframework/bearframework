@@ -30,7 +30,7 @@ class Cache
         if (!is_string($key)) {
             throw new \InvalidArgumentException('The key argument must be of type string');
         }
-        $app = App::$instance;
+        $app = App::get();
         $keyMD5 = md5($key);
         $data = $app->data->get(
                 [
@@ -69,7 +69,7 @@ class Cache
         if (!is_string($key)) {
             throw new \InvalidArgumentException('The key argument must be of type string');
         }
-        $app = App::$instance;
+        $app = App::get();
         $keyMD5 = md5($key);
         $data = $app->data->get(
                 [
@@ -113,7 +113,7 @@ class Cache
         if (!is_int($ttl)) {
             throw new \InvalidArgumentException('The ttl argument must be of type int');
         }
-        $app = App::$instance;
+        $app = App::get();
         $keyMD5 = md5($key);
         $body = [$ttl > 0 ? time() + $ttl : 0, $value];
         $data = [
@@ -135,7 +135,7 @@ class Cache
         if (!is_string($key)) {
             throw new \InvalidArgumentException('The key argument must be of type string');
         }
-        $app = App::$instance;
+        $app = App::get();
         $keyMD5 = md5($key);
         $app->data->delete([
             'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',

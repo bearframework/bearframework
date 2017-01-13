@@ -51,7 +51,7 @@ class App
      * 
      * @var \BearFramework\App 
      */
-    public static $instance = null;
+    private static $instance = null;
 
     /**
      * Information about whether the application is initialized
@@ -204,7 +204,7 @@ class App
 
             if ($this->config->assetsPathPrefix !== null) {
                 $this->routes->add($this->config->assetsPathPrefix . '*', function() {
-                    $app = App::$instance;
+                    $app = App::get();
                     $filename = $app->assets->getFilename((string) $app->request->path);
                     if ($filename === false) {
                         return new App\Response\NotFound();

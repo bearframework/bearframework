@@ -29,7 +29,7 @@ class Logger
      */
     public function log($level, $message, $context = [])
     {
-        $app = App::$instance;
+        $app = App::get();
         $level = trim((string) $level);
         if (strlen($level) === 0) {
             throw new \InvalidArgumentException('The level argument must not be empty');

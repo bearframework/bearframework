@@ -53,7 +53,7 @@ class Assets
      */
     public function getUrl($filename, $options = [])
     {
-        $app = App::$instance;
+        $app = App::get();
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('The filename argument must be of type string');
         }
@@ -108,7 +108,7 @@ class Assets
      */
     public function getContent($filename, $options = [])
     {
-        $app = App::$instance;
+        $app = App::get();
         $urlOptions = [];
         if (!is_array($options)) {
             throw new \InvalidArgumentException('The options argument must be of type array');
@@ -157,7 +157,7 @@ class Assets
         if (!is_string($path)) {
             throw new \InvalidArgumentException('The path argument must be of type string');
         }
-        $app = App::$instance;
+        $app = App::get();
         if ($app->config->assetsPathPrefix === null) {
             throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
         }

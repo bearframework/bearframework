@@ -33,7 +33,7 @@ class Data
     private function getInstance()
     {
         if ($this->instance === null) {
-            $app = App::$instance;
+            $app = App::get();
             if ($app->config->dataDir === null) {
                 throw new App\Config\InvalidOptionException('Config option dataDir is not set');
             }
@@ -306,7 +306,7 @@ class Data
         if (!is_string($key)) {
             throw new \InvalidArgumentException('The key argument must be of type string');
         }
-        $app = App::$instance;
+        $app = App::get();
         if ($app->config->dataDir === null) {
             throw new App\Config\InvalidOptionException('Config option dataDir is not set');
         }
@@ -329,7 +329,7 @@ class Data
         if (!is_string($filename)) {
             throw new \InvalidArgumentException('The filename argument must be of type string');
         }
-        $app = App::$instance;
+        $app = App::get();
         if ($app->config->dataDir === null) {
             throw new App\Config\InvalidOptionException('Config option dataDir is not set');
         }
