@@ -19,7 +19,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testResponse1()
     {
         $app = $this->getApp();
-        $app->initialize();
         $filename = $app->config->appDir . '/assets/file.png';
         $this->createSampleFile($filename, 'png');
         $app->assets->addDir($app->config->appDir . '/assets/');
@@ -36,7 +35,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testResponse2()
     {
         $app = $this->getApp();
-        $app->initialize();
         $filename = $app->config->appDir . '/assets/missing/file.png';
         $this->createSampleFile($filename, 'png');
         $app->assets->addDir($app->config->appDir . '/assets/');
@@ -54,7 +52,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testGetUrlAndGetFilename()
     {
         $app = $this->getApp();
-        $app->initialize();
         $this->createDir($app->config->appDir . '/assets/');
         $this->createDir($app->config->addonsDir . '/addon1/assets/');
         $app->assets->addDir($app->config->appDir . '/assets/');
@@ -128,7 +125,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testGetContent()
     {
         $app = $this->getApp();
-        $app->initialize();
         $this->createDir($app->config->appDir . '/assets/');
         $app->assets->addDir($app->config->appDir . '/assets/');
         $filename = $app->config->appDir . '/assets/file.svg';
@@ -294,7 +290,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testGetFilenameInvalidArguments4a()
     {
         $app = $this->getApp();
-        $app->initialize();
         $filename = $app->config->appDir . '/assets/logo.png';
         $this->createSampleFile($filename, 'png');
         $app->assets->addDir($app->config->appDir . '/assets/');
@@ -311,7 +306,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testGetFilenameInvalidArguments4b()
     {
         $app = $this->getApp();
-        $app->initialize();
         $filename = $app->config->appDir . '/assets/logo.png';
         $this->createSampleFile($filename, 'png');
         $app->assets->addDir($app->config->appDir . '/assets/');
@@ -328,7 +322,6 @@ class AssetsTest extends BearFrameworkTestCase
     public function testGetFilenameInvalidArguments4c()
     {
         $app = $this->getApp();
-        $app->initialize();
         $this->createDir($app->config->appDir . '/assets/');
         $app->assets->addDir($app->config->appDir . '/assets/');
 

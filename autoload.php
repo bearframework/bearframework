@@ -23,7 +23,6 @@ $classes = array(
     'BearFramework\App\Data\DataLockedException' => 'src/App/Data/DataLockedException.php',
     'BearFramework\App\Data\DataObject' => 'src/App/Data/DataObject.php',
     'BearFramework\App\Data\DataObjectMetadata' => 'src/App/Data/DataObjectMetadata.php',
-    'BearFramework\App\DynamicProperties' => 'src/App/DynamicProperties.php',
     'BearFramework\App\Hooks' => 'src/App/Hooks.php',
     'BearFramework\App\Images' => 'src/App/Images.php',
     'BearFramework\App\Logger' => 'src/App/Logger.php',
@@ -58,3 +57,4 @@ spl_autoload_register(function ($class) use ($classes) {
 }, true);
 
 require __DIR__ . '/vendor/ivopetkov/object-storage/autoload.php';
+require __DIR__ . '/vendor/ivopetkov/data-object/autoload.php';

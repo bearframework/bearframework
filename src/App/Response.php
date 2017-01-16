@@ -23,7 +23,7 @@ use BearFramework\App;
 class Response
 {
 
-    use \BearFramework\App\DynamicProperties;
+    use \IvoPetkov\DataObjectTrait;
 
     /**
      * The constructor

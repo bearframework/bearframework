@@ -30,7 +30,7 @@ use BearFramework\App;
 class App
 {
 
-    use \BearFramework\App\DynamicProperties;
+    use \IvoPetkov\DataObjectTrait;
 
     /**
      * Current Bear Framework version
@@ -73,35 +73,31 @@ class App
         self::$instance = &$this;
 
         $this->container = new App\Container();
-
-        $this->container->set('app.config', App\Config::class);
-        $this->container->set('app.request', App\Request::class);
-        $this->container->set('app.routes', App\Routes::class);
         $this->container->set('app.logger', App\Logger::class);
-        $this->container->set('app.addons', App\Addons::class);
-        $this->container->set('app.hooks', App\Hooks::class);
-        $this->container->set('app.assets', App\Assets::class);
-        $this->container->set('app.data', App\Data::class);
         $this->container->set('app.cache', App\Cache::class);
-        $this->container->set('app.classes', App\Classes::class);
-        $this->container->set('app.urls', App\Urls::class);
-        $this->container->set('app.images', App\Images::class);
 
         $this->defineProperty('config', [
-            'get' => function() {
-                return $this->container->get('app.config');
+            'init' => function() {
+                return new App\Config();
             },
             'readonly' => true
         ]);
+        $request = null;
         $this->defineProperty('request', [
-            'get' => function() {
-                return $this->container->get('app.request');
+            'get' => function() use (&$request) {
+                if ($this->initialized) {
+                    if ($request === null) {
+                        $request = new App\Request(true);
+                    }
+                    return $request;
+                }
+                return null;
             },
             'readonly' => true
         ]);
         $this->defineProperty('routes', [
-            'get' => function() {
-                return $this->container->get('app.routes');
+            'init' => function() {
+                return new App\Routes();
             },
             'readonly' => true
         ]);
@@ -112,26 +108,26 @@ class App
             'readonly' => true
         ]);
         $this->defineProperty('addons', [
-            'get' => function() {
-                return $this->container->get('app.addons');
+            'init' => function() {
+                return new App\Addons();
             },
             'readonly' => true
         ]);
         $this->defineProperty('hooks', [
-            'get' => function() {
-                return $this->container->get('app.hooks');
+            'init' => function() {
+                return new App\Hooks();
             },
             'readonly' => true
         ]);
         $this->defineProperty('assets', [
-            'get' => function() {
-                return $this->container->get('app.assets');
+            'init' => function() {
+                return new App\Assets();
             },
             'readonly' => true
         ]);
         $this->defineProperty('data', [
-            'get' => function() {
-                return $this->container->get('app.data');
+            'init' => function() {
+                return new App\Data();
             },
             'readonly' => true
         ]);
@@ -142,20 +138,20 @@ class App
             'readonly' => true
         ]);
         $this->defineProperty('classes', [
-            'get' => function() {
-                return $this->container->get('app.classes');
+            'init' => function() {
+                return new App\Classes();
             },
             'readonly' => true
         ]);
         $this->defineProperty('urls', [
-            'get' => function() {
-                return $this->container->get('app.urls');
+            'init' => function() {
+                return new App\Urls();
             },
             'readonly' => true
         ]);
         $this->defineProperty('images', [
-            'get' => function() {
-                return $this->container->get('app.images');
+            'init' => function() {
+                return new App\Images();
             },
             'readonly' => true
         ]);
@@ -183,7 +179,6 @@ class App
         if (!$this->initialized) {
             $this->initializeEnvironment();
             $this->initializeErrorHandler();
-            $this->initializeRequest();
 
             if (strlen($this->config->appDir) > 0) {
                 $indexFilename = realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
@@ -204,16 +199,15 @@ class App
 
             if ($this->config->assetsPathPrefix !== null) {
                 $this->routes->add($this->config->assetsPathPrefix . '*', function() {
-                    $app = App::get();
-                    $filename = $app->assets->getFilename((string) $app->request->path);
+                    $filename = $this->assets->getFilename((string) $this->request->path);
                     if ($filename === false) {
                         return new App\Response\NotFound();
                     } else {
                         $response = new App\Response\FileReader($filename);
-                        if ($app->config->assetsMaxAge !== null) {
-                            $response->headers->set('Cache-Control', 'public, max-age=' . (int) $app->config->assetsMaxAge);
+                        if ($this->config->assetsMaxAge !== null) {
+                            $response->headers->set('Cache-Control', 'public, max-age=' . (int) $this->config->assetsMaxAge);
                         }
-                        $mimeType = $app->assets->getMimeType($filename);
+                        $mimeType = $this->assets->getMimeType($filename);
                         if ($mimeType !== null) {
                             $response->headers->set('Content-Type', $mimeType);
                         }
@@ -222,9 +216,10 @@ class App
                     }
                 });
             }
-            $this->hooks->execute('initialized');
 
             $this->initialized = true;
+
+            $this->hooks->execute('initialized');
         }
     }
 
@@ -308,104 +303,6 @@ class App
                 throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
             });
             // @codeCoverageIgnoreEnd
-        }
-    }
-
-    /**
-     * Initializes the request object
-     */
-    private function initializeRequest()
-    {
-        if (isset($_SERVER)) {
-            $this->request->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-            $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? urldecode($_SERVER['REQUEST_URI']) : '/';
-            $position = strpos($path, '?');
-            if ($position !== false) {
-                $path = substr($path, 0, $position);
-            }
-            $basePath = '';
-            if (isset($_SERVER['SCRIPT_NAME'])) {
-                $scriptName = $_SERVER['SCRIPT_NAME'];
-                if (strpos($path, $scriptName) === 0) {
-                    $basePath = $scriptName;
-                    $path = substr($path, strlen($scriptName));
-                } else {
-                    $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']);
-                    $dirName = $pathInfo['dirname'];
-                    if ($dirName === DIRECTORY_SEPARATOR || $dirName === '.') {
-                        $basePath = '';
-                        $path = $path;
-                    } else {
-                        $basePath = $dirName;
-                        $path = substr($path, strlen($dirName));
-                    }
-                }
-            }
-            $scheme = (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && $_SERVER['HTTP_X_FORWARDED_PROTOCOL'] === 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
-            $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
-            $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : '';
-            $this->request->base = $scheme . '://' . $host . ($port !== '' && $port !== '80' ? ':' . $port : '') . $basePath;
-
-            $this->request->defineProperty('path', [
-                'init' => function() use ($path) {
-                    return new App\Request\Path(isset($path{0}) ? $path : '/');
-                },
-                'readonly' => true
-            ]);
-            $this->request->defineProperty('query', [
-                'init' => function() {
-                    $query = new App\Request\Query();
-                    foreach ($_GET as $name => $value) {
-                        $query->set($name, $value);
-                    }
-                    return $query;
-                },
-                'readonly' => true
-            ]);
-            $this->request->defineProperty('headers', [
-                'init' => function() {
-                    $headers = new App\Request\Headers();
-                    foreach ($_SERVER as $name => $value) {
-                        if (substr($name, 0, 5) == 'HTTP_') {
-                            $headers->set(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value);
-                        }
-                    }
-                    return $headers;
-                },
-                'readonly' => true
-            ]);
-            $this->request->defineProperty('cookies', [
-                'init' => function() {
-                    $cookies = new App\Request\Cookies();
-                    foreach ($_COOKIE as $name => $value) {
-                        $cookies->set($name, $value);
-                    }
-                    return $cookies;
-                },
-                'readonly' => true
-            ]);
-            $this->request->defineProperty('data', [
-                'init' => function() {
-                    $data = new App\Request\Data();
-                    foreach ($_POST as $name => $value) {
-                        $data->set($name, $value);
-                    }
-                    return $data;
-                },
-                'readonly' => true
-            ]);
-            $this->request->defineProperty('files', [
-                'init' => function() {
-                    $files = new App\Request\Files();
-                    foreach ($_FILES as $name => $value) {
-                        if (is_uploaded_file($value['tmp_name'])) {
-                            $files->set($name, $value['name'], $value['tmp_name'], $value['size'], $value['type'], $value['error']);
-                        }
-                    }
-                    return $files;
-                },
-                'readonly' => true
-            ]);
         }
     }
 

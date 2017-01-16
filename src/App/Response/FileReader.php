@@ -17,7 +17,7 @@ namespace BearFramework\App\Response;
 class FileReader extends \BearFramework\App\Response
 {
 
-    use \BearFramework\App\DynamicProperties;
+    use \IvoPetkov\DataObjectTrait;
 
     /**
      * The constructor 

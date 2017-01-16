@@ -26,7 +26,7 @@ class DataTest extends BearFrameworkTestCase
         $result = $app->data->get('users/1');
         $this->assertTrue($result->body === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result->metadata->lastAccessTime === '1234567890');
-        $this->assertTrue($result->metadata->other === null);
+        //$this->assertTrue($result->metadata->other === null);
         $this->assertTrue($app->data->exists('users/1'));
 
         $result = $app->data->get('users/2');

@@ -32,7 +32,7 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
      * @param boolean $createNew
      * @return \BearFramework\App
      */
-    function getApp($config = [], $createNew = false)
+    function getApp($config = [], $createNew = false, $initialize = true)
     {
         if ($this->app == null || $createNew) {
             $rootDir = $this->getTestDir();
@@ -58,6 +58,9 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
                 $app->request->base = 'http://example.com/www';
                 $app->request->method = 'GET';
             });
+            if ($initialize) {
+                $app->initialize();
+            }
         }
 
         return $this->app;

@@ -25,7 +25,7 @@ namespace BearFramework\App;
 class Config
 {
 
-    use \BearFramework\App\DynamicProperties;
+    use \IvoPetkov\DataObjectTrait;
 
     /**
      * The constructor

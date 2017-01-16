@@ -20,7 +20,7 @@ use BearFramework\App;
 class Context
 {
 
-    use \BearFramework\App\DynamicProperties;
+    use \IvoPetkov\DataObjectTrait;
 
     /**
      * The directory where the current addon or application are located

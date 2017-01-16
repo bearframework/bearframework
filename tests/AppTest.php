@@ -28,6 +28,7 @@ class AppTest extends BearFrameworkTestCase
         $_POST['name1'] = 'value1';
         $_GET['var1'] = '1';
         $app = new \BearFramework\App();
+        $this->assertTrue($app->request === null);
         $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue(\BearFramework\App::get() instanceof \BearFramework\App);
@@ -76,7 +77,6 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
         $app = $this->getApp();
-        $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->base === 'http://example.com/www');
         $this->assertTrue((string) $app->request->path === '/path1/');
@@ -96,7 +96,7 @@ class AppTest extends BearFrameworkTestCase
      */
     public function testAppIndex()
     {
-        $app = $this->getApp();
+        $app = $this->getApp([], false, false);
         $this->createFile($app->config->appDir . '/index.php', '<?php
 $app = \BearFramework\App::get();
 $app->routes->add(\'/\', function() {
@@ -123,7 +123,6 @@ $app->routes->add(\'/\', function() {
     public function testRespond()
     {
         $app = $this->getApp();
-        $app->initialize();
         $app->respond(new \BearFramework\App\Response('The end'));
         $this->expectOutputString('The end');
     }

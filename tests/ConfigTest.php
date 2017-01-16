@@ -72,7 +72,8 @@ class ConfigTest extends BearFrameworkTestCase
     public function testGet3()
     {
         $config = new \BearFramework\App\Config();
-        $this->assertTrue($config->customOption === null);
+        $this->setExpectedException('Exception');
+        echo $config->customOption;
     }
 
     /**
