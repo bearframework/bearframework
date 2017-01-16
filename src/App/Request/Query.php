@@ -23,14 +23,6 @@ class Query implements \Countable
     private $data = [];
 
     /**
-     * The constructor
-     */
-    public function __construct()
-    {
-        
-    }
-
-    /**
      * Sets a new query parameter value
      * 
      * @param string $name The name of the query parameter

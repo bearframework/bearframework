@@ -23,14 +23,6 @@ class Files implements \Countable
     private $data = [];
 
     /**
-     * The constructor
-     */
-    public function __construct()
-    {
-        
-    }
-
-    /**
      * Sets a new file value
      * 
      * @param string $name The name of the file

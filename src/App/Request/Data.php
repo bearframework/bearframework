@@ -23,14 +23,6 @@ class Data implements \Countable
     private $data = [];
 
     /**
-     * The constructor
-     */
-    public function __construct()
-    {
-        
-    }
-
-    /**
      * Sets a new POST parameter value
      * 
      * @param string $name The name of the POST parameter

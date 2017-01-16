@@ -23,14 +23,6 @@ class Headers implements \Countable
     private $data = [];
 
     /**
-     * The constructor
-     */
-    public function __construct()
-    {
-        
-    }
-
-    /**
      * Sets a new header value
      * 
      * @param string $name The name of the header
