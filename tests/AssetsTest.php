@@ -107,13 +107,13 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->createSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
-                    $app->data->makePublic(['key' => $key]);
+                    $app->data->makePublic($key);
                     $this->assertTrue($app->assets->getFilename(substr($url, strlen($app->request->base))) === realpath($filename));
-                    $app->data->makePrivate(['key' => $key]);
+                    $app->data->makePrivate($key);
                     $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));
 
                     $url = $app->assets->getUrl($filename, $options);
-                    $app->data->makePublic(['key' => $key]);
+                    $app->data->makePublic($key);
                     $size = $app->images->getSize($app->assets->getFilename(substr($url, strlen($app->request->base))));
                     $this->assertTrue($size[0] === $testImageWidth);
                     $this->assertTrue($size[1] === $testImageHeight);

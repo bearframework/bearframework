@@ -32,16 +32,10 @@ class Cache
         }
         $app = App::get();
         $keyMD5 = md5($key);
-        $data = $app->data->get(
-                [
-                    'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
-                    'result' => ['body']
-                ]
-        );
-        // @codeCoverageIgnoreStart
-        if (isset($data['body'])) {
+        $data = $app->data->get('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        if ($data !== null) {
             try {
-                $body = unserialize(gzuncompress($data['body']));
+                $body = unserialize(gzuncompress($data->body));
                 if ($body[0] > 0) {
                     if ($body[0] > time()) {
                         return $body[1];
@@ -53,7 +47,6 @@ class Cache
                 
             }
         }
-        // @codeCoverageIgnoreEnd
         return $defaultValue;
     }
 
@@ -71,28 +64,18 @@ class Cache
         }
         $app = App::get();
         $keyMD5 = md5($key);
-        $data = $app->data->get(
-                [
-                    'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
-                    'result' => ['body']
-                ]
-        );
-        // @codeCoverageIgnoreStart
-        if (isset($data['body'])) {
+        $data = $app->data->get('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        if ($data !== null) {
             try {
-                $body = unserialize(gzuncompress($data['body']));
+                $body = unserialize(gzuncompress($data->body));
                 if ($body[0] > 0) {
-                    if ($body[0] > time()) {
-                        return true;
-                    }
-                    return false;
+                    return $body[0] > time();
                 }
                 return true;
             } catch (\Exception $e) {
                 
             }
         }
-        // @codeCoverageIgnoreEnd
         return false;
     }
 
@@ -115,12 +98,8 @@ class Cache
         }
         $app = App::get();
         $keyMD5 = md5($key);
-        $body = [$ttl > 0 ? time() + $ttl : 0, $value];
-        $data = [
-            'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
-            'body' => gzcompress(serialize($body))
-        ];
-        $app->data->set($data);
+        $key = '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2';
+        $app->data->set($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $value])));
     }
 
     /**
@@ -137,9 +116,7 @@ class Cache
         }
         $app = App::get();
         $keyMD5 = md5($key);
-        $app->data->delete([
-            'key' => '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2',
-        ]);
+        $app->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
     }
 
 }

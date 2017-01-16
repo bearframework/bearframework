@@ -24,7 +24,7 @@ class ImagesTest extends BearFrameworkTestCase
         if (function_exists('imagecreatefromwebp')) {
             $fileTypes[] = 'webp';
         }
-        
+
         foreach ($fileTypes as $fileType) {
             $filename = $app->config->appDir . '/assets/logo.' . $fileType;
             $this->createSampleFile($filename, $fileType);
@@ -256,15 +256,14 @@ class ImagesTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testResizeInvalidArgument12()
-    {
-        $app = $this->getApp();
-
-        $sourceFilename = $app->config->appDir . '/assets/logo.png';
-        $targetFilename = $app->config->appDir . '/assets/newlogo.png';
-        $this->createSampleFile($sourceFilename, 'webp');
-        $this->setExpectedException('InvalidArgumentException');
-        $app->images->resize($sourceFilename, $targetFilename, ['width' => 100, 'height' => 100]);
-    }
-
+//    public function testResizeInvalidArgument12()
+//    {
+//        $app = $this->getApp();
+//
+//        $sourceFilename = $app->config->appDir . '/assets/logo.png';
+//        $targetFilename = $app->config->appDir . '/assets/newlogo.png';
+//        $this->createSampleFile($sourceFilename, 'webp');
+//        $this->setExpectedException('InvalidArgumentException');
+//        $app->images->resize($sourceFilename, $targetFilename, ['width' => 100, 'height' => 100]);
+//    }
 }
