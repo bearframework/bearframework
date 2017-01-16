@@ -25,7 +25,7 @@ class ContextTest extends BearFrameworkTestCase
         $this->createFile($app->config->appDir . '/index.php', '<?php ');
         $this->createFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
 
-        $context = $app->getContext($app->config->appDir);
+        $context = $app->context->get($app->config->appDir);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
@@ -64,7 +64,7 @@ class ContextTest extends BearFrameworkTestCase
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon', ['option1' => 5]);
 
-        $context = $app->getContext($addonDir);
+        $context = $app->context->get($addonDir);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
@@ -98,7 +98,7 @@ class ContextTest extends BearFrameworkTestCase
         $this->createFile($addonDir . 'index.php', '<?php ');
         // Addon is not added
         $this->setExpectedException('Exception');
-        $app->getContext($addonDir);
+        $app->context->get($addonDir);
     }
 
     /**
@@ -122,11 +122,11 @@ class ContextTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetContextInvalidArguments1()
+    public function testContextInvalidArguments3()
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
-        $app->getContext(1);
+        $app->context->get(1);
     }
 
     /**

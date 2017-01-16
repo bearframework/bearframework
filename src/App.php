@@ -26,6 +26,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Classes $classes Provides functionality for autoloading classes
  * @property-read \BearFramework\App\Urls $urls URLs utilities
  * @property-read \BearFramework\App\Images $images Images utilities
+ * @property-read \BearFramework\App\ContextLocator $context Context information object locator
  */
 class App
 {
@@ -152,6 +153,12 @@ class App
         $this->defineProperty('images', [
             'init' => function() {
                 return new App\Images();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('context', [
+            'init' => function() {
+                return new App\ContextLocator();
             },
             'readonly' => true
         ]);
@@ -304,39 +311,6 @@ class App
             });
             // @codeCoverageIgnoreEnd
         }
-    }
-
-    /**
-     * Creates a context object for the filename specified
-     * 
-     * @param string $filename
-     * @throws \InvalidArgumentException
-     * @throws \Exception
-     * @return \BearFramework\App\Context The context object
-     */
-    public function getContext($filename)
-    {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
-        $filename = realpath($filename);
-        if ($filename === false) {
-            throw new \Exception('File does not exists');
-        }
-        if (is_dir($filename)) {
-            $filename .= DIRECTORY_SEPARATOR;
-        }
-        if (strpos($filename, $this->config->appDir . DIRECTORY_SEPARATOR) === 0) {
-            return new App\Context($this->config->appDir);
-        }
-        $addons = $this->addons->getList();
-        foreach ($addons as $data) {
-            $addonData = \BearFramework\Addons::get($data['id']);
-            if (strpos($filename, $addonData['dir'] . DIRECTORY_SEPARATOR) === 0) {
-                return new App\Context($addonData['dir']);
-            }
-        }
-        throw new \Exception('Connot find context');
     }
 
     /**

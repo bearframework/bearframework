@@ -16,6 +16,7 @@ $classes = array(
     'BearFramework\App\Config\InvalidOptionException' => 'src/App/Config/InvalidOptionException.php',
     'BearFramework\App\Container' => 'src/App/Container.php',
     'BearFramework\App\Context' => 'src/App/Context.php',
+    'BearFramework\App\ContextLocator' => 'src/App/ContextLocator.php',
     'BearFramework\App\Context\Assets' => 'src/App/Context/Assets.php',
     'BearFramework\App\Context\Classes' => 'src/App/Context/Classes.php',
     'BearFramework\App\Data' => 'src/App/Data.php',
