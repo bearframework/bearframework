@@ -46,6 +46,7 @@ $classes = array(
     'BearFramework\App\Response\TemporaryUnavailable' => 'src/App/Response/TemporaryUnavailable.php',
     'BearFramework\App\Response\Text' => 'src/App/Response/Text.php',
     'BearFramework\App\Routes' => 'src/App/Routes.php',
+    'BearFramework\App\Shortcuts' => 'src/App/Shortcuts.php',
     'BearFramework\App\Urls' => 'src/App/Urls.php',
     'BearFramework\Addons' => 'src/Addons.php',
     'BearFramework\App' => 'src/App.php',

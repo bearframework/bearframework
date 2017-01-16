@@ -27,6 +27,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Urls $urls URLs utilities
  * @property-read \BearFramework\App\Images $images Images utilities
  * @property-read \BearFramework\App\ContextLocator $context Context information object locator
+ * @property-read \BearFramework\App\Shortcuts $shortcuts Allow registration of $app object properties (shortcuts)
  */
 class App
 {
@@ -162,6 +163,37 @@ class App
             },
             'readonly' => true
         ]);
+        $this->defineProperty('shortcuts', [
+            'init' => function() {
+                $initPropertyMethod = function($callback) { // needed to preserve the $this context
+                            return $callback();
+                        };
+                $addPropertyMethod = function($name, $callback) use (&$initPropertyMethod) {
+                            $this->defineProperty($name, [
+                                'init' => function() use (&$callback, &$initPropertyMethod) {
+                                    return $initPropertyMethod($callback);
+                                },
+                                'readonly' => true
+                            ]);
+                        };
+
+                return new class($addPropertyMethod) {
+
+                    private $addPropertyMethod = null;
+
+                    public function __construct($addPropertyMethod)
+                    {
+                        $this->addPropertyMethod = $addPropertyMethod;
+                    }
+
+                    public function add(string $name, callable $callback)
+                    {
+                        call_user_func($this->addPropertyMethod, $name, $callback);
+                    }
+                };
+            },
+            'readonly' => true
+        ]);
     }
 
     /**
@@ -186,6 +218,8 @@ class App
         if (!$this->initialized) {
             $this->initializeEnvironment();
             $this->initializeErrorHandler();
+
+            $this->initialized = true; // The request property counts on this. It must be here so that app and addons index.php files can access it.
 
             if (strlen($this->config->appDir) > 0) {
                 $indexFilename = realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
@@ -223,8 +257,6 @@ class App
                     }
                 });
             }
-
-            $this->initialized = true;
 
             $this->hooks->execute('initialized');
         }
