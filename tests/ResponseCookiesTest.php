@@ -63,7 +63,9 @@ class ResponseCookiesTest extends BearFrameworkTestCase
     {
         $cookies = new \BearFramework\App\Response\Cookies();
         $this->setExpectedException('InvalidArgumentException');
-        $cookies->set('name1', 'value1', 'expire');
+        $cookies->set('name1', 'value1', [
+            'expire' => 'expire'
+        ]);
     }
 
     /**
@@ -73,7 +75,9 @@ class ResponseCookiesTest extends BearFrameworkTestCase
     {
         $cookies = new \BearFramework\App\Response\Cookies();
         $this->setExpectedException('InvalidArgumentException');
-        $cookies->set('name1', 'value1', time(), 1);
+        $cookies->set('name1', 'value1', [
+            'path' => 1
+        ]);
     }
 
     /**
@@ -83,7 +87,9 @@ class ResponseCookiesTest extends BearFrameworkTestCase
     {
         $cookies = new \BearFramework\App\Response\Cookies();
         $this->setExpectedException('InvalidArgumentException');
-        $cookies->set('name1', 'value1', time(), '/', 1);
+        $cookies->set('name1', 'value1', [
+            'domain' => 1
+        ]);
     }
 
     /**
@@ -93,7 +99,9 @@ class ResponseCookiesTest extends BearFrameworkTestCase
     {
         $cookies = new \BearFramework\App\Response\Cookies();
         $this->setExpectedException('InvalidArgumentException');
-        $cookies->set('name1', 'value1', time(), '/', 'example.com', 1);
+        $cookies->set('name1', 'value1', [
+            'secure' => 1
+        ]);
     }
 
     /**
@@ -103,7 +111,9 @@ class ResponseCookiesTest extends BearFrameworkTestCase
     {
         $cookies = new \BearFramework\App\Response\Cookies();
         $this->setExpectedException('InvalidArgumentException');
-        $cookies->set('name1', 'value1', time(), '/', 'example.com', true, 1);
+        $cookies->set('name1', 'value1', [
+            'httpOnly' => 1
+        ]);
     }
 
     /**

@@ -27,15 +27,16 @@ class Cookies implements \Countable
      * 
      * @param string $name The name of the cookie
      * @param string $value The value of the cookie
-     * @param int $expire The time the cookie expires in unix timestamp format
-     * @param string $path The path on the server in which the cookie will be available on
-     * @param string $domain The (sub)domain that the cookie is available to
-     * @param boolean $secure Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client
-     * @param boolean $httpOnly When TRUE the cookie will be made accessible only through the HTTP protocol
+     * @param array $options List of options: Available values:
+     *    - int $expire The time the cookie expires in unix timestamp format
+     *    - string $path The path on the server in which the cookie will be available on
+     *    - string $domain The (sub)domain that the cookie is available to
+     *    - boolean $secure Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client
+     *    - boolean $httpOnly When TRUE the cookie will be made accessible only through the HTTP protocol
      * @throws \InvalidArgumentException
      * @return \BearFramework\App\Response\Cookie A reference to the object
      */
-    public function set($name, $value, $expire = 0, $path = null, $domain = null, $secure = null, $httpOnly = false)
+    public function set($name, $value, $options = [])
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('The name argument must be of type string');
@@ -43,28 +44,31 @@ class Cookies implements \Countable
         if (!is_string($value)) {
             throw new \InvalidArgumentException('The value argument must be of type string');
         }
-        if (!is_int($expire)) {
-            throw new \InvalidArgumentException('The expire argument must be of type int');
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
-        if (!is_string($path) && $path !== null) {
-            throw new \InvalidArgumentException('The path argument must be of type string');
+        if (isset($options['expire']) && !is_int($options['expire'])) {
+            throw new \InvalidArgumentException('The expire option must be of type int');
         }
-        if (!is_string($domain) && $domain !== null) {
-            throw new \InvalidArgumentException('The domain argument must be of type string');
+        if (isset($options['path']) && !is_string($options['path'])) {
+            throw new \InvalidArgumentException('The path option must be of type string');
         }
-        if (!is_bool($secure) && $secure !== null) {
-            throw new \InvalidArgumentException('The secure argument must be of type boolean');
+        if (isset($options['domain']) && !is_string($options['domain'])) {
+            throw new \InvalidArgumentException('The domain option must be of type string');
         }
-        if (!is_bool($httpOnly)) {
-            throw new \InvalidArgumentException('The httpOnly argument must be of type boolean');
+        if (isset($options['secure']) && !is_bool($options['secure'])) {
+            throw new \InvalidArgumentException('The secure option must be of type boolean');
+        }
+        if (isset($options['httpOnly']) && !is_bool($options['httpOnly'])) {
+            throw new \InvalidArgumentException('The httpOnly option must be of type boolean');
         }
         $this->data[$name] = [
             'value' => $value,
-            'expire' => $expire,
-            'path' => $path,
-            'domain' => $domain,
-            'secure' => $secure,
-            'httpOnly' => $httpOnly
+            'expire' => isset($options['expire']) ? $options['expire'] : 0,
+            'path' => isset($options['path']) ? $options['path'] : null,
+            'domain' => isset($options['domain']) ? $options['domain'] : null,
+            'secure' => isset($options['secure']) ? $options['secure'] : null,
+            'httpOnly' => isset($options['httpOnly']) ? $options['httpOnly'] : false
         ];
         return $this;
     }
