@@ -125,9 +125,9 @@ class Config
             foreach ($data as $name => $value) {
                 $this->$name = $value;
             }
-        } else {
-            throw new \InvalidArgumentException('The configuration data in ' . $filename . ' is not valid');
+            return;
         }
+        throw new \InvalidArgumentException('The configuration data in ' . $filename . ' is not valid');
     }
 
 }
