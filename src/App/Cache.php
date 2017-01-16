@@ -84,18 +84,22 @@ class Cache
      * 
      * @param string $key The data key
      * @param mixed $value The data
-     * @param int $ttl Time in seconds to stay in the cache. Zero mean no expiration.
+     * @param array $options List of options. Available values: ttl (time in seconds to stay in the cache)
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function set($key, $value, $ttl = 0)
+    public function set($key, $value, $options = [])
     {
         if (!is_string($key)) {
             throw new \InvalidArgumentException('The key argument must be of type string');
         }
-        if (!is_int($ttl)) {
-            throw new \InvalidArgumentException('The ttl argument must be of type int');
+        if (!is_array($options)) {
+            throw new \InvalidArgumentException('The options argument must be of type array');
         }
+        if (isset($options['ttl']) && !is_int($options['ttl'])) {
+            throw new \InvalidArgumentException('The ttl option must be of type int');
+        }
+        $ttl = isset($options['ttl']) ? $options['ttl'] : 0;
         $app = App::get();
         $keyMD5 = md5($key);
         $key = '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2';

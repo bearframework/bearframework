@@ -46,11 +46,15 @@ class CacheTest extends BearFrameworkTestCase
 
         $app->cache->delete('key1');
 
-        $app->cache->set('key1', 'data1', 2);
+        $app->cache->set('key1', 'data1', ['ttl' => 2]);
         $result = $app->cache->get('key1');
         $this->assertTrue($result === 'data1');
+        $result = $app->cache->exists('key1');
+        $this->assertTrue($result);
         sleep(3);
         $result = $app->cache->get('key1');
+        $this->assertFalse($result);
+        $result = $app->cache->exists('key1');
         $this->assertFalse($result);
         $app->cache->delete('key1');
     }
@@ -92,7 +96,7 @@ class CacheTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $this->setExpectedException('InvalidArgumentException');
-        $app->cache->set('key1', 1, 'wrong');
+        $app->cache->set('key1', 1, ['ttl' => 'wrong']);
     }
 
     /**
