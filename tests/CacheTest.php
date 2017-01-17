@@ -23,7 +23,7 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->delete('key1');
 
         $result = $app->cache->get('key1');
-        $this->assertFalse($result);
+        $this->assertTrue($result === null);
         $this->assertFalse($app->cache->exists('key1'));
 
         $app->cache->set('key1', 'data1');
@@ -33,7 +33,7 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->delete('key1');
 
         $result = $app->cache->get('key1');
-        $this->assertFalse($result);
+        $this->assertTrue($result === null);
         $this->assertFalse($app->cache->exists('key1'));
     }
 
@@ -53,7 +53,7 @@ class CacheTest extends BearFrameworkTestCase
         $this->assertTrue($result);
         sleep(3);
         $result = $app->cache->get('key1');
-        $this->assertFalse($result);
+        $this->assertTrue($result === null);
         $result = $app->cache->exists('key1');
         $this->assertFalse($result);
         $app->cache->delete('key1');

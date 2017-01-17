@@ -18,14 +18,14 @@ class Cache
 {
 
     /**
-     * Return the saved data from the cache of the default value specified
+     * Return the saved data from the cache or the default value specified
      * 
      * @param string $key The data key
      * @param string $defaultValue The default value which will be returned if the data is missing from the cache
      * @throws \InvalidArgumentException
-     * @return mixed The saved data from the cache of the default value specified
+     * @return mixed The saved data from the cache or the default value specified
      */
-    public function get($key, $defaultValue = false)
+    public function get($key, $defaultValue = null)
     {
         if (!is_string($key)) {
             throw new \InvalidArgumentException('The key argument must be of type string');
@@ -107,7 +107,7 @@ class Cache
     }
 
     /**
-     * Deletes data fom the cache
+     * Deletes data from the cache
      * 
      * @param string $key The data key
      * @throws \InvalidArgumentException
