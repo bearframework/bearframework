@@ -87,7 +87,8 @@ class Config
             'displayErrors' => false,
             'logErrors' => false,
             'assetsPathPrefix' => '/assets/',
-            'assetsMaxAge' => 0
+            'assetsMaxAge' => 0,
+            'tempDataMaxAge' => 86400
         ];
         $data = array_merge($defaultOptions, $options);
         foreach ($data as $name => $value) {

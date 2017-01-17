@@ -22,6 +22,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets
  * @property-read \BearFramework\App\Data $data \BearFramework\App\Data
+ * @property-read \BearFramework\App\TempData $tempData \BearFramework\App\TempData
  * @property-read \BearFramework\App\Cache $cache Data cache
  * @property-read \BearFramework\App\Classes $classes Provides functionality for autoloading classes
  * @property-read \BearFramework\App\Urls $urls URLs utilities
@@ -130,6 +131,12 @@ class App
         $this->defineProperty('data', [
             'init' => function() {
                 return new App\Data();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('tempData', [
+            'init' => function() {
+                return new App\TempData();
             },
             'readonly' => true
         ]);
