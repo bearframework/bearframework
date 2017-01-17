@@ -23,7 +23,6 @@ $classes = array(
     'BearFramework\App\Data\DataList' => 'src/App/Data/DataList.php',
     'BearFramework\App\Data\DataLockedException' => 'src/App/Data/DataLockedException.php',
     'BearFramework\App\Data\DataObject' => 'src/App/Data/DataObject.php',
-    'BearFramework\App\Data\DataObjectMetadata' => 'src/App/Data/DataObjectMetadata.php',
     'BearFramework\App\Hooks' => 'src/App/Hooks.php',
     'BearFramework\App\Images' => 'src/App/Images.php',
     'BearFramework\App\Logger' => 'src/App/Logger.php',

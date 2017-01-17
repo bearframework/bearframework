@@ -12,7 +12,6 @@ namespace BearFramework\App;
 use BearFramework\App;
 use BearFramework\App\Data\DataList;
 use BearFramework\App\Data\DataObject;
-use BearFramework\App\Data\DataObjectMetadata;
 
 /**
  * Data storage
@@ -60,11 +59,11 @@ class Data
                 [
                     'command' => 'get',
                     'key' => $key,
-                    'result' => ['key', 'body', 'metadata']
+                    'result' => ['body']
                 ]
             ]);
-            if (isset($result[0]['key'])) {
-                return $this->makeDataObjectFromRawData($result[0]);
+            if (isset($result[0]['body'])) {
+                return $result[0]['body'];
             }
             return $defaultValue;
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
@@ -101,19 +100,19 @@ class Data
      * Saves data
      * 
      * @param string $key The key
-     * @param string $body The body
+     * @param string $value The body
      * @return void No value is returned
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function set(string $key, string $body): void
+    public function set(string $key, string $value): void
     {
         try {
             $this->execute([
                 [
                     'command' => 'set',
                     'key' => $key,
-                    'body' => $body
+                    'body' => $value
                 ]
             ]);
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
@@ -288,6 +287,40 @@ class Data
     }
 
     /**
+     * Returns a list of all data object's metadata
+     * 
+     * @param string $key The key
+     * @return \IvoPetkov\DataList
+     * @throws \Exception
+     */
+    public function getMetadataList(string $key): \IvoPetkov\DataList
+    {
+        try {
+            $result = $this->execute([
+                [
+                    'command' => 'get',
+                    'key' => $key,
+                    'result' => ['metadata']
+                ]
+                    ]
+            );
+            $objectMetadata = [];
+            foreach ($result[0] as $name => $value) {
+                if (strpos($name, 'metadata.') === 0) {
+                    $name = substr($name, 9);
+                    if ($name === 'internalFrameworkPropertyPublic') {
+                        continue;
+                    }
+                    $objectMetadata[] = ['name' => $name, 'value' => $value];
+                }
+            }
+            return new \IvoPetkov\DataList($objectMetadata);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    /**
      * 
      * @return \BearFramework\App\Data\DataList
      */
@@ -310,8 +343,22 @@ class Data
                 throw new \Exception($e->getMessage());
             }
             $list = [];
-            foreach ($result[0] as $itemData) {
-                $list[] = $this->makeDataObjectFromRawData($itemData);
+            foreach ($result[0] as $objectData) {
+                $objectMetadata = [];
+                foreach ($objectData as $name => $value) {
+                    if (strpos($name, 'metadata.') === 0) {
+                        $name = substr($name, 9);
+                        if ($name === 'internalFrameworkPropertyPublic') {
+                            continue;
+                        }
+                        $objectMetadata[$name] = $value;
+                    }
+                }
+                $list[] = new DataObject([
+                    'key' => $objectData['key'],
+                    'body' => $objectData['body'],
+                    'metadata' => new \IvoPetkov\DataObject($objectMetadata),
+                ]);
             }
             return $list;
         });
@@ -455,29 +502,6 @@ class Data
             return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
         }
         throw new \InvalidArgumentException('The filename specified is not valid data object');
-    }
-
-    /**
-     * 
-     * @param array $rawData
-     * @return DataObject
-     */
-    private function makeDataObjectFromRawData(array $rawData): DataObject
-    {
-        $metadata = [];
-        foreach ($rawData as $name => $value) {
-            if (strpos($name, 'metadata.') === 0) {
-                $metadata[substr($name, 9)] = $value;
-            }
-        }
-        if (isset($metadata['internalFrameworkPropertyPublic'])) {
-            unset($metadata['internalFrameworkPropertyPublic']);
-        }
-        return new DataObject([
-            'key' => $rawData['key'],
-            'body' => $rawData['body'],
-            'metadata' => new DataObjectMetadata($metadata),
-        ]);
     }
 
 }

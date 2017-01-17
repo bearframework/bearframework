@@ -32,15 +32,15 @@ class TempData
         if ($currentPeriodDataKey === null) {
             return $defaultValue;
         }
-        $result = $app->data->get($currentPeriodDataKey);
-        if ($result !== null) {
-            return unserialize(gzuncompress($result->body));
+        $value = $app->data->get($currentPeriodDataKey);
+        if ($value !== null) {
+            return unserialize(gzuncompress($value));
         }
         $previousPeriodDataKey = $this->getPeriodDataKey($key, 1);
-        $result = $app->data->get($previousPeriodDataKey);
-        if ($result !== null) {
-            $app->data->set($currentPeriodDataKey, $result->body);
-            return unserialize(gzuncompress($result->body));
+        $value = $app->data->get($previousPeriodDataKey);
+        if ($value !== null) {
+            $app->data->set($currentPeriodDataKey, $value);
+            return unserialize(gzuncompress($value));
         }
         return $defaultValue;
     }
@@ -124,7 +124,7 @@ class TempData
         if ($maxAge === 0) {
             return null;
         }
-        $periodAge = $maxAge / 2;
+        $periodAge = floor($maxAge / 2);
         $keyMD5 = md5($key);
         return '.temp/tempdata/' . $maxAge . '/' . (floor(time() / $periodAge) * $periodAge - $periodIndex * $periodAge) . '/' . $keyMD5[0] . '/' . $keyMD5[1] . '/' . $keyMD5[3] . '/' . substr($keyMD5, 3);
     }

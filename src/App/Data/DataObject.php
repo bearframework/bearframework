@@ -12,7 +12,7 @@ namespace BearFramework\App\Data;
 /**
  * @property string $key The key
  * @property string $body The body
- * @property BearFramework\App\Data\DataObjectMetadata $metadata The metadata
+ * @property \IvoPetkov\DataObject $metadata The metadata
  */
 class DataObject extends \IvoPetkov\DataObject
 {

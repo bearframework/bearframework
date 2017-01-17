@@ -42,15 +42,15 @@ class TempDataTest extends BearFrameworkTestCase
      */
     public function testDelayedGet()
     {
-        $app = $this->getApp(['tempDataMaxAge' => 10]);
+        $app = $this->getApp(['tempDataMaxAge' => 4]);
 
         $app->tempData->set('key1', 'data1');
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === 'data1');
-        sleep(7);
+        sleep(2);
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === 'data1');
-        sleep(12);
+        sleep(5);
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === null);
     }
@@ -60,14 +60,14 @@ class TempDataTest extends BearFrameworkTestCase
      */
     public function testDelayedExists()
     {
-        $app = $this->getApp(['tempDataMaxAge' => 10]);
+        $app = $this->getApp(['tempDataMaxAge' => 4]);
 
         $app->tempData->set('key1', 'data1');
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === 'data1');
-        sleep(7);
+        sleep(2);
         $this->assertTrue($app->tempData->exists('key1'));
-        sleep(12);
+        sleep(5);
         $this->assertFalse($app->tempData->exists('key1'));
     }
 
@@ -76,16 +76,16 @@ class TempDataTest extends BearFrameworkTestCase
      */
     public function testDelayedSet()
     {
-        $app = $this->getApp(['tempDataMaxAge' => 10]);
+        $app = $this->getApp(['tempDataMaxAge' => 4]);
 
         $app->tempData->set('key1', 'data1');
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === 'data1');
-        sleep(7);
+        sleep(2);
         $app->tempData->set('key1', 'data2');
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === 'data2');
-        sleep(12);
+        sleep(5);
         $app->tempData->set('key1', 'data3');
         $result = $app->tempData->get('key1');
         $this->assertTrue($result === 'data3');

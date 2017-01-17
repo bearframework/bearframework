@@ -32,17 +32,17 @@ class Cache
         }
         $app = App::get();
         $keyMD5 = md5($key);
-        $data = $app->data->get('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
-        if ($data !== null) {
+        $value = $app->data->get('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        if ($value !== null) {
             try {
-                $body = unserialize(gzuncompress($data->body));
-                if ($body[0] > 0) {
-                    if ($body[0] > time()) {
-                        return $body[1];
+                $value = unserialize(gzuncompress($value));
+                if ($value[0] > 0) {
+                    if ($value[0] > time()) {
+                        return $value[1];
                     }
                     return $defaultValue;
                 }
-                return $body[1];
+                return $value[1];
             } catch (\Exception $e) {
                 
             }
@@ -64,12 +64,12 @@ class Cache
         }
         $app = App::get();
         $keyMD5 = md5($key);
-        $data = $app->data->get('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
-        if ($data !== null) {
+        $value = $app->data->get('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        if ($value !== null) {
             try {
-                $body = unserialize(gzuncompress($data->body));
-                if ($body[0] > 0) {
-                    return $body[0] > time();
+                $value = unserialize(gzuncompress($value));
+                if ($value[0] > 0) {
+                    return $value[0] > time();
                 }
                 return true;
             } catch (\Exception $e) {

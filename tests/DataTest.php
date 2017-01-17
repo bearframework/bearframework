@@ -22,15 +22,13 @@ class DataTest extends BearFrameworkTestCase
 
         $app->data->set('users/1', '{"name":"John Smith","email":"john@example.com"}');
         $app->data->setMetadata('users/1', 'lastAccessTime', '1234567890');
+        $app->data->makePublic('user/1');
 
-        $result = $app->data->get('users/1');
-        $this->assertTrue($result->body === '{"name":"John Smith","email":"john@example.com"}');
-        $this->assertTrue($result->metadata->lastAccessTime === '1234567890');
-        //$this->assertTrue($result->metadata->other === null);
+        $this->assertTrue($app->data->get('users/1') === '{"name":"John Smith","email":"john@example.com"}');
+        $this->assertTrue($app->data->getMetadata('users/1', 'lastAccessTime') === '1234567890');
         $this->assertTrue($app->data->exists('users/1'));
 
-        $result = $app->data->get('users/2');
-        $this->assertTrue($result === null);
+        $this->assertTrue($app->data->get('users/2') === null);
         $this->assertFalse($app->data->exists('users/2'));
 
         $app->data->append('visits/ip.log', "123.123.123.123\n");
@@ -47,6 +45,11 @@ class DataTest extends BearFrameworkTestCase
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->body === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
+
+        $result = $app->data->getMetadataList('users/1');
+        $this->assertTrue($result->length === 1);
+        $this->assertTrue($result[0]->name === 'lastAccessTime');
+        $this->assertTrue($result[0]->value === '1234567890');
 
         $result = $app->data->getList()
                 ->filterBy('key', 'users/9');

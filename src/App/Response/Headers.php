@@ -97,7 +97,7 @@ class Headers implements \Countable
     /**
      * Returns a list of all headers
      * 
-     * @return array An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\App\Cache|\BearFramework\App\Context[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
