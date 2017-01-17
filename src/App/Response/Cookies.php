@@ -128,15 +128,15 @@ class Cookies implements \Countable
     /**
      * Returns a list of all cookies
      * 
-     * @return array An array containing all cookies in the following format [['name'=>..., 'value'=>..., 'expire'=>...], ...]
+     * @return \BearFramework\App\Response\CookiesList|\BearFramework\App\Response\CookiesListObject[] An array containing all cookies in the following format [['name'=>..., 'value'=>..., 'expire'=>...], ...]
      */
     public function getList()
     {
-        $result = [];
+        $list = new CookiesList();
         foreach ($this->data as $name => $value) {
-            $result[] = array_merge(['name' => $name], $value);
+            $list[] = new CookiesListObject(array_merge(['name' => $name], $value));
         }
-        return $result;
+        return $list;
     }
 
     /**
@@ -149,4 +149,26 @@ class Cookies implements \Countable
         return sizeof($this->data);
     }
 
+}
+
+/**
+ * 
+ */
+class CookiesList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $name
+ * @property string $value
+ * @property int $expire
+ * @property string|null $path
+ * @property string|null $domain
+ * @property bool|null $secure
+ * @property bool|null $httpOnly
+ */
+class CookiesListObject extends \IvoPetkov\DataObject
+{
+    
 }

@@ -42,8 +42,8 @@ class ContextLocator
             return new App\Context($app->config->appDir);
         }
         $addons = $app->addons->getList();
-        foreach ($addons as $data) {
-            $addonData = \BearFramework\Addons::get($data['id']);
+        foreach ($addons as $addon) {
+            $addonData = \BearFramework\Addons::get($addon->id);
             if (strpos($filename, $addonData['dir'] . DIRECTORY_SEPARATOR) === 0) {
                 return new App\Context($addonData['dir']);
             }

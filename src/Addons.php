@@ -88,19 +88,37 @@ class Addons
     /**
      * Returns an array containing the data of all registered addons
      * 
-     * @return array An array containing the data of all registered addons
+     * @return \BearFramework\AddonsList|\BearFramework\AddonsListObject[] An array containing the data of all registered addons
      */
     static function getList()
     {
-        $result = [];
+        $list = new AddonsList();
         foreach (self::$data as $id => $data) {
-            $result[] = [
+            $list[] = new AddonsListObject([
                 'id' => $id,
                 'dir' => $data[0],
-                'options' => $data[1]
-            ];
+                'options' => new \IvoPetkov\DataObject($data[1])
+            ]);
         }
-        return $result;
+        return $list;
     }
 
+}
+
+/**
+ * 
+ */
+class AddonsList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $id
+ * @property string $dir
+ * @property \IvoPetkov\DataObject $options
+ */
+class AddonsListObject extends \IvoPetkov\DataObject
+{
+    
 }

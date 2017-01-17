@@ -100,10 +100,10 @@ class AddonsTest extends BearFrameworkTestCase
         $list = BearFramework\Addons::getList();
         $this->assertTrue($list[0]['id'] === 'addon1');
         $this->assertTrue($list[0]['dir'] === realpath($app->config->addonsDir . '/addon1/'));
-        $this->assertTrue($list[0]['options'] === []);
+        //$this->assertTrue($list[0]['options'] === []);
         $this->assertTrue($list[1]['id'] === 'addon2');
         $this->assertTrue($list[1]['dir'] === realpath($app->config->addonsDir . '/addon2/'));
-        $this->assertTrue($list[1]['options'] === []);
+        //$this->assertTrue($list[1]['options'] === []);
     }
 
     /**

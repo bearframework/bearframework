@@ -97,18 +97,18 @@ class Headers implements \Countable
     /**
      * Returns a list of all headers
      * 
-     * @return \BearFramework\App\Cache|\BearFramework\App\Context[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\App\Response\HeadersList|\BearFramework\App\Response\HeadersListObject[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        $result = [];
+        $list = new HeadersList();
         foreach ($this->data as $name => $value) {
-            $result[] = [
+            $list[] = new HeadersListObject([
                 'name' => $name,
                 'value' => $value
-            ];
+            ]);
         }
-        return $result;
+        return $list;
     }
 
     /**
@@ -121,4 +121,21 @@ class Headers implements \Countable
         return sizeof($this->data);
     }
 
+}
+
+/**
+ * 
+ */
+class HeadersList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $name
+ * @property string $value
+ */
+class HeadersListObject extends \IvoPetkov\DataObject
+{
+    
 }

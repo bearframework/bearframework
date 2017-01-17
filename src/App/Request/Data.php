@@ -94,18 +94,18 @@ class Data implements \Countable
     /**
      * Returns a list of all POST parameters
      * 
-     * @return array An array containing all POST parameters in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\App\Request\DataList|\BearFramework\App\Request\DataListObject[] An array containing all POST parameters in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        $result = [];
+        $list = new DataList();
         foreach ($this->data as $name => $value) {
-            $result[] = [
+            $list[] = new DataListObject([
                 'name' => $name,
                 'value' => $value
-            ];
+            ]);
         }
-        return $result;
+        return $list;
     }
 
     /**
@@ -118,4 +118,21 @@ class Data implements \Countable
         return sizeof($this->data);
     }
 
+}
+
+/**
+ * 
+ */
+class DataList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $name
+ * @property string $value
+ */
+class DataListObject extends \IvoPetkov\DataObject
+{
+    
 }

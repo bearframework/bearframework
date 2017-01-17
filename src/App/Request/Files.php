@@ -119,15 +119,15 @@ class Files implements \Countable
     /**
      * Returns a list of all files
      * 
-     * @return array An array containing all files in the following format [['name'=>..., 'filename'=>...], ...]
+     * @return \BearFramework\App\Request\FilesList|\BearFramework\App\Request\FilesListObject[] An array containing all files in the following format [['name'=>..., 'filename'=>...], ...]
      */
     public function getList()
     {
-        $result = [];
+        $list = new FilesList();
         foreach ($this->data as $name => $value) {
-            $result[] = array_merge(['name' => $name], $value);
+            $list[] = new FilesListObject(array_merge(['name' => $name], $value));
         }
-        return $result;
+        return $list;
     }
 
     /**
@@ -140,4 +140,25 @@ class Files implements \Countable
         return sizeof($this->data);
     }
 
+}
+
+/**
+ * 
+ */
+class FilesList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $name
+ * @property string $filename
+ * @property string $tempFilename
+ * @property int $fileSize
+ * @property string $type
+ * @property int $errorCode
+ */
+class FilesListObject extends \IvoPetkov\DataObject
+{
+    
 }

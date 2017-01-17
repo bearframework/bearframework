@@ -112,18 +112,35 @@ class Addons
     /**
      * Returns list of the added addons
      * 
-     * @return array List of the added addons
+     * @return BearFramework\App\AddonsList|BearFramework\App\AddonsListObject[] List of the added addons
      */
     public function getList()
     {
-        $result = [];
+        $list = new AddonsList();
         foreach ($this->data as $id => $data) {
-            $result[] = [
+            $list[] = new AddonsListObject([
                 'id' => $id,
-                'options' => $data[0]
-            ];
+                'options' => new \IvoPetkov\DataObject($data[0])
+            ]);
         }
-        return $result;
+        return $list;
     }
 
+}
+
+/**
+ * 
+ */
+class AddonsList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $id
+ * @property \IvoPetkov\DataObject $options
+ */
+class AddonsListObject extends \IvoPetkov\DataObject
+{
+    
 }

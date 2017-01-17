@@ -94,18 +94,18 @@ class Query implements \Countable
     /**
      * Returns a list of all query parameters
      * 
-     * @return array An array containing all query parameters in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\App\Request\QueryList|\BearFramework\App\Request\QueryListObject[] An array containing all query parameters in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        $result = [];
+        $list = new QueryList();
         foreach ($this->data as $name => $value) {
-            $result[] = [
+            $list[] = new QueryListObject([
                 'name' => $name,
                 'value' => $value
-            ];
+            ]);
         }
-        return $result;
+        return $list;
     }
 
     /**
@@ -138,4 +138,21 @@ class Query implements \Countable
         return http_build_query($this->data);
     }
 
+}
+
+/**
+ * 
+ */
+class QueryList extends \IvoPetkov\DataList
+{
+    
+}
+
+/**
+ * @property string $name
+ * @property string $value
+ */
+class QueryListObject extends \IvoPetkov\DataObject
+{
+    
 }

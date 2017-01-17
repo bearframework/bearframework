@@ -433,17 +433,17 @@ class App
             if (count($response->headers) > 0) {
                 $headers = $response->headers->getList();
                 foreach ($headers as $header) {
-                    if ($header['name'] === 'Content-Type') {
-                        $header['value'] .= '; charset=' . $response->charset;
+                    if ($header->name === 'Content-Type') {
+                        $header->value .= '; charset=' . $response->charset;
                     }
-                    header($header['name'] . ': ' . $header['value']);
+                    header($header->name . ': ' . $header->value);
                 }
             }
             if (count($response->cookies) > 0) {
                 $baseUrlParts = parse_url($this->request->base);
                 $cookies = $response->cookies->getList();
                 foreach ($cookies as $cookie) {
-                    setcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'] === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '/') : $cookie['path'], $cookie['domain'] === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie['domain'], $cookie['secure'] === null ? $this->request->scheme === 'https' : $cookie['secure'], $cookie['httpOnly']);
+                    setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : $cookie->secure, $cookie->httpOnly);
                 }
             }
         }
