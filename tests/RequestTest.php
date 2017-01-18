@@ -72,14 +72,10 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($request->scheme === 'https');
         $this->assertTrue($request->host === 'subdomain.example.com');
         $this->assertTrue($request->port === 8888);
-        $request->port = '9999';
-        $this->assertTrue($request->scheme === 'https');
-        $this->assertTrue($request->host === 'subdomain.example.com');
-        $this->assertTrue($request->port === 9999);
 
-        $this->assertTrue($request->base === 'https://subdomain.example.com:9999');
+        $this->assertTrue($request->base === 'https://subdomain.example.com:8888');
 
-        $request->port = '';
+        $request->port = null;
         $this->assertTrue($request->scheme === 'https');
         $this->assertTrue($request->host === 'subdomain.example.com');
         $this->assertTrue($request->port === null);
@@ -92,107 +88,22 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPath()
     {
-        $path = new \BearFramework\App\Request\Path('/part1/part2/');
+        $path = new \BearFramework\App\Request\PathRepository('/part1/part2/');
         $this->assertTrue((string) $path === '/part1/part2/');
-        $this->assertTrue(isset($path[0]));
-        $this->assertTrue(isset($path[1]));
-        $this->assertFalse(isset($path[2]));
-        $this->assertTrue($path[0] === 'part1');
-        $this->assertTrue($path[1] === 'part2');
-        $this->assertTrue($path[2] === null);
+        $this->assertTrue($path->getSegment(0) === 'part1');
+        $this->assertTrue($path->getSegment(1) === 'part2');
+        $this->assertTrue($path->getSegment(2) === null);
 
-        $path = new \BearFramework\App\Request\Path('part1/part2');
-        $this->assertTrue(isset($path[0]));
-        $this->assertTrue(isset($path[1]));
-        $this->assertFalse(isset($path[2]));
-        $this->assertTrue($path[0] === 'part1');
-        $this->assertTrue($path[1] === 'part2');
-        $this->assertTrue($path[2] === null);
+        $path = new \BearFramework\App\Request\PathRepository('part1/part2');
+        $this->assertTrue($path->getSegment(0) === 'part1');
+        $this->assertTrue($path->getSegment(1) === 'part2');
+        $this->assertTrue($path->getSegment(2) === null);
 
-        $path = new \BearFramework\App\Request\Path('');
-        $this->assertFalse(isset($path[0]));
-        $this->assertTrue($path[0] === null);
+        $path = new \BearFramework\App\Request\PathRepository('');
+        $this->assertTrue($path->getSegment(0) === null);
 
-        $path = new \BearFramework\App\Request\Path('/');
-        $this->assertFalse(isset($path[0]));
-        $this->assertTrue($path[0] === null);
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments1()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->scheme = 1;
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments2()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->host = 1;
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments3a()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->port = [];
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments3b()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->port = -1;
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments3c()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->port = "wrong";
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments3d()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->port = "-33";
-    }
-
-    /**
-     * 
-     */
-    function testBaseInvalidArguments3e()
-    {
-        $request = new \BearFramework\App\Request();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $request->port = 3.3;
+        $path = new \BearFramework\App\Request\PathRepository('/');
+        $this->assertTrue($path->getSegment(0) === null);
     }
 
     /**
@@ -200,20 +111,20 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQuery()
     {
-        $query = new \BearFramework\App\Request\Query();
-        $query->set('var1', '1');
-        $query->set('var2', 'a');
+        $query = new \BearFramework\App\Request\QueryRepository();
+        $query->set(new \BearFramework\App\Request\QueryItem('var1', '1'));
+        $query->set(new \BearFramework\App\Request\QueryItem('var2', 'a'));
         $this->assertTrue((string) $query === 'var1=1&var2=a');
         $this->assertTrue($query->exists('var1'));
         $this->assertTrue($query->exists('var2'));
         $this->assertFalse($query->exists('var3'));
-        $this->assertTrue($query->get('var1') === '1');
-        $this->assertTrue($query->get('var2') === 'a');
-        $this->assertTrue($query->get('var3') === null);
+        $this->assertTrue($query->getValue('var1') === '1');
+        $this->assertTrue($query->getValue('var2') === 'a');
+        $this->assertTrue($query->getValue('var3') === null);
 
-        $query = new \BearFramework\App\Request\Query();
+        $query = new \BearFramework\App\Request\QueryRepository();
         $this->assertFalse($query->exists('var1'));
-        $this->assertTrue($query->get('var1') === null);
+        $this->assertTrue($query->getValue('var1') === null);
     }
 
     /**
@@ -223,8 +134,8 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->headers));
-        $request->headers->set('header1', '1');
-        $this->assertTrue($request->headers->get('header1') === '1');
+        $request->headers->set(new \BearFramework\App\Request\Header('header1', '1'));
+        $this->assertTrue($request->headers->getValue('header1') === '1');
     }
 
     /**
@@ -244,8 +155,8 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->cookies));
-        $request->cookies->set('cookie1', '1');
-        $this->assertTrue($request->cookies->get('cookie1') === '1');
+        $request->cookies->set(new \BearFramework\App\Request\Cookie('cookie1', '1'));
+        $this->assertTrue($request->cookies->getValue('cookie1') === '1');
     }
 
     /**
@@ -255,8 +166,8 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->data));
-        $request->data->set('data1', '1');
-        $this->assertTrue($request->data->get('data1') === '1');
+        $request->data->set(new \BearFramework\App\Request\DataItem('data1', '1'));
+        $this->assertTrue($request->data->getValue('data1') === '1');
     }
 
     /**
@@ -266,8 +177,12 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->files));
-        $request->files->set('file1', 'file1.jpg', '/tmp/file1.jpg', 123);
-        $this->assertTrue($request->files->get('file1')['filename'] === 'file1.jpg');
+        $file = new \BearFramework\App\Request\File('file1', '/tmp/file1.jpg');
+        $file->filename = 'file1.jpg';
+        $file->size = 123;
+        $request->files->set($file);
+        $this->assertTrue($request->files->get('file1')->filename === 'file1.jpg');
+        $this->assertTrue($request->files->get('file1')->size === 123);
     }
 
 }

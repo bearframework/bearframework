@@ -25,18 +25,16 @@ class FileReader extends \BearFramework\App\Response
      * @param string $filename The filename to output
      * @throws \InvalidArgumentException
      */
-    public function __construct($filename)
+    public function __construct(string $filename)
     {
         parent::__construct('');
 
         $this->defineProperty('filename', [
+            'type' => 'string',
             'init' => function() {
                 return '';
             },
             'set' => function($value) {
-                if (!is_string($value)) {
-                    throw new \InvalidArgumentException('The filename argument must be of type string');
-                }
                 $value = realpath($value);
                 if ($value === false || !is_readable($value)) {
                     throw new \InvalidArgumentException('The filename specified does not exist or is not readable');

@@ -18,43 +18,75 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
      */
     public function testClasses()
     {
-        $this->assertTrue(class_exists('BearFramework\App\Addons'));
-        $this->assertTrue(class_exists('BearFramework\App\Assets'));
-        $this->assertTrue(class_exists('BearFramework\App\Cache'));
-        $this->assertTrue(class_exists('BearFramework\App\Classes'));
-        $this->assertTrue(class_exists('BearFramework\App\Config'));
-        $this->assertTrue(class_exists('BearFramework\App\Container'));
-        $this->assertTrue(class_exists('BearFramework\App\Context'));
-        $this->assertTrue(class_exists('BearFramework\App\Context\Assets'));
-        $this->assertTrue(class_exists('BearFramework\App\Context\Classes'));
-        $this->assertTrue(class_exists('BearFramework\App\Data'));
-        $this->assertTrue(class_exists('BearFramework\App\Data\DataLockedException'));
-        $this->assertTrue(class_exists('BearFramework\App\Hooks'));
-        $this->assertTrue(class_exists('BearFramework\App\Images'));
-        $this->assertTrue(class_exists('BearFramework\App\Config\InvalidOptionException'));
-        $this->assertTrue(class_exists('BearFramework\App\Logger'));
-        $this->assertTrue(class_exists('BearFramework\App\Request'));
-        $this->assertTrue(class_exists('BearFramework\App\Request\Cookies'));
-        $this->assertTrue(class_exists('BearFramework\App\Request\Data'));
-        $this->assertTrue(class_exists('BearFramework\App\Request\Files'));
-        $this->assertTrue(class_exists('BearFramework\App\Request\Headers'));
-        $this->assertTrue(class_exists('BearFramework\App\Request\Path'));
-        $this->assertTrue(class_exists('BearFramework\App\Request\Query'));
-        $this->assertTrue(class_exists('BearFramework\App\Response'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\Cookies'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\FileReader'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\HTML'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\Headers'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\JSON'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\NotFound'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\PermanentRedirect'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\TemporaryRedirect'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\TemporaryUnavailable'));
-        $this->assertTrue(class_exists('BearFramework\App\Response\Text'));
-        $this->assertTrue(class_exists('BearFramework\App\Routes'));
-        $this->assertTrue(class_exists('BearFramework\App\Urls'));
-        $this->assertTrue(class_exists('BearFramework\Addons'));
-        $this->assertTrue(class_exists('BearFramework\App'));
+        $classes = [
+            'BearFramework\App\Addon' => 'src/App/Addon.php',
+            'BearFramework\App\AddonsList' => 'src/App/AddonsList.php',
+            'BearFramework\App\AddonsRepository' => 'src/App/AddonsRepository.php',
+            'BearFramework\App\Assets' => 'src/App/Assets.php',
+            'BearFramework\App\CacheItem' => 'src/App/CacheItem.php',
+            'BearFramework\App\CacheRepository' => 'src/App/CacheRepository.php',
+            'BearFramework\App\Classes' => 'src/App/Classes.php',
+            'BearFramework\App\Config' => 'src/App/Config.php',
+            'BearFramework\App\Config\InvalidOptionException' => 'src/App/Config/InvalidOptionException.php',
+            'BearFramework\App\Container' => 'src/App/Container.php',
+            'BearFramework\App\Context' => 'src/App/Context.php',
+            'BearFramework\App\Context\Assets' => 'src/App/Context/Assets.php',
+            'BearFramework\App\Context\Classes' => 'src/App/Context/Classes.php',
+            'BearFramework\App\ContextsRepository' => 'src/App/ContextsRepository.php',
+            'BearFramework\App\Data\DataLockedException' => 'src/App/Data/DataLockedException.php',
+            'BearFramework\App\DataItem' => 'src/App/DataItem.php',
+            'BearFramework\App\DataList' => 'src/App/DataList.php',
+            'BearFramework\App\DataRepository' => 'src/App/DataRepository.php',
+            'BearFramework\App\Hooks' => 'src/App/Hooks.php',
+            'BearFramework\App\Images' => 'src/App/Images.php',
+            'BearFramework\App\Logger' => 'src/App/Logger.php',
+            'BearFramework\App\Request' => 'src/App/Request.php',
+            'BearFramework\App\Request\Cookie' => 'src/App/Request/Cookie.php',
+            'BearFramework\App\Request\CookiesList' => 'src/App/Request/CookiesList.php',
+            'BearFramework\App\Request\CookiesRepository' => 'src/App/Request/CookiesRepository.php',
+            'BearFramework\App\Request\DataItem' => 'src/App/Request/DataItem.php',
+            'BearFramework\App\Request\DataItemsList' => 'src/App/Request/DataItemsList.php',
+            'BearFramework\App\Request\DataRepository' => 'src/App/Request/DataRepository.php',
+            'BearFramework\App\Request\File' => 'src/App/Request/File.php',
+            'BearFramework\App\Request\FilesList' => 'src/App/Request/FilesList.php',
+            'BearFramework\App\Request\FilesRepository' => 'src/App/Request/FilesRepository.php',
+            'BearFramework\App\Request\Header' => 'src/App/Request/Header.php',
+            'BearFramework\App\Request\HeadersList' => 'src/App/Request/HeadersList.php',
+            'BearFramework\App\Request\HeadersRepository' => 'src/App/Request/HeadersRepository.php',
+            'BearFramework\App\Request\PathRepository' => 'src/App/Request/PathRepository.php',
+            'BearFramework\App\Request\QueryItem' => 'src/App/Request/QueryItem.php',
+            'BearFramework\App\Request\QueryItemsList' => 'src/App/Request/QueryItemsList.php',
+            'BearFramework\App\Request\QueryRepository' => 'src/App/Request/QueryRepository.php',
+            'BearFramework\App\Response' => 'src/App/Response.php',
+            'BearFramework\App\Response\Cookie' => 'src/App/Response/Cookie.php',
+            'BearFramework\App\Response\CookiesList' => 'src/App/Response/CookiesList.php',
+            'BearFramework\App\Response\CookiesRepository' => 'src/App/Response/CookiesRepository.php',
+            'BearFramework\App\Response\FileReader' => 'src/App/Response/FileReader.php',
+            'BearFramework\App\Response\HTML' => 'src/App/Response/HTML.php',
+            'BearFramework\App\Response\Header' => 'src/App/Response/Header.php',
+            'BearFramework\App\Response\HeadersList' => 'src/App/Response/HeadersList.php',
+            'BearFramework\App\Response\HeadersRepository' => 'src/App/Response/HeadersRepository.php',
+            'BearFramework\App\Response\JSON' => 'src/App/Response/JSON.php',
+            'BearFramework\App\Response\NotFound' => 'src/App/Response/NotFound.php',
+            'BearFramework\App\Response\PermanentRedirect' => 'src/App/Response/PermanentRedirect.php',
+            'BearFramework\App\Response\TemporaryRedirect' => 'src/App/Response/TemporaryRedirect.php',
+            'BearFramework\App\Response\TemporaryUnavailable' => 'src/App/Response/TemporaryUnavailable.php',
+            'BearFramework\App\Response\Text' => 'src/App/Response/Text.php',
+            'BearFramework\App\Routes' => 'src/App/Routes.php',
+            'BearFramework\App\Shortcuts' => 'src/App/Shortcuts.php',
+            'BearFramework\App\TempData' => 'src/App/TempData.php',
+            'BearFramework\App\TempDataItem' => 'src/App/TempDataItem.php',
+            'BearFramework\App\Urls' => 'src/App/Urls.php',
+            'BearFramework\Addon' => 'src/Addon.php',
+            'BearFramework\Addons' => 'src/Addons.php',
+            'BearFramework\AddonsList' => 'src/AddonsList.php',
+            'BearFramework\App' => 'src/App.php',
+        ];
+
+        $classes = array_keys($classes);
+        foreach ($classes as $class) {
+            $this->assertTrue(class_exists($class));
+        }
     }
 
 }

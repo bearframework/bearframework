@@ -30,11 +30,8 @@ class Assets
      * @param string $pathname The directory name
      * @return void No value is returned
      */
-    public function addDir($pathname)
+    public function addDir(string $pathname): void
     {
-        if (!is_string($pathname)) {
-            throw new \InvalidArgumentException('The pathname argument must be of type string');
-        }
         $pathname = realpath($pathname);
         if ($pathname === false) {
             throw new \InvalidArgumentException('The pathname specified does not exist');
@@ -51,18 +48,12 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The URL for the specified filename and options
      */
-    public function getUrl($filename, $options = [])
+    public function getUrl(string $filename, array $options = []): string
     {
         $app = App::get();
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $filename = realpath($filename);
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified does not exist');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if ($app->config->assetsPathPrefix === null) {
             throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
@@ -106,13 +97,10 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The content of the file or FALSE if file does not exists
      */
-    public function getContent($filename, $options = [])
+    public function getContent(string $filename, array $options = [])
     {
         $app = App::get();
         $urlOptions = [];
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
-        }
         if (isset($options['width'])) {
             $urlOptions['width'] = $options['width'];
         }
@@ -152,11 +140,8 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The local fileneme or FALSE if file does not exists
      */
-    public function getFilename($path)
+    public function getFilename(string $path)
     {
-        if (!is_string($path)) {
-            throw new \InvalidArgumentException('The path argument must be of type string');
-        }
         $app = App::get();
         if ($app->config->assetsPathPrefix === null) {
             throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
@@ -247,11 +232,8 @@ class Assets
      * @throws \InvalidArgumentException
      * @return string|null The mimetype of the filename specified
      */
-    public function getMimeType($filename)
+    public function getMimeType(string $filename)
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['extension'])) {
             $extension = $pathinfo['extension'];

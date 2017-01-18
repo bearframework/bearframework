@@ -10,13 +10,13 @@
 namespace BearFramework\App;
 
 use BearFramework\App;
-use BearFramework\App\Data\DataList;
-use BearFramework\App\Data\DataObject;
+use BearFramework\App\DataItem;
+use BearFramework\App\DataList;
 
 /**
  * Data storage
  */
-class Data
+class DataRepository
 {
 
     /**
@@ -45,14 +45,66 @@ class Data
     }
 
     /**
-     * Retrieves object data for specified key
-     * 
-     * @param string $key The key
-     * @param mixed $defaultValue Return value if the data is not found
-     * @return \BearFramework\App\Data\DataObject Object containing the data for the key specified
-     * @throws \Exception
+     * Saves data
      */
-    public function get(string $key, $defaultValue = null)
+    public function set(DataItem $item): void
+    {
+        $command = [
+            'command' => 'set',
+            'key' => $item->key,
+            'body' => $item->value,
+            'metadata.*' => ''
+        ];
+        $metadata = $item->metadata->toArray();
+        foreach ($metadata as $name => $value) {
+            $command['metadata.' . $name] = $value;
+        }
+        try {
+            $this->execute([$command]);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
+    }
+
+    public function setValue(string $key, string $value): void
+    {
+        try {
+            $this->execute([
+                [
+                    'command' => 'set',
+                    'key' => $key,
+                    'body' => $value
+                ]
+            ]);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
+            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        }
+    }
+
+    public function get(string $key): ?\BearFramework\App\DataItem
+    {
+        try {
+            $result = $this->execute([
+                [
+                    'command' => 'get',
+                    'key' => $key,
+                    'result' => ['key', 'body', 'metadata']
+                ]
+            ]);
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
+        }
+        if (isset($result[0]['key'])) {
+            return $this->makeDataItemFromRawData($result[0]);
+        }
+        return null;
+    }
+
+    public function getValue(string $key): ?string
     {
         try {
             $result = $this->execute([
@@ -62,13 +114,13 @@ class Data
                     'result' => ['body']
                 ]
             ]);
-            if (isset($result[0]['body'])) {
-                return $result[0]['body'];
-            }
-            return $defaultValue;
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
         }
+        if (isset($result[0]['body'])) {
+            return $result[0]['body'];
+        }
+        return null;
     }
 
     /**
@@ -87,39 +139,10 @@ class Data
                     'result' => ['key']
                 ]
             ]);
-            if (isset($result[0]['key'])) {
-                return true;
-            }
-            return false;
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
         }
-    }
-
-    /**
-     * Saves data
-     * 
-     * @param string $key The key
-     * @param string $value The body
-     * @return void No value is returned
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     */
-    public function set(string $key, string $value): void
-    {
-        try {
-            $this->execute([
-                [
-                    'command' => 'set',
-                    'key' => $key,
-                    'body' => $value
-                ]
-            ]);
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
-        }
+        return isset($result[0]['key']);
     }
 
     /**
@@ -254,11 +277,10 @@ class Data
      * 
      * @param string $key The key
      * @param string $name The metadata name
-     * @param type $defaultValue Return value if the metadata is not found
      * @return type
      * @throws \Exception
      */
-    public function getMetadata(string $key, string $name, $defaultValue = null)
+    public function getMetadata(string $key, string $name): ?string
     {
         try {
             $result = $this->execute([
@@ -272,7 +294,7 @@ class Data
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
         }
-        return isset($result[0]['metadata.' . $name]) ? $result[0]['metadata.' . $name] : $defaultValue;
+        return isset($result[0]['metadata.' . $name]) ? $result[0]['metadata.' . $name] : null;
     }
 
     /**
@@ -304,27 +326,26 @@ class Data
                 ]
                     ]
             );
-            $objectMetadata = [];
-            foreach ($result[0] as $name => $value) {
-                if (strpos($name, 'metadata.') === 0) {
-                    $name = substr($name, 9);
-                    if ($name === 'internalFrameworkPropertyPublic') {
-                        continue;
-                    }
-                    $objectMetadata[] = ['name' => $name, 'value' => $value];
-                }
-            }
-            return new \IvoPetkov\DataList($objectMetadata);
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
         }
+        $objectMetadata = [];
+        foreach ($result[0] as $name => $value) {
+            if (strpos($name, 'metadata.') === 0) {
+                $name = substr($name, 9);
+                if ($name !== 'internalFrameworkPropertyPublic') {
+                    $objectMetadata[] = ['name' => $name, 'value' => $value];
+                }
+            }
+        }
+        return new \IvoPetkov\DataList($objectMetadata);
     }
 
     /**
      * 
-     * @return \BearFramework\App\Data\DataList
+     * @return \BearFramework\App\DataList
      */
-    public function getList(): DataList
+    public function getList(): \BearFramework\App\DataList
     {
         return new DataList(function($context) {
             $whereOptions = [];
@@ -343,43 +364,26 @@ class Data
                 throw new \Exception($e->getMessage());
             }
             $list = [];
-            foreach ($result[0] as $objectData) {
-                $objectMetadata = [];
-                foreach ($objectData as $name => $value) {
-                    if (strpos($name, 'metadata.') === 0) {
-                        $name = substr($name, 9);
-                        if ($name === 'internalFrameworkPropertyPublic') {
-                            continue;
-                        }
-                        $objectMetadata[$name] = $value;
-                    }
-                }
-                $list[] = new DataObject([
-                    'key' => $objectData['key'],
-                    'body' => $objectData['body'],
-                    'metadata' => new \IvoPetkov\DataObject($objectMetadata),
-                ]);
+            foreach ($result[0] as $rawData) {
+                $list[] = $this->makeDataItemFromRawData($rawData);
             }
             return $list;
         });
     }
 
-    /**
-     * Searches for items
-     * 
-     * @param array $parameters Parameters
-     * @return array List of all items matching the search criteria
-     * @throws \Exception
-     */
-//    public function search($parameters)
-//    {
-//        $instance = $this->getInstance();
-//        try {
-//            return $instance->search($parameters);
-//        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-//            throw new \Exception($e->getMessage());
-//        }
-//    }
+    private function makeDataItemFromRawData(array $rawData): \BearFramework\App\DataItem
+    {
+        $dataItem = new DataItem($rawData['key'], $rawData['body']);
+        foreach ($rawData as $name => $value) {
+            if (strpos($name, 'metadata.') === 0) {
+                $name = substr($name, 9);
+                if ($name !== 'internalFrameworkPropertyPublic') {
+                    $dataItem->metadata->$name = $value;
+                }
+            }
+        }
+        return $dataItem;
+    }
 
     /**
      * Executes multiple commands
@@ -464,9 +468,6 @@ class Data
      */
     public function getFilename(string $key): string
     {
-        if (!is_string($key)) {
-            throw new \InvalidArgumentException('The key argument must be of type string');
-        }
         $app = App::get();
         if ($app->config->dataDir === null) {
             throw new App\Config\InvalidOptionException('Config option dataDir is not set');
@@ -487,9 +488,6 @@ class Data
      */
     public function getKeyFromFilename(string $filename): string
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $app = App::get();
         if ($app->config->dataDir === null) {
             throw new App\Config\InvalidOptionException('Config option dataDir is not set');

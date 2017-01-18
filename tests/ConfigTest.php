@@ -169,15 +169,6 @@ return [
     /**
      * 
      */
-    public function testInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\Config(2);
-    }
-
-    /**
-     * 
-     */
     public function testInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -236,16 +227,6 @@ return [
         $config = new \BearFramework\App\Config();
         $this->setExpectedException('InvalidArgumentException');
         $config->logsDir = 'missing/dir';
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments8()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->config->load(1);
     }
 
     /**

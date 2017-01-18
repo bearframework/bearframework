@@ -125,7 +125,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path[1]);
+            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -159,7 +159,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/review/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/review/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path[1]);
+            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -176,7 +176,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/?/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path[1] . '-' . $app->request->path[2]);
+            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1) . '-' . $app->request->path->getSegment(2));
         });
 
         $app->run();
@@ -193,7 +193,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/color/blue/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/options/?/blue/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path[1] . '-' . $app->request->path[3]);
+            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1) . '-' . $app->request->path->getSegment(3));
         });
 
         $app->run();
@@ -227,7 +227,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/options/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path[1]);
+            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -244,7 +244,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/options', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path[1]);
+            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -408,19 +408,6 @@ class RoutesTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testInvalidArguments1()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->routes->add(1, function() {
-            
-        });
-    }
-
-    /**
-     * 
-     */
     public function testInvalidArguments2()
     {
         $app = $this->getApp();
@@ -429,54 +416,6 @@ class RoutesTest extends BearFrameworkTestCase
         $app->routes->add([], function() {
             
         });
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments3()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->routes->add([1], function() {
-            
-        });
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments4()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->routes->add('/', null);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments5()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->routes->add('/', function() {
-            
-        }, 'OPTION');
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments6()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->routes->getResponse(null);
     }
 
 }

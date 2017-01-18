@@ -41,17 +41,6 @@ class LogTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testInvalidMessageArgument()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->logger->log('warning', 1);
-    }
-
-    /**
-     * 
-     */
     public function testInvalidConfigOption()
     {
         $app = $this->getApp([

@@ -15,9 +15,9 @@ use BearFramework\App;
  * Response object
  * 
  * @property string $content The content of the response
- * @property string $statusCode The response status code
+ * @property ?int $statusCode The response status code
  * @property string $charset The response character set
- * @property-read \BearFramework\App\Response\Headers $headers The response headers
+ * @property-read \BearFramework\App\Response\HeadersRepository $headers The response headers
  * @property-read \BearFramework\App\Response\Cookies $cookies The response cookies
  */
 class Response
@@ -29,53 +29,33 @@ class Response
      * The constructor
      * 
      * @param string $content The content of the response
-     * @throws \InvalidArgumentException
      */
-    public function __construct($content = '')
+    public function __construct(string $content = '')
     {
-        if (!is_string($content)) {
-            throw new \InvalidArgumentException('The content argument must be of type string');
-        }
-
         $this->content = $content;
 
         $this->defineProperty('content', [
+            'type' => 'string',
             'init' => function() {
                 return '';
-            },
-            'set' => function($value) {
-                if (!is_string($value)) {
-                    throw new \Exception('The content property value must be of type string');
-                }
-                return $value;
             },
             'unset' => function() {
                 return '';
             }
         ]);
         $this->defineProperty('statusCode', [
+            'type' => '?int',
             'init' => function() {
                 return 200;
-            },
-            'set' => function($value) {
-                if (!is_int($value) && $value !== null) {
-                    throw new \Exception('The statusCode property value must be of type int');
-                }
-                return $value;
             },
             'unset' => function() {
                 return null;
             }
         ]);
         $this->defineProperty('charset', [
+            'type' => 'string',
             'init' => function() {
                 return '';
-            },
-            'set' => function($value) {
-                if (!is_string($value)) {
-                    throw new \Exception('The charset property value must be of type string');
-                }
-                return $value;
             },
             'unset' => function() {
                 return '';
@@ -83,13 +63,13 @@ class Response
         ]);
         $this->defineProperty('headers', [
             'init' => function() {
-                return new App\Response\Headers();
+                return new App\Response\HeadersRepository();
             },
             'readonly' => true
         ]);
         $this->defineProperty('cookies', [
             'init' => function() {
-                return new App\Response\Cookies();
+                return new App\Response\CookiesRepository();
             },
             'readonly' => true
         ]);

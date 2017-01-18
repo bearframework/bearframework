@@ -27,7 +27,7 @@ class Classes
      */
     public function __construct()
     {
-        spl_autoload_register(function ($class) {
+        spl_autoload_register(function (string $class) {
             $this->load($class);
         });
     }
@@ -40,14 +40,8 @@ class Classes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function add($class, $filename)
+    public function add(string $class, string $filename)
     {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('The class argument must be of type string');
-        }
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $filename = realpath($filename);
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified does not exist');
@@ -60,13 +54,9 @@ class Classes
      * 
      * @param string $class The class name
      * @return boolen TRUE if the class is registered for autoloading. FALSE otherwise.
-     * @throws \InvalidArgumentException
      */
-    public function exists($class)
+    public function exists(string $class)
     {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('The class argument must be of type string');
-        }
         return isset($this->data[$class]);
     }
 
@@ -77,11 +67,8 @@ class Classes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function load($class)
+    public function load(string $class)
     {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('The class argument must be of type string');
-        }
         if (isset($this->data[$class])) {
             $includeFile = static function($__filename) {
                 include_once $__filename;

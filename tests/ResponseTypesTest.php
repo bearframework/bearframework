@@ -25,9 +25,6 @@ class ResponseTypesTest extends BearFrameworkTestCase
         $this->assertTrue(isset($response->filename));
         unset($response->filename);
         $this->assertTrue($response->filename === '');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\FileReader(1);
     }
 
     /**
@@ -69,9 +66,6 @@ class ResponseTypesTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\HTML('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\HTML(1);
     }
 
     /**
@@ -81,9 +75,6 @@ class ResponseTypesTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\JSON('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\JSON(1);
     }
 
     /**
@@ -93,9 +84,6 @@ class ResponseTypesTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\Text('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\Text(1);
     }
 
     /**
@@ -105,9 +93,6 @@ class ResponseTypesTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\NotFound('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\NotFound(1);
     }
 
     /**
@@ -117,9 +102,6 @@ class ResponseTypesTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\TemporaryUnavailable('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\TemporaryUnavailable(1);
     }
 
     /**
@@ -128,10 +110,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testPermanentRedirect()
     {
         $response = new \BearFramework\App\Response\PermanentRedirect('http://example.com/');
-        $this->assertTrue($response->headers->get('Location') === 'http://example.com/');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\PermanentRedirect(1);
+        $this->assertTrue($response->headers->getValue('Location') === 'http://example.com/');
     }
 
     /**
@@ -140,10 +119,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testTemporaryRedirect()
     {
         $response = new \BearFramework\App\Response\TemporaryRedirect('http://example.com/');
-        $this->assertTrue($response->headers->get('Location') === 'http://example.com/');
-
-        $this->setExpectedException('InvalidArgumentException');
-        $response = new \BearFramework\App\Response\TemporaryRedirect(1);
+        $this->assertTrue($response->headers->getValue('Location') === 'http://example.com/');
     }
 
 }

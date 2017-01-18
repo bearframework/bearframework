@@ -19,17 +19,13 @@ class PermanentRedirect extends \BearFramework\App\Response
      * The constructor
      * 
      * @param string $url The redirect url
-     * @throws \InvalidArgumentException
      */
-    public function __construct($url)
+    public function __construct(string $url)
     {
-        if (!is_string($url)) {
-            throw new \InvalidArgumentException('The url argument must be of type string');
-        }
         parent::__construct('');
         $this->statusCode = 301;
-        $this->headers->set('Content-Type', 'text/plain');
-        $this->headers->set('Location', $url);
+        $this->headers->set(new Header('Content-Type', 'text/plain'));
+        $this->headers->set(new Header('Location', $url));
     }
 
 }

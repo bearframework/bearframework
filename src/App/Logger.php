@@ -27,15 +27,12 @@ class Logger
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean TRUE if data is suceessfully written. FALSE otherwise.
      */
-    public function log($level, $message, $context = [])
+    public function log(string $level, string $message, array $context = [])
     {
         $app = App::get();
         $level = trim((string) $level);
         if (strlen($level) === 0) {
             throw new \InvalidArgumentException('The level argument must not be empty');
-        }
-        if (!is_string($message)) {
-            throw new \InvalidArgumentException('The message argument must be of type string');
         }
         if ($app->config->logsDir === null) {
             throw new App\Config\InvalidOptionException('Config option logsDir is not set');

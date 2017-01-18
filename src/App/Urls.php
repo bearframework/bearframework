@@ -21,14 +21,10 @@ class Urls
      * Constructs a url for the path specified
      * 
      * @param string $path The path
-     * @throws \InvalidArgumentException
      * @return string Absolute URL containing the base URL plus the path given
      */
-    public function get($path = '/')
+    public function get(string $path = '/')
     {
-        if (!is_string($path)) {
-            throw new \InvalidArgumentException('The path argument must be of type string');
-        }
         $app = App::get();
         return $app->request->base . $path;
     }

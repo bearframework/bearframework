@@ -33,14 +33,8 @@ class Routes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function add($pattern, $callback, $options = ['GET'])
+    public function add($pattern, callable $callback, array $options = ['GET'])
     {
-        if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('The callback argument must be of type callable');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
-        }
         if (is_string($pattern)) {
             $this->data[] = [[$pattern], $callback, $options];
             return;
@@ -65,11 +59,8 @@ class Routes
      * @param \BearFramework\App\Request $request The current request object
      * @return mixed The result of the matching callback. NULL if none.
      */
-    public function getResponse($request)
+    public function getResponse(\BearFramework\App\Request $request)
     {
-        if (!($request instanceof App\Request)) {
-            throw new \InvalidArgumentException('The request argument must be of type \BearFramework\App\Request');
-        }
         $requestPath = (string) $request->path;
         foreach ($this->data as $route) {
             foreach ($route[0] as $pattern) {

@@ -14,21 +14,21 @@ use BearFramework\App;
 /**
  * The is the class used to instantiate and configure you application.
  * 
- * @property-read \BearFramework\App\Config $config The application configuration
- * @property-read \BearFramework\App\Request $request Provides information about the current request
- * @property-read \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks
- * @property-read \BearFramework\App\Logger $logger Provides logging functionality
- * @property-read \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options
- * @property-read \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests
- * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets
+ * @property-read \BearFramework\App\Config $config The application configuration.
+ * @property-read \BearFramework\App\Request $request Provides information about the current request.
+ * @property-read \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks.
+ * @property-read \BearFramework\App\Logger $logger Provides logging functionality.
+ * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
+ * @property-read \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests.
+ * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
  * @property-read \BearFramework\App\Data $data \BearFramework\App\Data
  * @property-read \BearFramework\App\TempData $tempData \BearFramework\App\TempData
- * @property-read \BearFramework\App\Cache $cache Data cache
- * @property-read \BearFramework\App\Classes $classes Provides functionality for autoloading classes
- * @property-read \BearFramework\App\Urls $urls URLs utilities
- * @property-read \BearFramework\App\Images $images Images utilities
- * @property-read \BearFramework\App\ContextLocator $context Context information object locator
- * @property-read \BearFramework\App\Shortcuts $shortcuts Allow registration of $app object properties (shortcuts)
+ * @property-read \BearFramework\App\CacheRepository $cache Data cache.
+ * @property-read \BearFramework\App\Classes $classes Provides functionality for autoloading classes.
+ * @property-read \BearFramework\App\Urls $urls URLs utilities.
+ * @property-read \BearFramework\App\Images $images Images utilities.
+ * @property-read \BearFramework\App\ContextsRepository $context Context information object locator.
+ * @property-read \BearFramework\App\Shortcuts $shortcuts Allow registration of $app object properties (shortcuts).
  */
 class App
 {
@@ -77,7 +77,7 @@ class App
 
         $this->container = new App\Container();
         $this->container->set('app.logger', App\Logger::class);
-        $this->container->set('app.cache', App\Cache::class);
+        $this->container->set('app.cache', App\CacheRepository::class);
 
         $this->defineProperty('config', [
             'init' => function() {
@@ -112,7 +112,7 @@ class App
         ]);
         $this->defineProperty('addons', [
             'init' => function() {
-                return new App\Addons();
+                return new App\AddonsRepository();
             },
             'readonly' => true
         ]);
@@ -130,7 +130,7 @@ class App
         ]);
         $this->defineProperty('data', [
             'init' => function() {
-                return new App\Data();
+                return new App\DataRepository();
             },
             'readonly' => true
         ]);
@@ -166,7 +166,7 @@ class App
         ]);
         $this->defineProperty('context', [
             'init' => function() {
-                return new App\ContextLocator();
+                return new App\ContextsRepository();
             },
             'readonly' => true
         ]);
@@ -209,7 +209,7 @@ class App
      * @return \BearFramework\App
      * @throws \Exception
      */
-    static function get()
+    static function get(): \BearFramework\App
     {
         if (self::$instance === null) {
             throw new \Exception('App is not constructed yet');
@@ -218,9 +218,9 @@ class App
     }
 
     /**
-     * Initializes the environment, the error handlers, includes the app index.php file, the addons index.php files, and registers the assests handler
+     * Initializes the environment, the error handlers, includes the app index.php file, the addons index.php files, and registers the assets handler
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (!$this->initialized) {
             $this->initializeEnvironment();
@@ -253,13 +253,13 @@ class App
                     } else {
                         $response = new App\Response\FileReader($filename);
                         if ($this->config->assetsMaxAge !== null) {
-                            $response->headers->set('Cache-Control', 'public, max-age=' . (int) $this->config->assetsMaxAge);
+                            $response->headers->set(new App\Response\Header('Cache-Control', 'public, max-age=' . (int) $this->config->assetsMaxAge));
                         }
                         $mimeType = $this->assets->getMimeType($filename);
                         if ($mimeType !== null) {
-                            $response->headers->set('Content-Type', $mimeType);
+                            $response->headers->set(new App\Response\Header('Content-Type', $mimeType));
                         }
-                        $response->headers->set('Content-Length', (string) filesize($filename));
+                        $response->headers->set(new App\Response\Header('Content-Length', (string) filesize($filename)));
                         return $response;
                     }
                 });
@@ -272,14 +272,10 @@ class App
     /**
      * Sets UTF-8 as the default encoding and updates regular expressions limits
      */
-    private function initializeEnvironment()
+    private function initializeEnvironment(): void
     {
         // @codeCoverageIgnoreStart
         if ($this->config->updateEnvironment) {
-            if (version_compare(phpversion(), '5.6.0', '<')) {
-                ini_set('default_charset', 'UTF-8');
-                ini_set('mbstring.internal_encoding', 'UTF-8');
-            }
             ini_set('mbstring.func_overload', 7);
             ini_set("pcre.backtrack_limit", 100000000);
             ini_set("pcre.recursion_limit", 100000000);
@@ -290,7 +286,7 @@ class App
     /**
      * Initializes error handling
      */
-    private function initializeErrorHandler()
+    private function initializeErrorHandler(): void
     {
         if ($this->config->handleErrors) {
             // @codeCoverageIgnoreStart
@@ -357,7 +353,7 @@ class App
      * 
      * @return void No value is returned
      */
-    public function run()
+    public function run(): void
     {
         $this->initialize();
         $response = $this->routes->getResponse($this->request);
@@ -370,11 +366,10 @@ class App
     /**
      * Prepares the response (hooks, validations and other operations)
      * 
-     * @param BearFramework\App\Response $response The response object to prepare
-     * @throws \Exception
+     * @param \BearFramework\App\Response $response The response object to prepare
      * @return void No value is returned
      */
-    private function prepareResponse($response)
+    private function prepareResponse(\BearFramework\App\Response $response): void
     {
         $this->hooks->execute('responseCreated', $response);
     }
@@ -385,7 +380,7 @@ class App
      * @param \BearFramework\App\Response $response The response object to be sent
      * @return void No value is returned
      */
-    private function sendResponse($response)
+    private function sendResponse(\BearFramework\App\Response $response): void
     {
         if (!headers_sent()) {
             $statusCodes = [];
@@ -430,18 +425,16 @@ class App
             if (isset($statusCodes[$response->statusCode])) {
                 header((isset($_SERVER, $_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1') . ' ' . $response->statusCode . ' ' . $statusCodes[$response->statusCode]);
             }
-            if (count($response->headers) > 0) {
-                $headers = $response->headers->getList();
-                foreach ($headers as $header) {
-                    if ($header->name === 'Content-Type') {
-                        $header->value .= '; charset=' . $response->charset;
-                    }
-                    header($header->name . ': ' . $header->value);
+            $headers = $response->headers->getList();
+            foreach ($headers as $header) {
+                if ($header->name === 'Content-Type') {
+                    $header->value .= '; charset=' . $response->charset;
                 }
+                header($header->name . ': ' . $header->value);
             }
-            if (count($response->cookies) > 0) {
+            $cookies = $response->cookies->getList();
+            if ($cookies->length > 0) {
                 $baseUrlParts = parse_url($this->request->base);
-                $cookies = $response->cookies->getList();
                 foreach ($cookies as $cookie) {
                     setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : $cookie->secure, $cookie->httpOnly);
                 }
@@ -458,18 +451,13 @@ class App
     /**
      * Outputs a response
      * 
-     * @param BearFramework\App\Response $response The response object to output
-     * @throws \InvalidArgumentException
+     * @param \BearFramework\App\Response $response The response object to output
      * @return void No value is returned
      */
-    public function respond($response)
+    public function respond(\BearFramework\App\Response $response): void
     {
-        if ($response instanceof App\Response) {
-            $this->prepareResponse($response);
-            $this->sendResponse($response);
-        } else {
-            throw new \InvalidArgumentException('The response argument must be of type BearFramework\App\Response');
-        }
+        $this->prepareResponse($response);
+        $this->sendResponse($response);
     }
 
     /**

@@ -7,6 +7,8 @@
  * Free to use under the MIT license.
  */
 
+use BearFramework\App\CacheItem;
+
 /**
  * @runTestsInSeparateProcesses
  */
@@ -22,17 +24,17 @@ class CacheTest extends BearFrameworkTestCase
 
         $app->cache->delete('key1');
 
-        $result = $app->cache->get('key1');
+        $result = $app->cache->getValue('key1');
         $this->assertTrue($result === null);
         $this->assertFalse($app->cache->exists('key1'));
 
-        $app->cache->set('key1', 'data1');
-        $result = $app->cache->get('key1');
+        $app->cache->set(new CacheItem('key1', 'data1'));
+        $result = $app->cache->getValue('key1');
         $this->assertTrue($result === 'data1');
         $this->assertTrue($app->cache->exists('key1'));
         $app->cache->delete('key1');
 
-        $result = $app->cache->get('key1');
+        $result = $app->cache->getValue('key1');
         $this->assertTrue($result === null);
         $this->assertFalse($app->cache->exists('key1'));
     }
@@ -46,67 +48,19 @@ class CacheTest extends BearFrameworkTestCase
 
         $app->cache->delete('key1');
 
-        $app->cache->set('key1', 'data1', ['ttl' => 2]);
-        $result = $app->cache->get('key1');
+        $cacheItem = new CacheItem('key1', 'data1');
+        $cacheItem->ttl = 2;
+        $app->cache->set($cacheItem);
+        $result = $app->cache->getValue('key1');
         $this->assertTrue($result === 'data1');
         $result = $app->cache->exists('key1');
         $this->assertTrue($result);
         sleep(3);
-        $result = $app->cache->get('key1');
+        $result = $app->cache->getValue('key1');
         $this->assertTrue($result === null);
         $result = $app->cache->exists('key1');
         $this->assertFalse($result);
         $app->cache->delete('key1');
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->cache->get(1);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments2()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->cache->exists(1);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments3()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->cache->set(1, 'data');
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments4()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->cache->set('key1', 1, ['ttl' => 'wrong']);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments5()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->cache->delete(1);
     }
 
 }

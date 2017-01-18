@@ -30,11 +30,8 @@ class Assets
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function __construct($dir)
+    public function __construct(string $dir)
     {
-        if (!is_string($dir)) {
-            throw new \InvalidArgumentException('The dir argument must be of type string');
-        }
         $dir = realpath($dir);
         if ($dir === false) {
             throw new \InvalidArgumentException('The dir specified does not exist');
@@ -48,7 +45,7 @@ class Assets
      * @param string $pathname The directory name
      * @return void No value is returned
      */
-    public function addDir($pathname)
+    public function addDir(string $pathname): void
     {
         $app = App::get();
         $app->assets->addDir($this->dir . DIRECTORY_SEPARATOR . $pathname);
@@ -62,14 +59,8 @@ class Assets
      * @throws \InvalidArgumentException
      * @return string The URL for the specified filename and options
      */
-    public function getUrl($filename, $options = [])
+    public function getUrl(string $filename, array $options = []): string
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
-        }
         $app = App::get();
         $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
         if ($filename === false) {
@@ -87,14 +78,8 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The content of the file or FALSE if file does not exists
      */
-    public function getContent($filename, $options = [])
+    public function getContent(string $filename, array $options = [])
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
-        }
         $app = App::get();
         $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
         if ($filename === false) {

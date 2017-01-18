@@ -142,45 +142,12 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testAddDirInvalidArguments1()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->addDir(1);
-    }
-
-    /**
-     * 
-     */
     public function testAddDirInvalidArguments2()
     {
         $app = $this->getApp();
 
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->addDir('missing/dir');
-    }
-
-    /**
-     * 
-     */
-    public function testGetUrlInvalidArguments1()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl(1);
-    }
-
-    /**
-     * 
-     */
-    public function testGetUrlInvalidArguments2()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($app->config->appDir . '/assets/logo.png', 1);
     }
 
     /**
@@ -195,19 +162,6 @@ class AssetsTest extends BearFrameworkTestCase
         $this->createSampleFile($filename, 'png');
         $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
         $app->assets->getUrl($filename);
-    }
-
-    /**
-     * 
-     */
-    public function testGetUrlInvalidArguments4()
-    {
-        $app = $this->getApp();
-
-        $filename = $app->config->appDir . '/assets/logo.png';
-        $this->createSampleFile($filename, 'png');
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getUrl($filename, 1);
     }
 
     /**
@@ -249,17 +203,6 @@ class AssetsTest extends BearFrameworkTestCase
         $this->createSampleFile($filename, 'png');
         $this->setExpectedException('InvalidArgumentException');
         $app->assets->getUrl($filename);
-    }
-
-    /**
-     * 
-     */
-    public function testGetFilenameInvalidArguments1()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getFilename(1);
     }
 
     /**
@@ -359,17 +302,6 @@ class AssetsTest extends BearFrameworkTestCase
 
         $result = $app->assets->getMimeType('logo.unknown');
         $this->assertTrue($result === null);
-    }
-
-    /**
-     * 
-     */
-    public function testGetMimeTypeInvalidArguments1()
-    {
-        $app = $this->getApp();
-
-        $this->setExpectedException('InvalidArgumentException');
-        $app->assets->getMimeType(1);
     }
 
     /**

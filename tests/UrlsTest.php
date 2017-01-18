@@ -22,8 +22,6 @@ class UrlsTest extends BearFrameworkTestCase
         $app->request->base = "https://example.com/www";
         $this->assertTrue($app->urls->get('/') === "https://example.com/www/");
         $this->assertTrue($app->urls->get('/products/') === "https://example.com/www/products/");
-        $this->setExpectedException('InvalidArgumentException');
-        $app->urls->get(1);
     }
 
 }

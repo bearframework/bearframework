@@ -19,16 +19,12 @@ class Text extends \BearFramework\App\Response
      * The constructor
      * 
      * @param string $content The content of the response
-     * @throws \InvalidArgumentException
      */
-    public function __construct($content = '')
+    public function __construct(string $content = '')
     {
-        if (!is_string($content)) {
-            throw new \InvalidArgumentException('The content argument must be of type string');
-        }
         parent::__construct($content);
         $this->charset = 'UTF-8';
-        $this->headers->set('Content-Type', 'text/plain');
+        $this->headers->set(new Header('Content-Type', 'text/plain'));
     }
 
 }

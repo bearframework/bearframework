@@ -37,16 +37,6 @@ class ImagesTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetSizeInvalidArgument1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->images->getSize(1);
-    }
-
-    /**
-     * 
-     */
     public function testGetSizeInvalidArgument2()
     {
         $app = $this->getApp();
@@ -129,40 +119,6 @@ class ImagesTest extends BearFrameworkTestCase
             $this->assertTrue($size[0] === 44);
             $this->assertTrue($size[1] === 22);
         }
-    }
-
-    /**
-     * 
-     */
-    public function testResizeInvalidArgument1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->images->resize(1, 'target.png', ['width' => 100, 'height' => 100]);
-    }
-
-    /**
-     * 
-     */
-    public function testResizeInvalidArgument2()
-    {
-        $app = $this->getApp();
-        $filename = $app->config->appDir . '/source.png';
-        $this->createSampleFile($filename, 'png');
-        $this->setExpectedException('InvalidArgumentException');
-        $app->images->resize($filename, 1, ['width' => 100, 'height' => 100]);
-    }
-
-    /**
-     * 
-     */
-    public function testResizeInvalidArgument3()
-    {
-        $app = $this->getApp();
-        $filename = $app->config->appDir . '/source.png';
-        $this->createSampleFile($filename, 'png');
-        $this->setExpectedException('InvalidArgumentException');
-        $app->images->resize($filename, 'target.png', 2);
     }
 
     /**

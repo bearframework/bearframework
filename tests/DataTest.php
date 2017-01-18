@@ -7,6 +7,8 @@
  * Free to use under the MIT license.
  */
 
+use BearFramework\App\DataItem;
+
 /**
  * @runTestsInSeparateProcesses
  */
@@ -20,15 +22,17 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $app->data->set('users/1', '{"name":"John Smith","email":"john@example.com"}');
-        $app->data->setMetadata('users/1', 'lastAccessTime', '1234567890');
+        //$dataItem = $app->data->make('users/1', '{"name":"John Smith","email":"john@example.com"}');
+        $dataItem = new DataItem('users/1', '{"name":"John Smith","email":"john@example.com"}');
+        $dataItem->metadata->lastAccessTime = '1234567890';
+        $app->data->set($dataItem);
         $app->data->makePublic('user/1');
 
-        $this->assertTrue($app->data->get('users/1') === '{"name":"John Smith","email":"john@example.com"}');
+        $this->assertTrue($app->data->getValue('users/1') === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($app->data->getMetadata('users/1', 'lastAccessTime') === '1234567890');
         $this->assertTrue($app->data->exists('users/1'));
 
-        $this->assertTrue($app->data->get('users/2') === null);
+        $this->assertTrue($app->data->getValue('users/2') === null);
         $this->assertFalse($app->data->exists('users/2'));
 
         $app->data->append('visits/ip.log', "123.123.123.123\n");
@@ -43,7 +47,7 @@ class DataTest extends BearFrameworkTestCase
                 ->filterBy('key', 'users/1');
         $this->assertTrue($result->length === 1);
         $this->assertTrue($result[0]->key === 'users/1');
-        $this->assertTrue($result[0]->body === '{"name":"John Smith","email":"john@example.com"}');
+        $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
 
         $result = $app->data->getMetadataList('users/1');
@@ -59,7 +63,7 @@ class DataTest extends BearFrameworkTestCase
                 ->filterBy('key', '^users\/', 'regExp');
         $this->assertTrue($result->length === 1);
         $this->assertTrue($result[0]->key === 'users/1');
-        $this->assertTrue($result[0]->body === '{"name":"John Smith","email":"john@example.com"}');
+        $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
     }
 
@@ -69,7 +73,7 @@ class DataTest extends BearFrameworkTestCase
     public function testGetFileName()
     {
         $app = $this->getApp();
-        $app->data->set('test/key', '1');
+        $app->data->setValue('test/key', '1');
         $this->assertTrue($app->data->getFilename('test/key') === realpath($app->config->dataDir . '/objects/test/key'));
     }
 
@@ -106,17 +110,7 @@ class DataTest extends BearFrameworkTestCase
         ]);
 
         $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
-        $app->data->get('users/1');
-    }
-
-    /**
-     * 
-     */
-    public function testGetKeyFromFilenameInvalidArguments1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->data->getKeyFromFilename(1);
+        $app->data->getValue('users/1');
     }
 
     /**
@@ -174,7 +168,7 @@ class DataTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $this->createDir($app->config->dataDir . '/objects/data1');
         $this->setExpectedException('\Exception');
-        $app->data->set('data1', 'data');
+        $app->data->setValue('data1', 'data');
     }
 
     /**
@@ -185,7 +179,7 @@ class DataTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
         $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
-        $app->data->set('lockeddata1', 'data');
+        $app->data->setValue('lockeddata1', 'data');
     }
 
     /**
@@ -216,7 +210,7 @@ class DataTest extends BearFrameworkTestCase
     public function testDuplicateExceptions1()
     {
         $app = $this->getApp();
-        $app->data->set('data1', 'data');
+        $app->data->setValue('data1', 'data');
         $this->createDir($app->config->dataDir . '/objects/data2');
         $this->setExpectedException('\Exception');
         $app->data->duplicate('data1', 'data2');
@@ -228,7 +222,7 @@ class DataTest extends BearFrameworkTestCase
     public function testDuplicateExceptions2()
     {
         $app = $this->getApp();
-        $app->data->set('data1', 'data');
+        $app->data->setValue('data1', 'data');
         $this->lockFile($app->config->dataDir . '/objects/lockeddata2');
         $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
         $app->data->duplicate('data1', 'lockeddata2');
@@ -240,7 +234,7 @@ class DataTest extends BearFrameworkTestCase
     public function testRenameExceptions1()
     {
         $app = $this->getApp();
-        $app->data->set('data1', 'data');
+        $app->data->setValue('data1', 'data');
         $this->createDir($app->config->dataDir . '/objects/data2');
         $this->setExpectedException('\Exception');
         $app->data->rename('data1', 'data2');

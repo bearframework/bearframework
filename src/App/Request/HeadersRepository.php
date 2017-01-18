@@ -1,0 +1,102 @@
+<?php
+
+/*
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016 Ivo Petkov
+ * Free to use under the MIT license.
+ */
+
+namespace BearFramework\App\Request;
+
+use BearFramework\App\Request\Header;
+use BearFramework\App\Request\HeadersList;
+
+/**
+ * Provides information about the request headers
+ */
+class HeadersRepository
+{
+
+    /**
+     * @var array 
+     */
+    private $data = [];
+
+    /**
+     * Sets a header
+     * 
+     * @param \BearFramework\App\Request\Header $header The header to set
+     * @return \BearFramework\App\Request\HeadersRepository
+     */
+    public function set(\BearFramework\App\Request\Header $header): \BearFramework\App\Request\HeadersRepository
+    {
+        $this->data[$header->name] = $header;
+        return $this;
+    }
+
+    /**
+     * Returns the header if set
+     * 
+     * @param string $name The name of the header
+     * @return BearFramework\App\Request\Header|null|mixed The value of the header if set, NULL otherwise
+     */
+    public function get(string $name): ?\BearFramework\App\Request\Header
+    {
+        if (isset($this->data[$name])) {
+            return $this->data[$name];
+        }
+        return null;
+    }
+
+    /**
+     * Returns the value of the header if set
+     * 
+     * @param string $name The name of the header
+     * @return string|null|mixed The value of the header if set, NULL otherwise
+     */
+    public function getValue(string $name): ?string
+    {
+        if (isset($this->data[$name])) {
+            return $this->data[$name]->value;
+        }
+        return null;
+    }
+
+    /**
+     * Returns information whether a header with the name specified exists
+     * 
+     * @param string $name The name of the header
+     * @return boolean TRUE if a header with the name specified exists, FALSE otherwise
+     */
+    public function exists(string $name): bool
+    {
+        return isset($this->data[$name]);
+    }
+
+    /**
+     * Deletes a header if exists
+     * 
+     * @param string $name The name of the header to delete
+     * @throws \InvalidArgumentException
+     * @return \BearFramework\App\Request\HeadersRepository A reference to the repository
+     */
+    public function delete(string $name): \BearFramework\App\Request\HeadersRepository
+    {
+        if (isset($this->data[$name])) {
+            unset($this->data[$name]);
+        }
+        return $this;
+    }
+
+    /**
+     * Returns a list of all headers
+     * 
+     * @return \BearFramework\App\Request\HeadersList|\BearFramework\App\Request\Header[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
+     */
+    public function getList()
+    {
+        return new HeadersList($this->data);
+    }
+
+}

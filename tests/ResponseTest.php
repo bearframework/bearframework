@@ -38,9 +38,6 @@ class ResponseTest extends BearFrameworkTestCase
 
         $this->assertTrue(isset($response->headers));
         $this->assertTrue(isset($response->cookies));
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response(1);
     }
 
     /**
@@ -50,8 +47,8 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $response = new \BearFramework\App\Response('Hi');
-        $response->cookies->set('name1', 'value1');
-        $response->headers->set('X-My-Header', '1');
+        $response->cookies->set(new \BearFramework\App\Response\Cookie('name1', 'value1'));
+        $response->headers->set(new \BearFramework\App\Response\Header('X-My-Header', '1'));
         $app->respond($response);
         $this->expectOutputString('Hi');
     }
@@ -63,9 +60,6 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\HTML('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\HTML(1);
     }
 
     /**
@@ -75,9 +69,6 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\Text('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\Text(1);
     }
 
     /**
@@ -87,9 +78,6 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\JSON('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\JSON(1);
     }
 
     /**
@@ -99,9 +87,6 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\NotFound('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\NotFound(1);
     }
 
     /**
@@ -110,10 +95,7 @@ class ResponseTest extends BearFrameworkTestCase
     function testPermanentRedirectResponse()
     {
         $response = new \BearFramework\App\Response\PermanentRedirect('url');
-        $this->assertTrue($response->headers->get('Location') === 'url');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\PermanentRedirect(1);
+        $this->assertTrue($response->headers->getValue('Location') === 'url');
     }
 
     /**
@@ -122,10 +104,7 @@ class ResponseTest extends BearFrameworkTestCase
     function testTemporaryRedirectResponse()
     {
         $response = new \BearFramework\App\Response\TemporaryRedirect('url');
-        $this->assertTrue($response->headers->get('Location') === 'url');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\TemporaryRedirect(1);
+        $this->assertTrue($response->headers->getValue('Location') === 'url');
     }
 
     /**
@@ -135,9 +114,6 @@ class ResponseTest extends BearFrameworkTestCase
     {
         $response = new \BearFramework\App\Response\TemporaryUnavailable('content');
         $this->assertTrue($response->content === 'content');
-
-        $this->setExpectedException('Exception');
-        $response = new \BearFramework\App\Response\TemporaryUnavailable(1);
     }
 
     /**
@@ -148,36 +124,6 @@ class ResponseTest extends BearFrameworkTestCase
         $response = new \BearFramework\App\Response('content');
         $response->statusCode = 404;
         $this->assertTrue($response->statusCode === 404);
-    }
-
-    /**
-     * 
-     */
-    function testInvalidProperties1()
-    {
-        $response = new \BearFramework\App\Response();
-        $this->setExpectedException('Exception');
-        $response->content = 1;
-    }
-
-    /**
-     * 
-     */
-    function testInvalidProperties2()
-    {
-        $response = new \BearFramework\App\Response();
-        $this->setExpectedException('Exception');
-        $response->statusCode = '200';
-    }
-
-    /**
-     * 
-     */
-    function testInvalidProperties3()
-    {
-        $response = new \BearFramework\App\Response();
-        $this->setExpectedException('Exception');
-        $response->charset = 1;
     }
 
 }

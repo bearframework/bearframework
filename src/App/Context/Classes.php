@@ -30,11 +30,8 @@ class Classes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function __construct($dir)
+    public function __construct(string $dir)
     {
-        if (!is_string($dir)) {
-            throw new \InvalidArgumentException('The dir argument must be of type string');
-        }
         $dir = realpath($dir);
         if ($dir === false) {
             throw new \InvalidArgumentException('The dir specified does not exist');
@@ -50,14 +47,8 @@ class Classes
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function add($class, $filename)
+    public function add(string $class, string $filename): void
     {
-        if (!is_string($class)) {
-            throw new \InvalidArgumentException('The class argument must be of type string');
-        }
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified does not exist');

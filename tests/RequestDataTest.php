@@ -7,6 +7,9 @@
  * Free to use under the MIT license.
  */
 
+use BearFramework\App\Request\DataItem;
+use BearFramework\App\Request\DataRepository;
+
 /**
  * @runTestsInSeparateProcesses
  */
@@ -18,62 +21,25 @@ class RequestDataTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $data = new \BearFramework\App\Request\Data();
-        $data->set('name1', 'value1');
-        $data->set('name2', 'value2');
-        $this->assertTrue($data->get('missing') === null);
-        $this->assertTrue($data->get('name1') === 'value1');
-        $this->assertTrue($data->exists('missing') === false);
-        $this->assertTrue($data->exists('name1') === true);
+        $data = new DataRepository();
+        $data->set(new DataItem('name1', 'value1'));
+        $data->set(new DataItem('name2', 'value2'));
+        $this->assertNull($data->get('missing'));
+        $this->assertNull($data->getValue('missing'));
+        $this->assertEquals($data->get('name1')->value, 'value1');
+        $this->assertEquals($data->getValue('name1'), 'value1');
+        $this->assertFalse($data->exists('missing'));
+        $this->assertTrue($data->exists('name1'));
         $list = $data->getList();
-        $this->assertTrue($list[0]['name'] === 'name1');
-        $this->assertTrue($list[0]['value'] === 'value1');
-        $this->assertTrue($list[1]['name'] === 'name2');
-        $this->assertTrue($list[1]['value'] === 'value2');
-        $this->assertTrue(count($data) === 2);
+        $this->assertEquals($list->length, 2);
+        $this->assertEquals($list[0]->name, 'name1');
+        $this->assertEquals($list[0]->value, 'value1');
+        $this->assertEquals($list[1]->name, 'name2');
+        $this->assertEquals($list[1]->value, 'value2');
         $data->delete('name1');
-        $this->assertTrue(count($data) === 1);
-        $this->assertTrue($data->exists('name1') === false);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments1()
-    {
-        $data = new \BearFramework\App\Request\Data();
-        $this->setExpectedException('InvalidArgumentException');
-        $data->set(1, 1);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments2()
-    {
-        $data = new \BearFramework\App\Request\Data();
-        $this->setExpectedException('InvalidArgumentException');
-        $data->get(1);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments3()
-    {
-        $data = new \BearFramework\App\Request\Data();
-        $this->setExpectedException('InvalidArgumentException');
-        $data->exists(1);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments4()
-    {
-        $data = new \BearFramework\App\Request\Data();
-        $this->setExpectedException('InvalidArgumentException');
-        $data->delete(1);
+        $this->assertFalse($data->exists('name1'));
+        $list = $data->getList();
+        $this->assertEquals($list->length, 1);
     }
 
 }

@@ -35,11 +35,8 @@ class Context
      * @param string $dir The directory where the current addon or application are located 
      * @throws \InvalidArgumentException
      */
-    public function __construct($dir)
+    public function __construct(string $dir)
     {
-        if (!is_string($dir)) {
-            throw new \InvalidArgumentException('The dir argument must be of type string');
-        }
         $dir = realpath($dir);
         if ($dir === false) {
             throw new \InvalidArgumentException('The dir specified does not exist');

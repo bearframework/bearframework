@@ -68,46 +68,6 @@ class ContainerTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testAddInvalidArgument1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->container->set(1, TestClass::class);
-    }
-
-    /**
-     * 
-     */
-    public function testAddInvalidArgument2()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->container->set('test1', 1);
-    }
-
-    /**
-     * 
-     */
-    public function testGetInvalidArgument1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->container->get(1);
-    }
-
-    /**
-     * 
-     */
-    public function testExistsInvalidArgument1()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('Exception');
-        $app->container->exists(1);
-    }
-
-    /**
-     * 
-     */
     public function testGetMissingService1()
     {
         $app = $this->getApp();

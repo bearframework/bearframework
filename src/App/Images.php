@@ -22,11 +22,8 @@ class Images
      * @throws \InvalidArgumentException
      * @return array[int,int] The size of the image specified
      */
-    public function getSize($filename)
+    public function getSize(string $filename)
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $filename = realpath($filename);
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified does not exist');
@@ -59,20 +56,11 @@ class Images
      * @throws \Exception
      * @return void No value is returned
      */
-    public function resize($sourceFilename, $destinationFilename, $options = [])
+    public function resize(string $sourceFilename, string $destinationFilename, array $options = [])
     {
-        if (!is_string($sourceFilename)) {
-            throw new \InvalidArgumentException('The sourceFilename argument must be of type string');
-        }
         $sourceFilename = realpath($sourceFilename);
         if ($sourceFilename === false) {
             throw new \InvalidArgumentException('The sourceFilename specified does not exist');
-        }
-        if (!is_string($destinationFilename)) {
-            throw new \InvalidArgumentException('The destinationFilename argument must be of type string');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
         }
         if (isset($options['width']) && (!is_int($options['width']) || $options['width'] < 1 || $options['width'] > 100000)) {
             throw new \InvalidArgumentException('The width value must be higher than 0 and lower than 100001');

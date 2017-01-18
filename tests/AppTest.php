@@ -38,10 +38,10 @@ class AppTest extends BearFrameworkTestCase
         $this->assertTrue($app->request->base === 'http://example.com');
         $this->assertTrue((string) $app->request->path === '/');
         $this->assertTrue((string) $app->request->query === 'var1=1');
-        $this->assertTrue($app->request->headers->get('X-Custom-Header') === '123');
-        $this->assertTrue($app->request->cookies->get('cookie1') === 'value1');
-        $this->assertTrue($app->request->data->get('name1') === 'value1');
-        $this->assertTrue(count($app->request->files) === 0);
+        $this->assertTrue($app->request->headers->getValue('X-Custom-Header') === '123');
+        $this->assertTrue($app->request->cookies->getValue('cookie1') === 'value1');
+        $this->assertTrue($app->request->data->getValue('name1') === 'value1');
+        $this->assertTrue($app->request->files->getList()->length === 0);
     }
 
     /**
@@ -125,16 +125,6 @@ $app->routes->add(\'/\', function() {
         $app = $this->getApp();
         $app->respond(new \BearFramework\App\Response('The end'));
         $this->expectOutputString('The end');
-    }
-
-    /**
-     * 
-     */
-    public function testRespondInvalidArgument()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->respond(1);
     }
 
     /**

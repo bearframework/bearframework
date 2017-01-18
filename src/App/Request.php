@@ -14,15 +14,15 @@ use BearFramework\App;
 /**
  * Provides information about the current request
  * 
- * @property string $scheme The request scheme
- * @property string $host The request hostname
+ * @property string|null $scheme The request scheme
+ * @property string|null $host The request hostname
  * @property int|null $port The request port
- * @property-read \BearFramework\App\Request\Path $path The request path
- * @property-read \BearFramework\App\Request\Query $query The request query string
- * @property-read \BearFramework\App\Request\Headers $headers The request headers
- * @property-read \BearFramework\App\Request\Cookies $cookies The request cookies
- * @property-read \BearFramework\App\Request\Data $data The request POST data
- * @property-read \BearFramework\App\Request\Files $files The request files data
+ * @property-read \BearFramework\App\Request\PathRepository $path The request path
+ * @property-read \BearFramework\App\Request\QueryRepository $query The request query string
+ * @property-read \BearFramework\App\Request\HeadersRepository $headers The request headers
+ * @property-read \BearFramework\App\Request\CookiesRepository $cookies The request cookies
+ * @property-read \BearFramework\App\Request\DataRepository $data The request POST data
+ * @property-read \BearFramework\App\Request\FilesRepository $files The request files data
  */
 class Request
 {
@@ -46,7 +46,7 @@ class Request
     /**
      * The constructor
      */
-    public function __construct($initializeFromEnvironment = false)
+    public function __construct(bool $initializeFromEnvironment = false)
     {
 
         $updateBase = function($name, $value) {
@@ -55,14 +55,12 @@ class Request
         };
 
         $this->defineProperty('scheme', [
+            'type' => '?string',
             'get' => function() {
                 $data = parse_url($this->base);
                 return isset($data['scheme']) ? $data['scheme'] : null;
             },
             'set' => function($value) use (&$updateBase) {
-                if (!is_string($value)) {
-                    throw new \InvalidArgumentException('The value of the scheme property must be of type string');
-                }
                 $updateBase('scheme', $value);
             },
             'unset' => function() use (&$updateBase) {
@@ -71,14 +69,12 @@ class Request
         ]);
 
         $this->defineProperty('host', [
+            'type' => '?string',
             'get' => function() {
                 $data = parse_url($this->base);
                 return isset($data['host']) ? $data['host'] : null;
             },
             'set' => function($value) use (&$updateBase) {
-                if (!is_string($value)) {
-                    throw new \InvalidArgumentException('The value of the host property must be of type string');
-                }
                 $updateBase('host', $value);
             },
             'unset' => function() use (&$updateBase) {
@@ -87,14 +83,12 @@ class Request
         ]);
 
         $this->defineProperty('port', [
+            'type' => '?int',
             'get' => function() {
                 $data = parse_url($this->base);
                 return isset($data['port']) ? $data['port'] : null;
             },
             'set' => function($value) use (&$updateBase) {
-                if (!((is_string($value) && preg_match('/^[0-9]*$/', $value) === 1) || (is_int($value) && $value > 0) || $value === null)) {
-                    throw new \InvalidArgumentException('The value of the port property must be of type string (numeric), positve int or null');
-                }
                 $updateBase('port', $value);
             },
             'unset' => function() use (&$updateBase) {
@@ -134,15 +128,15 @@ class Request
 
             $this->defineProperty('path', [
                 'init' => function() use ($path) {
-                    return new App\Request\Path(isset($path{0}) ? $path : '/');
+                    return new App\Request\PathRepository(isset($path{0}) ? $path : '/');
                 },
                 'readonly' => true
             ]);
             $this->defineProperty('query', [
                 'init' => function() {
-                    $query = new App\Request\Query();
+                    $query = new App\Request\QueryRepository();
                     foreach ($_GET as $name => $value) {
-                        $query->set($name, $value);
+                        $query->set(new App\Request\QueryItem($name, $value));
                     }
                     return $query;
                 },
@@ -150,10 +144,10 @@ class Request
             ]);
             $this->defineProperty('headers', [
                 'init' => function() {
-                    $headers = new App\Request\Headers();
+                    $headers = new App\Request\HeadersRepository();
                     foreach ($_SERVER as $name => $value) {
                         if (substr($name, 0, 5) == 'HTTP_') {
-                            $headers->set(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value);
+                            $headers->set(new App\Request\Header(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
                         }
                     }
                     return $headers;
@@ -162,9 +156,9 @@ class Request
             ]);
             $this->defineProperty('cookies', [
                 'init' => function() {
-                    $cookies = new App\Request\Cookies();
+                    $cookies = new App\Request\CookiesRepository();
                     foreach ($_COOKIE as $name => $value) {
-                        $cookies->set($name, $value);
+                        $cookies->set(new App\Request\Cookie($name, $value));
                     }
                     return $cookies;
                 },
@@ -172,9 +166,9 @@ class Request
             ]);
             $this->defineProperty('data', [
                 'init' => function() {
-                    $data = new App\Request\Data();
+                    $data = new App\Request\DataRepository();
                     foreach ($_POST as $name => $value) {
-                        $data->set($name, $value);
+                        $data->set(new App\Request\DataItem($name, $value));
                     }
                     return $data;
                 },
@@ -182,10 +176,14 @@ class Request
             ]);
             $this->defineProperty('files', [
                 'init' => function() {
-                    $files = new App\Request\Files();
+                    $files = new App\Request\FilesRepository();
                     foreach ($_FILES as $name => $value) {
                         if (is_uploaded_file($value['tmp_name'])) {
-                            $files->set($name, $value['name'], $value['tmp_name'], $value['size'], $value['type'], $value['error']);
+                            $file = new \BearFramework\App\Request\File($name, $value['tmp_name']);
+                            $file->filename = $value['name'];
+                            $file->size = $value['size'];
+                            $file->type = $value['type'];
+                            $file->error = $value['error'];
                         }
                     }
                     return $files;
@@ -195,37 +193,37 @@ class Request
         } else {
             $this->defineProperty('path', [
                 'init' => function() {
-                    return new App\Request\Path();
+                    return new App\Request\PathRepository();
                 },
                 'readonly' => true
             ]);
             $this->defineProperty('query', [
                 'init' => function() {
-                    return new App\Request\Query();
+                    return new App\Request\QueryRepository();
                 },
                 'readonly' => true
             ]);
             $this->defineProperty('headers', [
                 'init' => function() {
-                    return new App\Request\Headers();
+                    return new App\Request\HeadersRepository();
                 },
                 'readonly' => true
             ]);
             $this->defineProperty('cookies', [
                 'init' => function() {
-                    return new App\Request\Cookies();
+                    return new App\Request\CookiesRepository();
                 },
                 'readonly' => true
             ]);
             $this->defineProperty('data', [
                 'init' => function() {
-                    return new App\Request\Data();
+                    return new App\Request\DataRepository();
                 },
                 'readonly' => true
             ]);
             $this->defineProperty('files', [
                 'init' => function() {
-                    return new App\Request\Files();
+                    return new App\Request\FilesRepository();
                 },
                 'readonly' => true
             ]);

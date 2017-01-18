@@ -30,11 +30,8 @@ class Container
      * @throws \InvalidArgumentException
      * @return void No value is returned
      */
-    public function set($name, $value)
+    public function set(string $name, $value): void
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException('The name argument must be of type string');
-        }
         if (!is_string($value) && !is_object($value) && !is_callable($value)) {
             throw new \InvalidArgumentException('The value argument must be of type string, object or callable');
         }
@@ -49,11 +46,8 @@ class Container
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public function get($name)
+    public function get(string $name)
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException('The name argument must be of type string');
-        }
         if (isset($this->data[$name])) {
             $result = $this->data[$name][0];
             if (is_string($result) || is_callable($result)) {
@@ -87,13 +81,9 @@ class Container
      * 
      * @param string $name The name of the service
      * @return boolen TRUE if services is added. FALSE otherwise.
-     * @throws \InvalidArgumentException
      */
-    public function exists($name)
+    public function exists(string $name)
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException('The name argument must be of type string');
-        }
         return isset($this->data[$name]);
     }
 

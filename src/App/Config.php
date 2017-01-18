@@ -12,15 +12,16 @@ namespace BearFramework\App;
 /**
  * The application configuration
  * 
- * @property string $appDir
- * @property string $dataDir
- * @property string $logsDir
+ * @property ?string $appDir
+ * @property ?string $dataDir
+ * @property ?string $logsDir
  * @property boolean $updateEnvironment
  * @property boolean $handleErrors
  * @property boolean $displayErrors
  * @property boolean $logErrors
- * @property string $assetsPathPrefix
+ * @property ?string $assetsPathPrefix
  * @property int $assetsMaxAge
+ * @property int $tempDataMaxAge
  */
 class Config
 {
@@ -33,16 +34,13 @@ class Config
      * @param array $options Configuration options
      * @throws \InvalidArgumentException
      */
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
-        }
-
         $this->defineProperty('appDir', [
+            'type' => '?string',
             'set' => function($value) {
                 if ($value === null) {
-                    return $value;
+                    return null;
                 }
                 $value = realpath($value);
                 if ($value === false) {
@@ -53,9 +51,10 @@ class Config
         ]);
 
         $this->defineProperty('dataDir', [
+            'type' => '?string',
             'set' => function($value) {
                 if ($value === null) {
-                    return $value;
+                    return null;
                 }
                 $value = realpath($value);
                 if ($value === false) {
@@ -66,9 +65,10 @@ class Config
         ]);
 
         $this->defineProperty('logsDir', [
+            'type' => '?string',
             'set' => function($value) {
                 if ($value === null) {
-                    return $value;
+                    return null;
                 }
                 $value = realpath($value);
                 if ($value === false) {
@@ -76,6 +76,34 @@ class Config
                 }
                 return $value;
             }
+        ]);
+
+        $this->defineProperty('updateEnvironment', [
+            'type' => 'bool'
+        ]);
+
+        $this->defineProperty('handleErrors', [
+            'type' => 'bool'
+        ]);
+
+        $this->defineProperty('displayErrors', [
+            'type' => 'bool'
+        ]);
+
+        $this->defineProperty('logErrors', [
+            'type' => 'bool'
+        ]);
+
+        $this->defineProperty('assetsPathPrefix', [
+            'type' => '?string'
+        ]);
+
+        $this->defineProperty('assetsMaxAge', [
+            'type' => 'int'
+        ]);
+
+        $this->defineProperty('tempDataMaxAge', [
+            'type' => 'int'
         ]);
 
         $defaultOptions = [
@@ -102,11 +130,8 @@ class Config
      * @param string $filename The filename containing the configuration options
      * @throws \InvalidArgumentException
      */
-    public function load($filename)
+    public function load(string $filename): void
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename must be of type string');
-        }
         $filename = realpath($filename);
         if ($filename === false) {
             throw new \InvalidArgumentException('The filename specified (' . $filename . ') is not valid');

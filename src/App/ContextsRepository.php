@@ -14,7 +14,7 @@ use BearFramework\App;
 /**
  * Context locator
  */
-class ContextLocator
+class ContextsRepository
 {
 
     /**
@@ -25,11 +25,8 @@ class ContextLocator
      * @throws \Exception
      * @return \BearFramework\App\Context The context object
      */
-    public function get($filename)
+    public function get(string $filename)
     {
-        if (!is_string($filename)) {
-            throw new \InvalidArgumentException('The filename argument must be of type string');
-        }
         $filename = realpath($filename);
         if ($filename === false) {
             throw new \Exception('File does not exists');
@@ -43,9 +40,9 @@ class ContextLocator
         }
         $addons = $app->addons->getList();
         foreach ($addons as $addon) {
-            $addonData = \BearFramework\Addons::get($addon->id);
-            if (strpos($filename, $addonData['dir'] . DIRECTORY_SEPARATOR) === 0) {
-                return new App\Context($addonData['dir']);
+            $registeredAddon = \BearFramework\Addons::get($addon->id);
+            if (strpos($filename, $registeredAddon->dir . DIRECTORY_SEPARATOR) === 0) {
+                return new App\Context($registeredAddon->dir);
             }
         }
         throw new \Exception('Connot find context');

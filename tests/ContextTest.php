@@ -104,38 +104,10 @@ class ContextTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testContextInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\Context(1);
-    }
-
-    /**
-     * 
-     */
     public function testContextInvalidArguments2()
     {
         $this->setExpectedException('InvalidArgumentException');
         new \BearFramework\App\Context('missing/dir');
-    }
-
-    /**
-     * 
-     */
-    public function testContextInvalidArguments3()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->context->get(1);
-    }
-
-    /**
-     * 
-     */
-    public function testContextAssetsInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\Context\Assets(1);
     }
 
     /**
@@ -150,30 +122,6 @@ class ContextTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testContextAssetsInvalidArguments3()
-    {
-        $app = $this->getApp();
-        $this->createDir($app->config->appDir . '/dir');
-        $contextAssets = new \BearFramework\App\Context\Assets($app->config->appDir . '/dir');
-        $this->setExpectedException('InvalidArgumentException');
-        $contextAssets->getUrl(1);
-    }
-
-    /**
-     * 
-     */
-    public function testContextAssetsInvalidArguments4()
-    {
-        $app = $this->getApp();
-        $this->createDir($app->config->appDir . '/dir');
-        $contextAssets = new \BearFramework\App\Context\Assets($app->config->appDir . '/dir');
-        $this->setExpectedException('InvalidArgumentException');
-        $contextAssets->getUrl('file.png', 1);
-    }
-
-    /**
-     * 
-     */
     public function testContextAssetsInvalidArguments5()
     {
         $app = $this->getApp();
@@ -181,15 +129,6 @@ class ContextTest extends BearFrameworkTestCase
         $contextAssets = new \BearFramework\App\Context\Assets($app->config->appDir . '/dir');
         $this->setExpectedException('InvalidArgumentException');
         $contextAssets->getUrl('missing/file.png');
-    }
-
-    /**
-     * 
-     */
-    public function testContextClassesInvalidArguments1()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        new \BearFramework\App\Context\Classes(1);
     }
 
     /**
@@ -211,18 +150,6 @@ class ContextTest extends BearFrameworkTestCase
         $contextClasses = new \BearFramework\App\Context\Classes($app->config->appDir . '/dir');
         $this->setExpectedException('InvalidArgumentException');
         $contextClasses->add(1, 'testclass.php');
-    }
-
-    /**
-     * 
-     */
-    public function testContextClassesInvalidArguments4()
-    {
-        $app = $this->getApp();
-        $this->createDir($app->config->appDir . '/dir');
-        $contextClasses = new \BearFramework\App\Context\Classes($app->config->appDir . '/dir');
-        $this->setExpectedException('InvalidArgumentException');
-        $contextClasses->add('TestClass', 1);
     }
 
     /**

@@ -10,115 +10,63 @@
 namespace BearFramework;
 
 /**
- * Place to register addons that can be enabled for the application
+ * The place to register addons that can be enabled for the application.
  */
 class Addons
 {
 
     /**
-     * Registered addons data
-     * 
      * @var array 
      */
     static private $data = [];
 
     /**
-     * Registers an addon
-     * @param string $id The addon id
-     * @param string $dir The addon location
-     * @param array $options Addon options
-     * @throws \InvalidArgumentException
+     * Registers an addon.
+     * 
+     * @param string $id The id of the addon.
+     * @param string $dir The directory where the addon files are located.
+     * @param array $options The addon options. Available values:
+     *     - require - An array containing the ids of addons that must be added before this one.
      * @return void No value is returned
      */
-    static function register($id, $dir, $options = [])
+    static function register(string $id, string $dir, $options = []): void
     {
-        if (!is_string($id)) {
-            throw new \InvalidArgumentException('The id argument must be of type string');
-        }
-        if (!is_string($dir)) {
-            throw new \InvalidArgumentException('The dir argument must be of type string');
-        }
-        $dir = realpath($dir);
-        if ($dir === false) {
-            throw new \InvalidArgumentException('The dir specified does not exist');
-        }
-        if (!is_array($options)) {
-            throw new \InvalidArgumentException('The options argument must be of type array');
-        }
-        self::$data[strtolower($id)] = [$dir, $options];
+        self::$data[$id] = new \BearFramework\Addon($id, $dir, $options);
     }
 
     /**
-     * Checks whether addon is registered
+     * Checks whether an addon is registered.
      * 
-     * @param string $id The addon id
-     * @throws \InvalidArgumentException
-     * @return boolean TRUE if addon is registered. FALSE otherwise.
+     * @param string $id The id of the addon.
+     * @return bool TRUE if the addon is registered. FALSE otherwise.
      */
-    static function exists($id)
+    static function exists(string $id): bool
     {
-        if (!is_string($id)) {
-            throw new \InvalidArgumentException('The id argument must be of type string');
-        }
-        return isset(self::$data[strtolower($id)]);
+        return isset(self::$data[$id]);
     }
 
     /**
-     * Returns information about the addon
+     * Returns information about the addon requested.
      * 
-     * @param string $id The addon id
-     * @return string Associative array containing the keys 'id', 'dir' and 'options' for the addon specified
-     * @throws \InvalidArgumentException
+     * @param string $id The id of the addon.
+     * @return \BearFramework\Addon|null Information about the addon requested or null if not found.
      */
-    static function get($id)
+    static function get(string $id): ?\BearFramework\Addon
     {
-        if (!is_string($id)) {
-            throw new \InvalidArgumentException('The id argument must be of type string');
-        }
         if (isset(self::$data[$id])) {
-            return [
-                'id' => $id,
-                'dir' => self::$data[$id][0],
-                'options' => self::$data[$id][1]
-            ];
+            return self::$data[$id];
         }
-        throw new \InvalidArgumentException('Addon not found');
+        return null;
     }
 
     /**
-     * Returns an array containing the data of all registered addons
+     * Returns a list of all registered addons.
      * 
-     * @return \BearFramework\AddonsList|\BearFramework\AddonsListObject[] An array containing the data of all registered addons
+     * @return \BearFramework\AddonsList|\BearFramework\Addon[] A list of all registered addons.
      */
     static function getList()
     {
-        $list = new AddonsList();
-        foreach (self::$data as $id => $data) {
-            $list[] = new AddonsListObject([
-                'id' => $id,
-                'dir' => $data[0],
-                'options' => new \IvoPetkov\DataObject($data[1])
-            ]);
-        }
-        return $list;
+        return new \BearFramework\AddonsList(self::$data);
     }
 
-}
-
-/**
- * 
- */
-class AddonsList extends \IvoPetkov\DataList
-{
-    
-}
-
-/**
- * @property string $id
- * @property string $dir
- * @property \IvoPetkov\DataObject $options
- */
-class AddonsListObject extends \IvoPetkov\DataObject
-{
-    
 }

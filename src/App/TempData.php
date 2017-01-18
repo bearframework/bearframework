@@ -18,31 +18,64 @@ class TempData
 {
 
     /**
+     * Saves temp data
+     * 
+     * @param string $key The data key
+     * @param mixed $value The data
+     * @throws \InvalidArgumentException
+     * @return void No value is returned
+     */
+    public function set(\BearFramework\App\TempDataItem $item): void
+    {
+        $app = App::get();
+        $currentPeriodDataKey = $this->getPeriodDataKey($item->key, 0);
+        if ($currentPeriodDataKey === null) {
+            return;
+        }
+        $previousPeriodDataKey = $this->getPeriodDataKey($item->key, 1);
+        $app->data->setValue($currentPeriodDataKey, gzcompress(serialize($item->value)));
+        if ($app->data->exists($previousPeriodDataKey)) {
+            $app->data->delete($previousPeriodDataKey);
+        }
+    }
+
+    /**
      * Return the saved temp data or the default value specified
      * 
      * @param string $key The data key
-     * @param string $defaultValue The default value which will be returned if the temp data is missing
      * @throws \InvalidArgumentException
      * @return mixed The saved temp data or the default value specified
      */
-    public function get(string $key, $defaultValue = null)
+    public function get(string $key): ?\BearFramework\App\TempDataItem
     {
         $app = App::get();
         $currentPeriodDataKey = $this->getPeriodDataKey($key, 0);
         if ($currentPeriodDataKey === null) {
-            return $defaultValue;
+            return null;
         }
-        $value = $app->data->get($currentPeriodDataKey);
+        $value = $app->data->getValue($currentPeriodDataKey);
         if ($value !== null) {
-            return unserialize(gzuncompress($value));
+            return new TempDataItem($key, unserialize(gzuncompress($value)));
         }
         $previousPeriodDataKey = $this->getPeriodDataKey($key, 1);
-        $value = $app->data->get($previousPeriodDataKey);
+        $value = $app->data->getValue($previousPeriodDataKey);
         if ($value !== null) {
-            $app->data->set($currentPeriodDataKey, $value);
-            return unserialize(gzuncompress($value));
+            $app->data->setValue($currentPeriodDataKey, $value);
+            return new TempDataItem($key, unserialize(gzuncompress($value)));
         }
-        return $defaultValue;
+        return null;
+    }
+    
+    /**
+     * 
+     */
+    public function getValue(string $key): ?string
+    {
+        $item = $this->get($key);
+        if($item === null){
+            return null;
+        }
+        return $item->value;
     }
 
     /**
@@ -68,28 +101,6 @@ class TempData
             return true;
         }
         return false;
-    }
-
-    /**
-     * Saves temp data
-     * 
-     * @param string $key The data key
-     * @param mixed $value The data
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
-     */
-    public function set(string $key, $value)
-    {
-        $app = App::get();
-        $currentPeriodDataKey = $this->getPeriodDataKey($key, 0);
-        if ($currentPeriodDataKey === null) {
-            return;
-        }
-        $previousPeriodDataKey = $this->getPeriodDataKey($key, 1);
-        $app->data->set($currentPeriodDataKey, gzcompress(serialize($value)));
-        if ($app->data->exists($previousPeriodDataKey)) {
-            $app->data->delete($previousPeriodDataKey);
-        }
     }
 
     /**
