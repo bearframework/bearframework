@@ -135,9 +135,16 @@ class Request
             $this->defineProperty('query', [
                 'init' => function() {
                     $query = new App\Request\QueryRepository();
-                    foreach ($_GET as $name => $value) {
-                        $query->set(new App\Request\QueryItem($name, $value));
-                    }
+                    $walkVariables = function($variables, $parent = null) use (&$query, &$walkVariables) {
+                                foreach ($variables as $name => $value) {
+                                    if (is_array($value)) {
+                                        $walkVariables($value, $name);
+                                        continue;
+                                    }
+                                    $query->set(new App\Request\QueryItem($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                                }
+                            };
+                    $walkVariables($_GET);
                     return $query;
                 },
                 'readonly' => true
@@ -167,9 +174,16 @@ class Request
             $this->defineProperty('data', [
                 'init' => function() {
                     $data = new App\Request\DataRepository();
-                    foreach ($_POST as $name => $value) {
-                        $data->set(new App\Request\DataItem($name, $value));
-                    }
+                    $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
+                                foreach ($variables as $name => $value) {
+                                    if (is_array($value)) {
+                                        $walkVariables($value, $name);
+                                        continue;
+                                    }
+                                    $data->set(new App\Request\DataItem($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                                }
+                            };
+                    $walkVariables($_POST);
                     return $data;
                 },
                 'readonly' => true

@@ -26,7 +26,13 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['HTTP_X_CUSTOM_HEADER'] = '123';
         $_COOKIE['cookie1'] = 'value1';
         $_POST['name1'] = 'value1';
+        $_POST['name2'] = [];
+        $_POST['name2']['nameA'] = 'valueA';
+        $_POST['name2']['nameB'] = 'valueB';
         $_GET['var1'] = '1';
+        $_GET['var2'] = [];
+        $_GET['var2']['varA'] = 'A';
+        $_GET['var2']['varB'] = 'B';
         $app = new \BearFramework\App();
         $this->assertTrue($app->request === null);
         $app->initialize();
@@ -37,10 +43,15 @@ class AppTest extends BearFrameworkTestCase
         $this->assertTrue($app->request->host === 'example.com');
         $this->assertTrue($app->request->base === 'http://example.com');
         $this->assertTrue((string) $app->request->path === '/');
-        $this->assertTrue((string) $app->request->query === 'var1=1');
+        $this->assertTrue((string) $app->request->query === 'var1=1&var2%5BvarA%5D=A&var2%5BvarB%5D=B');
+        $this->assertTrue($app->request->query->getValue('var1') === '1');
+        $this->assertTrue($app->request->query->getValue('var2[varA]') === 'A');
+        $this->assertTrue($app->request->query->getValue('var2[varB]') === 'B');
         $this->assertTrue($app->request->headers->getValue('X-Custom-Header') === '123');
         $this->assertTrue($app->request->cookies->getValue('cookie1') === 'value1');
         $this->assertTrue($app->request->data->getValue('name1') === 'value1');
+        $this->assertTrue($app->request->data->getValue('name2[nameA]') === 'valueA');
+        $this->assertTrue($app->request->data->getValue('name2[nameB]') === 'valueB');
         $this->assertTrue($app->request->files->getList()->length === 0);
     }
 
