@@ -92,11 +92,11 @@ class CookiesRepository
     /**
      * Returns a list of all cookies
      * 
-     * @return \BearFramework\App\Request\CookiesList|\BearFramework\App\Request\Cookie[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\Cookie[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        return new CookiesList($this->data);
+        return new \BearFramework\DataList($this->data);
     }
 
 }

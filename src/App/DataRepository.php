@@ -343,11 +343,11 @@ class DataRepository
 
     /**
      * 
-     * @return \BearFramework\App\DataList
+     * @return \BearFramework\DataList
      */
-    public function getList(): \BearFramework\App\DataList
+    public function getList()
     {
-        return new DataList(function($context) {
+        return new \BearFramework\DataList(function($context) {
             $whereOptions = [];
             foreach ($context->filterByProperties as $filter) {
                 $whereOptions[] = [$filter->property, $filter->value, $filter->operator];

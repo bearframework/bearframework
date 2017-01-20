@@ -92,11 +92,11 @@ class QueryRepository
     /**
      * Returns a list of all cookies
      * 
-     * @return \BearFramework\App\Request\QueryItemsList|\BearFramework\App\Request\QueryItem[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\QueryItem[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        return new QueryItemsList($this->data);
+        return new \BearFramework\DataList($this->data);
     }
     
     

@@ -91,11 +91,11 @@ class AddonsRepository
     /**
      * Returns a list of all cookies
      * 
-     * @return \BearFramework\App\AddonsList|\BearFramework\App\Addon[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Addon[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        return new \BearFramework\App\AddonsList($this->data);
+        return new \BearFramework\DataList($this->data);
     }
 
 }

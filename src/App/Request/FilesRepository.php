@@ -78,11 +78,11 @@ class FilesRepository
     /**
      * Returns a list of all files
      * 
-     * @return \BearFramework\App\Request\FilesList|\BearFramework\App\Request\File[] An array containing all files in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\File[] An array containing all files in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        return new FilesList($this->data);
+        return new \BearFramework\DataList($this->data);
     }
 
 }

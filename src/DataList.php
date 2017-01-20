@@ -7,10 +7,10 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework\App;
+namespace BearFramework;
 
 /**
- * 
+ * Base class for lists
  */
 class DataList extends \IvoPetkov\DataList
 {

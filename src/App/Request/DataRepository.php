@@ -92,11 +92,11 @@ class DataRepository
     /**
      * Returns a list of all data items
      * 
-     * @return \BearFramework\App\Request\DataItemsList|\BearFramework\App\Request\DataItem[] An array containing all data items in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\DataItem[] An array containing all data items in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        return new DataItemsList($this->data);
+        return new \BearFramework\DataList($this->data);
     }
     
 }

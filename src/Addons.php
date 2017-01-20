@@ -62,11 +62,11 @@ class Addons
     /**
      * Returns a list of all registered addons.
      * 
-     * @return \BearFramework\AddonsList|\BearFramework\Addon[] A list of all registered addons.
+     * @return \BearFramework\DataList|\BearFramework\Addon[] A list of all registered addons.
      */
     static function getList()
     {
-        return new \BearFramework\AddonsList(self::$data);
+        return new \BearFramework\DataList(self::$data);
     }
 
 }

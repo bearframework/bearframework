@@ -92,11 +92,11 @@ class HeadersRepository
     /**
      * Returns a list of all headers
      * 
-     * @return \BearFramework\App\Request\HeadersList|\BearFramework\App\Request\Header[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\Header[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {
-        return new HeadersList($this->data);
+        return new \BearFramework\DataList($this->data);
     }
 
 }
