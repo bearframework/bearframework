@@ -14,7 +14,7 @@ use BearFramework\App;
 /**
  * Temp data
  */
-class TempData
+class TempDataRepository
 {
 
     /**

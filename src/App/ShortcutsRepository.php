@@ -15,7 +15,7 @@ namespace BearFramework\App;
  * @method void add(string $name, callable $callbacks) Adds a new shortcut
  * @codeCoverageIgnore
  */
-class Shortcuts
+class ShortcutsRepository
 {
     
 }

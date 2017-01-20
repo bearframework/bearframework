@@ -12,7 +12,7 @@ namespace BearFramework\App;
 /**
  * Provides functionality for autoloading classes
  */
-class Classes
+class ClassesRepository
 {
 
     /**

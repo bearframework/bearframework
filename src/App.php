@@ -16,19 +16,19 @@ use BearFramework\App;
  * 
  * @property-read \BearFramework\App\Config $config The application configuration.
  * @property-read \BearFramework\App\Request $request Provides information about the current request.
- * @property-read \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks.
+ * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
  * @property-read \BearFramework\App\Logger $logger Provides logging functionality.
  * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
- * @property-read \BearFramework\App\Hooks $hooks Provides functionality for notifications and data requests.
+ * @property-read \BearFramework\App\HooksRepository $hooks Provides functionality for notifications and data requests.
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
  * @property-read \BearFramework\App\Data $data \BearFramework\App\Data
- * @property-read \BearFramework\App\TempData $tempData \BearFramework\App\TempData
+ * @property-read \BearFramework\App\TempDataRepository $tempData \BearFramework\App\TempData
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
- * @property-read \BearFramework\App\Classes $classes Provides functionality for autoloading classes.
+ * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for autoloading classes.
  * @property-read \BearFramework\App\Urls $urls URLs utilities.
  * @property-read \BearFramework\App\Images $images Images utilities.
  * @property-read \BearFramework\App\ContextsRepository $context Context information object locator.
- * @property-read \BearFramework\App\Shortcuts $shortcuts Allow registration of $app object properties (shortcuts).
+ * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
  */
 class App
 {
@@ -100,7 +100,7 @@ class App
         ]);
         $this->defineProperty('routes', [
             'init' => function() {
-                return new App\Routes();
+                return new App\RoutesRepository();
             },
             'readonly' => true
         ]);
@@ -118,7 +118,7 @@ class App
         ]);
         $this->defineProperty('hooks', [
             'init' => function() {
-                return new App\Hooks();
+                return new App\HooksRepository();
             },
             'readonly' => true
         ]);
@@ -151,7 +151,7 @@ class App
         ]);
         $this->defineProperty('tempData', [
             'init' => function() {
-                return new App\TempData();
+                return new App\TempDataRepository();
             },
             'readonly' => true
         ]);
@@ -163,7 +163,7 @@ class App
         ]);
         $this->defineProperty('classes', [
             'init' => function() {
-                return new App\Classes();
+                return new App\ClassesRepository();
             },
             'readonly' => true
         ]);

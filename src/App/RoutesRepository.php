@@ -14,7 +14,7 @@ use BearFramework\App;
 /**
  * Provides functionality for registering callbacks for specific requests and executing them
  */
-class Routes
+class RoutesRepository
 {
 
     /**

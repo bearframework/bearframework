@@ -12,7 +12,7 @@ namespace BearFramework\App;
 /**
  * Provides functionality for notifications and data requests
  */
-class Hooks
+class HooksRepository
 {
 
     /**
