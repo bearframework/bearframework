@@ -13,7 +13,7 @@ namespace BearFramework\App\Request;
  * @property string $name The name of the cookie.
  * @property string $value The value of the cookie.
  */
-class Cookie implements \IvoPetkov\DataObjectInterface
+class Cookie
 {
 
     use \IvoPetkov\DataObjectTrait;

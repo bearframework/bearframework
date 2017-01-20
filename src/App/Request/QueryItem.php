@@ -13,7 +13,7 @@ namespace BearFramework\App\Request;
  * @property string $name The name of the query parameter.
  * @property string $value The value of the query parameter.
  */
-class QueryItem implements \IvoPetkov\DataObjectInterface
+class QueryItem
 {
 
     use \IvoPetkov\DataObjectTrait;

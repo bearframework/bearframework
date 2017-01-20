@@ -14,7 +14,7 @@
     "require": {
         "php": ">=7.1.0",
         "ivopetkov/object-storage": "0.2.*",
-        "ivopetkov/data-object": "0.4.*"
+        "ivopetkov/data-object": "0.5.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8"

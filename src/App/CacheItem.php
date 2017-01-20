@@ -14,7 +14,7 @@ namespace BearFramework\App;
  * @property mixed $value
  * @property int|null $ttl Time in seconds to stay in the cache
  */
-class CacheItem implements \IvoPetkov\DataObjectInterface
+class CacheItem
 {
 
     use \IvoPetkov\DataObjectTrait;

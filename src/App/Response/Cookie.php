@@ -18,7 +18,7 @@ namespace BearFramework\App\Response;
  * @property ?bool $secure Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client.
  * @property ?bool $httpOnly When TRUE the cookie will be made accessible only through the HTTP protocol.
  */
-class Cookie implements \IvoPetkov\DataObjectInterface
+class Cookie
 {
 
     use \IvoPetkov\DataObjectTrait;

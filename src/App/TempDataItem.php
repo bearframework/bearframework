@@ -13,7 +13,7 @@ namespace BearFramework\App;
  * @property string $key
  * @property string $value
  */
-class TempDataItem implements \IvoPetkov\DataObjectInterface
+class TempDataItem
 {
 
     use \IvoPetkov\DataObjectTrait;

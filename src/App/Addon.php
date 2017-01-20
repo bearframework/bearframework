@@ -13,7 +13,7 @@ namespace BearFramework\App;
  * @property string $id The id of the addon
  * @property array $options The options of the addon
  */
-class Addon implements \IvoPetkov\DataObjectInterface
+class Addon
 {
 
     use \IvoPetkov\DataObjectTrait;

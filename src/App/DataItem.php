@@ -14,7 +14,7 @@ namespace BearFramework\App;
  * @property string $value
  * @property \IvoPetkov\DataObject $metadata
  */
-class DataItem implements \IvoPetkov\DataObjectInterface
+class DataItem
 {
 
     use \IvoPetkov\DataObjectTrait;

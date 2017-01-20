@@ -15,7 +15,7 @@ namespace BearFramework;
  * @property array $options The addon options. Available values:
  *     - require - An array containing the ids of addons that must be added before this one.
  */
-class Addon implements \IvoPetkov\DataObjectInterface
+class Addon
 {
 
     use \IvoPetkov\DataObjectTrait;

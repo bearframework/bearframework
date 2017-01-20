@@ -13,7 +13,7 @@ namespace BearFramework\App\Request;
  * @property string $name
  * @property string $value
  */
-class Header implements \IvoPetkov\DataObjectInterface
+class Header
 {
 
     use \IvoPetkov\DataObjectTrait;

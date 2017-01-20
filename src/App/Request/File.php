@@ -17,7 +17,7 @@ namespace BearFramework\App\Request;
  * @property ?string $type The mime type of the file, if the browser provided this information.
  * @property ?int $errorCode The error code if an error occurred. Available values: UPLOAD_ERR_OK, UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE, UPLOAD_ERR_PARTIAL, UPLOAD_ERR_NO_FILE, UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_CANT_WRITE, UPLOAD_ERR_EXTENSION.
  */
-class File implements \IvoPetkov\DataObjectInterface
+class File
 {
 
     use \IvoPetkov\DataObjectTrait;
