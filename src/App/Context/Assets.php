@@ -76,16 +76,12 @@ class Assets
      * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return boolean|string The content of the file or FALSE if file does not exists
+     * @return null|string The content of the file or FALSE if file does not exists
      */
-//    public function getContent(string $filename, array $options = [])
-//    {
-//        $app = App::get();
-//        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
-//        if ($filename === false) {
-//            throw new \InvalidArgumentException('The filename specified does not exist');
-//        }
-//        return $app->assets->getContent($filename, $options);
-//    }
+    public function getContent(string $filename, array $options = []): ?string
+    {
+        $app = App::get();
+        return $app->assets->getContent($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
+    }
 
 }

@@ -35,31 +35,6 @@ class Assets
         $this->dirs[] = $this->getAbsolutePath($pathname);
     }
 
-    private function getAbsolutePath(string $path)
-    {
-        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
-        if ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR) { // is linux
-        } elseif ($isWindows && preg_match('/^[A-Z]:/i', $path) === 1) { // is windows
-        } else {
-            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
-        }
-        $parts = array_filter(explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path)), function($value) {
-            return isset($value{0}) && $value !== '.';
-        });
-        $temp = [];
-        foreach ($parts as $part) {
-            if ($part === '..') {
-                if ($isWindows && sizeof($temp) === 1) {
-                    continue;
-                }
-                array_pop($temp);
-            } else {
-                $temp[] = $part;
-            }
-        }
-        return ($isWindows ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
-    }
-
     /**
      * Returns a public URL for the specified filename
      * 
@@ -101,32 +76,6 @@ class Assets
         throw new \InvalidArgumentException('The filename specified is located in a dir that is not added');
     }
 
-    private function validateOptions($options): void
-    {
-        if (isset($options['width'])) {
-            if (!is_int($options['width'])) {
-                throw new \InvalidArgumentException('The value of the width option must be of type int, ' . gettype($options['width']) . ' given');
-            }
-            if ($options['width'] < 1) {
-                throw new \InvalidArgumentException('The value of the width option cannot be lower than 1');
-            }
-            if ($options['width'] > 100000) {
-                throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000');
-            }
-        }
-        if (isset($options['height'])) {
-            if (!is_int($options['height'])) {
-                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['width']) . ' given');
-            }
-            if ($options['height'] < 1) {
-                throw new \InvalidArgumentException('The value of the height option cannot be lower than 1');
-            }
-            if ($options['height'] > 100000) {
-                throw new \InvalidArgumentException('The value of the height option cannot be higher than 100000');
-            }
-        }
-    }
-
     /**
      * Returns the content of the file specified
      * 
@@ -134,42 +83,41 @@ class Assets
      * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return boolean|string The content of the file or FALSE if file does not exists
+     * @return null|string The content of the file or FALSE if file does not exists
      */
-//    public function getContent(string $filename, array $options = [])
-//    {
-//        $app = App::get();
-//        $urlOptions = [];
-//        if (isset($options['width'])) {
-//            $urlOptions['width'] = $options['width'];
-//        }
-//        if (isset($options['height'])) {
-//            $urlOptions['height'] = $options['height'];
-//        }
-//        if (isset($options['encoding'])) {
-//            if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
-//                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'');
-//            }
-//        }
-//        $url = $this->getUrl($filename, $urlOptions);
-//        $path = substr($url, strlen($app->request->base));
-//        $filename = $this->getFilename($path);
-//        if ($filename === false) {
-//            return false;
-//        }
-//        $content = file_get_contents($filename);
-//        if (isset($options['encoding'])) {
-//            if ($options['encoding'] === 'base64') {
-//                return base64_encode($content);
-//            } elseif ($options['encoding'] === 'data-uri') {
-//                $mimeType = $this->getMimeType($filename);
-//                return 'data:' . $mimeType . ',' . $content;
-//            }
-//            $mimeType = $this->getMimeType($filename);
-//            return 'data:' . $mimeType . ';base64,' . base64_encode($content);
-//        }
-//        return $content;
-//    }
+    public function getContent(string $filename, array $options = []): ?string
+    {
+        $this->validateOptions($options);
+        $app = App::get();
+        $urlOptions = [];
+        if (isset($options['width'])) {
+            $urlOptions['width'] = $options['width'];
+        }
+        if (isset($options['height'])) {
+            $urlOptions['height'] = $options['height'];
+        }
+        $url = $this->getUrl($filename, $urlOptions);
+        $path = substr($url, strlen($app->request->base));
+        
+        $request = new \BearFramework\App\Request();
+        $request->path->set($path);
+        $response = $this->getResponse($request);
+        if ($response instanceof \BearFramework\App\Response\NotFound) {
+            return null;
+        }
+        $content = file_get_contents($response->filename);
+        if (isset($options['encoding'])) {
+            if ($options['encoding'] === 'base64') {
+                return base64_encode($content);
+            } elseif ($options['encoding'] === 'data-uri') {
+                $mimeType = $this->getMimeType($filename);
+                return 'data:' . $mimeType . ',' . $content;
+            }
+            $mimeType = $this->getMimeType($filename);
+            return 'data:' . $mimeType . ';base64,' . base64_encode($content);
+        }
+        return $content;
+    }
 
     public function getResponse(\BearFramework\App\Request $request)
     {
@@ -301,6 +249,68 @@ class Assets
             return null;
         }
         return null;
+    }
+
+    /**
+     * 
+     */
+    private function getAbsolutePath(string $path): string
+    {
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        if ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR) { // is linux
+        } elseif ($isWindows && preg_match('/^[A-Z]:/i', $path) === 1) { // is windows
+        } else {
+            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+        }
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path)), function($value) {
+            return isset($value{0}) && $value !== '.';
+        });
+        $temp = [];
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                if ($isWindows && sizeof($temp) === 1) {
+                    continue;
+                }
+                array_pop($temp);
+            } else {
+                $temp[] = $part;
+            }
+        }
+        return ($isWindows ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
+    }
+
+    /**
+     * 
+     */
+    private function validateOptions(array $options): void
+    {
+        if (isset($options['width'])) {
+            if (!is_int($options['width'])) {
+                throw new \InvalidArgumentException('The value of the width option must be of type int, ' . gettype($options['width']) . ' given');
+            }
+            if ($options['width'] < 1) {
+                throw new \InvalidArgumentException('The value of the width option cannot be lower than 1');
+            }
+            if ($options['width'] > 100000) {
+                throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000');
+            }
+        }
+        if (isset($options['height'])) {
+            if (!is_int($options['height'])) {
+                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['width']) . ' given');
+            }
+            if ($options['height'] < 1) {
+                throw new \InvalidArgumentException('The value of the height option cannot be lower than 1');
+            }
+            if ($options['height'] > 100000) {
+                throw new \InvalidArgumentException('The value of the height option cannot be higher than 100000');
+            }
+        }
+        if (isset($options['encoding'])) {
+            if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
+                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'');
+            }
+        }
     }
 
     /**
