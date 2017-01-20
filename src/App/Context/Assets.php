@@ -62,11 +62,11 @@ class Assets
     public function getUrl(string $filename, array $options = []): string
     {
         $app = App::get();
-        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
-        }
-        return $app->assets->getUrl($filename, $options);
+//        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
+//        if ($filename === false) {
+//            throw new \InvalidArgumentException('The filename specified does not exist');
+//        }
+        return $app->assets->getUrl($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
     }
 
     /**
@@ -78,14 +78,14 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The content of the file or FALSE if file does not exists
      */
-    public function getContent(string $filename, array $options = [])
-    {
-        $app = App::get();
-        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
-        }
-        return $app->assets->getContent($filename, $options);
-    }
+//    public function getContent(string $filename, array $options = [])
+//    {
+//        $app = App::get();
+//        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
+//        if ($filename === false) {
+//            throw new \InvalidArgumentException('The filename specified does not exist');
+//        }
+//        return $app->assets->getContent($filename, $options);
+//    }
 
 }

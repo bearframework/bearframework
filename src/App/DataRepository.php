@@ -486,20 +486,20 @@ class DataRepository
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The key of the object
      */
-    public function getKeyFromFilename(string $filename): string
-    {
-        $app = App::get();
-        if ($app->config->dataDir === null) {
-            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
-        }
-        $filename = realpath($filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
-        }
-        if (strpos($filename, $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
-            return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
-        }
-        throw new \InvalidArgumentException('The filename specified is not valid data object');
-    }
+//    public function getKeyFromFilename(string $filename): string
+//    {
+//        $app = App::get();
+//        if ($app->config->dataDir === null) {
+//            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
+//        }
+//        $filename = realpath($filename);
+//        if ($filename === false) {
+//            throw new \InvalidArgumentException('The filename specified does not exist');
+//        }
+//        if (strpos($filename, $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
+//            return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
+//        }
+//        throw new \InvalidArgumentException('The filename specified is not valid data object');
+//    }
 
 }

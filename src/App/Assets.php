@@ -32,11 +32,32 @@ class Assets
      */
     public function addDir(string $pathname): void
     {
-        $pathname = realpath($pathname);
-        if ($pathname === false) {
-            throw new \InvalidArgumentException('The pathname specified does not exist');
+        $this->dirs[] = $this->getAbsolutePath($pathname);
+    }
+
+    private function getAbsolutePath(string $path)
+    {
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        if ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR) { // is linux
+        } elseif ($isWindows && preg_match('/^[A-Z]:/i', $path) === 1) { // is windows
+        } else {
+            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
         }
-        $this->dirs[] = $pathname;
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path)), function($value) {
+            return isset($value{0}) && $value !== '.';
+        });
+        $temp = [];
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                if ($isWindows && sizeof($temp) === 1) {
+                    continue;
+                }
+                array_pop($temp);
+            } else {
+                $temp[] = $part;
+            }
+        }
+        return ($isWindows ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
     }
 
     /**
@@ -50,42 +71,60 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
+        $this->validateOptions($options);
         $app = App::get();
-        $filename = realpath($filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
-        }
         if ($app->config->assetsPathPrefix === null) {
             throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
         }
+
+        $filename = $this->getAbsolutePath($filename);
+        $dataDir = $app->config->dataDir;
+        if (strlen($dataDir) > 0 && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
+            $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
+        }
         $optionsString = '';
-        ksort($options);
-        foreach ($options as $name => $value) {
-            if ($name === 'width' || $name === 'height') {
-                $value = (int) $value;
-                if ($value < 1) {
-                    throw new \InvalidArgumentException('The value of the width option cannot be lower than 1');
-                } elseif ($value > 100000) {
-                    throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000');
-                }
-                $optionsString .= ($name === 'width' ? 'w' : 'h') . $value . '-';
-            }
+        if (isset($options['width'])) {
+            $optionsString .= 'w' . $options['width'] . '-';
+        }
+        if (isset($options['height'])) {
+            $optionsString .= 'h' . $options['height'] . '-';
         }
         $optionsString = trim($optionsString, '-');
         $hash = md5(md5($filename) . md5($optionsString));
 
-        $dataDir = $app->config->dataDir;
-        if (strlen($dataDir) > 0 && strpos($filename, $dataDir) === 0) {
-            return $app->request->base . $app->config->assetsPathPrefix . $hash . 'd' . $optionsString . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $app->data->getKeyFromFilename($filename));
-        }
-
         foreach ($this->dirs as $dir) {
             if (strlen($dir) > 0 && strpos($filename, $dir) === 0) {
-                return $app->request->base . $app->config->assetsPathPrefix . $hash . 'a' . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
+                return $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
             }
         }
 
-        throw new \InvalidArgumentException('The filename specified is not valid (non existent file or located in a dir that is not added)');
+        throw new \InvalidArgumentException('The filename specified is located in a dir that is not added');
+    }
+
+    private function validateOptions($options): void
+    {
+        if (isset($options['width'])) {
+            if (!is_int($options['width'])) {
+                throw new \InvalidArgumentException('The value of the width option must be of type int, ' . gettype($options['width']) . ' given');
+            }
+            if ($options['width'] < 1) {
+                throw new \InvalidArgumentException('The value of the width option cannot be lower than 1');
+            }
+            if ($options['width'] > 100000) {
+                throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000');
+            }
+        }
+        if (isset($options['height'])) {
+            if (!is_int($options['height'])) {
+                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['width']) . ' given');
+            }
+            if ($options['height'] < 1) {
+                throw new \InvalidArgumentException('The value of the height option cannot be lower than 1');
+            }
+            if ($options['height'] > 100000) {
+                throw new \InvalidArgumentException('The value of the height option cannot be higher than 100000');
+            }
+        }
     }
 
     /**
@@ -97,39 +136,115 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The content of the file or FALSE if file does not exists
      */
-    public function getContent(string $filename, array $options = [])
+//    public function getContent(string $filename, array $options = [])
+//    {
+//        $app = App::get();
+//        $urlOptions = [];
+//        if (isset($options['width'])) {
+//            $urlOptions['width'] = $options['width'];
+//        }
+//        if (isset($options['height'])) {
+//            $urlOptions['height'] = $options['height'];
+//        }
+//        if (isset($options['encoding'])) {
+//            if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
+//                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'');
+//            }
+//        }
+//        $url = $this->getUrl($filename, $urlOptions);
+//        $path = substr($url, strlen($app->request->base));
+//        $filename = $this->getFilename($path);
+//        if ($filename === false) {
+//            return false;
+//        }
+//        $content = file_get_contents($filename);
+//        if (isset($options['encoding'])) {
+//            if ($options['encoding'] === 'base64') {
+//                return base64_encode($content);
+//            } elseif ($options['encoding'] === 'data-uri') {
+//                $mimeType = $this->getMimeType($filename);
+//                return 'data:' . $mimeType . ',' . $content;
+//            }
+//            $mimeType = $this->getMimeType($filename);
+//            return 'data:' . $mimeType . ';base64,' . base64_encode($content);
+//        }
+//        return $content;
+//    }
+
+    public function getResponse(\BearFramework\App\Request $request)
     {
         $app = App::get();
-        $urlOptions = [];
-        if (isset($options['width'])) {
-            $urlOptions['width'] = $options['width'];
-        }
-        if (isset($options['height'])) {
-            $urlOptions['height'] = $options['height'];
-        }
-        if (isset($options['encoding'])) {
-            if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
-                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'');
+        $parsePath = function($path) use ($app) {
+            if ($app->config->assetsPathPrefix === null) {
+                return null;
             }
-        }
-        $url = $this->getUrl($filename, $urlOptions);
-        $path = substr($url, strlen($app->request->base));
-        $filename = $this->getFilename($path);
-        if ($filename === false) {
-            return false;
-        }
-        $content = file_get_contents($filename);
-        if (isset($options['encoding'])) {
-            if ($options['encoding'] === 'base64') {
-                return base64_encode($content);
-            } elseif ($options['encoding'] === 'data-uri') {
-                $mimeType = $this->getMimeType($filename);
-                return 'data:' . $mimeType . ',' . $content;
+            if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
+                return null;
+            }
+            $path = substr($path, strlen($app->config->assetsPathPrefix));
+            $partParts = explode('/', $path, 2);
+            if (sizeof($partParts) !== 2) {
+                return null;
+            }
+            $hash = substr($partParts[0], 0, 32);
+            $optionsString = (string) substr($partParts[0], 32);
+            $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
+            $filename = null;
+            foreach ($this->dirs as $dir) {
+                if ($hash === md5(md5($dir . DIRECTORY_SEPARATOR . $path) . md5($optionsString))) {
+                    $filename = $dir . DIRECTORY_SEPARATOR . $path;
+                    break;
+                }
+            }
+            if ($filename !== null && $hash === md5(md5($filename) . md5($optionsString))) {
+                $result = [
+                    'filename' => $filename,
+                    'options' => []
+                ];
+                if ($optionsString !== '') {
+                    $options = explode('-', $optionsString);
+                    foreach ($options as $option) {
+                        if (substr($option, 0, 1) === 'w') {
+                            $value = (int) substr($option, 1);
+                            if ($value >= 1 && $value <= 100000) {
+                                $result['options']['width'] = $value;
+                            }
+                        }
+                        if (substr($option, 0, 1) === 'h') {
+                            $value = (int) substr($option, 1);
+                            if ($value >= 1 && $value <= 100000) {
+                                $result['options']['height'] = $value;
+                            }
+                        }
+                    }
+                }
+                return $result;
+            }
+            return null;
+        };
+
+        $pathData = $parsePath((string) $request->path);
+        if ($pathData === null) {
+            return new App\Response\NotFound();
+        } else {
+            $filename = $pathData['filename'];
+            $options = $pathData['options'];
+            $this->validateOptions($options);
+            $filename = $this->prepare($filename, $options);
+            if ($filename === null || !is_file($filename)) {
+                return new App\Response\NotFound();
+            }
+            $response = new App\Response\FileReader($filename);
+            if ($app->config->assetsMaxAge !== null) {
+                $response->headers->set(new App\Response\Header('Cache-Control', 'public, max-age=' . (int) $app->config->assetsMaxAge));
             }
             $mimeType = $this->getMimeType($filename);
-            return 'data:' . $mimeType . ';base64,' . base64_encode($content);
+            if ($mimeType !== null) {
+                $response->headers->set(new App\Response\Header('Content-Type', $mimeType));
+            }
+            $response->headers->set(new App\Response\Header('Content-Length', (string) filesize($filename)));
+            return $response;
         }
-        return $content;
     }
 
     /**
@@ -140,66 +255,26 @@ class Assets
      * @throws \BearFramework\App\Config\InvalidOptionException
      * @return boolean|string The local fileneme or FALSE if file does not exists
      */
-    public function getFilename(string $path)
+    public function prepare(string $filename, array $options = []): ?string
     {
+        $this->validateOptions($options);
         $app = App::get();
-        if ($app->config->assetsPathPrefix === null) {
-            throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
+        if ($app->hooks->exists('prepareAsset')) {
+            $data = new \IvoPetkov\DataObject();
+            $data->filename = $filename;
+            $data->options = $options;
+            $app->hooks->execute('prepareAsset', $data);
+            $filename = $data->filename;
+            $options = $data->options;
+            $this->validateOptions($options);
         }
-        if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
-            return false;
-        }
-        $path = substr($path, strlen($app->config->assetsPathPrefix));
-        $partParts = explode('/', $path, 2);
-        if (sizeof($partParts) !== 2) {
-            return false;
-        }
-        $hash = substr($partParts[0], 0, 32);
-        $type = substr($partParts[0], 32, 1);
-        $optionsString = (string) substr($partParts[0], 33);
-        $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
-        $filename = null;
-        if ($type === 'a') {
-            foreach ($this->dirs as $dir) {
-                if ($hash === md5(md5($dir . DIRECTORY_SEPARATOR . $path) . md5($optionsString))) {
-                    $filename = $dir . DIRECTORY_SEPARATOR . $path;
-                    break;
-                }
+        if (strlen($filename) > 0 && is_file($filename)) {
+            if (!isset($options['width']) && !isset($options['height'])) {
+                return $filename;
             }
-        } elseif ($type === 'd' && strlen($app->config->dataDir) > 0) {
-            $dataKey = str_replace(DIRECTORY_SEPARATOR, '/', $path);
-            if ($app->data->isValidKey($dataKey) && $app->data->isPublic($dataKey)) {
-                $filename = $app->data->getFilename($dataKey);
-            }
-        }
-        if ($filename === null) {
-            return false;
-        }
-        if ($hash === md5(md5($filename) . md5($optionsString)) && is_file($filename)) {
-            if ($optionsString === '') {
-                return is_file($filename) ? $filename : false;
-            }
-            $options = explode('-', $optionsString);
-            $width = null;
-            $height = null;
-            foreach ($options as $option) {
-                if (substr($option, 0, 1) === 'w') {
-                    $value = (int) substr($option, 1);
-                    if ($value >= 1 && $value <= 100000) {
-                        $width = $value;
-                    }
-                }
-                if (substr($option, 0, 1) === 'h') {
-                    $value = (int) substr($option, 1);
-                    if ($value >= 1 && $value <= 100000) {
-                        $height = $value;
-                    }
-                }
-            }
-
             $pathinfo = pathinfo($filename);
             if (isset($pathinfo['extension'])) {
-                $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5($optionsString)) . '.' . $pathinfo['extension']);
+                $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $pathinfo['extension']);
                 if (!is_file($tempFilename)) {
                     $pathinfo = pathinfo($tempFilename);
                     if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
@@ -207,7 +282,10 @@ class Assets
                             mkdir($pathinfo['dirname'], 0777, true);
                         }
                     }
+                    $width = $options['width'] ?? null;
+                    $height = $options['height'] ?? null;
                     if ($width !== null || $height !== null) {
+
                         if ($width === null) {
                             $imageSize = $app->images->getSize($filename);
                             $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
@@ -220,9 +298,9 @@ class Assets
                 }
                 return $tempFilename;
             }
-            return false;
+            return null;
         }
-        return false;
+        return null;
     }
 
     /**

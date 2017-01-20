@@ -124,7 +124,22 @@ class App
         ]);
         $this->defineProperty('assets', [
             'init' => function() {
-                return new App\Assets();
+                $assets = new App\Assets();
+                if ($this->config->dataDir !== null) {
+                    $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+                    $assets->addDir($dataAssetsDir);
+                    $this->hooks->add('prepareAsset', function($data) use ($dataAssetsDir) {
+                                if (strpos($data->filename, $dataAssetsDir) === 0) {
+                                    $key = str_replace('\\', '/', substr($data->filename, strlen($dataAssetsDir)));
+                                    if ($this->data->isPublic($key)) {
+                                        $data->filename = $this->data->getFilename($key);
+                                    } else {
+                                        $data->filename = null;
+                                    }
+                                }
+                            });
+                }
+                return $assets;
             },
             'readonly' => true
         ]);
@@ -247,21 +262,7 @@ class App
 
             if ($this->config->assetsPathPrefix !== null) {
                 $this->routes->add($this->config->assetsPathPrefix . '*', function() {
-                    $filename = $this->assets->getFilename((string) $this->request->path);
-                    if ($filename === false) {
-                        return new App\Response\NotFound();
-                    } else {
-                        $response = new App\Response\FileReader($filename);
-                        if ($this->config->assetsMaxAge !== null) {
-                            $response->headers->set(new App\Response\Header('Cache-Control', 'public, max-age=' . (int) $this->config->assetsMaxAge));
-                        }
-                        $mimeType = $this->assets->getMimeType($filename);
-                        if ($mimeType !== null) {
-                            $response->headers->set(new App\Response\Header('Content-Type', $mimeType));
-                        }
-                        $response->headers->set(new App\Response\Header('Content-Length', (string) filesize($filename)));
-                        return $response;
-                    }
+                    return $this->assets->getResponse($this->request);
                 });
             }
 

@@ -116,38 +116,38 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetKeyFromFilenameInvalidArguments2()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->data->getKeyFromFilename('missing/file');
-    }
+//    public function testGetKeyFromFilenameInvalidArguments2()
+//    {
+//        $app = $this->getApp();
+//        $this->setExpectedException('InvalidArgumentException');
+//        $app->data->getKeyFromFilename('missing/file');
+//    }
 
     /**
      * 
      */
-    public function testGetKeyFromFilenameInvalidArguments3()
-    {
-        $app = $this->getApp([
-            'dataDir' => null
-        ]);
-        $filename = $app->config->appDir . '/file.png';
-        $this->createFile($filename, '123');
-        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
-        $app->data->getKeyFromFilename($filename);
-    }
+//    public function testGetKeyFromFilenameInvalidArguments3()
+//    {
+//        $app = $this->getApp([
+//            'dataDir' => null
+//        ]);
+//        $filename = $app->config->appDir . '/file.png';
+//        $this->createFile($filename, '123');
+//        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
+//        $app->data->getKeyFromFilename($filename);
+//    }
 
     /**
      * 
      */
-    public function testGetKeyFromFilenameInvalidArguments4()
-    {
-        $app = $this->getApp();
-        $filename = $app->config->appDir . '/file.png';
-        $this->createFile($filename, '123');
-        $this->setExpectedException('InvalidArgumentException');
-        $app->data->getKeyFromFilename($filename);
-    }
+//    public function testGetKeyFromFilenameInvalidArguments4()
+//    {
+//        $app = $this->getApp();
+//        $filename = $app->config->appDir . '/file.png';
+//        $this->createFile($filename, '123');
+//        $this->setExpectedException('InvalidArgumentException');
+//        $app->data->getKeyFromFilename($filename);
+//    }
 
     /**
      * 

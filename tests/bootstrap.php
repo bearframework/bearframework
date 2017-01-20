@@ -46,7 +46,8 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
                 'appDir' => $rootDir . 'app/',
                 'dataDir' => $rootDir . 'data/',
                 'logsDir' => $rootDir . 'logs/',
-                'addonsDir' => realpath($rootDir . 'addons/')
+                'addonsDir' => realpath($rootDir . 'addons/'),
+                //'handleErrors' => false
             ];
             $config = array_merge($initialConfig, $config);
             foreach ($config as $key => $value) {
