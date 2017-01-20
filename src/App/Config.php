@@ -138,10 +138,9 @@ class Config
         }
         ob_start();
         try {
-            $includeFile = static function($__filename) {
-                return include $__filename;
-            };
-            $data = $includeFile($filename);
+            $data = (static function($__filename) {
+                        return include $__filename;
+                    })($filename);
             ob_end_clean();
         } catch (\Exception $e) {
             ob_end_clean();

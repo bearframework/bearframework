@@ -70,10 +70,9 @@ class Classes
     public function load(string $class)
     {
         if (isset($this->data[$class])) {
-            $includeFile = static function($__filename) {
+            (static function($__filename) {
                 include_once $__filename;
-            };
-            $includeFile($this->data[$class]);
+            })($this->data[$class]);
         }
     }
 

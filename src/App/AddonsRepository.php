@@ -49,10 +49,9 @@ class AddonsRepository
         if ($indexFilename !== false) {
             ob_start();
             try {
-                $includeFile = static function($__filename) {
+                (static function($__filename) {
                     include_once $__filename;
-                };
-                $includeFile($indexFilename);
+                })($indexFilename);
                 ob_end_clean();
             } catch (\Exception $e) {
                 ob_end_clean();
