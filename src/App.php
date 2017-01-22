@@ -236,8 +236,27 @@ class App
     public function initialize(): void
     {
         if (!$this->initialized) {
-            $this->initializeEnvironment();
-            $this->initializeErrorHandler();
+            // @codeCoverageIgnoreStart
+            if ($this->config->updateEnvironment) {
+                ini_set('mbstring.func_overload', 7);
+                ini_set("pcre.backtrack_limit", 100000000);
+                ini_set("pcre.recursion_limit", 100000000);
+            }
+            if ($this->config->handleErrors) {
+                set_exception_handler(function($exception) {
+                    \BearFramework\App\ErrorHandler::handleException($exception);
+                });
+                register_shutdown_function(function() {
+                    $errorData = error_get_last();
+                    if (is_array($errorData)) {
+                        \BearFramework\App\ErrorHandler::handleFatalError($errorData);
+                    }
+                });
+                set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
+                    throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
+                });
+            }
+            // @codeCoverageIgnoreEnd
 
             $this->initialized = true; // The request property counts on this. It must be here so that app and addons index.php files can access it.
 
@@ -262,85 +281,6 @@ class App
     }
 
     /**
-     * Sets UTF-8 as the default encoding and updates regular expressions limits
-     */
-    private function initializeEnvironment(): void
-    {
-        // @codeCoverageIgnoreStart
-        if ($this->config->updateEnvironment) {
-            ini_set('mbstring.func_overload', 7);
-            ini_set("pcre.backtrack_limit", 100000000);
-            ini_set("pcre.recursion_limit", 100000000);
-        }
-        // @codeCoverageIgnoreEnd
-    }
-
-    /**
-     * Initializes error handling
-     */
-    private function initializeErrorHandler(): void
-    {
-        if ($this->config->handleErrors) {
-            // @codeCoverageIgnoreStart
-            $handleError = function($message, $file, $line, $trace) {
-                if ($this->config->logErrors && strlen($this->config->logsDir) > 0) {
-                    try {
-                        $data = [];
-                        $data['file'] = $file;
-                        $data['line'] = $line;
-                        $data['trace'] = $trace;
-                        $data['GET'] = isset($_GET) ? $_GET : null;
-                        $data['POST'] = isset($_POST) ? $_POST : null;
-                        $data['SERVER'] = isset($_SERVER) ? $_SERVER : null;
-                        $this->logger->log('error', $message, $data);
-                    } catch (\Exception $e) {
-                        
-                    }
-                }
-                if ($this->config->displayErrors) {
-                    if (ob_get_length() > 0) {
-                        ob_clean();
-                    }
-                    $data = "Error:";
-                    $data .= "\nMessage: " . $message;
-                    $data .= "\nFile: " . $file;
-                    $data .= "\nLine: " . $line;
-                    $data .= "\nTrace: " . $trace;
-                    $data .= "\nGET: " . print_r(isset($_GET) ? $_GET : null, true);
-                    $data .= "\nPOST: " . print_r(isset($_POST) ? $_POST : null, true);
-                    $data .= "\nSERVER: " . print_r(isset($_SERVER) ? $_SERVER : null, true);
-                    $response = new App\Response\TemporaryUnavailable($data);
-                } else {
-                    $response = new App\Response\TemporaryUnavailable();
-                    try {
-                        $this->prepareResponse($response);
-                    } catch (\Exception $e) {
-                        // ignore
-                    }
-                }
-                $this->sendResponse($response);
-            };
-            set_exception_handler(function($exception) use($handleError) {
-                $handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
-            });
-            register_shutdown_function(function() use($handleError) {
-                $errorData = error_get_last();
-                if (is_array($errorData)) {
-                    if (ob_get_length() > 0) {
-                        ob_end_clean();
-                    }
-                    $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
-                    $handleError(trim($messageParts[0]), $errorData['file'], $errorData['line'], isset($messageParts[1]) ? trim(str_replace('Stack trace:', '', $messageParts[1])) : '');
-                }
-            });
-            set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
-                throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
-            });
-            // @codeCoverageIgnoreEnd
-        }
-    }
-
-    /**
      * Call this method to start the application. This method initializes the app and outputs the response.
      * 
      * @return void No value is returned
@@ -356,26 +296,16 @@ class App
     }
 
     /**
-     * Prepares the response (hooks, validations and other operations)
+     * Outputs a response
      * 
-     * @param \BearFramework\App\Response $response The response object to prepare
+     * @param \BearFramework\App\Response $response The response object to output
      * @return void No value is returned
      */
-    private function prepareResponse(\BearFramework\App\Response $response): void
+    public function respond(\BearFramework\App\Response $response): void
     {
         $this->hooks->execute('responseCreated', $response);
-    }
-
-    /**
-     * Sends the response to the client
-     * 
-     * @param \BearFramework\App\Response $response The response object to be sent
-     * @return void No value is returned
-     */
-    private function sendResponse(\BearFramework\App\Response $response): void
-    {
+        http_response_code($response->statusCode);
         if (!headers_sent()) {
-            http_response_code($response->statusCode);
             $headers = $response->headers->getList();
             foreach ($headers as $header) {
                 if ($header->name === 'Content-Type') {
@@ -397,18 +327,6 @@ class App
             echo $response->content;
         }
         $this->hooks->execute('responseSent', $response);
-    }
-
-    /**
-     * Outputs a response
-     * 
-     * @param \BearFramework\App\Response $response The response object to output
-     * @return void No value is returned
-     */
-    public function respond(\BearFramework\App\Response $response): void
-    {
-        $this->prepareResponse($response);
-        $this->sendResponse($response);
     }
 
     /**
