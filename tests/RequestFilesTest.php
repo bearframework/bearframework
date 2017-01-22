@@ -18,31 +18,33 @@ class RequestFilesTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $files = new \BearFramework\App\Request\FilesRepository();
-        $file = new \BearFramework\App\Request\File('name1', '/tmp/file1.jpg');
-        $file->filename = 'file1.jpg';
+        $formData = new \BearFramework\App\Request\FormDataRepository();
+        $file = new \BearFramework\App\Request\FormDataFileItem('name1', 'file1.jpg');
+        $file->filename = '/tmp/file1.jpg';
         $file->size = 123;
         $file->type = 'image/jpeg';
-        $files->set($file);
-        $file = new \BearFramework\App\Request\File('name2', '/tmp/file2.jpg');
-        $file->filename = 'file2.jpg';
+        $formData->set($file);
+        $file = new \BearFramework\App\Request\FormDataFileItem('name2', 'file2.jpg');
+        $file->filename = '/tmp/file2.jpg';
         $file->size = 123;
         $file->type = 'image/jpeg';
-        $files->set($file);
-        $this->assertTrue($files->get('missing') === null);
-        $this->assertTrue($files->get('name1')->filename === 'file1.jpg');
-        $this->assertTrue($files->exists('missing') === false);
-        $this->assertTrue($files->exists('name1') === true);
-        $list = $files->getList();
+        $formData->set($file);
+        $this->assertTrue($formData->getFile('missing') === null);
+        $this->assertTrue($formData->getFile('name1')->value === 'file1.jpg');
+        $this->assertTrue($formData->exists('missing') === false);
+        $this->assertTrue($formData->exists('name1') === true);
+        $list = $formData->getList();
         $this->assertTrue($list->length === 2);
         $this->assertTrue($list[0]->name === 'name1');
-        $this->assertTrue($list[0]->filename === 'file1.jpg');
+        $this->assertTrue($list[0]->value === 'file1.jpg');
+        $this->assertTrue($list[0]->filename === '/tmp/file1.jpg');
         $this->assertTrue($list[1]->name === 'name2');
-        $this->assertTrue($list[1]->filename === 'file2.jpg');
-        $files->delete('name1');
-        $list = $files->getList();
+        $this->assertTrue($list[1]->value === 'file2.jpg');
+        $this->assertTrue($list[1]->filename === '/tmp/file2.jpg');
+        $formData->delete('name1');
+        $list = $formData->getList();
         $this->assertTrue($list->length === 1);
-        $this->assertTrue($files->exists('name1') === false);
+        $this->assertTrue($formData->exists('name1') === false);
     }
 
 }

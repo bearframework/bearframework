@@ -121,6 +121,21 @@ class TempDataRepository
         $app->data->delete($currentPeriodDataKey);
         $app->data->delete($previousPeriodDataKey);
     }
+    
+    /**
+     * Returns the filename of the object key specified
+     * 
+     * @param string $key The data key
+     * @throws \InvalidArgumentException
+     * @throws \BearFramework\App\Config\InvalidOptionException
+     * @return string The filename of the object key specified
+     */
+    public function getFilename(string $key): string
+    {
+        $app = App::get();
+        $currentPeriodDataKey = $this->getPeriodDataKey($key, 0);
+        return $app->data->getFilename($currentPeriodDataKey);
+    }
 
     /**
      * 

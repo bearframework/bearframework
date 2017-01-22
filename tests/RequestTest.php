@@ -41,8 +41,7 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue(isset($request->query));
         $this->assertTrue(isset($request->headers));
         $this->assertTrue(isset($request->cookies));
-        $this->assertTrue(isset($request->data));
-        $this->assertTrue(isset($request->files));
+        $this->assertTrue(isset($request->formData));
         $this->assertFalse(isset($request->missing));
     }
 
@@ -165,9 +164,9 @@ class RequestTest extends BearFrameworkTestCase
     function testData()
     {
         $request = new \BearFramework\App\Request();
-        $this->assertTrue(isset($request->data));
-        $request->data->set(new \BearFramework\App\Request\DataItem('data1', '1'));
-        $this->assertTrue($request->data->getValue('data1') === '1');
+        $this->assertTrue(isset($request->formData));
+        $request->formData->set(new \BearFramework\App\Request\FormDataItem('data1', '1'));
+        $this->assertTrue($request->formData->getValue('data1') === '1');
     }
 
     /**
@@ -176,13 +175,14 @@ class RequestTest extends BearFrameworkTestCase
     function testFiles()
     {
         $request = new \BearFramework\App\Request();
-        $this->assertTrue(isset($request->files));
-        $file = new \BearFramework\App\Request\File('file1', '/tmp/file1.jpg');
-        $file->filename = 'file1.jpg';
+        $this->assertTrue(isset($request->formData));
+        $file = new \BearFramework\App\Request\FormDataFileItem('file1', 'file1.jpg');
+        $file->filename = '/tmp/file1.jpg';
         $file->size = 123;
-        $request->files->set($file);
-        $this->assertTrue($request->files->get('file1')->filename === 'file1.jpg');
-        $this->assertTrue($request->files->get('file1')->size === 123);
+        $request->formData->set($file);
+        $this->assertTrue($request->formData->getFile('file1')->value === 'file1.jpg');
+        $this->assertTrue($request->formData->getFile('file1')->filename === '/tmp/file1.jpg');
+        $this->assertTrue($request->formData->getFile('file1')->size === 123);
     }
 
 }

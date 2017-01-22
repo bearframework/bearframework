@@ -13,7 +13,7 @@ namespace BearFramework\App\Request;
  * @property string $name The name of the data parameter.
  * @property string $value The value of the data parameter.
  */
-class DataItem
+class FormDataItem
 {
 
     use \IvoPetkov\DataObjectTrait;

@@ -21,8 +21,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Request\QueryRepository $query The request query string
  * @property-read \BearFramework\App\Request\HeadersRepository $headers The request headers
  * @property-read \BearFramework\App\Request\CookiesRepository $cookies The request cookies
- * @property-read \BearFramework\App\Request\DataRepository $data The request POST data
- * @property-read \BearFramework\App\Request\FilesRepository $files The request files data
+ * @property-read \BearFramework\App\Request\FormDataRepository $formData The request POST data and files
  */
 class Request
 {
@@ -171,36 +170,32 @@ class Request
                 },
                 'readonly' => true
             ]);
-            $this->defineProperty('data', [
+            $this->defineProperty('formData', [
                 'init' => function() {
-                    $data = new App\Request\DataRepository();
+                    $data = new App\Request\FormDataRepository();
                     $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
                                 foreach ($variables as $name => $value) {
                                     if (is_array($value)) {
                                         $walkVariables($value, $name);
                                         continue;
                                     }
-                                    $data->set(new App\Request\DataItem($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                                    $data->set(new App\Request\FormDataItem($parent === null ? $name : $parent . '[' . $name . ']', $value));
                                 }
                             };
                     $walkVariables($_POST);
-                    return $data;
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('files', [
-                'init' => function() {
-                    $files = new App\Request\FilesRepository();
                     foreach ($_FILES as $name => $value) {
                         if (is_uploaded_file($value['tmp_name'])) {
-                            $file = new \BearFramework\App\Request\File($name, $value['tmp_name']);
-                            $file->filename = $value['name'];
+                            if ($value['error'] !== UPLOAD_ERR_OK) {
+                                throw new \Exception('File upload error (' . $value['error'] . ')');
+                            }
+                            $file = new \BearFramework\App\Request\FormDataFileItem($name, $value['name']);
+                            $file->filename = $value['tmp_name'];
                             $file->size = $value['size'];
                             $file->type = $value['type'];
-                            $file->error = $value['error'];
+                            $data->set($file);
                         }
                     }
-                    return $files;
+                    return $data;
                 },
                 'readonly' => true
             ]);
@@ -229,15 +224,9 @@ class Request
                 },
                 'readonly' => true
             ]);
-            $this->defineProperty('data', [
+            $this->defineProperty('formData', [
                 'init' => function() {
-                    return new App\Request\DataRepository();
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('files', [
-                'init' => function() {
-                    return new App\Request\FilesRepository();
+                    return new App\Request\FormDataRepository();
                 },
                 'readonly' => true
             ]);

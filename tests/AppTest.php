@@ -49,10 +49,9 @@ class AppTest extends BearFrameworkTestCase
         $this->assertTrue($app->request->query->getValue('var2[varB]') === 'B');
         $this->assertTrue($app->request->headers->getValue('X-Custom-Header') === '123');
         $this->assertTrue($app->request->cookies->getValue('cookie1') === 'value1');
-        $this->assertTrue($app->request->data->getValue('name1') === 'value1');
-        $this->assertTrue($app->request->data->getValue('name2[nameA]') === 'valueA');
-        $this->assertTrue($app->request->data->getValue('name2[nameB]') === 'valueB');
-        $this->assertTrue($app->request->files->getList()->length === 0);
+        $this->assertTrue($app->request->formData->getValue('name1') === 'value1');
+        $this->assertTrue($app->request->formData->getValue('name2[nameA]') === 'valueA');
+        $this->assertTrue($app->request->formData->getValue('name2[nameB]') === 'valueB');
     }
 
     /**

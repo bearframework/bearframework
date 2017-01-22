@@ -9,13 +9,13 @@
 
 namespace BearFramework\App\Request;
 
-use BearFramework\App\Request\DataItem;
-use BearFramework\App\Request\DataItemsList;
+use BearFramework\App\Request\FormDataItem;
+use BearFramework\App\Request\FormDataItemsList;
 
 /**
  * Provides information about the response data items
  */
-class DataRepository
+class FormDataRepository
 {
 
     /**
@@ -26,10 +26,10 @@ class DataRepository
     /**
      * Sets a data item
      * 
-     * @param \BearFramework\App\Request\DataItem $dataItem The data item to set
-     * @return \BearFramework\App\Request\DataRepository
+     * @param \BearFramework\App\Request\FormDataItem $dataItem The data item to set
+     * @return \BearFramework\App\Request\FormDataRepository
      */
-    public function set(\BearFramework\App\Request\DataItem $dataItem): \BearFramework\App\Request\DataRepository
+    public function set(\BearFramework\App\Request\FormDataItem $dataItem): \BearFramework\App\Request\FormDataRepository
     {
         $this->data[$dataItem->name] = $dataItem;
         return $this;
@@ -39,11 +39,25 @@ class DataRepository
      * Returns the data item if set
      * 
      * @param string $name The name of the data item
-     * @return BearFramework\App\Request\DataItem|null|mixed The value of the data item if set, NULL otherwise
+     * @return BearFramework\App\Request\FormDataItem|null The value of the data item if set, NULL otherwise
      */
-    public function get(string $name): ?\BearFramework\App\Request\DataItem
+    public function get(string $name): ?\BearFramework\App\Request\FormDataItem
     {
         if (isset($this->data[$name])) {
+            return $this->data[$name];
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the file data item if set
+     * 
+     * @param string $name The name of the file data item
+     * @return BearFramework\App\Request\FormDataFileItem|null The value of the data item if set, NULL otherwise
+     */
+    public function getFile(string $name): ?\BearFramework\App\Request\FormDataFileItem
+    {
+        if (isset($this->data[$name]) && $this->data[$name] instanceof \BearFramework\App\Request\FormDataFileItem) {
             return $this->data[$name];
         }
         return null;
@@ -79,9 +93,9 @@ class DataRepository
      * 
      * @param string $name The name of the data item to delete
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\DataRepository A reference to the repository
+     * @return \BearFramework\App\Request\FormDataRepository A reference to the repository
      */
-    public function delete(string $name): \BearFramework\App\Request\DataRepository
+    public function delete(string $name): \BearFramework\App\Request\FormDataRepository
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
@@ -92,7 +106,7 @@ class DataRepository
     /**
      * Returns a list of all data items
      * 
-     * @return \BearFramework\DataList|\BearFramework\App\Request\DataItem[] An array containing all data items in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\FormDataItem[] An array containing all data items in the following format [['name'=>..., 'value'=>...], ...]
      */
     public function getList()
     {

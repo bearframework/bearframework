@@ -32,6 +32,8 @@ class TempDataTest extends BearFrameworkTestCase
         $result = $app->tempData->get('key1')->value;
         $this->assertTrue($result === 'data1');
         $this->assertTrue($app->tempData->exists('key1'));
+        $filename = $app->tempData->getFilename('key1');
+        //$this->assertTrue(file_get_contents($filename) === 'data1');
         $app->tempData->delete('key1');
 
         $result = $app->tempData->getValue('key1');
