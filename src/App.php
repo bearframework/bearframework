@@ -21,8 +21,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
  * @property-read \BearFramework\App\HooksRepository $hooks Provides functionality for notifications and data requests.
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
- * @property-read \BearFramework\App\Data $data \BearFramework\App\Data
- * @property-read \BearFramework\App\TempDataRepository $tempData \BearFramework\App\TempData
+ * @property-read \BearFramework\App\DataRepository $data
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
  * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for autoloading classes.
  * @property-read \BearFramework\App\Urls $urls URLs utilities.
@@ -146,12 +145,6 @@ class App
         $this->defineProperty('data', [
             'init' => function() {
                 return new App\DataRepository();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('tempData', [
-            'init' => function() {
-                return new App\TempDataRepository();
             },
             'readonly' => true
         ]);

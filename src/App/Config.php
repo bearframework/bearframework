@@ -21,7 +21,6 @@ namespace BearFramework\App;
  * @property boolean $logErrors
  * @property ?string $assetsPathPrefix
  * @property int $assetsMaxAge
- * @property int $tempDataMaxAge
  */
 class Config
 {
@@ -102,10 +101,6 @@ class Config
             'type' => 'int'
         ]);
 
-        $this->defineProperty('tempDataMaxAge', [
-            'type' => 'int'
-        ]);
-
         $defaultOptions = [
             'appDir' => null,
             'dataDir' => null,
@@ -115,8 +110,7 @@ class Config
             'displayErrors' => false,
             'logErrors' => false,
             'assetsPathPrefix' => '/assets/',
-            'assetsMaxAge' => 0,
-            'tempDataMaxAge' => 86400
+            'assetsMaxAge' => 0
         ];
         $data = array_merge($defaultOptions, $options);
         foreach ($data as $name => $value) {

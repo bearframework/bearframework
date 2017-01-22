@@ -64,8 +64,6 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
             'BearFramework\App\Response\Text' => 'src/App/Response/Text.php',
             'BearFramework\App\RoutesRepository' => 'src/App/RoutesRepository.php',
             'BearFramework\App\ShortcutsRepository' => 'src/App/ShortcutsRepository.php',
-            'BearFramework\App\TempDataRepository' => 'src/App/TempDataRepository.php',
-            'BearFramework\App\TempDataItem' => 'src/App/TempDataItem.php',
             'BearFramework\App\Urls' => 'src/App/Urls.php',
             'BearFramework\Addon' => 'src/Addon.php',
             'BearFramework\Addons' => 'src/Addons.php',
