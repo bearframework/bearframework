@@ -60,7 +60,9 @@ class ErrorHandler
             $data .= "\nGET: " . print_r(isset($_GET) ? $_GET : null, true);
             $data .= "\nPOST: " . print_r(isset($_POST) ? $_POST : null, true);
             $data .= "\nSERVER: " . print_r(isset($_SERVER) ? $_SERVER : null, true);
-            $response = new App\Response\TemporaryUnavailable($data);
+            http_response_code(503);
+            echo $data;
+            exit;
         } else {
             $response = new App\Response\TemporaryUnavailable();
         }
