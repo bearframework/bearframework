@@ -9,9 +9,6 @@
 
 namespace BearFramework\App\Response;
 
-use BearFramework\App\Response\Header;
-use BearFramework\App\Response\HeadersList;
-
 /**
  * Provides information about the response headers
  */

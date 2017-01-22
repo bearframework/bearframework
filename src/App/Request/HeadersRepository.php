@@ -9,9 +9,6 @@
 
 namespace BearFramework\App\Request;
 
-use BearFramework\App\Request\Header;
-use BearFramework\App\Request\HeadersList;
-
 /**
  * Provides information about the request headers
  */

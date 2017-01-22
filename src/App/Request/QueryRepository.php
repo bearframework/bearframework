@@ -9,9 +9,6 @@
 
 namespace BearFramework\App\Request;
 
-use BearFramework\App\Request\QueryItem;
-use BearFramework\App\Request\QueryItemsList;
-
 /**
  * Provides information about the response cookies
  */

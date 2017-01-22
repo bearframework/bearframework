@@ -9,9 +9,6 @@
 
 namespace BearFramework\App\Request;
 
-use BearFramework\App\Request\Cookie;
-use BearFramework\App\Request\CookiesList;
-
 /**
  * Provides information about the response cookies
  */
