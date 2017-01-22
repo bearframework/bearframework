@@ -25,6 +25,7 @@ $classes = [
     'BearFramework\App\DataItem' => 'src/App/DataItem.php',
     'BearFramework\App\DataRepository' => 'src/App/DataRepository.php',
     'BearFramework\App\HooksRepository' => 'src/App/HooksRepository.php',
+    'BearFramework\App\Hooks\AssetPrepareData' => 'src/App/Hooks/AssetPrepareData.php',
     'BearFramework\App\Images' => 'src/App/Images.php',
     'BearFramework\App\Logger' => 'src/App/Logger.php',
     'BearFramework\App\Request' => 'src/App/Request.php',

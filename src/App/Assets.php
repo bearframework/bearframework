@@ -207,13 +207,15 @@ class Assets
     {
         $this->validateOptions($options);
         $app = App::get();
-        if ($app->hooks->exists('prepareAsset')) {
-            $data = new \IvoPetkov\DataObject();
+        if ($app->hooks->exists('assetPrepare')) {
+            $data = new \BearFramework\App\Hooks\AssetPrepareData();
             $data->filename = $filename;
-            $data->options = $options;
-            $app->hooks->execute('prepareAsset', $data);
+            $data->width = isset($options['width']) ? $options['width'] : null;
+            $data->height = isset($options['height']) ? $options['height'] : null;
+            $app->hooks->execute('assetPrepare', $data);
             $filename = $data->filename;
-            $options = $data->options;
+            $options['width'] = $data->width;
+            $options['height'] = $data->height;
             $this->validateOptions($options);
         }
         if (strlen($filename) > 0 && is_file($filename)) {
@@ -230,8 +232,8 @@ class Assets
                             mkdir($pathinfo['dirname'], 0777, true);
                         }
                     }
-                    $width = $options['width'] ?? null;
-                    $height = $options['height'] ?? null;
+                    $width = isset($options['width']) ? $options['width'] : null;
+                    $height = isset($options['height']) ? $options['height'] : null;
                     if ($width !== null || $height !== null) {
 
                         if ($width === null) {

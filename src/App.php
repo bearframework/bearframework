@@ -127,7 +127,7 @@ class App
                 if ($this->config->dataDir !== null) {
                     $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
                     $assets->addDir($dataAssetsDir);
-                    $this->hooks->add('prepareAsset', function($data) use ($dataAssetsDir) {
+                    $this->hooks->add('assetPrepare', function($data) use ($dataAssetsDir) {
                                 if (strpos($data->filename, $dataAssetsDir) === 0) {
                                     $key = str_replace('\\', '/', substr($data->filename, strlen($dataAssetsDir)));
                                     if ($this->data->isPublic($key)) {
