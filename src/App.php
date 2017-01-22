@@ -15,6 +15,7 @@ use BearFramework\App;
  * The is the class used to instantiate and configure you application.
  * 
  * @property-read \BearFramework\App\Config $config The application configuration.
+ * @property-read \BearFramework\App\Container $container Services container.
  * @property-read \BearFramework\App\Request $request Provides information about the current request.
  * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
  * @property-read \BearFramework\App\Logger $logger Provides logging functionality.
@@ -42,13 +43,6 @@ class App
     const VERSION = 'dev';
 
     /**
-     * Services container
-     * 
-     * @var \BearFramework\App\Container 
-     */
-    public $container = null;
-
-    /**
      * The instance of the App object. Only one can be created.
      * 
      * @var \BearFramework\App 
@@ -74,13 +68,18 @@ class App
         }
         self::$instance = &$this;
 
-        $this->container = new App\Container();
-        $this->container->set('app.logger', App\Logger::class);
-        $this->container->set('app.cache', App\CacheRepository::class);
-
         $this->defineProperty('config', [
             'init' => function() {
                 return new App\Config();
+            },
+            'readonly' => true
+        ]);
+        $this->defineProperty('container', [
+            'init' => function() {
+                $container = new App\Container();
+                $container->set('app.logger', App\Logger::class);
+                $container->set('app.cache', App\CacheRepository::class);
+                return $container;
             },
             'readonly' => true
         ]);
@@ -99,7 +98,13 @@ class App
         ]);
         $this->defineProperty('routes', [
             'init' => function() {
-                return new App\RoutesRepository();
+                $routes = new App\RoutesRepository();
+                if ($this->config->assetsPathPrefix !== null) {
+                    $routes->add($this->config->assetsPathPrefix . '*', function() {
+                                return $this->assets->getResponse($this->request);
+                            });
+                    return $routes;
+                }
             },
             'readonly' => true
         ]);
@@ -250,12 +255,6 @@ class App
                         throw $e;
                     }
                 }
-            }
-
-            if ($this->config->assetsPathPrefix !== null) {
-                $this->routes->add($this->config->assetsPathPrefix . '*', function() {
-                    return $this->assets->getResponse($this->request);
-                });
             }
 
             $this->hooks->execute('initialized');
