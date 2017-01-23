@@ -61,7 +61,7 @@ class ContextsRepository
             if (isset(self::$objectsCache[$matchedDir])) {
                 return self::$objectsCache[$matchedDir];
             }
-            self::$objectsCache[$matchedDir] = new App\Context($matchedDir);
+            self::$objectsCache[$matchedDir] = new App\Context(substr($matchedDir, 0, -1));
             return self::$objectsCache[$matchedDir];
         }
         throw new \Exception('Connot find context');
