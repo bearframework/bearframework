@@ -23,7 +23,14 @@ class Assets
      * @var array
      */
     private $dirs = [];
+    
+    private static $os = null; // 0 - windows, 1 - linux
 
+    public function __construct()
+    {
+        self::$os = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 0 : 1;
+    }
+    
     /**
      * Registers a directory that will be publicly accessible
      * 
@@ -47,7 +54,9 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        $this->validateOptions($options);
+        if(!empty($options)){
+            $this->validateOptions($options);
+        }
         $app = App::get();
         if ($app->config->assetsPathPrefix === null) {
             throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
@@ -65,7 +74,9 @@ class Assets
         if (isset($options['height'])) {
             $optionsString .= 'h' . $options['height'] . '-';
         }
-        $optionsString = trim($optionsString, '-');
+        if(isset($optionsString{0})){
+            $optionsString = rtrim($optionsString, '-');
+        }
         $hash = md5(md5($filename) . md5($optionsString));
 
         foreach ($this->dirs as $dir) {
@@ -88,7 +99,9 @@ class Assets
      */
     public function getContent(string $filename, array $options = []): ?string
     {
-        $this->validateOptions($options);
+        if(!empty($options)){
+            $this->validateOptions($options);
+        }
         $app = App::get();
         $urlOptions = [];
         if (isset($options['width'])) {
@@ -206,7 +219,9 @@ class Assets
      */
     public function prepare(string $filename, array $options = []): ?string
     {
-        $this->validateOptions($options);
+        if(!empty($options)){
+            $this->validateOptions($options);
+        }
         $app = App::get();
         if ($app->hooks->exists('assetPrepare')) {
             $data = new \BearFramework\App\Hooks\AssetPrepareData();
@@ -259,9 +274,8 @@ class Assets
      */
     private function getAbsolutePath(string $path): string
     {
-        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
-        if ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR) { // is linux
-        } elseif ($isWindows && preg_match('/^[A-Z]:/i', $path) === 1) { // is windows
+        if (self::$os === 1 && ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR)) { // is absolute on linux
+        } elseif (self::$os === 0 && preg_match('/^[A-Z]:/i', $path) === 1) { // is absolute on windows
         } else {
             $path = getcwd() . DIRECTORY_SEPARATOR . $path;
         }
@@ -271,7 +285,7 @@ class Assets
         $temp = [];
         foreach ($parts as $part) {
             if ($part === '..') {
-                if ($isWindows && sizeof($temp) === 1) {
+                if (self::$os === 0 && sizeof($temp) === 1) {
                     continue;
                 }
                 array_pop($temp);
@@ -279,7 +293,7 @@ class Assets
                 $temp[] = $part;
             }
         }
-        return ($isWindows ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
+        return (self::$os === 0 ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
     }
 
     /**
