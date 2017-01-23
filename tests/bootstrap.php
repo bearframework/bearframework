@@ -29,7 +29,7 @@ class BearFrameworkTestCase extends PHPUnit_Framework_TestCase
     /**
      * 
      * @param array $config
-     * @param boolean $createNew
+     * @param bool $createNew
      * @return \BearFramework\App
      */
     function getApp($config = [], $createNew = false, $initialize = true)

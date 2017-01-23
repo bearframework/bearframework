@@ -26,14 +26,4 @@ class ClassesTest extends BearFrameworkTestCase
         $this->assertTrue(class_exists('TempClass1'));
     }
 
-    /**
-     * 
-     */
-    public function testAddInvalidArguments3()
-    {
-        $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
-        $app->classes->add('\BearFramework\App\Log', '../src/App/MissingFile.php');
-    }
-
 }

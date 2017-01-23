@@ -28,11 +28,12 @@ class Assets
      * Registers a directory that will be publicly accessible
      * 
      * @param string $pathname The directory name
-     * @return void No value is returned
+     * @return \BearFramework\App\Assets
      */
-    public function addDir(string $pathname): void
+    public function addDir(string $pathname): \BearFramework\App\Assets
     {
         $this->dirs[] = $this->getAbsolutePath($pathname);
+        return $this;
     }
 
     /**
@@ -201,7 +202,7 @@ class Assets
      * @param string $path The path part of the asset url
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return boolean|string The local fileneme or FALSE if file does not exists
+     * @return bool|string The local fileneme or FALSE if file does not exists
      */
     public function prepare(string $filename, array $options = []): ?string
     {

@@ -28,9 +28,9 @@ class HooksRepository
      * @param string $name The name
      * @param callable $callback The function to be called where the event happens
      * @param array $options Contains a priority option (default value: 100). Hooks with lower priority will be executed first.
-     * @return void No value is returned
+     * @return \BearFramework\App\HooksRepository
      */
-    public function add(string $name, callable $callback, array $options = [])
+    public function add(string $name, callable $callback, array $options = []): \BearFramework\App\HooksRepository
     {
         if (!isset($this->data[$name])) {
             $this->data[$name] = [];
@@ -40,13 +40,14 @@ class HooksRepository
             $options['priority'] = 100;
         }
         $this->data[$name][] = [$callback, $options, sizeof($this->data[$name])];
+        return $this;
     }
 
     /**
      * Returns information whether there are callbacks added to the hook specified.
      * 
      * @param string $name The name
-     * @return boolean TRUE if there are registered callbacks to the hook specified, FALSE otherwise.
+     * @return bool TRUE if there are registered callbacks to the hook specified, FALSE otherwise.
      */
     public function exists(string $name)
     {
@@ -57,9 +58,9 @@ class HooksRepository
      * Triggers execution of all callbacks hooked to the name specified
      * 
      * @param string $name The name
-     * @return void No value is returned
+     * @return \BearFramework\App\HooksRepository
      */
-    public function execute(string $name)
+    public function execute(string $name): \BearFramework\App\HooksRepository
     {
         if (isset($this->data[$name])) {
             $arguments = func_get_args();
@@ -85,6 +86,7 @@ class HooksRepository
                 throw $e;
             }
         }
+        return $this;
     }
 
 }

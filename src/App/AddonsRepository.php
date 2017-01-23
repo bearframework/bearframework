@@ -23,9 +23,9 @@ class AddonsRepository
      * @param string $id The id of the addon
      * @param array $options The options of the addon
      * @throws \InvalidArgumentException
-     * @return boolean TRUE if successfully loaded. FALSE otherwise.
+     * @return bool TRUE if successfully loaded. FALSE otherwise.
      */
-    public function add(string $id, array $options = [])
+    public function add(string $id, array $options = []): bool
     {
         if (isset($this->data[$id])) {
             return false;
@@ -45,8 +45,8 @@ class AddonsRepository
 
         $this->data[$id] = new \BearFramework\App\Addon($id, $options);
 
-        $indexFilename = realpath($registeredAddon->dir . DIRECTORY_SEPARATOR . 'index.php');
-        if ($indexFilename !== false) {
+        $indexFilename = $registeredAddon->dir . DIRECTORY_SEPARATOR . 'index.php';
+        if (is_file($indexFilename)) {
             ob_start();
             try {
                 (static function($__filename) {
@@ -81,7 +81,7 @@ class AddonsRepository
      * Returns information whether a cookie with the name specified exists
      * 
      * @param string $id The name of the cookie
-     * @return boolean TRUE if a cookie with the name specified exists, FALSE otherwise
+     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise
      */
     public function exists(string $id): bool
     {

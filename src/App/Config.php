@@ -15,10 +15,10 @@ namespace BearFramework\App;
  * @property ?string $appDir
  * @property ?string $dataDir
  * @property ?string $logsDir
- * @property boolean $updateEnvironment
- * @property boolean $handleErrors
- * @property boolean $displayErrors
- * @property boolean $logErrors
+ * @property bool $updateEnvironment
+ * @property bool $handleErrors
+ * @property bool $displayErrors
+ * @property bool $logErrors
  * @property ?string $assetsPathPrefix
  * @property int $assetsMaxAge
  */
@@ -124,7 +124,7 @@ class Config
      * @param string $filename The filename containing the configuration options
      * @throws \InvalidArgumentException
      */
-    public function load(string $filename): void
+    public function load(string $filename): \BearFramework\App\Config
     {
         $filename = realpath($filename);
         if ($filename === false) {
@@ -144,7 +144,7 @@ class Config
             foreach ($data as $name => $value) {
                 $this->$name = $value;
             }
-            return;
+            return $this;
         }
         throw new \InvalidArgumentException('The configuration data in ' . $filename . ' is not valid');
     }

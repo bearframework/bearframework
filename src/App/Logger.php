@@ -25,7 +25,7 @@ class Logger
      * @param array $context
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return boolean TRUE if data is suceessfully written. FALSE otherwise.
+     * @return bool TRUE if data is suceessfully written. FALSE otherwise.
      */
     public function log(string $level, string $message, array $context = [])
     {

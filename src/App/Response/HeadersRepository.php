@@ -64,7 +64,7 @@ class HeadersRepository
      * Returns information whether a header with the name specified exists
      * 
      * @param string $name The name of the header
-     * @return boolean TRUE if a header with the name specified exists, FALSE otherwise
+     * @return bool TRUE if a header with the name specified exists, FALSE otherwise
      */
     public function exists(string $name): bool
     {

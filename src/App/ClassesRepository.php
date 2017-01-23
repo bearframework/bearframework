@@ -38,15 +38,12 @@ class ClassesRepository
      * @param string $class The class name
      * @param string $filename The filename that contains the class
      * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @return \BearFramework\App\ClassesRepository
      */
-    public function add(string $class, string $filename)
+    public function add(string $class, string $filename): \BearFramework\App\ClassesRepository
     {
-        $filename = realpath($filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
-        }
         $this->data[$class] = $filename;
+        return $this;
     }
 
     /**
@@ -65,15 +62,16 @@ class ClassesRepository
      * 
      * @param string $class
      * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @return \BearFramework\App\ClassesRepository
      */
-    public function load(string $class)
+    public function load(string $class): \BearFramework\App\ClassesRepository
     {
         if (isset($this->data[$class])) {
             (static function($__filename) {
                 include_once $__filename;
             })($this->data[$class]);
         }
+        return $this;
     }
 
 }

@@ -81,7 +81,7 @@ class FormDataRepository
      * Returns information whether a data item with the name specified exists
      * 
      * @param string $name The name of the data item
-     * @return boolean TRUE if a data item with the name specified exists, FALSE otherwise
+     * @return bool TRUE if a data item with the name specified exists, FALSE otherwise
      */
     public function exists(string $name): bool
     {

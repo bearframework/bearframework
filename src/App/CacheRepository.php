@@ -76,7 +76,7 @@ class CacheRepository
      * 
      * @param string $key The data key
      * @throws \InvalidArgumentException
-     * @return boolean TRUE if the key exists in the cache, FALSE otherwise.
+     * @return bool TRUE if the key exists in the cache, FALSE otherwise.
      */
     public function exists(string $key)
     {
@@ -102,13 +102,14 @@ class CacheRepository
      * 
      * @param string $key The data key
      * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @return \BearFramework\App\CacheRepository
      */
-    public function delete(string $key)
+    public function delete(string $key): \BearFramework\App\CacheRepository
     {
         $app = App::get();
         $keyMD5 = md5($key);
         $app->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        return $this;
     }
 
 }

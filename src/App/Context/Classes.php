@@ -24,6 +24,12 @@ class Classes
     private $dir = '';
 
     /**
+     *
+     * @var \BearFramework\App\ClassesRepository 
+     */
+    private static $appClassesReference = null;
+
+    /**
      * The constructor
      * 
      * @param string $dir The directory where the current addon or application are located 
@@ -32,11 +38,8 @@ class Classes
      */
     public function __construct(string $dir)
     {
-        $dir = realpath($dir);
-        if ($dir === false) {
-            throw new \InvalidArgumentException('The dir specified does not exist');
-        }
         $this->dir = $dir;
+        self::$appClassesReference = App::get()->classes;
     }
 
     /**
@@ -44,17 +47,12 @@ class Classes
      * 
      * @param string $class The class name
      * @param string $filename The filename that contains the class
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @return \BearFramework\App\Context\Classes
      */
-    public function add(string $class, string $filename): void
+    public function add(string $class, string $filename): \BearFramework\App\Context\Classes
     {
-        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
-        }
-        $app = App::get();
-        $app->classes->add($class, $filename);
+        self::$appClassesReference->add($class, $this->dir . DIRECTORY_SEPARATOR . $filename);
+        return $this;
     }
 
 }

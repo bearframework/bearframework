@@ -64,7 +64,7 @@ class CookiesRepository
      * Returns information whether a cookie with the name specified exists
      * 
      * @param string $name The name of the cookie
-     * @return boolean TRUE if a cookie with the name specified exists, FALSE otherwise
+     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise
      */
     public function exists(string $name): bool
     {

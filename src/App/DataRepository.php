@@ -47,7 +47,7 @@ class DataRepository
     /**
      * Saves data
      */
-    public function set(DataItem $item): void
+    public function set(DataItem $item): \BearFramework\App\DataRepository
     {
         $command = [
             'command' => 'set',
@@ -66,9 +66,10 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
-    public function setValue(string $key, string $value): void
+    public function setValue(string $key, string $value): \BearFramework\App\DataRepository
     {
         try {
             $this->execute([
@@ -83,6 +84,7 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
     public function get(string $key): ?\BearFramework\App\DataItem
@@ -153,7 +155,7 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function append(string $key, string $content): void
+    public function append(string $key, string $content): \BearFramework\App\DataRepository
     {
         try {
             $this->execute([
@@ -168,6 +170,7 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
     /**
@@ -179,7 +182,7 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function duplicate(string $sourceKey, string $destinationKey): void
+    public function duplicate(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
         try {
             $this->execute([
@@ -194,6 +197,7 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
     /**
@@ -205,7 +209,7 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function rename(string $sourceKey, string $destinationKey): void
+    public function rename(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
         try {
             $this->execute([
@@ -220,6 +224,7 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
     /**
@@ -230,7 +235,7 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function delete(string $key): void
+    public function delete(string $key): \BearFramework\App\DataRepository
     {
         try {
             $this->execute([
@@ -244,6 +249,7 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
     /**
@@ -255,7 +261,7 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function setMetadata(string $key, string $name, string $value): void
+    public function setMetadata(string $key, string $name, string $value): \BearFramework\App\DataRepository
     {
         try {
             $this->execute([
@@ -270,6 +276,7 @@ class DataRepository
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        return $this;
     }
 
     /**
@@ -303,9 +310,10 @@ class DataRepository
      * @param string $key The key
      * @param string $name The metadata name
      */
-    public function deleteMetadata(string $key, string $name): void
+    public function deleteMetadata(string $key, string $name): \BearFramework\App\DataRepository
     {
         $this->setMetadata($key, $name, '');
+        return $this;
     }
 
     /**
@@ -414,9 +422,10 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function makePublic(string $key): void
+    public function makePublic(string $key): \BearFramework\App\DataRepository
     {
         $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
+        return $this;
     }
 
     /**
@@ -428,9 +437,10 @@ class DataRepository
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function makePrivate(string $key): void
+    public function makePrivate(string $key): \BearFramework\App\DataRepository
     {
         $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
+        return $this;
     }
 
     /**
@@ -439,7 +449,7 @@ class DataRepository
      * @param string $key The object key
      * @throws \InvalidArgumentException
      * @throws \Exception
-     * @return boolean TRUE if public. FALSE otherwise.
+     * @return bool TRUE if public. FALSE otherwise.
      */
     public function isPublic(string $key): bool
     {
@@ -450,7 +460,7 @@ class DataRepository
      * Checks if an key is valid
      * 
      * @param string $key The key to check
-     * @return boolean TRUE if valid. FALSE otherwise.
+     * @return bool TRUE if valid. FALSE otherwise.
      */
     public function isValidKey(string $key): bool
     {

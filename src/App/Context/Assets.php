@@ -24,6 +24,12 @@ class Assets
     private $dir = '';
 
     /**
+     *
+     * @var \BearFramework\App\Assets 
+     */
+    private static $appAssetsReference = null;
+
+    /**
      * The constructor
      * 
      * @param string $dir The directory where the current addon or application are located 
@@ -32,23 +38,20 @@ class Assets
      */
     public function __construct(string $dir)
     {
-        $dir = realpath($dir);
-        if ($dir === false) {
-            throw new \InvalidArgumentException('The dir specified does not exist');
-        }
         $this->dir = $dir;
+        self::$appAssetsReference = App::get()->assets;
     }
 
     /**
      * Registers a directory that will be publicly accessible relative to the current addon or application location
      * 
      * @param string $pathname The directory name
-     * @return void No value is returned
+     * @return \BearFramework\App\Context\Assets
      */
-    public function addDir(string $pathname): void
+    public function addDir(string $pathname): \BearFramework\App\Context\Assets
     {
-        $app = App::get();
-        $app->assets->addDir($this->dir . DIRECTORY_SEPARATOR . $pathname);
+        self::$appAssetsReference->addDir($this->dir . DIRECTORY_SEPARATOR . $pathname);
+        return $this;
     }
 
     /**
@@ -61,12 +64,7 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        $app = App::get();
-//        $filename = realpath($this->dir . DIRECTORY_SEPARATOR . $filename);
-//        if ($filename === false) {
-//            throw new \InvalidArgumentException('The filename specified does not exist');
-//        }
-        return $app->assets->getUrl($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
+        return self::$appAssetsReference->getUrl($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
     }
 
     /**
@@ -80,8 +78,7 @@ class Assets
      */
     public function getContent(string $filename, array $options = []): ?string
     {
-        $app = App::get();
-        return $app->assets->getContent($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
+        return self::$appAssetsReference->getContent($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
     }
 
 }

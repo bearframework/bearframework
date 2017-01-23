@@ -19,6 +19,8 @@ class FormDataFileItem extends FormDataItem
 
     function __construct(string $name, string $value)
     {
+
+        parent::__construct($name, $value);
         $this->defineProperty('filename', [
             'type' => 'string'
         ]);
@@ -28,8 +30,6 @@ class FormDataFileItem extends FormDataItem
         $this->defineProperty('type', [
             'type' => '?string'
         ]);
-
-        parent::__construct($name, $value);
     }
 
 }

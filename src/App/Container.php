@@ -28,14 +28,15 @@ class Container
      * @param string $name The service name.
      * @param string|object|callable $value The object that will be returned when requested.
      * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @return \BearFramework\App\Container
      */
-    public function set(string $name, $value): void
+    public function set(string $name, $value): \BearFramework\App\Container
     {
         if (!is_string($value) && !is_object($value) && !is_callable($value)) {
             throw new \InvalidArgumentException('The value argument must be of type string, object or callable');
         }
         $this->data[$name] = [$value];
+        return $this;
     }
 
     /**

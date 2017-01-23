@@ -17,6 +17,8 @@ use BearFramework\App;
 class ContextsRepository
 {
 
+    private static $cache = [];
+
     /**
      * Creates a context object for the filename specified
      * 
@@ -28,21 +30,23 @@ class ContextsRepository
     public function get(string $filename)
     {
         $filename = realpath($filename);
+        if (isset(self::$cache[$filename])) {
+            return self::$cache[$filename];
+        }
         if ($filename === false) {
             throw new \Exception('File does not exists');
         }
-        if (is_dir($filename)) {
-            $filename .= DIRECTORY_SEPARATOR;
-        }
         $app = App::get();
         if (strpos($filename, $app->config->appDir . DIRECTORY_SEPARATOR) === 0) {
-            return new App\Context($app->config->appDir);
+            self::$cache[$filename] = new App\Context($app->config->appDir);
+            return self::$cache[$filename];
         }
         $addons = $app->addons->getList();
         foreach ($addons as $addon) {
             $registeredAddon = \BearFramework\Addons::get($addon->id);
             if (strpos($filename, $registeredAddon->dir . DIRECTORY_SEPARATOR) === 0) {
-                return new App\Context($registeredAddon->dir);
+                self::$cache[$filename] = new App\Context($registeredAddon->dir);
+                return self::$cache[$filename];
             }
         }
         throw new \Exception('Connot find context');

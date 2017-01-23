@@ -13,7 +13,7 @@ use BearFramework\App;
 
 /**
  * Provides information about addons and application location and utility functions
- * 
+ * @property-read string $dir The directory where the current addon or application are located
  * @property-read \BearFramework\App\Context\Assets $assets Provides utility functions for assets in the current context dir
  * @property-read \BearFramework\App\Context\Classes $classes Provides functionality for autoloading classes in the current context
  */
@@ -23,13 +23,6 @@ class Context
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * The directory where the current addon or application are located
-     * 
-     * @var string 
-     */
-    public $dir = '';
-
-    /**
      * The constructor
      * 
      * @param string $dir The directory where the current addon or application are located 
@@ -37,12 +30,12 @@ class Context
      */
     public function __construct(string $dir)
     {
-        $dir = realpath($dir);
-        if ($dir === false) {
-            throw new \InvalidArgumentException('The dir specified does not exist');
-        }
-        $this->dir = $dir;
-
+        $this->defineProperty('dir', [
+            'get' => function() use ($dir) {
+                return $dir;
+            },
+            'readonly' => true
+        ]);
         $this->defineProperty('assets', [
             'init' => function() use ($dir) {
                 return new App\Context\Assets($dir);
