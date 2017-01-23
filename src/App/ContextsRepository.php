@@ -17,7 +17,8 @@ use BearFramework\App;
 class ContextsRepository
 {
 
-    private static $cache = [];
+    private static $dirsCache = [];
+    private static $objectsCache = [];
 
     /**
      * Creates a context object for the filename specified
@@ -29,25 +30,39 @@ class ContextsRepository
      */
     public function get(string $filename)
     {
-        $filename = realpath($filename);
-        if (isset(self::$cache[$filename])) {
-            return self::$cache[$filename];
-        }
-        if ($filename === false) {
-            throw new \Exception('File does not exists');
-        }
-        $app = App::get();
-        if (strpos($filename, $app->config->appDir . DIRECTORY_SEPARATOR) === 0) {
-            self::$cache[$filename] = new App\Context($app->config->appDir);
-            return self::$cache[$filename];
-        }
-        $addons = $app->addons->getList();
-        foreach ($addons as $addon) {
-            $registeredAddon = \BearFramework\Addons::get($addon->id);
-            if (strpos($filename, $registeredAddon->dir . DIRECTORY_SEPARATOR) === 0) {
-                self::$cache[$filename] = new App\Context($registeredAddon->dir);
-                return self::$cache[$filename];
+        $matchedDir = null;
+        for ($i = 0; $i < 2; $i++) { // first try - check cache, second try - update cache and check again
+            foreach (self::$dirsCache as $dir) {
+                if (substr($filename, 0, $dir[1]) === $dir[0]) {
+                    $matchedDir = $dir[0];
+                    break;
+                }
             }
+            if ($matchedDir !== null) {
+                break;
+            }
+            if ($i === 0) {
+                $app = App::get();
+                if (!isset(self::$dirsCache['app'])) {
+                    $dir = $app->config->appDir . DIRECTORY_SEPARATOR;
+                    self::$dirsCache['app'] = [$dir, strlen($dir)];
+                }
+                $addons = $app->addons->getList();
+                foreach ($addons as $addon) {
+                    if (!isset(self::$dirsCache[$addon->id])) {
+                        $registeredAddon = \BearFramework\Addons::get($addon->id);
+                        $dir = $registeredAddon->dir . DIRECTORY_SEPARATOR;
+                        self::$dirsCache[$addon->id] = [$dir, strlen($dir)];
+                    }
+                }
+            }
+        }
+        if ($matchedDir !== null) {
+            if (isset(self::$objectsCache[$matchedDir])) {
+                return self::$objectsCache[$matchedDir];
+            }
+            self::$objectsCache[$matchedDir] = new App\Context($matchedDir);
+            return self::$objectsCache[$matchedDir];
         }
         throw new \Exception('Connot find context');
     }
