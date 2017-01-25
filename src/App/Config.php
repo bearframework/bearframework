@@ -48,7 +48,6 @@ class Config
                 return $value;
             }
         ]);
-
         $this->defineProperty('dataDir', [
             'type' => '?string',
             'set' => function($value) {
@@ -62,7 +61,6 @@ class Config
                 return $value;
             }
         ]);
-
         $this->defineProperty('logsDir', [
             'type' => '?string',
             'set' => function($value) {
@@ -76,44 +74,44 @@ class Config
                 return $value;
             }
         ]);
-
         $this->defineProperty('updateEnvironment', [
-            'type' => 'bool'
+            'type' => 'bool',
+            'init' => function() {
+                return true;
+            }
         ]);
-
         $this->defineProperty('handleErrors', [
-            'type' => 'bool'
+            'type' => 'bool',
+            'init' => function() {
+                return true;
+            }
         ]);
-
         $this->defineProperty('displayErrors', [
-            'type' => 'bool'
+            'type' => 'bool',
+            'init' => function() {
+                return false;
+            }
         ]);
-
         $this->defineProperty('logErrors', [
-            'type' => 'bool'
+            'type' => 'bool',
+            'init' => function() {
+                return false;
+            }
         ]);
-
         $this->defineProperty('assetsPathPrefix', [
-            'type' => '?string'
+            'type' => '?string',
+            'init' => function() {
+                return '/assets/';
+            }
         ]);
-
         $this->defineProperty('assetsMaxAge', [
-            'type' => 'int'
+            'type' => 'int',
+            'init' => function() {
+                return 0;
+            }
         ]);
 
-        $defaultOptions = [
-            'appDir' => null,
-            'dataDir' => null,
-            'logsDir' => null,
-            'updateEnvironment' => true,
-            'handleErrors' => true,
-            'displayErrors' => false,
-            'logErrors' => false,
-            'assetsPathPrefix' => '/assets/',
-            'assetsMaxAge' => 0
-        ];
-        $data = array_merge($defaultOptions, $options);
-        foreach ($data as $name => $value) {
+        foreach ($options as $name => $value) {
             $this->$name = $value;
         }
     }
