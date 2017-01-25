@@ -53,13 +53,7 @@ class Response
             }
         ]);
         $this->defineProperty('charset', [
-            'type' => 'string',
-            'init' => function() {
-                return '';
-            },
-            'unset' => function() {
-                return '';
-            }
+            'type' => '?string'
         ]);
         $this->defineProperty('headers', [
             'init' => function() {

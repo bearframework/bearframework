@@ -34,7 +34,7 @@ class ResponseTest extends BearFrameworkTestCase
         unset($response->charset);
         $this->assertTrue($response->content === '');
         $this->assertTrue($response->statusCode === null);
-        $this->assertTrue($response->charset === '');
+        $this->assertTrue($response->charset === null);
 
         $this->assertTrue(isset($response->headers));
         $this->assertTrue(isset($response->cookies));

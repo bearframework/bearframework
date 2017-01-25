@@ -209,6 +209,7 @@ class App
                     public function add(string $name, callable $callback)
                     {
                         call_user_func($this->addPropertyMethod, $name, $callback);
+                        return $this;
                     }
                 };
             },
@@ -308,7 +309,7 @@ class App
         if (!headers_sent()) {
             $headers = $response->headers->getList();
             foreach ($headers as $header) {
-                if ($header->name === 'Content-Type') {
+                if ($header->name === 'Content-Type' && $response->charset !== null) {
                     $header->value .= '; charset=' . $response->charset;
                 }
                 header($header->name . ': ' . $header->value);
