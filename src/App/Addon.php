@@ -11,6 +11,7 @@ namespace BearFramework\App;
 
 /**
  * @property string|null $id The id of the addon
+ * @property string|null $dir The dir of the addon
  * @property array $options The options of the addon
  */
 class Addon
@@ -21,6 +22,9 @@ class Addon
     function __construct()
     {
         $this->defineProperty('id', [
+            'type' => '?string'
+        ]);
+        $this->defineProperty('dir', [
             'type' => '?string'
         ]);
         $this->defineProperty('options', [

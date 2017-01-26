@@ -34,7 +34,7 @@ class Addons
      *     - require - An array containing the ids of addons that must be added before this one.
      * @return bool TRUE if successfully registered. FALSE otherwise.
      */
-    static function register(string $id, string $dir, $options = []): void
+    static function register(string $id, string $dir, $options = []): bool
     {
         if(isset(self::$data[$id])){
             return false;

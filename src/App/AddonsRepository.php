@@ -53,6 +53,7 @@ class AddonsRepository
         }
         $object = clone(self::$newAddonCache);
         $object->id = $id;
+        $object->dir = $registeredAddon->dir;
         $object->options = $options;
         $this->data[$id] = $object;
 

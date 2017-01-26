@@ -50,8 +50,7 @@ class ContextsRepository
                 $addons = $app->addons->getList();
                 foreach ($addons as $addon) {
                     if (!isset(self::$dirsCache[$addon->id])) {
-                        $registeredAddon = \BearFramework\Addons::get($addon->id);
-                        $dir = $registeredAddon->dir . DIRECTORY_SEPARATOR;
+                        $dir = $addon->dir . DIRECTORY_SEPARATOR;
                         self::$dirsCache[$addon->id] = [$dir, strlen($dir)];
                     }
                 }
