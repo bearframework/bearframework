@@ -10,25 +10,37 @@
 namespace BearFramework\App;
 
 /**
- * @property string|null $id The id of the addon
- * @property string|null $dir The dir of the addon
- * @property array $options The options of the addon
+ * @property-read string $id The id of the addon
+ * @property-read string $dir The dir of the addon
+ * @property-read array $options The options of the addon
  */
 class Addon
 {
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct()
+    function __construct(string $id, string $dir, array $options)
     {
         $this->defineProperty('id', [
-            'type' => '?string'
+            'type' => 'string',
+            'get' => function() use ($id) {
+                return $id;
+            },
+            'readonly' => true
         ]);
         $this->defineProperty('dir', [
-            'type' => '?string'
+            'type' => 'string',
+            'get' => function() use ($dir) {
+                return $dir;
+            },
+            'readonly' => true
         ]);
         $this->defineProperty('options', [
-            'type' => 'array'
+            'type' => 'array',
+            'get' => function() use ($options) {
+                return $options;
+            },
+            'readonly' => true
         ]);
     }
 

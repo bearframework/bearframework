@@ -21,11 +21,6 @@ class Addons
     static private $data = [];
 
     /**
-     *
-     */
-    private static $newAddonCache = null;
-
-    /**
      * Registers an addon.
      * 
      * @param string $id The id of the addon.
@@ -36,7 +31,7 @@ class Addons
      */
     static function register(string $id, string $dir, $options = []): bool
     {
-        if(isset(self::$data[$id])){
+        if (isset(self::$data[$id])) {
             return false;
         }
         if (!isset($id{0})) {
@@ -46,14 +41,7 @@ class Addons
         if ($dir === false) {
             throw new \InvalidArgumentException('The value of the dir argument is not a valid directory.');
         }
-        if (self::$newAddonCache === null) {
-            self::$newAddonCache = new \BearFramework\Addon();
-        }
-        $object = clone(self::$newAddonCache);
-        $object->id = $id;
-        $object->dir = $dir;
-        $object->options = $options;
-        self::$data[$id] = $object;
+        self::$data[$id] = new \BearFramework\Addon($id, $dir, $options);
         return true;
     }
 
@@ -77,7 +65,7 @@ class Addons
     static function get(string $id): ?\BearFramework\Addon
     {
         if (isset(self::$data[$id])) {
-            return self::$data[$id];
+            return clone(self::$data[$id]);
         }
         return null;
     }
@@ -89,7 +77,13 @@ class Addons
      */
     static function getList()
     {
-        return new \BearFramework\DataList(self::$data);
+        return new \BearFramework\DataList(function() {
+            $list = [];
+            foreach (self::$data as $addon) {
+                $list[] = clone($addon);
+            }
+            return $list;
+        });
     }
 
 }
