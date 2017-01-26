@@ -65,7 +65,7 @@ class CookiesRepository
     public function get(string $name): ?\BearFramework\App\Response\Cookie
     {
         if (isset($this->data[$name])) {
-            return $this->data[$name];
+            return clone($this->data[$name]);
         }
         return null;
     }
@@ -103,7 +103,13 @@ class CookiesRepository
      */
     public function getList()
     {
-        return new \BearFramework\DataList($this->data);
+        return new \BearFramework\DataList(function (){
+            $list = [];
+            foreach ($this->data as $cookie){
+                $list[] = clone($cookie);
+            }
+            return $list;
+        });
     }
 
 }

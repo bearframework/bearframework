@@ -58,12 +58,12 @@ class ContextsRepository
         }
         if ($matchedDir !== null) {
             if (isset(self::$objectsCache[$matchedDir])) {
-                return self::$objectsCache[$matchedDir];
+                return clone(self::$objectsCache[$matchedDir]);
             }
             self::$objectsCache[$matchedDir] = new App\Context(substr($matchedDir, 0, -1));
-            return self::$objectsCache[$matchedDir];
+            return clone(self::$objectsCache[$matchedDir]);
         }
-        throw new \Exception('Connot find context');
+        throw new \Exception('Connot find context for ' . $filename);
     }
 
 }
