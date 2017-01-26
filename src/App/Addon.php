@@ -10,7 +10,7 @@
 namespace BearFramework\App;
 
 /**
- * @property string $id The id of the addon
+ * @property string|null $id The id of the addon
  * @property array $options The options of the addon
  */
 class Addon
@@ -18,17 +18,14 @@ class Addon
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct(string $id, array $options = [])
+    function __construct()
     {
         $this->defineProperty('id', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
         $this->defineProperty('options', [
             'type' => 'array'
         ]);
-
-        $this->id = $id;
-        $this->options = $options;
     }
 
 }

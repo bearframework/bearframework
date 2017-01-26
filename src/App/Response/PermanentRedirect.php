@@ -25,8 +25,8 @@ class PermanentRedirect extends \BearFramework\App\Response
         parent::__construct('');
         $this->statusCode = 301;
         $this->headers
-                ->set(new Header('Content-Type', 'text/plain'))
-                ->set(new Header('Location', $url));
+                ->set($this->headers->make('Content-Type', 'text/plain'))
+                ->set($this->headers->make('Location', $url));
     }
 
 }

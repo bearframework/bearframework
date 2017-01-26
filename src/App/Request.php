@@ -140,7 +140,7 @@ class Request
                                         $walkVariables($value, $name);
                                         continue;
                                     }
-                                    $query->set(new App\Request\QueryItem($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                                    $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
                                 }
                             };
                     $walkVariables($_GET);
@@ -153,7 +153,7 @@ class Request
                     $headers = new App\Request\HeadersRepository();
                     foreach ($_SERVER as $name => $value) {
                         if (substr($name, 0, 5) == 'HTTP_') {
-                            $headers->set(new App\Request\Header(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
+                            $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
                         }
                     }
                     return $headers;
@@ -164,7 +164,7 @@ class Request
                 'init' => function() {
                     $cookies = new App\Request\CookiesRepository();
                     foreach ($_COOKIE as $name => $value) {
-                        $cookies->set(new App\Request\Cookie($name, $value));
+                        $cookies->set($cookies->make($name, $value));
                     }
                     return $cookies;
                 },
@@ -179,7 +179,7 @@ class Request
                                         $walkVariables($value, $name);
                                         continue;
                                     }
-                                    $data->set(new App\Request\FormDataItem($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                                    $data->set($data->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
                                 }
                             };
                     $walkVariables($_POST);
@@ -188,7 +188,9 @@ class Request
                             if ($value['error'] !== UPLOAD_ERR_OK) {
                                 throw new \Exception('File upload error (' . $value['error'] . ')');
                             }
-                            $file = new \BearFramework\App\Request\FormDataFileItem($name, $value['name']);
+                            $file = new \BearFramework\App\Request\FormDataFileItem();
+                            $file->name = $name;
+                            $file->value = $value['name'];
                             $file->filename = $value['tmp_name'];
                             $file->size = $value['size'];
                             $file->type = $value['type'];

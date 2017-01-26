@@ -21,24 +21,24 @@ class RequestQueryTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $data = new QueryRepository();
-        $data->set(new QueryItem('name1', 'value1'));
-        $data->set(new QueryItem('name2', 'value2'));
-        $this->assertNull($data->get('missing'));
-        $this->assertNull($data->getValue('missing'));
-        $this->assertEquals($data->get('name1')->value, 'value1');
-        $this->assertEquals($data->getValue('name1'), 'value1');
-        $this->assertFalse($data->exists('missing'));
-        $this->assertTrue($data->exists('name1'));
-        $list = $data->getList();
+        $query = new QueryRepository();
+        $query->set($query->make('name1', 'value1'));
+        $query->set($query->make('name2', 'value2'));
+        $this->assertNull($query->get('missing'));
+        $this->assertNull($query->getValue('missing'));
+        $this->assertEquals($query->get('name1')->value, 'value1');
+        $this->assertEquals($query->getValue('name1'), 'value1');
+        $this->assertFalse($query->exists('missing'));
+        $this->assertTrue($query->exists('name1'));
+        $list = $query->getList();
         $this->assertEquals($list->length, 2);
         $this->assertEquals($list[0]->name, 'name1');
         $this->assertEquals($list[0]->value, 'value1');
         $this->assertEquals($list[1]->name, 'name2');
         $this->assertEquals($list[1]->value, 'value2');
-        $data->delete('name1');
-        $this->assertFalse($data->exists('name1'));
-        $list = $data->getList();
+        $query->delete('name1');
+        $this->assertFalse($query->exists('name1'));
+        $list = $query->getList();
         $this->assertEquals($list->length, 1);
     }
 

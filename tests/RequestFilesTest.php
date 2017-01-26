@@ -19,12 +19,16 @@ class RequestFilesTest extends BearFrameworkTestCase
     function test()
     {
         $formData = new \BearFramework\App\Request\FormDataRepository();
-        $file = new \BearFramework\App\Request\FormDataFileItem('name1', 'file1.jpg');
+        $file = new \BearFramework\App\Request\FormDataFileItem();
+        $file->name = 'name1';
+        $file->value = 'file1.jpg';
         $file->filename = '/tmp/file1.jpg';
         $file->size = 123;
         $file->type = 'image/jpeg';
         $formData->set($file);
-        $file = new \BearFramework\App\Request\FormDataFileItem('name2', 'file2.jpg');
+        $file = new \BearFramework\App\Request\FormDataFileItem();
+        $file->name = 'name2';
+        $file->value = 'file2.jpg';
         $file->filename = '/tmp/file2.jpg';
         $file->size = 123;
         $file->type = 'image/jpeg';

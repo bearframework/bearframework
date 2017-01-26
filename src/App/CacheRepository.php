@@ -18,6 +18,27 @@ use BearFramework\App\CacheItem;
 class CacheRepository
 {
 
+    private static $newCacheItemCache = null;
+
+    /**
+     * 
+     * @return \BearFramework\App\CacheItem
+     */
+    public function make(string $key = null, $value = null): \BearFramework\App\CacheItem
+    {
+        if (self::$newCacheItemCache === null) {
+            self::$newCacheItemCache = new \BearFramework\App\CacheItem();
+        }
+        $object = clone(self::$newCacheItemCache);
+        if ($key !== null) {
+            $object->key = $key;
+        }
+        if ($value !== null) {
+            $object->value = $value;
+        }
+        return $object;
+    }
+
     public function set(CacheItem $item): \BearFramework\App\CacheRepository
     {
         $ttl = is_int($item->ttl) ? $item->ttl : 0;
@@ -43,18 +64,15 @@ class CacheRepository
         if ($value !== null) {
             try {
                 $value = unserialize(gzuncompress($value));
-                $constructCacheItem = function () use ($key, $value) {
-                    $cacheItem = new CacheItem($key, $value[1]);
-                    //$cacheItem->ttl = //todo
-                    return $cacheItem;
-                };
                 if ($value[0] > 0) {
                     if ($value[0] > time()) {
-                        return $constructCacheItem();
+                        $cacheItem = $this->make($key, $value[1]);
+                        //$cacheItem->ttl = //todo
+                        return $cacheItem;
                     }
                     return null;
                 }
-                return $constructCacheItem();
+                return $this->make($key, $value[1]);
             } catch (\Exception $e) {
                 
             }

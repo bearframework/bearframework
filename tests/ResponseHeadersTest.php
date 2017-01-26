@@ -22,8 +22,8 @@ class ResponseHeadersTest extends BearFrameworkTestCase
     function test()
     {
         $headers = new HeadersRepository();
-        $headers->set(new BearFramework\App\Response\Header('Content-Type', 'application/x-www-form-urlencoded'));
-        $headers->set(new Header('Content-Length', '123'));
+        $headers->set($headers->make('Content-Type', 'application/x-www-form-urlencoded'));
+        $headers->set($headers->make('Content-Length', '123'));
         $this->assertNull($headers->get('missing'));
         $this->assertNull($headers->getValue('missing'));
         $this->assertEquals($headers->get('Content-Type')->value, 'application/x-www-form-urlencoded');

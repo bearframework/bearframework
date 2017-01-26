@@ -10,25 +10,22 @@
 namespace BearFramework\App\Request;
 
 /**
- * @property string $name The name of the query parameter.
- * @property string $value The value of the query parameter.
+ * @property string|null $name The name of the query parameter.
+ * @property string|null $value The value of the query parameter.
  */
 class QueryItem
 {
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct(string $name, string $value)
+    function __construct()
     {
         $this->defineProperty('name', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
         $this->defineProperty('value', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
-
-        $this->name = $name;
-        $this->value = $value;
     }
 
 }

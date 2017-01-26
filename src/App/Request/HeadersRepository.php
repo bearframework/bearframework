@@ -19,6 +19,30 @@ class HeadersRepository
      * @var array 
      */
     private $data = [];
+    
+    /**
+     *
+     */
+    private static $newHeaderCache = null;
+
+    /**
+     * 
+     * @return \BearFramework\App\Request\Header
+     */
+    public function make(string $name = null, string $value = null): \BearFramework\App\Request\Header
+    {
+        if (self::$newHeaderCache === null) {
+            self::$newHeaderCache = new \BearFramework\App\Request\Header();
+        }
+        $object = clone(self::$newHeaderCache);
+        if ($name !== null) {
+            $object->name = $name;
+        }
+        if ($value !== null) {
+            $object->value = $value;
+        }
+        return $object;
+    }
 
     /**
      * Sets a header

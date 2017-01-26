@@ -24,7 +24,7 @@ class HTML extends \BearFramework\App\Response
     {
         parent::__construct($content);
         $this->charset = 'UTF-8';
-        $this->headers->set(new Header('Content-Type', 'text/html'));
+        $this->headers->set($this->headers->make('Content-Type', 'text/html'));
     }
 
 }

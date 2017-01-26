@@ -17,10 +17,10 @@ namespace BearFramework\App\Request;
 class FormDataFileItem extends FormDataItem
 {
 
-    function __construct(string $name, string $value)
+    function __construct()
     {
 
-        parent::__construct($name, $value);
+        parent::__construct();
         $this->defineProperty('filename', [
             'type' => 'string'
         ]);

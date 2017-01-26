@@ -19,6 +19,30 @@ class QueryRepository
      * @var array 
      */
     private $data = [];
+    
+    /**
+     *
+     */
+    private static $newQueryItemCache = null;
+
+    /**
+     * 
+     * @return \BearFramework\App\Request\QueryItem
+     */
+    public function make(string $name = null, string $value = null): \BearFramework\App\Request\QueryItem
+    {
+        if (self::$newQueryItemCache === null) {
+            self::$newQueryItemCache = new \BearFramework\App\Request\QueryItem();
+        }
+        $object = clone(self::$newQueryItemCache);
+        if ($name !== null) {
+            $object->name = $name;
+        }
+        if ($value !== null) {
+            $object->value = $value;
+        }
+        return $object;
+    }
 
     /**
      * Sets a cookie

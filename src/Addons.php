@@ -21,17 +21,40 @@ class Addons
     static private $data = [];
 
     /**
+     *
+     */
+    private static $newAddonCache = null;
+
+    /**
      * Registers an addon.
      * 
      * @param string $id The id of the addon.
      * @param string $dir The directory where the addon files are located.
      * @param array $options The addon options. Available values:
      *     - require - An array containing the ids of addons that must be added before this one.
-     * @return void No value is returned
+     * @return bool TRUE if successfully registered. FALSE otherwise.
      */
     static function register(string $id, string $dir, $options = []): void
     {
-        self::$data[$id] = new \BearFramework\Addon($id, $dir, $options);
+        if(isset(self::$data[$id])){
+            return false;
+        }
+        if (!isset($id{0})) {
+            throw new \InvalidArgumentException('The value of the id argument cannot be empty.');
+        }
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \InvalidArgumentException('The value of the dir argument is not a valid directory.');
+        }
+        if (self::$newAddonCache === null) {
+            self::$newAddonCache = new \BearFramework\Addon();
+        }
+        $object = clone(self::$newAddonCache);
+        $object->id = $id;
+        $object->dir = $dir;
+        $object->options = $options;
+        self::$data[$id] = $object;
+        return true;
     }
 
     /**

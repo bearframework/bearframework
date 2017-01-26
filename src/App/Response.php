@@ -35,13 +35,7 @@ class Response
         $this->content = $content;
 
         $this->defineProperty('content', [
-            'type' => 'string',
-            'init' => function() {
-                return '';
-            },
-            'unset' => function() {
-                return '';
-            }
+            'type' => 'string'
         ]);
         $this->defineProperty('statusCode', [
             'type' => '?int',

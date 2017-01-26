@@ -22,8 +22,8 @@ class RequestCookiesTest extends BearFrameworkTestCase
     function test()
     {
         $cookies = new CookiesRepository();
-        $cookies->set(new Cookie('name1', 'value1'));
-        $cookies->set(new Cookie('name2', 'value2'));
+        $cookies->set($cookies->make('name1', 'value1'));
+        $cookies->set($cookies->make('name2', 'value2'));
         $this->assertNull($cookies->get('missing'));
         $this->assertNull($cookies->getValue('missing'));
         $this->assertEquals($cookies->get('name1')->value, 'value1');

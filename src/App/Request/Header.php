@@ -10,25 +10,22 @@
 namespace BearFramework\App\Request;
 
 /**
- * @property string $name
- * @property string $value
+ * @property string|null $name
+ * @property string|null $value
  */
 class Header
 {
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct(string $name, string $value)
+    function __construct()
     {
         $this->defineProperty('name', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
         $this->defineProperty('value', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
-
-        $this->name = $name;
-        $this->value = $value;
     }
 
 }

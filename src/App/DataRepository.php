@@ -25,6 +25,8 @@ class DataRepository
      * @var type 
      */
     private $instance = null;
+    
+    private static $newDataItemCache = null;
 
     /**
      * Returns the instance of the data storage library
@@ -44,6 +46,25 @@ class DataRepository
         return $this->instance;
     }
 
+    /**
+     * 
+     * @return \BearFramework\App\DataItem
+     */
+    public function make(string $key = null, string $value = null): \BearFramework\App\DataItem
+    {
+        if(self::$newDataItemCache === null){
+            self::$newDataItemCache = new \BearFramework\App\DataItem();
+        }
+        $object = clone(self::$newDataItemCache);
+        if ($key !== null) {
+            $object->key = $key;
+        }
+        if ($value !== null) {
+            $object->value = $value;
+        }
+        return $object;
+    }
+    
     /**
      * Saves data
      */
@@ -381,7 +402,7 @@ class DataRepository
 
     private function makeDataItemFromRawData(array $rawData): \BearFramework\App\DataItem
     {
-        $dataItem = new DataItem($rawData['key'], $rawData['body']);
+        $dataItem = $this->make($rawData['key'], $rawData['body']);
         foreach ($rawData as $name => $value) {
             if (strpos($name, 'metadata.') === 0) {
                 $name = substr($name, 9);

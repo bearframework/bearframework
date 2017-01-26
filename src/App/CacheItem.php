@@ -10,7 +10,7 @@
 namespace BearFramework\App;
 
 /**
- * @property string $key
+ * @property string|null $key
  * @property mixed $value
  * @property int|null $ttl Time in seconds to stay in the cache
  */
@@ -19,11 +19,15 @@ class CacheItem
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct(string $key, $value)
+    function __construct()
     {
-        $this->key = $key;
-        $this->value = $value;
-        $this->ttl = null;
+        $this->defineProperty('key', [
+            'type' => '?string'
+        ]);
+        $this->defineProperty('value');
+        $this->defineProperty('ttl', [
+            'type' => '?int'
+        ]);
     }
 
 }

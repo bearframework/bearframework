@@ -18,6 +18,11 @@ class AddonsRepository
     private $data = [];
 
     /**
+     *
+     */
+    private static $newAddonCache = null;
+
+    /**
      * Enables an addon and saves the provided options
      * 
      * @param string $id The id of the addon
@@ -43,7 +48,13 @@ class AddonsRepository
             }
         }
 
-        $this->data[$id] = new \BearFramework\App\Addon($id, $options);
+        if (self::$newAddonCache === null) {
+            self::$newAddonCache = new \BearFramework\App\Addon();
+        }
+        $object = clone(self::$newAddonCache);
+        $object->id = $id;
+        $object->options = $options;
+        $this->data[$id] = $object;
 
         $indexFilename = $registeredAddon->dir . DIRECTORY_SEPARATOR . 'index.php';
         if (is_file($indexFilename)) {

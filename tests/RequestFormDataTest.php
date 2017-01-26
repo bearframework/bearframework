@@ -22,8 +22,8 @@ class RequestDataTest extends BearFrameworkTestCase
     function test()
     {
         $formData = new FormDataRepository();
-        $formData->set(new FormDataItem('name1', 'value1'));
-        $formData->set(new FormDataItem('name2', 'value2'));
+        $formData->set($formData->make('name1', 'value1'));
+        $formData->set($formData->make('name2', 'value2'));
         $this->assertNull($formData->get('missing'));
         $this->assertNull($formData->getValue('missing'));
         $this->assertEquals($formData->get('name1')->value, 'value1');

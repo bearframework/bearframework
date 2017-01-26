@@ -10,25 +10,22 @@
 namespace BearFramework\App\Request;
 
 /**
- * @property string $name The name of the cookie.
- * @property string $value The value of the cookie.
+ * @property string|null $name The name of the cookie.
+ * @property string|null $value The value of the cookie.
  */
 class Cookie
 {
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct(string $name, string $value)
+    function __construct()
     {
         $this->defineProperty('name', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
         $this->defineProperty('value', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
-
-        $this->name = $name;
-        $this->value = $value;
     }
 
 }

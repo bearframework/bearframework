@@ -22,9 +22,9 @@ class ResponseCookiesTest extends BearFrameworkTestCase
     function test()
     {
         $cookies = new CookiesRepository();
-        $cookie = new Cookie('name1', 'value1');
+        $cookie = $cookies->make('name1', 'value1');
         $cookies->set($cookie);
-        $cookie = new Cookie('name2', 'value2');
+        $cookie = $cookies->make('name2', 'value2');
         $cookie2expireTime = time() + 5;
         $cookie->expire = $cookie2expireTime;
         $cookie->path = '/path/';

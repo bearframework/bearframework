@@ -10,8 +10,8 @@
 namespace BearFramework\App;
 
 /**
- * @property string $key
- * @property string $value
+ * @property string|null $key
+ * @property string|null $value
  * @property \IvoPetkov\DataObject $metadata
  */
 class DataItem
@@ -19,13 +19,13 @@ class DataItem
 
     use \IvoPetkov\DataObjectTrait;
 
-    function __construct(string $key, string $value)
+    function __construct()
     {
         $this->defineProperty('key', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
         $this->defineProperty('value', [
-            'type' => 'string'
+            'type' => '?string'
         ]);
         $this->defineProperty('metadata', [
             'init' => function() {
@@ -33,9 +33,6 @@ class DataItem
             },
             'readonly' => true
         ]);
-
-        $this->key = $key;
-        $this->value = $value;
     }
 
 }

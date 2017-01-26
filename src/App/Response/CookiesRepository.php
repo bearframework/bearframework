@@ -21,6 +21,30 @@ class CookiesRepository
     private $data = [];
 
     /**
+     *
+     */
+    private static $newCookieCache = null;
+
+    /**
+     * 
+     * @return \BearFramework\App\Response\Cookie
+     */
+    public function make(string $name = null, string $value = null): \BearFramework\App\Response\Cookie
+    {
+        if (self::$newCookieCache === null) {
+            self::$newCookieCache = new \BearFramework\App\Response\Cookie();
+        }
+        $object = clone(self::$newCookieCache);
+        if ($name !== null) {
+            $object->name = $name;
+        }
+        if ($value !== null) {
+            $object->value = $value;
+        }
+        return $object;
+    }
+
+    /**
      * Sets a cookie
      * 
      * @param \BearFramework\App\Response\Cookie $cookie The cookie to set

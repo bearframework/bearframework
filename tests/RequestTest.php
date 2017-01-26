@@ -111,8 +111,8 @@ class RequestTest extends BearFrameworkTestCase
     function testQuery()
     {
         $query = new \BearFramework\App\Request\QueryRepository();
-        $query->set(new \BearFramework\App\Request\QueryItem('var1', '1'));
-        $query->set(new \BearFramework\App\Request\QueryItem('var2', 'a'));
+        $query->set($query->make('var1', '1'));
+        $query->set($query->make('var2', 'a'));
         $this->assertTrue((string) $query === 'var1=1&var2=a');
         $this->assertTrue($query->exists('var1'));
         $this->assertTrue($query->exists('var2'));
@@ -133,7 +133,7 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->headers));
-        $request->headers->set(new \BearFramework\App\Request\Header('header1', '1'));
+        $request->headers->set($request->headers->make('header1', '1'));
         $this->assertTrue($request->headers->getValue('header1') === '1');
     }
 
@@ -154,7 +154,7 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->cookies));
-        $request->cookies->set(new \BearFramework\App\Request\Cookie('cookie1', '1'));
+        $request->cookies->set($request->cookies->make('cookie1', '1'));
         $this->assertTrue($request->cookies->getValue('cookie1') === '1');
     }
 
@@ -165,7 +165,7 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->formData));
-        $request->formData->set(new \BearFramework\App\Request\FormDataItem('data1', '1'));
+        $request->formData->set($request->formData->make('data1', '1'));
         $this->assertTrue($request->formData->getValue('data1') === '1');
     }
 
@@ -176,7 +176,9 @@ class RequestTest extends BearFrameworkTestCase
     {
         $request = new \BearFramework\App\Request();
         $this->assertTrue(isset($request->formData));
-        $file = new \BearFramework\App\Request\FormDataFileItem('file1', 'file1.jpg');
+        $file = new \BearFramework\App\Request\FormDataFileItem();
+        $file->name = 'file1';
+        $file->value = 'file1.jpg';
         $file->filename = '/tmp/file1.jpg';
         $file->size = 123;
         $request->formData->set($file);

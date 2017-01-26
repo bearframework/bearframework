@@ -198,13 +198,13 @@ class Assets
             }
             $response = new App\Response\FileReader($filename);
             if ($app->config->assetsMaxAge !== null) {
-                $response->headers->set(new App\Response\Header('Cache-Control', 'public, max-age=' . (int) $app->config->assetsMaxAge));
+                $response->headers->set($response->headers->make('Cache-Control', 'public, max-age=' . (int) $app->config->assetsMaxAge));
             }
             $mimeType = $this->getMimeType($filename);
             if ($mimeType !== null) {
-                $response->headers->set(new App\Response\Header('Content-Type', $mimeType));
+                $response->headers->set($response->headers->make('Content-Type', $mimeType));
             }
-            $response->headers->set(new App\Response\Header('Content-Length', (string) filesize($filename)));
+            $response->headers->set($response->headers->make('Content-Length', (string) filesize($filename)));
             return $response;
         }
     }
