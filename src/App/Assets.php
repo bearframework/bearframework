@@ -123,7 +123,7 @@ class Assets
         $request = new \BearFramework\App\Request();
         $request->path->set($path);
         $response = $this->getResponse($request);
-        if ($response instanceof \BearFramework\App\Response\NotFound) {
+        if ($response === null) {
             return null;
         }
         $content = file_get_contents($response->filename);
@@ -144,7 +144,7 @@ class Assets
      * Creates a response object for the asset request.
      * 
      * @param \BearFramework\App\Request $request The request object to match against.
-     * @return \BearFramework\App\Response The response object for the request specified.
+     * @return \BearFramework\App\Response|null The response object for the request specified.
      */
     public function getResponse(\BearFramework\App\Request $request): ?\BearFramework\App\Response
     {
@@ -200,14 +200,14 @@ class Assets
 
         $pathData = $parsePath((string) $request->path);
         if ($pathData === null) {
-            return new App\Response\NotFound();
+            return null;
         } else {
             $filename = $pathData['filename'];
             $options = $pathData['options'];
             $this->validateOptions($options);
             $filename = $this->prepare($filename, $options);
             if ($filename === null || !is_file($filename)) {
-                return new App\Response\NotFound();
+                return null;
             }
             $response = new App\Response\FileReader($filename);
             if ($app->config->assetsMaxAge !== null) {

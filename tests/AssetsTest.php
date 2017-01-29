@@ -119,7 +119,7 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($response->filename === realpath($filename));
                     $app->data->makePrivate($key);
                     $response = $getAssetResponse($url);
-                    $this->assertTrue($response instanceof \BearFramework\App\Response\NotFound);
+                    $this->assertTrue($response === null);
 
                     $url = $app->assets->getUrl($filename, $options);
                     $app->data->makePublic($key);

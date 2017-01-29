@@ -93,7 +93,10 @@ class App
                 $routes = new App\RoutesRepository();
                 if ($this->config->assetsPathPrefix !== null) {
                     $routes->add($this->config->assetsPathPrefix . '*', function() {
-                                return $this->assets->getResponse($this->request);
+                                $response = $this->assets->getResponse($this->request);
+                                if ($response !== null) {
+                                    return $response;
+                                }
                             });
                 }
                 return $routes;
