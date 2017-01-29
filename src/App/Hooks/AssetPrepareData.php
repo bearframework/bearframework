@@ -11,8 +11,8 @@ namespace BearFramework\App\Hooks;
 
 /**
  * @property string|null $filename The file that is used as a source for the response.
- * @property int|null $width The width of the outputted file.
- * @property int|null $height The height of the outputted file.
+ * @property int|null $width The width of the output file.
+ * @property int|null $height The height of the output file.
  */
 class AssetPrepareData
 {
