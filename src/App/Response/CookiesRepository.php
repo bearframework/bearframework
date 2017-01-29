@@ -105,13 +105,11 @@ class CookiesRepository
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function () {
-            $list = [];
-            foreach ($this->data as $cookie) {
-                $list[] = clone($cookie);
-            }
-            return $list;
-        });
+        $list = new \BearFramework\DataList();
+        foreach ($this->data as $cookie) {
+            $list[] = clone($cookie);
+        }
+        return $list;
     }
 
 }

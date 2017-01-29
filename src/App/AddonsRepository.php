@@ -99,13 +99,11 @@ class AddonsRepository
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function() {
-            $list = [];
-            foreach ($this->data as $addon) {
-                $list[] = clone($addon);
-            }
-            return $list;
-        });
+        $list = new \BearFramework\DataList();
+        foreach ($this->data as $addon) {
+            $list[] = clone($addon);
+        }
+        return $list;
     }
 
 }

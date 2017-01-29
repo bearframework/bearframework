@@ -136,13 +136,11 @@ class FormDataRepository
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function () {
-            $list = [];
-            foreach ($this->data as $formDataItem) {
-                $list[] = clone($formDataItem);
-            }
-            return $list;
-        });
+        $list = new \BearFramework\DataList();
+        foreach ($this->data as $formDataItem) {
+            $list[] = clone($formDataItem);
+        }
+        return $list;
     }
 
 }

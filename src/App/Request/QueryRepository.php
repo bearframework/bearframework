@@ -119,13 +119,11 @@ class QueryRepository
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function (){
-            $list = [];
-            foreach ($this->data as $queryItem){
-                $list[] = clone($queryItem);
-            }
-            return $list;
-        });
+        $list = new \BearFramework\DataList();
+        foreach ($this->data as $queryItem){
+            $list[] = clone($queryItem);
+        }
+        return $list;
     }
     
     

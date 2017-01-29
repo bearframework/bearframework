@@ -77,13 +77,11 @@ class Addons
      */
     static function getList()
     {
-        return new \BearFramework\DataList(function() {
-            $list = [];
-            foreach (self::$data as $addon) {
-                $list[] = clone($addon);
-            }
-            return $list;
-        });
+        $list = new \BearFramework\DataList();
+        foreach (self::$data as $addon) {
+            $list[] = clone($addon);
+        }
+        return $list;
     }
 
 }

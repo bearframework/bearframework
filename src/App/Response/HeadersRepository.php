@@ -119,13 +119,11 @@ class HeadersRepository
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function () {
-            $list = [];
-            foreach ($this->data as $header) {
-                $list[] = clone($header);
-            }
-            return $list;
-        });
+        $list = new \BearFramework\DataList();
+        foreach ($this->data as $header) {
+            $list[] = clone($header);
+        }
+        return $list;
     }
 
 }
