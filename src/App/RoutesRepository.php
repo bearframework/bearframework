@@ -36,21 +36,27 @@ class RoutesRepository
     public function add($pattern, callable $callback, array $options = ['GET']): \BearFramework\App\RoutesRepository
     {
         if (is_string($pattern)) {
+            if (!isset($pattern{0})) {
+                throw new \InvalidArgumentException('The route argument must be a not empty string or array of not empty strings');
+            }
             $this->data[] = [[$pattern], $callback, $options];
             return $this;
         } elseif (is_array($pattern)) {
             if (empty($pattern)) {
-                throw new \InvalidArgumentException('The route argument must be of type string or array of strings');
+                throw new \InvalidArgumentException('The route argument must be a not empty string or array of not empty strings');
             }
             foreach ($pattern as $_pattern) {
                 if (!is_string($_pattern)) {
-                    throw new \InvalidArgumentException('The route argument must be of type string or array of strings');
+                    throw new \InvalidArgumentException('The route argument must be a not empty string or array of not empty strings');
+                }
+                if (!isset($_pattern{0})) {
+                    throw new \InvalidArgumentException('The route argument must be a not empty string or array of not empty strings');
                 }
             }
             $this->data[] = [$pattern, $callback, $options];
             return $this;
         }
-        throw new \InvalidArgumentException('The route argument must be of type string or array of strings');
+        throw new \InvalidArgumentException('The route argument must be a not empty string or array of not empty strings');
     }
 
     /**
