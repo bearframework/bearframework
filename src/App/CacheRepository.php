@@ -19,6 +19,12 @@ class CacheRepository
 {
 
     private static $newCacheItemCache = null;
+    private $cacheDriver = null;
+
+    function __construct(ICacheDriver $cacheDriver)
+    {
+        $this->cacheDriver = $cacheDriver;
+    }
 
     /**
      * 
@@ -41,11 +47,7 @@ class CacheRepository
 
     public function set(CacheItem $item): \BearFramework\App\CacheRepository
     {
-        $ttl = is_int($item->ttl) ? $item->ttl : 0;
-        $app = App::get();
-        $keyMD5 = md5($item->key);
-        $key = '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2';
-        $app->data->setValue($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $item->value])));
+        $this->cacheDriver->set($item->key, $item->value, $item->ttl);
         return $this;
     }
 
@@ -54,28 +56,13 @@ class CacheRepository
      * 
      * @param string $key The data key
      * @throws \InvalidArgumentException
-     * @return mixed The saved data from the cache or the default value specified
+     * @return \BearFramework\App\CacheItem|null The saved data from the cache or the default value specified
      */
-    public function get(string $key)
+    public function get(string $key): ?\BearFramework\App\CacheItem
     {
-        $app = App::get();
-        $keyMD5 = md5($key);
-        $value = $app->data->getValue('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        $value = $this->cacheDriver->get($key);
         if ($value !== null) {
-            try {
-                $value = unserialize(gzuncompress($value));
-                if ($value[0] > 0) {
-                    if ($value[0] > time()) {
-                        $cacheItem = $this->make($key, $value[1]);
-                        //$cacheItem->ttl = //todo
-                        return $cacheItem;
-                    }
-                    return null;
-                }
-                return $this->make($key, $value[1]);
-            } catch (\Exception $e) {
-                
-            }
+            return $this->make($key, $value);
         }
         return null;
     }
@@ -96,23 +83,10 @@ class CacheRepository
      * @throws \InvalidArgumentException
      * @return bool TRUE if the key exists in the cache, FALSE otherwise.
      */
-    public function exists(string $key)
+    public function exists(string $key): bool
     {
-        $app = App::get();
-        $keyMD5 = md5($key);
-        $value = $app->data->getValue('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
-        if ($value !== null) {
-            try {
-                $value = unserialize(gzuncompress($value));
-                if ($value[0] > 0) {
-                    return $value[0] > time();
-                }
-                return true;
-            } catch (\Exception $e) {
-                
-            }
-        }
-        return false;
+        $value = $this->cacheDriver->get($key);
+        return $value !== null;
     }
 
     /**
@@ -124,9 +98,7 @@ class CacheRepository
      */
     public function delete(string $key): \BearFramework\App\CacheRepository
     {
-        $app = App::get();
-        $keyMD5 = md5($key);
-        $app->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        $this->cacheDriver->delete($key);
         return $this;
     }
 
