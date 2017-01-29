@@ -77,7 +77,7 @@ class App
         $this->defineProperty('container', [
             'init' => function() {
                 $container = new App\Container();
-                $container->set('app.logger', App\Logger::class);
+                $container->set('Logger', App\DefaultLogger::class);
                 $container->set('CacheDriver', App\DefaultCacheDriver::class);
                 return $container;
             },
@@ -109,8 +109,8 @@ class App
             'readonly' => true
         ]);
         $this->defineProperty('logger', [
-            'get' => function() {
-                return $this->container->get('app.logger');
+            'init' => function() {
+                return $this->container->get('Logger');
             },
             'readonly' => true
         ]);
@@ -154,7 +154,7 @@ class App
             'readonly' => true
         ]);
         $this->defineProperty('cache', [
-            'get' => function() {
+            'init' => function() {
                 return new App\CacheRepository($this->container->get('CacheDriver'));
             },
             'readonly' => true

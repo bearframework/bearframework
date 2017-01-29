@@ -12,9 +12,9 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides logging functionlity
+ * Provides logging functionality
  */
-class Logger
+class DefaultLogger implements ILogger
 {
 
     /**
@@ -25,7 +25,7 @@ class Logger
      * @param array $context
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return bool TRUE if data is suceessfully written. FALSE otherwise.
+     * @return void
      */
     public function log(string $level, string $message, array $context = [])
     {
@@ -38,17 +38,16 @@ class Logger
             throw new App\Config\InvalidOptionException('Config option logsDir is not set');
         }
 
-        $filename = $level . '-' . date('Y-m-d') . '.log';
+        $filename = $app->config->logsDir . DIRECTORY_SEPARATOR . $level . '-' . date('Y-m-d') . '.log';
         try {
             $microtime = microtime(true);
             $microtimeParts = explode('.', $microtime);
             $logData = date('H:i:s', $microtime) . ':' . (isset($microtimeParts[1]) ? $microtimeParts[1] : '0') . "\n" . trim($message) . (empty($context) ? '' : "\n" . trim(print_r($context, true))) . "\n\n";
-            $fileHandler = fopen($app->config->logsDir . DIRECTORY_SEPARATOR . $filename, 'ab');
-            $result = fwrite($fileHandler, $logData);
+            $fileHandler = fopen($filename, 'ab');
+            fwrite($fileHandler, $logData);
             fclose($fileHandler);
-            return is_int($result);
         } catch (\Exception $e) {
-            return false;
+            throw new \Exception('Cannot write log file (' . $filename . ')');
         }
     }
 
