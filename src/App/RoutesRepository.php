@@ -12,26 +12,26 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides functionality for registering callbacks for specific requests and executing them
+ * Provides functionality for registering callbacks for specific requests and executing them.
  */
 class RoutesRepository
 {
 
     /**
-     * Stores the registed callbacks
+     * Stores the registered callbacks.
      * 
      * @var array 
      */
     private $data = [];
 
     /**
-     * Registers a request handler
+     * Registers a request handler.
      * 
-     * @param string|string[] $pattern Path pattern. Can contain "?" (path part) and "*" (matches everything).
+     * @param string|string[] $pattern Path pattern. Can contain "?" (path segment) and "*" (matches everything).
      * @param callable $callback Function that is expected to return object of type \BearFramework\App\Response.
      * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\RoutesRepository
+     * @return \BearFramework\App\RoutesRepository Returns reference to itself.
      */
     public function add($pattern, callable $callback, array $options = ['GET']): \BearFramework\App\RoutesRepository
     {
@@ -54,9 +54,9 @@ class RoutesRepository
     }
 
     /**
-     * Finds the matching callback and returns its result
+     * Finds the matching callback and returns its result.
      * 
-     * @param \BearFramework\App\Request $request The current request object
+     * @param \BearFramework\App\Request $request The request object to match against.
      * @return mixed The result of the matching callback. NULL if none.
      */
     public function getResponse(\BearFramework\App\Request $request)

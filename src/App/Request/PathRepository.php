@@ -10,24 +10,19 @@
 namespace BearFramework\App\Request;
 
 /**
- * Provides information about the request path
+ * Provides information about the request path.
  */
 class PathRepository
 {
 
     /**
-     * The request path
-     * 
      * @var string 
      */
     private $path = '';
 
     /**
-     * The constructor
      * 
-     * @param string $path The request path
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @param string $path The request path.
      */
     public function __construct(string $path = '')
     {
@@ -35,9 +30,9 @@ class PathRepository
     }
 
     /**
-     * Returns the full path
+     * Returns the full path.
      * 
-     * @return string The full path
+     * @return string Returns the full path.
      */
     public function __toString()
     {
@@ -45,30 +40,32 @@ class PathRepository
     }
 
     /**
-     * Sets a new path
+     * Sets a new path.
      * 
-     * @return string The full path
+     * @param string $path The new path.
+     * @return \BearFramework\App\Request\PathRepository A reference to itself.
      */
-    public function set(string $path)
+    public function set(string $path): \BearFramework\App\Request\PathRepository
     {
         $this->path = $path;
+        return $this;
     }
 
     /**
-     * Returns the full path
+     * Returns the full path.
      * 
-     * @return string The full path
+     * @return string Returns the full path.
      */
-    public function get()
+    public function get(): string
     {
         return $this->path;
     }
 
     /**
-     * Returns the path part for the index specified
+     * Returns the value of the path segment for the index specified or null if not found.
      * 
-     * @param int $offset the index of the part part
-     * @return string|null The path part at the index specified
+     * @param int $index the index of the path segment.
+     * @return string|null The value of the path segment for the index specified or null if not found.
      */
     public function getSegment($index): ?string
     {

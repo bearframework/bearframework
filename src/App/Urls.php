@@ -12,16 +12,16 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * URLs utilities
+ * URLs utilities.
  */
 class Urls
 {
 
     /**
-     * Constructs a url for the path specified
+     * Constructs a url for the path specified.
      * 
-     * @param string $path The path
-     * @return string Absolute URL containing the base URL plus the path given
+     * @param string $path The path.
+     * @return string Absolute URL containing the base URL plus the path given.
      */
     public function get(string $path = '/')
     {

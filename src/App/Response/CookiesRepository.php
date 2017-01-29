@@ -26,8 +26,11 @@ class CookiesRepository
     private static $newCookieCache = null;
 
     /**
+     * Constructs a new cookie and returns it.
      * 
-     * @return \BearFramework\App\Response\Cookie
+     * @var string|null $name The name of the cookie.
+     * @var string|null $value The value of the cookie.
+     * @return \BearFramework\App\Response\Cookie Returns a new cookie.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Response\Cookie
     {
@@ -45,10 +48,10 @@ class CookiesRepository
     }
 
     /**
-     * Sets a cookie
+     * Sets a cookie.
      * 
-     * @param \BearFramework\App\Response\Cookie $cookie The cookie to set
-     * @return \BearFramework\App\Response\CookiesRepository
+     * @param \BearFramework\App\Response\Cookie $cookie The cookie to set.
+     * @return \BearFramework\App\Response\CookiesRepository A reference to itself.
      */
     public function set(\BearFramework\App\Response\Cookie $cookie): \BearFramework\App\Response\CookiesRepository
     {
@@ -57,10 +60,10 @@ class CookiesRepository
     }
 
     /**
-     * Returns the cookie if set
+     * Returns a cookie or null if not found.
      * 
-     * @param string $name The name of the cookie
-     * @return BearFramework\App\Response\Cookie|null|mixed The value of the cookie if set, NULL otherwise
+     * @param string $name The name of the cookie.
+     * @return BearFramework\App\Response\Cookie|null The cookie requested of null if not found.
      */
     public function get(string $name): ?\BearFramework\App\Response\Cookie
     {
@@ -71,10 +74,10 @@ class CookiesRepository
     }
 
     /**
-     * Returns information whether a cookie with the name specified exists
+     * Returns information whether a cookie with the name specified exists.
      * 
-     * @param string $name The name of the cookie
-     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise
+     * @param string $name The name of the cookie.
+     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise.
      */
     public function exists(string $name): bool
     {
@@ -82,11 +85,10 @@ class CookiesRepository
     }
 
     /**
-     * Deletes a cookie if exists
+     * Deletes a cookie if exists.
      * 
-     * @param string $name The name of the cookie to delete
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Response\CookiesRepository A reference to the repository
+     * @param string $name The name of the cookie to delete.
+     * @return \BearFramework\App\Response\CookiesRepository A reference to itself.
      */
     public function delete(string $name): \BearFramework\App\Response\CookiesRepository
     {
@@ -97,15 +99,15 @@ class CookiesRepository
     }
 
     /**
-     * Returns a list of all cookies
+     * Returns a list of all cookies.
      * 
-     * @return \BearFramework\DataList|\BearFramework\App\Response\Cookie[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Response\Cookie[] An array containing all cookies.
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function (){
+        return new \BearFramework\DataList(function () {
             $list = [];
-            foreach ($this->data as $cookie){
+            foreach ($this->data as $cookie) {
                 $list[] = clone($cookie);
             }
             return $list;

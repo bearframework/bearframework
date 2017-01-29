@@ -20,14 +20,14 @@ use BearFramework\App;
  * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
  * @property-read \BearFramework\App\Logger $logger Provides logging functionality.
  * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
- * @property-read \BearFramework\App\HooksRepository $hooks Provides functionality for notifications and data requests.
+ * @property-read \BearFramework\App\HooksRepository $hooks Provides functionality for notifications and executing custom code.
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
- * @property-read \BearFramework\App\DataRepository $data
+ * @property-read \BearFramework\App\DataRepository $data A file-based data storage.
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
- * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for autoloading classes.
+ * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for registering and autoloading classes.
  * @property-read \BearFramework\App\Urls $urls URLs utilities.
  * @property-read \BearFramework\App\Images $images Images utilities.
- * @property-read \BearFramework\App\ContextsRepository $context Context information object locator.
+ * @property-read \BearFramework\App\ContextsRepository $context Provides information about your code context (is it in the app dir, or is it in an addon dir).
  * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
  */
 class App
@@ -36,7 +36,7 @@ class App
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * Current Bear Framework version
+     * Current Bear Framework version.
      * 
      * @var string
      */
@@ -50,14 +50,13 @@ class App
     private static $instance = null;
 
     /**
-     * Information about whether the application is initialized
+     * Information about whether the application is initialized.
      * 
      * @var bool 
      */
     private $initialized = false;
 
     /**
-     * The constructor
      * 
      * @throws \Exception
      */
@@ -83,16 +82,9 @@ class App
             },
             'readonly' => true
         ]);
-        $request = null;
         $this->defineProperty('request', [
-            'get' => function() use (&$request) {
-                if ($this->initialized) {
-                    if ($request === null) {
-                        $request = new App\Request(true);
-                    }
-                    return $request;
-                }
-                return null;
+            'init' => function() {
+                return new App\Request(true);
             },
             'readonly' => true
         ]);
@@ -218,7 +210,7 @@ class App
     }
 
     /**
-     * Returns the app instance
+     * Returns the application instance.
      * 
      * @return \BearFramework\App
      * @throws \Exception
@@ -232,7 +224,9 @@ class App
     }
 
     /**
-     * Initializes the environment, the error handlers, includes the app index.php file, the addons index.php files, and registers the assets handler
+     * Initializes the environment, the error handlers and includes the application index.php file.
+     * 
+     * @return void No value is returned
      */
     public function initialize(): void
     {
@@ -259,7 +253,7 @@ class App
             }
             // @codeCoverageIgnoreEnd
 
-            $this->initialized = true; // The request property counts on this. It must be here so that app and addons index.php files can access it.
+            $this->initialized = true;
 
             if (strlen($this->config->appDir) > 0) {
                 $indexFilename = realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
@@ -282,9 +276,9 @@ class App
     }
 
     /**
-     * Call this method to start the application. This method initializes the app and outputs the response.
+     * Call this method to execute the application. This method initializes the applications and outputs the response.
      * 
-     * @return void No value is returned
+     * @return void No value is returned.
      */
     public function run(): void
     {
@@ -297,10 +291,10 @@ class App
     }
 
     /**
-     * Outputs a response
+     * Outputs a response.
      * 
-     * @param \BearFramework\App\Response $response The response object to output
-     * @return void No value is returned
+     * @param \BearFramework\App\Response $response The response object to output.
+     * @return void No value is returned.
      */
     public function respond(\BearFramework\App\Response $response): void
     {
@@ -331,10 +325,10 @@ class App
     }
 
     /**
-     * Prevents multiple app instances
+     * Prevents multiple application instances.
      * 
      * @throws \Exception
-     * @return void No value is returned
+     * @return void No value is returned.
      */
     public function __clone()
     {
@@ -342,10 +336,10 @@ class App
     }
 
     /**
-     * Prevents multiple app instances
+     * Prevents multiple application instances.
      * 
      * @throws \Exception
-     * @return void No value is returned
+     * @return void No value is returned.
      */
     public function __wakeup()
     {

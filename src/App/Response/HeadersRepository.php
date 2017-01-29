@@ -10,7 +10,7 @@
 namespace BearFramework\App\Response;
 
 /**
- * Provides information about the response headers
+ * A repository for the response headers.
  */
 class HeadersRepository
 {
@@ -19,15 +19,18 @@ class HeadersRepository
      * @var array 
      */
     private $data = [];
-    
+
     /**
      *
      */
     private static $newHeaderCache = null;
 
     /**
+     * Constructs a new header and returns it.
      * 
-     * @return \BearFramework\App\Response\Header
+     * @var string|null $name The name of the header.
+     * @var string|null $value The value of the header.
+     * @return \BearFramework\App\Response\Header Returns a new header.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Response\Header
     {
@@ -45,10 +48,10 @@ class HeadersRepository
     }
 
     /**
-     * Sets a header
+     * Sets a header.
      * 
-     * @param \BearFramework\App\Response\Header $header The header to set
-     * @return \BearFramework\App\Response\HeadersRepository
+     * @param \BearFramework\App\Response\Header $header The header to set.
+     * @return \BearFramework\App\Response\HeadersRepository A reference to itself.
      */
     public function set(\BearFramework\App\Response\Header $header): \BearFramework\App\Response\HeadersRepository
     {
@@ -57,10 +60,10 @@ class HeadersRepository
     }
 
     /**
-     * Returns the header if set
+     * Returns a header or null if not found.
      * 
-     * @param string $name The name of the header
-     * @return BearFramework\App\Response\Header|null|mixed The value of the header if set, NULL otherwise
+     * @param string $name The name of the header.
+     * @return BearFramework\App\Response\Header|null The header requested of null if not found.
      */
     public function get(string $name): ?\BearFramework\App\Response\Header
     {
@@ -71,10 +74,10 @@ class HeadersRepository
     }
 
     /**
-     * Returns the value of the header if set
+     * Returns the value of the header or null if not found.
      * 
-     * @param string $name The name of the header
-     * @return string|null|mixed The value of the header if set, NULL otherwise
+     * @param string $name The name of the header.
+     * @return string|null The value of the header requested of null if not found.
      */
     public function getValue(string $name): ?string
     {
@@ -85,10 +88,10 @@ class HeadersRepository
     }
 
     /**
-     * Returns information whether a header with the name specified exists
+     * Returns information whether a header with the name specified exists.
      * 
-     * @param string $name The name of the header
-     * @return bool TRUE if a header with the name specified exists, FALSE otherwise
+     * @param string $name The name of the header.
+     * @return bool TRUE if a header with the name specified exists, FALSE otherwise.
      */
     public function exists(string $name): bool
     {
@@ -96,11 +99,10 @@ class HeadersRepository
     }
 
     /**
-     * Deletes a header if exists
+     * Deletes a header if exists.
      * 
-     * @param string $name The name of the header to delete
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Response\HeadersRepository A reference to the repository
+     * @param string $name The name of the header to delete.
+     * @return \BearFramework\App\Response\HeadersRepository A reference to itself.
      */
     public function delete(string $name): \BearFramework\App\Response\HeadersRepository
     {
@@ -111,15 +113,15 @@ class HeadersRepository
     }
 
     /**
-     * Returns a list of all headers
+     * Returns a list of all headers.
      * 
-     * @return \BearFramework\DataList|\BearFramework\App\Response\Header[] An array containing all headers in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Response\Header[] An array containing all headers.
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function (){
+        return new \BearFramework\DataList(function () {
             $list = [];
-            foreach ($this->data as $header){
+            foreach ($this->data as $header) {
                 $list[] = clone($header);
             }
             return $list;

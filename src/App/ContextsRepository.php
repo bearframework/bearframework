@@ -12,21 +12,29 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Context locator
+ * Provides information about your code context (is it in the app dir, or is it in an addon dir).
  */
 class ContextsRepository
 {
 
+    /**
+     *
+     * @var array 
+     */
     private static $dirsCache = [];
+
+    /**
+     *
+     * @var array 
+     */
     private static $objectsCache = [];
 
     /**
-     * Creates a context object for the filename specified
+     * Returns a context object for the filename specified.
      * 
-     * @param string $filename
-     * @throws \InvalidArgumentException
+     * @param string $filename The filename used to find the context.
      * @throws \Exception
-     * @return \BearFramework\App\Context The context object
+     * @return \BearFramework\App\Context The context object for the filename specified.
      */
     public function get(string $filename)
     {

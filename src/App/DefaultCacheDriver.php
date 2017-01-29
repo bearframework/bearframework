@@ -11,9 +11,20 @@ namespace BearFramework\App;
 
 use BearFramework\App;
 
+/**
+ * The default cache driver. It uses the $app->data to store the values.
+ */
 class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
 {
 
+    /**
+     * Stores a value in the cache.
+     * 
+     * @param string $key The key under which to store the value.
+     * @param type $value The value to store.
+     * @param int $ttl Number of seconds to store value in the cache.
+     * @return void No value is returned.
+     */
     public function set(string $key, $value, int $ttl = null): void
     {
         $app = App::get();
@@ -22,6 +33,12 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
         $app->data->setValue($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $value])));
     }
 
+    /**
+     * Retrieves a value from the cache.
+     * 
+     * @param string $key The key under which the value is stored.
+     * @return mixed|null Returns the stored value or null if not found or expired.
+     */
     public function get(string $key)
     {
         $app = App::get();
@@ -44,6 +61,12 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
         return null;
     }
 
+    /**
+     * Deletes a value from the cache.
+     * 
+     * @param string $key The key under which the value is stored.
+     * @return void No value is returned.
+     */
     public function delete(string $key): void
     {
         $app = App::get();
@@ -51,6 +74,13 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
         $app->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
     }
 
+    /**
+     * Stores multiple values in the cache.
+     * 
+     * @param array $items An array of key/value pairs to store in the cache.
+     * @param int $ttl Number of seconds to store values in the cache.
+     * @return void No value is returned.
+     */
     public function setMultiple(array $items, int $ttl = null): void
     {
         foreach ($items as $key => $value) {
@@ -58,6 +88,12 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
         }
     }
 
+    /**
+     * Retrieves multiple values from the cache.
+     * 
+     * @param array $keys The keys under which the values are stored.
+     * @return array An array (key/value) of found items.
+     */
     public function getMultiple(array $keys): array
     {
         $results = [];
@@ -67,6 +103,11 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
         return $results;
     }
 
+    /**
+     * Deletes multiple values from the cache.
+     * 
+     * @param array $keys The keys under which the values are stored.
+     */
     public function deleteMultiple(array $keys): void
     {
         foreach ($keys as $key) {

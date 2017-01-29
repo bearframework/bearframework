@@ -57,7 +57,7 @@ class Addons
     }
 
     /**
-     * Returns information about the addon requested.
+     * Returns information about the addon specified.
      * 
      * @param string $id The id of the addon.
      * @return \BearFramework\Addon|null Information about the addon requested or null if not found.

@@ -10,16 +10,16 @@
 namespace BearFramework\App;
 
 /**
- * The application configuration
+ * The application configuration.
  * 
- * @property ?string $appDir
- * @property ?string $dataDir
- * @property ?string $logsDir
- * @property bool $updateEnvironment
- * @property bool $handleErrors
- * @property bool $displayErrors
- * @property bool $logErrors
- * @property ?string $assetsPathPrefix
+ * @property string|null $appDir The directory where the application source files are located.
+ * @property string|null $dataDir The directory where the application data are located.
+ * @property string|null $logsDir The directory where the application log files are located.
+ * @property bool $updateEnvironment Update the PHP environment to make it work better.
+ * @property bool $handleErrors Automatically handle errors and display friendly responses.
+ * @property bool $displayErrors Display the first handled error. Useful while developing.
+ * @property bool $logErrors Log the handled errors.
+ * @property string|null $assetsPathPrefix The prefix of the assets URLs.
  * @property int $assetsMaxAge
  */
 class Config
@@ -28,9 +28,8 @@ class Config
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * The constructor
      * 
-     * @param array $options Configuration options
+     * @param array $options An array of configuration options.
      * @throws \InvalidArgumentException
      */
     public function __construct(array $options = [])
@@ -117,9 +116,9 @@ class Config
     }
 
     /**
-     * Loads a config file. The file must return PHP array containing configuration options in the format ['option1'=>'value1', 'option2'=>'value2']
+     * Loads a configuration file. The file must return PHP array containing configuration options in the format ['option1'=>'value1', 'option2'=>'value2'].
      * 
-     * @param string $filename The filename containing the configuration options
+     * @param string $filename The filename containing the configuration options.
      * @throws \InvalidArgumentException
      */
     public function load(string $filename): \BearFramework\App\Config

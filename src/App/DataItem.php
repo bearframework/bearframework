@@ -10,9 +10,11 @@
 namespace BearFramework\App;
 
 /**
- * @property string|null $key
- * @property string|null $value
- * @property \IvoPetkov\DataObject $metadata
+ * A data item.
+ * 
+ * @property string|null $key The key of the data item.
+ * @property string|null $value The value of the data item.
+ * @property \IvoPetkov\DataObject $metadata The metadata of the data item.
  */
 class DataItem
 {

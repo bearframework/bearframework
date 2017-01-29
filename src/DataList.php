@@ -10,7 +10,7 @@
 namespace BearFramework;
 
 /**
- * Base class for lists
+ * Base class for lists.
  */
 class DataList extends \IvoPetkov\DataList
 {

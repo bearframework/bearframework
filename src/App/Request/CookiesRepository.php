@@ -19,15 +19,18 @@ class CookiesRepository
      * @var array 
      */
     private $data = [];
-    
+
     /**
      *
      */
     private static $newCookieCache = null;
 
     /**
+     * Constructs a new cookie and returns it.
      * 
-     * @return \BearFramework\App\Request\Cookie
+     * @var string|null $name The name of the cookie.
+     * @var string|null $value The value of the cookie.
+     * @return \BearFramework\App\Request\Cookie Returns a new cookie.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\Cookie
     {
@@ -45,10 +48,10 @@ class CookiesRepository
     }
 
     /**
-     * Sets a cookie
+     * Sets a cookie.
      * 
-     * @param \BearFramework\App\Request\Cookie $cookie The cookie to set
-     * @return \BearFramework\App\Request\CookiesRepository
+     * @param \BearFramework\App\Request\Cookie $cookie The cookie to set.
+     * @return \BearFramework\App\Request\CookiesRepository A reference to itself.
      */
     public function set(\BearFramework\App\Request\Cookie $cookie): \BearFramework\App\Request\CookiesRepository
     {
@@ -57,10 +60,10 @@ class CookiesRepository
     }
 
     /**
-     * Returns the cookie if set
+     * Returns a cookie or null if not found.
      * 
-     * @param string $name The name of the cookie
-     * @return BearFramework\App\Request\Cookie|null|mixed The value of the cookie if set, NULL otherwise
+     * @param string $name The name of the cookie.
+     * @return BearFramework\App\Request\Cookie|null The cookie requested of null if not found.
      */
     public function get(string $name): ?\BearFramework\App\Request\Cookie
     {
@@ -71,10 +74,10 @@ class CookiesRepository
     }
 
     /**
-     * Returns the value of the cookie if set
+     * Returns a cookie value or null if not found.
      * 
-     * @param string $name The name of the cookie
-     * @return string|null|mixed The value of the cookie if set, NULL otherwise
+     * @param string $name The name of the cookie.
+     * @return string|null The cookie value requested of null if not found.
      */
     public function getValue(string $name): ?string
     {
@@ -85,10 +88,10 @@ class CookiesRepository
     }
 
     /**
-     * Returns information whether a cookie with the name specified exists
+     * Returns information whether a cookie with the name specified exists.
      * 
-     * @param string $name The name of the cookie
-     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise
+     * @param string $name The name of the cookie.
+     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise.
      */
     public function exists(string $name): bool
     {
@@ -96,11 +99,10 @@ class CookiesRepository
     }
 
     /**
-     * Deletes a cookie if exists
+     * Deletes a cookie if exists.
      * 
-     * @param string $name The name of the cookie to delete
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\CookiesRepository A reference to the repository
+     * @param string $name The name of the cookie to delete.
+     * @return \BearFramework\App\Request\CookiesRepository A reference to itself.
      */
     public function delete(string $name): \BearFramework\App\Request\CookiesRepository
     {
@@ -111,15 +113,15 @@ class CookiesRepository
     }
 
     /**
-     * Returns a list of all cookies
+     * Returns a list of all cookies.
      * 
-     * @return \BearFramework\DataList|\BearFramework\App\Request\Cookie[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\Cookie[] An array containing all cookies.
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function (){
+        return new \BearFramework\DataList(function () {
             $list = [];
-            foreach ($this->data as $cookie){
+            foreach ($this->data as $cookie) {
                 $list[] = clone($cookie);
             }
             return $list;

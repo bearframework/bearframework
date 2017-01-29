@@ -10,15 +10,14 @@
 namespace BearFramework\App\Response;
 
 /**
- * Response type that makes temporary redirect
+ * Response type that makes temporary redirect.
  */
 class TemporaryRedirect extends \BearFramework\App\Response
 {
 
     /**
-     * The constructor
      * 
-     * @param string $url The redirect url
+     * @param string $url The redirect URL.
      */
     public function __construct(string $url)
     {

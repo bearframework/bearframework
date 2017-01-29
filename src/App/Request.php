@@ -12,16 +12,18 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides information about the current request
+ * Provides information about the current request.
  * 
- * @property string|null $scheme The request scheme
- * @property string|null $host The request hostname
- * @property int|null $port The request port
- * @property-read \BearFramework\App\Request\PathRepository $path The request path
- * @property-read \BearFramework\App\Request\QueryRepository $query The request query string
- * @property-read \BearFramework\App\Request\HeadersRepository $headers The request headers
- * @property-read \BearFramework\App\Request\CookiesRepository $cookies The request cookies
- * @property-read \BearFramework\App\Request\FormDataRepository $formData The request POST data and files
+ * @property string|null $method The request method.
+ * @property string|null $base The base URL of the request.
+ * @property string|null $scheme The request scheme.
+ * @property string|null $host The request hostname.
+ * @property int|null $port The request port.
+ * @property-read \BearFramework\App\Request\PathRepository $path The request path.
+ * @property-read \BearFramework\App\Request\QueryRepository $query The request query string.
+ * @property-read \BearFramework\App\Request\HeadersRepository $headers The request headers.
+ * @property-read \BearFramework\App\Request\CookiesRepository $cookies The request cookies.
+ * @property-read \BearFramework\App\Request\FormDataRepository $formData The request POST data and files.
  */
 class Request
 {
@@ -29,24 +31,19 @@ class Request
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * The request method
      * 
-     * @var string 
-     */
-    public $method = '';
-
-    /**
-     * The base URL of the request
-     * 
-     * @var string 
-     */
-    public $base = '';
-
-    /**
-     * The constructor
+     * @param bool $initializeFromEnvironment Populate the object with information from the PHP environment.
      */
     public function __construct(bool $initializeFromEnvironment = false)
     {
+
+        $this->defineProperty('method', [
+            'type' => '?string'
+        ]);
+
+        $this->defineProperty('base', [
+            'type' => '?string'
+        ]);
 
         $updateBase = function($name, $value) {
             $data = parse_url($this->base);
@@ -233,16 +230,6 @@ class Request
                 'readonly' => true
             ]);
         }
-    }
-
-    /**
-     * Returns the full URL of the request
-     * 
-     * @return string The full URL of the request
-     */
-    public function __toString()
-    {
-        return $this->base . (string) $this->path;
     }
 
 }

@@ -10,15 +10,14 @@
 namespace BearFramework\App\Response;
 
 /**
- * Response type that sends Not Found status
+ * Response type that sends Not Found status.
  */
 class NotFound extends \BearFramework\App\Response
 {
 
     /**
-     * The constructor
      * 
-     * @param string $content The content of the response
+     * @param string $content The content of the response.
      */
     public function __construct(string $content = 'Not Found')
     {

@@ -12,30 +12,37 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides utility functions for assets
+ * Provides utility functions for assets.
  */
 class Assets
 {
 
     /**
-     * Publicly accessible dirs
+     * Publicly accessible directories.
      * 
      * @var array
      */
     private $dirs = [];
-    
+
+    /**
+     * 
+     */
     private static $os = null; // 0 - windows, 1 - linux
+
+    /**
+     * 
+     */
 
     public function __construct()
     {
         self::$os = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 0 : 1;
     }
-    
+
     /**
-     * Registers a directory that will be publicly accessible
+     * Registers a directory that will be publicly accessible.
      * 
-     * @param string $pathname The directory name
-     * @return \BearFramework\App\Assets
+     * @param string $pathname The directory name.
+     * @return \BearFramework\App\Assets A reference to itself.
      */
     public function addDir(string $pathname): \BearFramework\App\Assets
     {
@@ -44,17 +51,17 @@ class Assets
     }
 
     /**
-     * Returns a public URL for the specified filename
+     * Returns a public URL for the specified filename.
      * 
-     * @param string $filename The filename
+     * @param string $filename The filename.
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return string The URL for the specified filename and options
+     * @return string The URL for the specified filename and options.
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        if(!empty($options)){
+        if (!empty($options)) {
             $this->validateOptions($options);
         }
         $app = App::get();
@@ -74,7 +81,7 @@ class Assets
         if (isset($options['height'])) {
             $optionsString .= 'h' . $options['height'] . '-';
         }
-        if(isset($optionsString{0})){
+        if (isset($optionsString{0})) {
             $optionsString = rtrim($optionsString, '-');
         }
         $hash = md5(md5($filename) . md5($optionsString));
@@ -89,17 +96,17 @@ class Assets
     }
 
     /**
-     * Returns the content of the file specified
+     * Returns the content of the file specified.
      * 
-     * @param string $filename The filename
+     * @param string $filename The filename.
      * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return null|string The content of the file or FALSE if file does not exists
+     * @return string|null The content of the file or null if file does not exists.
      */
     public function getContent(string $filename, array $options = []): ?string
     {
-        if(!empty($options)){
+        if (!empty($options)) {
             $this->validateOptions($options);
         }
         $app = App::get();
@@ -112,7 +119,7 @@ class Assets
         }
         $url = $this->getUrl($filename, $urlOptions);
         $path = substr($url, strlen($app->request->base));
-        
+
         $request = new \BearFramework\App\Request();
         $request->path->set($path);
         $response = $this->getResponse($request);
@@ -133,7 +140,13 @@ class Assets
         return $content;
     }
 
-    public function getResponse(\BearFramework\App\Request $request)
+    /**
+     * Creates a response object for the asset request.
+     * 
+     * @param \BearFramework\App\Request $request The request object to match against.
+     * @return \BearFramework\App\Response The response object for the request specified.
+     */
+    public function getResponse(\BearFramework\App\Request $request): ?\BearFramework\App\Response
     {
         $app = App::get();
         $parsePath = function($path) use ($app) {
@@ -210,16 +223,15 @@ class Assets
     }
 
     /**
-     * Returns the local filename for a given URL path
+     * Prepares a local filename that will be returned for the file requested.
      * 
-     * @param string $path The path part of the asset url
-     * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return bool|string The local fileneme or FALSE if file does not exists
+     * @param string $filename The filename to prepare.
+     * @param array $options A list of options for the filename.
+     * @return string|null The local filename of the prepared file or null.
      */
     public function prepare(string $filename, array $options = []): ?string
     {
-        if(!empty($options)){
+        if (!empty($options)) {
             $this->validateOptions($options);
         }
         $app = App::get();
@@ -331,11 +343,10 @@ class Assets
     }
 
     /**
-     * Finds the mime type of a filename by checking it's extension
+     * Finds the mime type of a filename by checking it's extension.
      * 
-     * @param string $filename The filename
-     * @throws \InvalidArgumentException
-     * @return string|null The mimetype of the filename specified
+     * @param string $filename The filename.
+     * @return string|null The mimetype of the filename specified.
      */
     public function getMimeType(string $filename)
     {

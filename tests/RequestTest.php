@@ -16,20 +16,10 @@ class RequestTest extends BearFrameworkTestCase
     /**
      * 
      */
-    function testRequest()
-    {
-        $request = new \BearFramework\App\Request();
-        $request->base = 'http://example.com';
-        $request->path->set('/part1/part2/');
-        $this->assertTrue((string) $request === 'http://example.com/part1/part2/');
-    }
-
-    /**
-     * 
-     */
     function testProperties()
     {
         $request = new \BearFramework\App\Request();
+        $request->method = 'GET';
         $request->base = 'http://example.com:8888';
         $request->path->set('/part1/part2/');
         $this->assertTrue(isset($request->method));

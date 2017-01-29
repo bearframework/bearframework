@@ -10,20 +10,20 @@
 namespace BearFramework\App;
 
 /**
- * Provides functionality for autoloading classes
+ * Provides functionality for registering and autoloading classes.
  */
 class ClassesRepository
 {
 
     /**
-     * Registered classes
+     * The registered classes.
      * 
      * @var array 
      */
     private $data = [];
 
     /**
-     * The constructor
+     * 
      */
     public function __construct()
     {
@@ -33,12 +33,11 @@ class ClassesRepository
     }
 
     /**
-     * Registers a class for autoloading
+     * Registers a class for autoloading.
      * 
-     * @param string $class The class name
-     * @param string $filename The filename that contains the class
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\ClassesRepository
+     * @param string $class The class name.
+     * @param string $filename The filename that contains the class.
+     * @return \BearFramework\App\ClassesRepository A reference to itself.
      */
     public function add(string $class, string $filename): \BearFramework\App\ClassesRepository
     {
@@ -47,9 +46,9 @@ class ClassesRepository
     }
 
     /**
-     * Returns information about whether a class is registered for autoloading
+     * Returns information about whether a class is registered for autoloading.
      * 
-     * @param string $class The class name
+     * @param string $class The class name.
      * @return boolen TRUE if the class is registered for autoloading. FALSE otherwise.
      */
     public function exists(string $class)
@@ -58,11 +57,10 @@ class ClassesRepository
     }
 
     /**
-     * Loads a class if registered
+     * Loads a class if registered.
      * 
-     * @param string $class
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\ClassesRepository
+     * @param string $class The class name.
+     * @return \BearFramework\App\ClassesRepository A reference to itself.
      */
     public function load(string $class): \BearFramework\App\ClassesRepository
     {

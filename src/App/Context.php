@@ -12,10 +12,11 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides information about addons and application location and utility functions
- * @property-read string $dir The directory where the current addon or application are located
- * @property-read \BearFramework\App\Context\Assets $assets Provides utility functions for assets in the current context dir
- * @property-read \BearFramework\App\Context\Classes $classes Provides functionality for autoloading classes in the current context
+ * Provides information about addons and application location and utility functions.
+ * 
+ * @property-read string $dir The directory where the current addon or application are located.
+ * @property-read \BearFramework\App\Context\Assets $assets Provides utility functions for assets in the current context dir.
+ * @property-read \BearFramework\App\Context\Classes $classes Provides functionality for autoloading classes in the current context.
  */
 class Context
 {
@@ -23,10 +24,8 @@ class Context
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * The constructor
      * 
-     * @param string $dir The directory where the current addon or application are located 
-     * @throws \InvalidArgumentException
+     * @param string $dir The directory where the current addon or application are located .
      */
     public function __construct(string $dir)
     {

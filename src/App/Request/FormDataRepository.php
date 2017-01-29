@@ -13,7 +13,7 @@ use BearFramework\App\Request\FormDataItem;
 use BearFramework\App\Request\FormDataItemsList;
 
 /**
- * Provides information about the response data items
+ * Provides information about the response form data items.
  */
 class FormDataRepository
 {
@@ -22,15 +22,18 @@ class FormDataRepository
      * @var array 
      */
     private $data = [];
-    
+
     /**
      *
      */
     private static $newFormDataItemCache = null;
 
     /**
+     * Constructs a new form data item and returns it.
      * 
-     * @return \BearFramework\App\Request\FormDataItem
+     * @var string|null $name The name of the form data item.
+     * @var string|null $value The value of the form data item.
+     * @return \BearFramework\App\Request\FormDataItem Returns a new form data item.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\FormDataItem
     {
@@ -48,10 +51,10 @@ class FormDataRepository
     }
 
     /**
-     * Sets a data item
+     * Sets a form data item.
      * 
-     * @param \BearFramework\App\Request\FormDataItem $dataItem The data item to set
-     * @return \BearFramework\App\Request\FormDataRepository
+     * @param \BearFramework\App\Request\FormDataItem $form data item The form data item to set.
+     * @return \BearFramework\App\Request\FormDataRepository A reference to itself.
      */
     public function set(\BearFramework\App\Request\FormDataItem $dataItem): \BearFramework\App\Request\FormDataRepository
     {
@@ -60,10 +63,10 @@ class FormDataRepository
     }
 
     /**
-     * Returns the data item if set
+     * Returns a form data item or null if not found.
      * 
-     * @param string $name The name of the data item
-     * @return BearFramework\App\Request\FormDataItem|null The value of the data item if set, NULL otherwise
+     * @param string $name The name of the form data item.
+     * @return BearFramework\App\Request\FormDataItem|null The form data item requested of null if not found.
      */
     public function get(string $name): ?\BearFramework\App\Request\FormDataItem
     {
@@ -72,12 +75,12 @@ class FormDataRepository
         }
         return null;
     }
-    
+
     /**
-     * Returns the file data item if set
+     * Returns a file data item or null if not found.
      * 
-     * @param string $name The name of the file data item
-     * @return BearFramework\App\Request\FormDataFileItem|null The value of the data item if set, NULL otherwise
+     * @param string $name The name of the file data item.
+     * @return BearFramework\App\Request\FormDataFileItem|null The file data item requested of null if not found.
      */
     public function getFile(string $name): ?\BearFramework\App\Request\FormDataFileItem
     {
@@ -88,10 +91,10 @@ class FormDataRepository
     }
 
     /**
-     * Returns the value of the data item if set
+     * Returns a form data item value or null if not found.
      * 
-     * @param string $name The name of the data item
-     * @return string|null|mixed The value of the data item if set, NULL otherwise
+     * @param string $name The name of the form data item.
+     * @return string|null The form data item value requested of null if not found.
      */
     public function getValue(string $name): ?string
     {
@@ -102,10 +105,10 @@ class FormDataRepository
     }
 
     /**
-     * Returns information whether a data item with the name specified exists
+     * Returns information whether a form data item with the name specified exists.
      * 
-     * @param string $name The name of the data item
-     * @return bool TRUE if a data item with the name specified exists, FALSE otherwise
+     * @param string $name The name of the form data item.
+     * @return bool TRUE if a form data item with the name specified exists, FALSE otherwise.
      */
     public function exists(string $name): bool
     {
@@ -113,11 +116,10 @@ class FormDataRepository
     }
 
     /**
-     * Deletes a data item if exists
+     * Deletes a form data item if exists.
      * 
-     * @param string $name The name of the data item to delete
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\Request\FormDataRepository A reference to the repository
+     * @param string $name The name of the form data item to delete.
+     * @return \BearFramework\App\Request\FormDataRepository A reference to itself.
      */
     public function delete(string $name): \BearFramework\App\Request\FormDataRepository
     {
@@ -128,19 +130,19 @@ class FormDataRepository
     }
 
     /**
-     * Returns a list of all data items
+     * Returns a list of all form data items.
      * 
-     * @return \BearFramework\DataList|\BearFramework\App\Request\FormDataItem[] An array containing all data items in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Request\FormDataItem[] An array containing all form data items.
      */
     public function getList()
     {
-        return new \BearFramework\DataList(function (){
+        return new \BearFramework\DataList(function () {
             $list = [];
-            foreach ($this->data as $formDataItem){
+            foreach ($this->data as $formDataItem) {
                 $list[] = clone($formDataItem);
             }
             return $list;
         });
     }
-    
+
 }

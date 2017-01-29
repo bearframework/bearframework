@@ -12,13 +12,13 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Response object
+ * Response object.
  * 
- * @property string $content The content of the response
- * @property ?int $statusCode The response status code
- * @property string $charset The response character set
- * @property-read \BearFramework\App\Response\HeadersRepository $headers The response headers
- * @property-read \BearFramework\App\Response\Cookies $cookies The response cookies
+ * @property string $content The content of the response.
+ * @property int|null $statusCode The response status code.
+ * @property string $charset The response character set.
+ * @property-read \BearFramework\App\Response\HeadersRepository $headers The response headers.
+ * @property-read \BearFramework\App\Response\Cookies $cookies The response cookies.
  */
 class Response
 {
@@ -26,9 +26,8 @@ class Response
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * The constructor
      * 
-     * @param string $content The content of the response
+     * @param string $content The content of the response.
      */
     public function __construct(string $content = '')
     {

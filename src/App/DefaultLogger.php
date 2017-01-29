@@ -12,7 +12,7 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides logging functionality
+ * The default logger. It saves the logs in the $app->config->logsDir directory.
  */
 class DefaultLogger implements ILogger
 {
@@ -20,14 +20,14 @@ class DefaultLogger implements ILogger
     /**
      * Appends data to the file specified. The file will be created if not exists.
      * 
-     * @param mixed $level
-     * @param string $message
-     * @param array $context
+     * @param mixed $level The filename of the log file.
+     * @param string $message The message that will be logged.
+     * @param array $context Additional information to log.
      * @throws \InvalidArgumentException
      * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return void
+     * @return void No value is returned.
      */
-    public function log(string $level, string $message, array $context = [])
+    public function log(string $level, string $message, array $context = []): void
     {
         $app = App::get();
         $level = trim((string) $level);

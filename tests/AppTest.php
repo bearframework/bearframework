@@ -34,7 +34,6 @@ class AppTest extends BearFrameworkTestCase
         $_GET['var2']['varA'] = 'A';
         $_GET['var2']['varB'] = 'B';
         $app = new \BearFramework\App();
-        $this->assertTrue($app->request === null);
         $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue(\BearFramework\App::get() instanceof \BearFramework\App);

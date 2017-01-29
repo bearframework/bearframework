@@ -10,9 +10,9 @@
 namespace BearFramework\App\Request;
 
 /**
- * @property string $filename The temporary filename of the file in which the uploaded file was stored on the server.
- * @property ?int $size The size, in bytes, of the uploaded file.
- * @property ?string $type The mime type of the file, if the browser provided this information.
+ * @property string $filename The temporary filename where the uploaded file was stored.
+ * @property int|null $size The size, in bytes, of the uploaded file.
+ * @property string|null $type The mime type of the file, if the browser provided this information.
  */
 class FormDataFileItem extends FormDataItem
 {

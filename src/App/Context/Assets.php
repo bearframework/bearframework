@@ -12,7 +12,7 @@ namespace BearFramework\App\Context;
 use BearFramework\App;
 
 /**
- * Provides utility functions for assets in the current context
+ * Provides utility functions for assets in the current context.
  */
 class Assets
 {
@@ -30,11 +30,8 @@ class Assets
     private static $appAssetsReference = null;
 
     /**
-     * The constructor
      * 
-     * @param string $dir The directory where the current addon or application are located 
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @param string $dir The directory where the current addon or application are located.
      */
     public function __construct(string $dir)
     {
@@ -43,10 +40,10 @@ class Assets
     }
 
     /**
-     * Registers a directory that will be publicly accessible relative to the current addon or application location
+     * Registers a directory that will be publicly accessible relative to the current addon or application location.
      * 
-     * @param string $pathname The directory name
-     * @return \BearFramework\App\Context\Assets
+     * @param string $pathname The directory name.
+     * @return \BearFramework\App\Context\Assets A reference to itself.
      */
     public function addDir(string $pathname): \BearFramework\App\Context\Assets
     {
@@ -55,12 +52,11 @@ class Assets
     }
 
     /**
-     * Returns a public URL for the specified filename in the current context
+     * Returns a public URL for the specified filename in the current context.
      * 
-     * @param string $filename The filename
+     * @param string $filename The filename.
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
-     * @throws \InvalidArgumentException
-     * @return string The URL for the specified filename and options
+     * @return string The URL for the specified filename and options.
      */
     public function getUrl(string $filename, array $options = []): string
     {
@@ -68,13 +64,11 @@ class Assets
     }
 
     /**
-     * Returns the content of the file specified in the current context
+     * Returns the content of the file specified in the current context.
      * 
-     * @param string $filename The filename
+     * @param string $filename The filename.
      * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
-     * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return null|string The content of the file or FALSE if file does not exists
+     * @return string|null The content of the file or null if file does not exists.
      */
     public function getContent(string $filename, array $options = []): ?string
     {

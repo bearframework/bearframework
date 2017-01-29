@@ -10,9 +10,9 @@
 namespace BearFramework\App;
 
 /**
- * @property string|null $key
- * @property mixed $value
- * @property int|null $ttl Time in seconds to stay in the cache
+ * @property string|null $key The key of the cache item.
+ * @property mixed $value The value of the cache item.
+ * @property int|null $ttl Time in seconds to stay in the cache.
  */
 class CacheItem
 {

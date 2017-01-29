@@ -10,15 +10,14 @@
 namespace BearFramework\App\Response;
 
 /**
- * Response type that makes permanent redirect
+ * Response type that makes permanent redirect.
  */
 class PermanentRedirect extends \BearFramework\App\Response
 {
 
     /**
-     * The constructor
      * 
-     * @param string $url The redirect url
+     * @param string $url The redirect URL.
      */
     public function __construct(string $url)
     {

@@ -10,15 +10,14 @@
 namespace BearFramework\App\Response;
 
 /**
- * Response type that sends Temporary Unavailable status
+ * Response type that sends Temporary Unavailable status.
  */
 class TemporaryUnavailable extends \BearFramework\App\Response
 {
 
     /**
-     * The constructor
      * 
-     * @param string $content The content of the response
+     * @param string $content The content of the response.
      */
     public function __construct(string $content = 'Temporary Unavailable')
     {

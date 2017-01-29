@@ -10,15 +10,21 @@
 namespace BearFramework\App;
 
 /**
- * @property-read string $id The id of the addon
- * @property-read string $dir The dir of the addon
- * @property-read array $options The options of the addon
+ * @property-read string $id The id of the addon.
+ * @property-read string $dir The directory where the addon files are located.
+ * @property-read array $options The options of the addon.
  */
 class Addon
 {
 
     use \IvoPetkov\DataObjectTrait;
 
+    /**
+     * 
+     * @param string $id
+     * @param string $dir
+     * @param array $options
+     */
     function __construct(string $id, string $dir, array $options)
     {
         $this->defineProperty('id', [

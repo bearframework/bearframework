@@ -10,8 +10,8 @@
 namespace BearFramework\App\Request;
 
 /**
- * @property string|null $name The name of the data parameter.
- * @property string|null $value The value of the data parameter.
+ * @property string|null $name The name of the form data item.
+ * @property string|null $value The value of the form data item.
  */
 class FormDataItem
 {

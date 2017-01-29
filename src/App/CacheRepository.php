@@ -9,7 +9,6 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App;
 use BearFramework\App\CacheItem;
 
 /**
@@ -18,22 +17,36 @@ use BearFramework\App\CacheItem;
 class CacheRepository
 {
 
+    /**
+     *
+     */
     private static $newCacheItemCache = null;
+
+    /**
+     *
+     */
     private $cacheDriver = null;
 
+    /**
+     * 
+     * @param \BearFramework\App\ICacheDriver $cacheDriver The cache driver to use.
+     */
     function __construct(ICacheDriver $cacheDriver)
     {
         $this->cacheDriver = $cacheDriver;
     }
 
     /**
+     * Constructs a new cache item and returns it.
      * 
-     * @return \BearFramework\App\CacheItem
+     * @var string|null $key The key of the cache item.
+     * @var string|null $value The value of the cache item.
+     * @return \BearFramework\App\CacheItem Returns a new cache item.
      */
     public function make(string $key = null, $value = null): \BearFramework\App\CacheItem
     {
         if (self::$newCacheItemCache === null) {
-            self::$newCacheItemCache = new \BearFramework\App\CacheItem();
+            self::$newCacheItemCache = new CacheItem();
         }
         $object = clone(self::$newCacheItemCache);
         if ($key !== null) {
@@ -45,6 +58,12 @@ class CacheRepository
         return $object;
     }
 
+    /**
+     * Stores a cache item.
+     * 
+     * @param \BearFramework\App\CacheItem $item The cache item to store.
+     * @return \BearFramework\App\CacheRepository A reference to itself.
+     */
     public function set(CacheItem $item): \BearFramework\App\CacheRepository
     {
         $this->cacheDriver->set($item->key, $item->value, $item->ttl);
@@ -52,11 +71,10 @@ class CacheRepository
     }
 
     /**
-     * Return the saved data from the cache or the default value specified
+     * Returns the cache item stored or null if not found.
      * 
-     * @param string $key The data key
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\CacheItem|null The saved data from the cache or the default value specified
+     * @param string $key The key of the cache item.
+     * @return \BearFramework\App\CacheItem|null The cache item stored or null if not found.
      */
     public function get(string $key): ?\BearFramework\App\CacheItem
     {
@@ -67,6 +85,12 @@ class CacheRepository
         return null;
     }
 
+    /**
+     * Returns the value of the cache item specified.
+     * 
+     * @param string $key The key of the cache item.
+     * @return mixed The value of the cache item or null if not found.
+     */
     public function getValue(string $key)
     {
         $cacheItem = $this->get($key);
@@ -79,9 +103,8 @@ class CacheRepository
     /**
      * Returns information whether a key exists in the cache.
      * 
-     * @param string $key The data key
-     * @throws \InvalidArgumentException
-     * @return bool TRUE if the key exists in the cache, FALSE otherwise.
+     * @param string $key The key of the cache item.
+     * @return bool TRUE if the cache item exists in the cache, FALSE otherwise.
      */
     public function exists(string $key): bool
     {
@@ -90,11 +113,10 @@ class CacheRepository
     }
 
     /**
-     * Deletes data from the cache
+     * Deletes a cache from the cache.
      * 
-     * @param string $key The data key
-     * @throws \InvalidArgumentException
-     * @return \BearFramework\App\CacheRepository
+     * @param string $key The key of the cache item.
+     * @return \BearFramework\App\CacheRepository A reference to itself.
      */
     public function delete(string $key): \BearFramework\App\CacheRepository
     {

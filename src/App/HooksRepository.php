@@ -10,33 +10,37 @@
 namespace BearFramework\App;
 
 /**
- * Provides functionality for notifications and data requests
+ * Provides functionality for notifications and executing custom code.
  */
 class HooksRepository
 {
 
     /**
-     * Registered hook callbacks
+     * Registered hooks.
      * 
      * @var array 
      */
     private $data = [];
 
     /**
-     * Registers callback for the name specified
+     * Registers a callback for the name specified.
      * 
-     * @param string $name The name
-     * @param callable $callback The function to be called where the event happens
-     * @param array $options Contains a priority option (default value: 100). Hooks with lower priority will be executed first.
-     * @return \BearFramework\App\HooksRepository
+     * @param string $name The name that the hook is attached to.
+     * @param callable $callback The function to be called when the event occur.
+     * @param array $options List of options
+     *     - priority - A priority of the callback (default value: 100). Hooks with lower priority will be executed first.
+     * @return \BearFramework\App\HooksRepository A reference to itself.
      */
     public function add(string $name, callable $callback, array $options = []): \BearFramework\App\HooksRepository
     {
         if (!isset($this->data[$name])) {
             $this->data[$name] = [];
         }
-        if (!isset($options['priority'])) {
-            // todo validate
+        if (isset($options['priority'])) {
+            if (!is_int($options['priority'])) {
+                throw new \Exception('The priority option must be of type int.');
+            }
+        } else {
             $options['priority'] = 100;
         }
         $this->data[$name][] = [$callback, $options, sizeof($this->data[$name])];
@@ -44,12 +48,12 @@ class HooksRepository
     }
 
     /**
-     * Returns information whether there are callbacks added to the hook specified.
+     * Returns information whether there are callbacks added for the name specified.
      * 
-     * @param string $name The name
-     * @return bool TRUE if there are registered callbacks to the hook specified, FALSE otherwise.
+     * @param string $name The name that the hooks are attached to.
+     * @return bool TRUE if there are registered callbacks, FALSE otherwise.
      */
-    public function exists(string $name)
+    public function exists(string $name): bool
     {
         return isset($this->data[$name]);
     }
@@ -57,8 +61,8 @@ class HooksRepository
     /**
      * Triggers execution of all callbacks hooked to the name specified
      * 
-     * @param string $name The name
-     * @return \BearFramework\App\HooksRepository
+     * @param string $name The name that the hooks are attached to.
+     * @return \BearFramework\App\HooksRepository A reference to itself.
      */
     public function execute(string $name): \BearFramework\App\HooksRepository
     {

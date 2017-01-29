@@ -11,7 +11,6 @@ namespace BearFramework\App;
 
 use BearFramework\App;
 use BearFramework\App\DataItem;
-use BearFramework\App\DataList;
 
 /**
  * Data storage
@@ -25,7 +24,10 @@ class DataRepository
      * @var type 
      */
     private $instance = null;
-    
+
+    /**
+     * 
+     */
     private static $newDataItemCache = null;
 
     /**
@@ -47,12 +49,15 @@ class DataRepository
     }
 
     /**
+     * Constructs a new data item and returns it.
      * 
-     * @return \BearFramework\App\DataItem
+     * @var string|null $key The key of the data item.
+     * @var string|null $value The value of the data item.
+     * @return \BearFramework\App\DataItem Returns a new data item.
      */
     public function make(string $key = null, string $value = null): \BearFramework\App\DataItem
     {
-        if(self::$newDataItemCache === null){
+        if (self::$newDataItemCache === null) {
             self::$newDataItemCache = new \BearFramework\App\DataItem();
         }
         $object = clone(self::$newDataItemCache);
@@ -64,9 +69,12 @@ class DataRepository
         }
         return $object;
     }
-    
+
     /**
-     * Saves data
+     * Stores a data item.
+     * 
+     * @param \BearFramework\App\DataItem $item The cache item to store.
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function set(DataItem $item): \BearFramework\App\DataRepository
     {
@@ -90,6 +98,13 @@ class DataRepository
         return $this;
     }
 
+    /**
+     * Sets a new value of the item specified or creates a new item with the key and value specified.
+     * 
+     * @var string $key The key of the data item.
+     * @var string $value The value of the data item.
+     * @return \BearFramework\App\DataRepository A reference to itself.
+     */
     public function setValue(string $key, string $value): \BearFramework\App\DataRepository
     {
         try {
@@ -108,6 +123,13 @@ class DataRepository
         return $this;
     }
 
+    /**
+     * Returns a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @return \BearFramework\App\DataItem|null A data item or null if not found.
+     * @throws \Exception
+     */
     public function get(string $key): ?\BearFramework\App\DataItem
     {
         try {
@@ -127,6 +149,13 @@ class DataRepository
         return null;
     }
 
+    /**
+     * Returns the value of a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @return string|null The value of a stored data item or null if not found.
+     * @throws \Exception
+     */
     public function getValue(string $key): ?string
     {
         try {
@@ -147,9 +176,10 @@ class DataRepository
     }
 
     /**
-     * Returns TRUE if the object exists. FALSE otherwise.
-     * @param string $key The key
-     * @return bool TRUE if the object exists. FALSE otherwise.
+     * Returns TRUE if the data item exists. FALSE otherwise.
+     * 
+     * @param string $key The key of the stored data item.
+     * @return bool TRUE if the data item exists. FALSE otherwise.
      * @throws \Exception
      */
     public function exists(string $key): bool
@@ -169,12 +199,13 @@ class DataRepository
     }
 
     /**
-     * Appends data to the object specified. If the object does not exist, it will be created.
+     * Appends data to the data item's value specified. If the data item does not exist, it will be created.
      * 
-     * @param string $key The key
-     * @param string $content The content to append
+     * @param string $key The key of the data item.
+     * @param string $content The content to append.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function append(string $key, string $content): \BearFramework\App\DataRepository
     {
@@ -195,13 +226,13 @@ class DataRepository
     }
 
     /**
-     * Creates a copy of the object specified
+     * Creates a copy of the data item specified.
      * 
-     * @param string $sourceKey The source key
-     * @param string $destinationKey The destination key
-     * @return void No value is returned
+     * @param string $sourceKey The key of the source data item.
+     * @param string $destinationKey The key of the destination data item.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function duplicate(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
@@ -222,13 +253,13 @@ class DataRepository
     }
 
     /**
-     * Changes the key of the object specified
+     * Changes the key of the data item specified.
      * 
-     * @param string $sourceKey The source key
-     * @param string $destinationKey The destination key
-     * @return void No value is returned
+     * @param string $sourceKey The current key of the data item.
+     * @param string $destinationKey The new key of the data item.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function rename(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
@@ -249,12 +280,12 @@ class DataRepository
     }
 
     /**
-     * Deletes the object specified and it's metadata
+     * Deletes the data item specified and it's metadata.
      * 
-     * @param string $key The key
-     * @return void No value is returned
+     * @param string $key The key of the data item to delete.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function delete(string $key): \BearFramework\App\DataRepository
     {
@@ -274,13 +305,14 @@ class DataRepository
     }
 
     /**
-     * Saves metadata for the key specified
+     * Stores metadata for the data item specified.
      * 
-     * @param string $key The key
-     * @param string $name The metadata name
-     * @param string $value The metadata value
+     * @param string $key The key of the data item.
+     * @param string $name The metadata name.
+     * @param string $value The metadata value.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function setMetadata(string $key, string $name, string $value): \BearFramework\App\DataRepository
     {
@@ -301,11 +333,11 @@ class DataRepository
     }
 
     /**
-     * Retrieves metadata for the key specified
+     * Retrieves metadata for the data item specified.
      * 
-     * @param string $key The key
-     * @param string $name The metadata name
-     * @return type
+     * @param string $key The data item key.
+     * @param string $name The metadata name.
+     * @return string|null The value of the data item metadata.
      * @throws \Exception
      */
     public function getMetadata(string $key, string $name): ?string
@@ -326,10 +358,13 @@ class DataRepository
     }
 
     /**
-     * Deletes metadata for the key specified
+     * Deletes metadata for the data item key specified.
      * 
-     * @param string $key The key
-     * @param string $name The metadata name
+     * @param string $key The data item key.
+     * @param string $name The metadata name.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function deleteMetadata(string $key, string $name): \BearFramework\App\DataRepository
     {
@@ -338,13 +373,13 @@ class DataRepository
     }
 
     /**
-     * Returns a list of all data object's metadata
+     * Returns a list of all data item's metadata.
      * 
-     * @param string $key The key
-     * @return \IvoPetkov\DataList
+     * @param string $key The data item key.
+     * @return \BearFramework\DataList A list containing the metadata for the data item specified.
      * @throws \Exception
      */
-    public function getMetadataList(string $key): \IvoPetkov\DataList
+    public function getMetadataList(string $key): \BearFramework\DataList
     {
         try {
             $result = $this->execute([
@@ -367,12 +402,13 @@ class DataRepository
                 }
             }
         }
-        return new \IvoPetkov\DataList($objectMetadata);
+        return new \BearFramework\DataList($objectMetadata);
     }
 
     /**
+     * Returns a list of all items in the data storage.
      * 
-     * @return \BearFramework\DataList
+     * @return \BearFramework\DataList A list of all items in the data storage.
      */
     public function getList()
     {
@@ -400,6 +436,83 @@ class DataRepository
         });
     }
 
+    /**
+     * Marks a data item as public so it can be accessed as an asset.
+     * 
+     * @param string $key The key of the data item.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
+     */
+    public function makePublic(string $key): \BearFramework\App\DataRepository
+    {
+        $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
+        return $this;
+    }
+
+    /**
+     * Marks a data item as private, so it cannot be accessed as an asset.
+     * 
+     * @param string $key The key of the data item.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
+     * @return \BearFramework\App\DataRepository A reference to itself.
+     */
+    public function makePrivate(string $key): \BearFramework\App\DataRepository
+    {
+        $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
+        return $this;
+    }
+
+    /**
+     * Checks if a data item is marked as public.
+     * 
+     * @param string $key The key of the data item.
+     * @throws \Exception
+     * @return bool TRUE if public. FALSE otherwise.
+     */
+    public function isPublic(string $key): bool
+    {
+        return $this->getMetadata($key, 'internalFrameworkPropertyPublic') === '1';
+    }
+
+    /**
+     * Checks if a data item key is valid.
+     * 
+     * @param string $key The key of the data item to check.
+     * @return bool TRUE if valid. FALSE otherwise.
+     */
+    public function isValidKey(string $key): bool
+    {
+        $instance = $this->getInstance();
+        return $instance->isValidKey($key);
+    }
+
+    /**
+     * Returns the filename of the data item specified.
+     * 
+     * @param string $key The key of the data item.
+     * @throws \InvalidArgumentException
+     * @throws \BearFramework\App\Config\InvalidOptionException
+     * @return string The filename of the data item specified.
+     */
+    public function getFilename(string $key): string
+    {
+        $app = App::get();
+        if ($app->config->dataDir === null) {
+            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
+        }
+        if (!$this->isValidKey($key)) {
+            throw new \InvalidArgumentException('The key argument is not valid');
+        }
+        return $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
+    }
+
+    /**
+     * 
+     * @param array $rawData
+     * @return \BearFramework\App\DataItem
+     */
     private function makeDataItemFromRawData(array $rawData): \BearFramework\App\DataItem
     {
         $dataItem = $this->make($rawData['key'], $rawData['body']);
@@ -415,10 +528,9 @@ class DataRepository
     }
 
     /**
-     * Executes multiple commands
      * 
-     * @param array $commands Commands
-     * @return array List of commands results
+     * @param array $commands
+     * @return array
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
@@ -433,104 +545,5 @@ class DataRepository
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
     }
-
-    /**
-     * Marks object as public so it can be accessed as an asset
-     * 
-     * @param string $key The key
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     */
-    public function makePublic(string $key): \BearFramework\App\DataRepository
-    {
-        $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
-        return $this;
-    }
-
-    /**
-     * Marks object as private, so it cannot be accessed as an asset
-     * 
-     * @param string $key The key
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     */
-    public function makePrivate(string $key): \BearFramework\App\DataRepository
-    {
-        $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
-        return $this;
-    }
-
-    /**
-     * Checks if an object is marked as public
-     * 
-     * @param string $key The object key
-     * @throws \InvalidArgumentException
-     * @throws \Exception
-     * @return bool TRUE if public. FALSE otherwise.
-     */
-    public function isPublic(string $key): bool
-    {
-        return $this->getMetadata($key, 'internalFrameworkPropertyPublic') === '1';
-    }
-
-    /**
-     * Checks if an key is valid
-     * 
-     * @param string $key The key to check
-     * @return bool TRUE if valid. FALSE otherwise.
-     */
-    public function isValidKey(string $key): bool
-    {
-        $instance = $this->getInstance();
-        return $instance->isValidKey($key);
-    }
-
-    /**
-     * Returns the filename of the object key specified
-     * 
-     * @param string $key The object key
-     * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return string The filename of the object key specified
-     */
-    public function getFilename(string $key): string
-    {
-        $app = App::get();
-        if ($app->config->dataDir === null) {
-            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
-        }
-        if (!$this->isValidKey($key)) {
-            throw new \InvalidArgumentException('The key argument is not valid');
-        }
-        return $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
-    }
-
-    /**
-     * Returns the key name of the object filename specified
-     * 
-     * @param string $filename The filename
-     * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return string The key of the object
-     */
-//    public function getKeyFromFilename(string $filename): string
-//    {
-//        $app = App::get();
-//        if ($app->config->dataDir === null) {
-//            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
-//        }
-//        $filename = realpath($filename);
-//        if ($filename === false) {
-//            throw new \InvalidArgumentException('The filename specified does not exist');
-//        }
-//        if (strpos($filename, $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
-//            return substr($filename, strlen($app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR));
-//        }
-//        throw new \InvalidArgumentException('The filename specified is not valid data object');
-//    }
 
 }

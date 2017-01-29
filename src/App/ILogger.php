@@ -12,5 +12,12 @@ namespace BearFramework\App;
 interface ILogger
 {
 
-    public function log(string $level, string $message, array $context = []);
+    /**
+     * 
+     * @param string $level
+     * @param string $message
+     * @param array $context
+     * @return void No value is returned.
+     */
+    public function log(string $level, string $message, array $context = []): void;
 }

@@ -12,26 +12,44 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * 
+ * The default error handler
  */
 class ErrorHandler
 {
 
-    static function handleException($exception)
+    /**
+     * 
+     * @param \Exception $exception
+     * @return void No value is returned.
+     */
+    static function handleException(\Exception $exception): void
     {
         self::handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
     }
 
-    static function handleFatalError($errorData)
+    /**
+     * 
+     * @param array $errorData
+     * @return void No value is returned.
+     */
+    static function handleFatalError(array $errorData): void
     {
         if (ob_get_length() > 0) {
             ob_end_clean();
         }
         $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
-        self::handleError(trim($messageParts[0]), $errorData['file'], $errorData['line'], isset($messageParts[1]) ? trim(str_replace('Stack trace:', '', $messageParts[1])) : '');
+        self::handleError(trim($messageParts[0]), $errorData['file'], (int) $errorData['line'], isset($messageParts[1]) ? [trim(str_replace('Stack trace:', '', $messageParts[1]))] : []);
     }
 
-    static function handleError($message, $file, $line, $trace)
+    /**
+     * 
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     * @param array $trace
+     * @return void No value is returned.
+     */
+    static function handleError(string $message, string $file, int $line, array $trace): void
     {
         $app = App::get();
         if ($app->config->logErrors && strlen($app->config->logsDir) > 0) {

@@ -12,7 +12,7 @@ namespace BearFramework\App\Context;
 use BearFramework\App;
 
 /**
- * Provides functionality for autoloading classes in the current context
+ * Provides functionality for autoloading classes in the current context.
  */
 class Classes
 {
@@ -30,11 +30,8 @@ class Classes
     private static $appClassesReference = null;
 
     /**
-     * The constructor
      * 
-     * @param string $dir The directory where the current addon or application are located 
-     * @throws \InvalidArgumentException
-     * @return void No value is returned
+     * @param string $dir The directory where the current addon or application are located.
      */
     public function __construct(string $dir)
     {
@@ -43,11 +40,11 @@ class Classes
     }
 
     /**
-     * Registers a class for autoloading in the current context
+     * Registers a class for autoloading in the current context.
      * 
-     * @param string $class The class name
-     * @param string $filename The filename that contains the class
-     * @return \BearFramework\App\Context\Classes
+     * @param string $class The class name.
+     * @param string $filename The filename that contains the class.
+     * @return \BearFramework\App\Context\Classes A reference to itself.
      */
     public function add(string $class, string $filename): \BearFramework\App\Context\Classes
     {

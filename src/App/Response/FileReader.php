@@ -10,9 +10,9 @@
 namespace BearFramework\App\Response;
 
 /**
- * Response type that reads file and outputs it
+ * Response type that reads file and outputs it.
  * 
- * @property string $filename The filename to output
+ * @property string $filename The filename to output.
  */
 class FileReader extends \BearFramework\App\Response
 {
@@ -20,9 +20,8 @@ class FileReader extends \BearFramework\App\Response
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * The constructor 
      * 
-     * @param string $filename The filename to output
+     * @param string $filename The filename to output.
      * @throws \InvalidArgumentException
      */
     public function __construct(string $filename)
@@ -35,18 +34,20 @@ class FileReader extends \BearFramework\App\Response
                 return '';
             },
             'set' => function($value) {
-                $value = realpath($value);
-                if ($value === false || !is_readable($value)) {
-                    throw new \InvalidArgumentException('The filename specified does not exist or is not readable');
+                $filename = realpath($value);
+                if ($filename === false || !is_readable($filename)) {
+                    throw new \InvalidArgumentException('The filename specified (' . $value . ') does not exist or is not readable.');
                 }
-                return $value;
+                return $filename;
             },
             'unset' => function() {
                 return '';
             },
         ]);
 
-        $this->filename = $filename;
+        if (isset($filename{0})) {
+            $this->filename = $filename;
+        }
     }
 
 }

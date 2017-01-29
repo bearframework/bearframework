@@ -16,9 +16,8 @@ class HTML extends \BearFramework\App\Response
 {
 
     /**
-     * The constructor
      * 
-     * @param string $content The content of the response
+     * @param string $content The content of the response.
      */
     public function __construct(string $content = '')
     {

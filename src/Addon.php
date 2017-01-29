@@ -20,6 +20,12 @@ class Addon
 
     use \IvoPetkov\DataObjectTrait;
 
+    /**
+     * 
+     * @param string $id
+     * @param string $dir
+     * @param array $options
+     */
     function __construct(string $id, string $dir, array $options)
     {
         $this->defineProperty('id', [

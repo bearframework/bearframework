@@ -10,18 +10,22 @@
 namespace BearFramework\App;
 
 /**
- *  Provides a way to enable addons and manage their options
+ *  Provides a way to enable addons and manage their options.
  */
 class AddonsRepository
 {
 
+    /**
+     *
+     * @var array 
+     */
     private $data = [];
 
     /**
-     * Enables an addon and saves the provided options
+     * Enables an addon and saves the provided options.
      * 
-     * @param string $id The id of the addon
-     * @param array $options The options of the addon
+     * @param string $id The id of the addon.
+     * @param array $options The options of the addon.
      * @throws \InvalidArgumentException
      * @return bool TRUE if successfully loaded. FALSE otherwise.
      */
@@ -64,10 +68,10 @@ class AddonsRepository
     }
 
     /**
-     * Returns the cookie if set
+     * Returns the enabled addon or null if not found.
      * 
-     * @param string $id The name of the cookie
-     * @return BearFramework\App\Response\Cookie|null|mixed The value of the cookie if set, NULL otherwise
+     * @param string $id The id of the addon.
+     * @return BearFramework\App\Addon|null The enabled addon or null if not found.
      */
     public function get(string $id): ?\BearFramework\App\Addon
     {
@@ -78,10 +82,10 @@ class AddonsRepository
     }
 
     /**
-     * Returns information whether a cookie with the name specified exists
+     * Returns information whether an addon with the id specified is enabled.
      * 
-     * @param string $id The name of the cookie
-     * @return bool TRUE if a cookie with the name specified exists, FALSE otherwise
+     * @param string $id  The id of the addon.
+     * @return bool TRUE if an addon with the name specified is enabled, FALSE otherwise.
      */
     public function exists(string $id): bool
     {
@@ -89,9 +93,9 @@ class AddonsRepository
     }
 
     /**
-     * Returns a list of all cookies
+     * Returns a list of all enabled addons.
      * 
-     * @return \BearFramework\DataList|\BearFramework\App\Addon[] An array containing all cookies in the following format [['name'=>..., 'value'=>...], ...]
+     * @return \BearFramework\DataList|\BearFramework\App\Addon[] An array containing all enabled addons.
      */
     public function getList()
     {

@@ -10,19 +10,19 @@
 namespace BearFramework\App;
 
 /**
- * Images utilities
+ * Images utilities.
  */
 class Images
 {
 
     /**
-     * Returns the size of the image specified
+     * Returns the size of the image specified.
      * 
-     * @param string $filename The filename of the image
+     * @param string $filename The filename of the image.
      * @throws \InvalidArgumentException
-     * @return array[int,int] The size of the image specified
+     * @return array[int,int] The size of the image specified.
      */
-    public function getSize(string $filename)
+    public function getSize(string $filename): array
     {
         $filename = realpath($filename);
         if ($filename === false) {
@@ -47,16 +47,16 @@ class Images
     }
 
     /**
-     * Resizes an image file
+     * Resizes an image file.
      * 
-     * @param string $sourceFilename The image file to resize
-     * @param string $destinationFilename The filename where the result image will be saved
+     * @param string $sourceFilename The image file to resize.
+     * @param string $destinationFilename The filename where the result image will be saved.
      * @param array $options Resize options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
      * @throws \Exception
-     * @return void No value is returned
+     * @return void No value is returned.
      */
-    public function resize(string $sourceFilename, string $destinationFilename, array $options = [])
+    public function resize(string $sourceFilename, string $destinationFilename, array $options = []): void
     {
         $sourceFilename = realpath($sourceFilename);
         if ($sourceFilename === false) {

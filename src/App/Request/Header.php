@@ -10,8 +10,8 @@
 namespace BearFramework\App\Request;
 
 /**
- * @property string|null $name
- * @property string|null $value
+ * @property string|null $name The name of the header.
+ * @property string|null $value The value of the header.
  */
 class Header
 {
