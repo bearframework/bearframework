@@ -95,8 +95,8 @@ class App
                     $routes->add($this->config->assetsPathPrefix . '*', function() {
                                 return $this->assets->getResponse($this->request);
                             });
-                    return $routes;
                 }
+                return $routes;
             },
             'readonly' => true
         ]);
