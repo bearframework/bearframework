@@ -10,7 +10,8 @@
 namespace BearFramework\App;
 
 /**
- * A cache driver interface
+ * A cache driver interface.
+ * @codeCoverageIgnore
  */
 interface ICacheDriver
 {

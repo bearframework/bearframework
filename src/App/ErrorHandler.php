@@ -12,7 +12,8 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * The default error handler
+ * The default error handler.
+ * @codeCoverageIgnore
  */
 class ErrorHandler
 {

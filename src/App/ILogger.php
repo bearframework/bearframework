@@ -9,6 +9,10 @@
 
 namespace BearFramework\App;
 
+/**
+ * A logger interface.
+ * @codeCoverageIgnore
+ */
 interface ILogger
 {
 
