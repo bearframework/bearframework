@@ -64,4 +64,9 @@ interface ICacheDriver
      * @param array $keys The keys under which the values are stored.
      */
     public function deleteMultiple(array $keys): void;
+    
+    /**
+     * Deletes all values from the cache.
+     */
+    public function clear(): void;
 }

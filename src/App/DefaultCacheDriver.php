@@ -115,4 +115,17 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
         }
     }
 
+    /**
+     * Deletes all values from the cache.
+     */
+    public function clear(): void
+    {
+        $app = App::get();
+        $list = $app->data->getList()
+                ->filterBy('key', '.temp/cache/', 'startWith');
+        foreach ($list as $item) {
+            $app->data->delete($item->key);
+        };
+    }
+
 }

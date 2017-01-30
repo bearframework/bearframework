@@ -124,4 +124,13 @@ class CacheRepository
         return $this;
     }
 
+    /**
+     * Deletes all values from the cache.
+     */
+    public function clear(): \BearFramework\App\CacheRepository
+    {
+        $this->cacheDriver->clear();
+        return $this;
+    }
+
 }
