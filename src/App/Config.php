@@ -19,7 +19,7 @@ namespace BearFramework\App;
  * @property bool $handleErrors Automatically handle errors and display friendly responses.
  * @property bool $displayErrors Display the first handled error. Useful while developing.
  * @property bool $logErrors Log the handled errors.
- * @property string|null $assetsPathPrefix The prefix of the assets URLs.
+ * @property string $assetsPathPrefix The prefix of the assets URLs.
  * @property int $assetsMaxAge
  */
 class Config
@@ -30,7 +30,7 @@ class Config
     /**
      * 
      * @param array $options An array of configuration options.
-     * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     public function __construct(array $options = [])
     {
@@ -42,7 +42,7 @@ class Config
                 }
                 $value = realpath($value);
                 if ($value === false) {
-                    throw new \InvalidArgumentException('The value in the appDir option is not a real directory');
+                    throw new \Exception('The value of the appDir option is not a real directory');
                 }
                 return $value;
             }
@@ -55,7 +55,7 @@ class Config
                 }
                 $value = realpath($value);
                 if ($value === false) {
-                    throw new \InvalidArgumentException('The value in the dataDir option is not a real directory');
+                    throw new \Exception('The value of the dataDir option is not a real directory');
                 }
                 return $value;
             }
@@ -68,7 +68,7 @@ class Config
                 }
                 $value = realpath($value);
                 if ($value === false) {
-                    throw new \InvalidArgumentException('The value in the logsDir option is not a real directory');
+                    throw new \Exception('The value of the logsDir option is not a real directory');
                 }
                 return $value;
             }
@@ -98,7 +98,13 @@ class Config
             }
         ]);
         $this->defineProperty('assetsPathPrefix', [
-            'type' => '?string',
+            'type' => 'string',
+            'set' => function($value) {
+                if (!isset($value{0})) {
+                    throw new \Exception('The value of the assetsPathPrefix option cannot be empty.');
+                }
+                return $value;
+            },
             'init' => function() {
                 return '/assets/';
             }
