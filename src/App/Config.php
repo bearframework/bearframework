@@ -20,7 +20,6 @@ namespace BearFramework\App;
  * @property bool $displayErrors Display the first handled error. Useful while developing.
  * @property bool $logErrors Log the handled errors.
  * @property string $assetsPathPrefix The prefix of the assets URLs.
- * @property int $assetsMaxAge
  */
 class Config
 {
@@ -107,12 +106,6 @@ class Config
             },
             'init' => function() {
                 return '/assets/';
-            }
-        ]);
-        $this->defineProperty('assetsMaxAge', [
-            'type' => 'int',
-            'init' => function() {
-                return 0;
             }
         ]);
 
