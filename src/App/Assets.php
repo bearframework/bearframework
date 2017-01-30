@@ -60,30 +60,34 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
+        
+        $app = App::get();
+        $filename = $this->getAbsolutePath($filename);
+        if(isset($options['version'])){
+            $options['version'] = substr(md5(md5($options['version']).md5($filename)), 0, 10);
+        }   
         if (!empty($options)) {
             $this->validateOptions($options);
         }
-        $app = App::get();
-
-        $filename = $this->getAbsolutePath($filename);
+        
         $dataDir = $app->config->dataDir;
         if (strlen($dataDir) > 0 && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
             $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
         }
         $optionsString = '';
         if (isset($options['width'])) {
-            $optionsString .= 'w' . $options['width'] . '-';
+            $optionsString .= '-w' . $options['width'];
         }
         if (isset($options['height'])) {
-            $optionsString .= 'h' . $options['height'] . '-';
+            $optionsString .= '-h' . $options['height'];
         }
         if (isset($options['cacheMaxAge'])) {
-            $optionsString .= 'c' . $options['cacheMaxAge'] . '-';
+            $optionsString .= '-c' . $options['cacheMaxAge'];
         }
-        if (isset($optionsString{0})) {
-            $optionsString = rtrim($optionsString, '-');
+        if (isset($options['version'])) {
+            $optionsString .= '-v' . $options['version'];
         }
-        $hash = md5(md5($filename) . md5($optionsString));
+        $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
         foreach ($this->dirs as $dir) {
             if (strlen($dir) > 0 && strpos($filename, $dir) === 0) {
@@ -156,23 +160,23 @@ class Assets
             if (sizeof($partParts) !== 2) {
                 return null;
             }
-            $hash = substr($partParts[0], 0, 32);
-            $optionsString = (string) substr($partParts[0], 32);
+            $hash = substr($partParts[0], 0, 12);
+            $optionsString = (string) substr($partParts[0], 12);
             $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
             $filename = null;
             foreach ($this->dirs as $dir) {
-                if ($hash === md5(md5($dir . DIRECTORY_SEPARATOR . $path) . md5($optionsString))) {
+                if ($hash === substr(md5(md5($dir . DIRECTORY_SEPARATOR . $path) . md5($optionsString)), 0, 12)) {
                     $filename = $dir . DIRECTORY_SEPARATOR . $path;
                     break;
                 }
             }
-            if ($filename !== null && $hash === md5(md5($filename) . md5($optionsString))) {
+            if ($filename !== null) {
                 $result = [
                     'filename' => $filename,
                     'options' => []
                 ];
                 if ($optionsString !== '') {
-                    $options = explode('-', $optionsString);
+                    $options = explode('-', trim($optionsString, '-'));
                     foreach ($options as $option) {
                         if (substr($option, 0, 1) === 'w') {
                             $value = (int) substr($option, 1);
