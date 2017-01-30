@@ -77,6 +77,9 @@ class Assets
         if (isset($options['height'])) {
             $optionsString .= 'h' . $options['height'] . '-';
         }
+        if (isset($options['cacheMaxAge'])) {
+            $optionsString .= 'c' . $options['cacheMaxAge'] . '-';
+        }
         if (isset($optionsString{0})) {
             $optionsString = rtrim($optionsString, '-');
         }
@@ -183,6 +186,12 @@ class Assets
                                 $result['options']['height'] = $value;
                             }
                         }
+                        if (substr($option, 0, 1) === 'c') {
+                            $value = (int) substr($option, 1);
+                            if ($value >= 0) {
+                                $result['options']['cacheMaxAge'] = $value;
+                            }
+                        }
                     }
                 }
                 return $result;
@@ -202,8 +211,8 @@ class Assets
                 return null;
             }
             $response = new App\Response\FileReader($filename);
-            if ($app->config->assetsMaxAge !== null) {
-                $response->headers->set($response->headers->make('Cache-Control', 'public, max-age=' . (int) $app->config->assetsMaxAge));
+            if (isset($options['cacheMaxAge'])) {
+                $response->headers->set($response->headers->make('Cache-Control', 'public, max-age=' . $options['cacheMaxAge']));
             }
             $mimeType = $this->getMimeType($filename);
             if ($mimeType !== null) {
@@ -307,29 +316,34 @@ class Assets
     {
         if (isset($options['width'])) {
             if (!is_int($options['width'])) {
-                throw new \InvalidArgumentException('The value of the width option must be of type int, ' . gettype($options['width']) . ' given');
+                throw new \InvalidArgumentException('The value of the width option must be of type int, ' . gettype($options['width']) . ' given.');
             }
             if ($options['width'] < 1) {
-                throw new \InvalidArgumentException('The value of the width option cannot be lower than 1');
+                throw new \InvalidArgumentException('The value of the width option cannot be lower than 1.');
             }
             if ($options['width'] > 100000) {
-                throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000');
+                throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000.');
             }
         }
         if (isset($options['height'])) {
             if (!is_int($options['height'])) {
-                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['width']) . ' given');
+                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['width']) . ' given.');
             }
             if ($options['height'] < 1) {
-                throw new \InvalidArgumentException('The value of the height option cannot be lower than 1');
+                throw new \InvalidArgumentException('The value of the height option cannot be lower than 1.');
             }
             if ($options['height'] > 100000) {
-                throw new \InvalidArgumentException('The value of the height option cannot be higher than 100000');
+                throw new \InvalidArgumentException('The value of the height option cannot be higher than 100000.');
             }
         }
         if (isset($options['encoding'])) {
             if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
-                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'');
+                throw new \InvalidArgumentException('The encoding option must be \'base64\', \'data-uri\' or \'data-uri-base64\'.');
+            }
+        }
+        if (isset($options['cacheMaxAge'])) {
+            if (!is_int($options['cacheMaxAge']) || $options['cacheMaxAge'] < 0) {
+                throw new \InvalidArgumentException('The value of the cacheMaxAge option must be of type int, ' . gettype($options['cacheMaxAge']) . ' given. It must be positive also.');
             }
         }
     }
