@@ -87,6 +87,9 @@ class Assets
         if (isset($options['version'])) {
             $optionsString .= '-v' . $options['version'];
         }
+        if (isset($options['robotsNoIndex']) &&  $options['robotsNoIndex'] === true) {
+            $optionsString .= '-r1';
+        }
         $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
         foreach ($this->dirs as $dir) {
@@ -196,6 +199,9 @@ class Assets
                                 $result['options']['cacheMaxAge'] = $value;
                             }
                         }
+                        if (substr($option, 0, 2) === 'r1') {
+                            $result['options']['robotsNoIndex'] = true;
+                        }
                     }
                 }
                 return $result;
@@ -217,6 +223,9 @@ class Assets
             $response = new App\Response\FileReader($filename);
             if (isset($options['cacheMaxAge'])) {
                 $response->headers->set($response->headers->make('Cache-Control', 'public, max-age=' . $options['cacheMaxAge']));
+            }
+            if (isset($options['robotsNoIndex'])) {
+                $response->headers->set($response->headers->make('X-Robots-Tag', 'noindex'));
             }
             $mimeType = $this->getMimeType($filename);
             if ($mimeType !== null) {
@@ -348,6 +357,11 @@ class Assets
         if (isset($options['cacheMaxAge'])) {
             if (!is_int($options['cacheMaxAge']) || $options['cacheMaxAge'] < 0) {
                 throw new \InvalidArgumentException('The value of the cacheMaxAge option must be of type int, ' . gettype($options['cacheMaxAge']) . ' given. It must be positive also.');
+            }
+        }
+        if (isset($options['robotsNoIndex'])) {
+            if (!is_bool($options['robotsNoIndex'])) {
+                throw new \InvalidArgumentException('The value of the robotsNoIndex option must be of type bool, ' . gettype($options['robotsNoIndex']) . ' given.');
             }
         }
     }
