@@ -76,7 +76,12 @@ class App
         $this->defineProperty('container', [
             'init' => function() {
                 $container = new App\Container();
-                $container->set('Logger', App\DefaultLogger::class);
+                $container->set('Logger', function() {
+                            if ($this->config->logsDir === null) {
+                                throw new \Exception('The value of the logsDir config variable is empty.');
+                            }
+                            return new App\DefaultLogger($this->config->logsDir);
+                        });
                 $container->set('CacheDriver', App\DefaultCacheDriver::class);
                 return $container;
             },
@@ -91,14 +96,12 @@ class App
         $this->defineProperty('routes', [
             'init' => function() {
                 $routes = new App\RoutesRepository();
-                if ($this->config->assetsPathPrefix !== null) {
-                    $routes->add($this->config->assetsPathPrefix . '*', function() {
-                                $response = $this->assets->getResponse($this->request);
-                                if ($response !== null) {
-                                    return $response;
-                                }
-                            });
-                }
+                $routes->add($this->config->assetsPathPrefix . '*', function() {
+                            $response = $this->assets->getResponse($this->request);
+                            if ($response !== null) {
+                                return $response;
+                            }
+                        });
                 return $routes;
             },
             'readonly' => true
@@ -144,7 +147,10 @@ class App
         ]);
         $this->defineProperty('data', [
             'init' => function() {
-                return new App\DataRepository();
+                if ($this->config->dataDir === null) {
+                    throw new \Exception('The value of the dataDir config variable is empty.');
+                }
+                return new App\DataRepository($this->config->dataDir);
             },
             'readonly' => true
         ]);

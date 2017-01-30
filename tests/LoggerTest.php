@@ -41,19 +41,6 @@ class LogTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testInvalidConfigOption()
-    {
-        $app = $this->getApp([
-            'logsDir' => null
-        ]);
-
-        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
-        $app->logger->log('warning', 'message');
-    }
-
-    /**
-     * 
-     */
     public function testInvalidFile()
     {
         $app = $this->getApp();

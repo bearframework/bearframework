@@ -52,7 +52,7 @@ class ErrorHandler
     static function handleError(string $message, string $file, int $line, array $trace): void
     {
         $app = App::get();
-        if ($app->config->logErrors && strlen($app->config->logsDir) > 0) {
+        if ($app->config->logErrors) {
             try {
                 $data = [];
                 $data['file'] = $file;

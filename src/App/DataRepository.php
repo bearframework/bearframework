@@ -26,26 +26,28 @@ class DataRepository
     private $instance = null;
 
     /**
+     *
+     * @var string 
+     */
+    private $dir = null;
+
+    /**
      * 
      */
     private static $newDataItemCache = null;
 
     /**
-     * Returns the instance of the data storage library
      * 
-     * @throws \BearFramework\App\Config\InvalidOptionException
-     * @return \IvoPetkov\ObjectStorage The instance of the data storage library
+     * @param string $dir The directory where the data will be stored.
      */
-    private function getInstance()
+    function __construct(string $dir)
     {
-        if ($this->instance === null) {
-            $app = App::get();
-            if ($app->config->dataDir === null) {
-                throw new App\Config\InvalidOptionException('Config option dataDir is not set');
-            }
-            $this->instance = new \IvoPetkov\ObjectStorage($app->config->dataDir);
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \Exception('The directory specified is not valid.');
         }
-        return $this->instance;
+        $this->dir = $dir;
+        $this->instance = new \IvoPetkov\ObjectStorage($dir);
     }
 
     /**
@@ -484,8 +486,7 @@ class DataRepository
      */
     public function isValidKey(string $key): bool
     {
-        $instance = $this->getInstance();
-        return $instance->isValidKey($key);
+        return $this->instance->isValidKey($key);
     }
 
     /**
@@ -493,19 +494,14 @@ class DataRepository
      * 
      * @param string $key The key of the data item.
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The filename of the data item specified.
      */
     public function getFilename(string $key): string
     {
-        $app = App::get();
-        if ($app->config->dataDir === null) {
-            throw new App\Config\InvalidOptionException('Config option dataDir is not set');
-        }
         if (!$this->isValidKey($key)) {
             throw new \InvalidArgumentException('The key argument is not valid');
         }
-        return $app->config->dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
+        return $this->dir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
     }
 
     /**
@@ -536,9 +532,8 @@ class DataRepository
      */
     private function execute(array $commands): array
     {
-        $instance = $this->getInstance();
         try {
-            return $instance->execute($commands);
+            return $this->instance->execute($commands);
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
             throw new \Exception($e->getMessage());
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {

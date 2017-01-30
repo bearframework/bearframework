@@ -26,7 +26,6 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
             'BearFramework\App\CacheRepository' => 'src/App/CacheRepository.php',
             'BearFramework\App\ClassesRepository' => 'src/App/ClassesRepository.php',
             'BearFramework\App\Config' => 'src/App/Config.php',
-            'BearFramework\App\Config\InvalidOptionException' => 'src/App/Config/InvalidOptionException.php',
             'BearFramework\App\Container' => 'src/App/Container.php',
             'BearFramework\App\Context' => 'src/App/Context.php',
             'BearFramework\App\Context\Assets' => 'src/App/Context/Assets.php',

@@ -51,8 +51,9 @@ class ContextsRepository
             }
             if ($i === 0) {
                 $app = App::get();
-                if (!isset(self::$dirsCache['app'])) {
-                    $dir = $app->config->appDir . DIRECTORY_SEPARATOR;
+                $appDir = $app->config->appDir;
+                if ($appDir !== null && !isset(self::$dirsCache['app'])) {
+                    $dir = $appDir . DIRECTORY_SEPARATOR;
                     self::$dirsCache['app'] = [$dir, strlen($dir)];
                 }
                 $addons = $app->addons->getList();

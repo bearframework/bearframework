@@ -12,10 +12,29 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * The default logger. It saves the logs in the $app->config->logsDir directory.
+ * The default logger.
  */
 class DefaultLogger implements ILogger
 {
+
+    /**
+     *
+     * @var string 
+     */
+    private $dir = null;
+
+    /**
+     * 
+     * @param string $dir The directory where the logs will be stored.
+     */
+    function __construct($dir)
+    {
+        $dir = realpath($dir);
+        if ($dir === false) {
+            throw new \Exception('The logs directory specified is not valid.');
+        }
+        $this->dir = $dir;
+    }
 
     /**
      * Appends data to the file specified. The file will be created if not exists.
@@ -24,21 +43,16 @@ class DefaultLogger implements ILogger
      * @param string $message The message that will be logged.
      * @param array $context Additional information to log.
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return void No value is returned.
      */
     public function log(string $level, string $message, array $context = []): void
     {
-        $app = App::get();
         $level = trim((string) $level);
         if (strlen($level) === 0) {
             throw new \InvalidArgumentException('The level argument must not be empty');
         }
-        if ($app->config->logsDir === null) {
-            throw new App\Config\InvalidOptionException('Config option logsDir is not set');
-        }
 
-        $filename = $app->config->logsDir . DIRECTORY_SEPARATOR . $level . '-' . date('Y-m-d') . '.log';
+        $filename = $this->dir . DIRECTORY_SEPARATOR . $level . '-' . date('Y-m-d') . '.log';
         try {
             $microtime = microtime(true);
             $microtimeParts = explode('.', $microtime);

@@ -164,20 +164,6 @@ class AssetsTest extends BearFrameworkTestCase
 //    }
 
     /**
-     * 
-     */
-    public function testGetUrlInvalidArguments3()
-    {
-        $app = $this->getApp();
-        $app->config->assetsPathPrefix = null;
-
-        $filename = $app->config->appDir . '/assets/logo.png';
-        $this->createSampleFile($filename, 'png');
-        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
-        $app->assets->getUrl($filename);
-    }
-
-    /**
      * Zero width
      * 
      */

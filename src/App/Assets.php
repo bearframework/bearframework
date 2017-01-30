@@ -56,7 +56,6 @@ class Assets
      * @param string $filename The filename.
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string The URL for the specified filename and options.
      */
     public function getUrl(string $filename, array $options = []): string
@@ -65,9 +64,6 @@ class Assets
             $this->validateOptions($options);
         }
         $app = App::get();
-        if ($app->config->assetsPathPrefix === null) {
-            throw new App\Config\InvalidOptionException('Config option assetsPathPrefix is not set');
-        }
 
         $filename = $this->getAbsolutePath($filename);
         $dataDir = $app->config->dataDir;
@@ -101,7 +97,6 @@ class Assets
      * @param string $filename The filename.
      * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
      * @throws \InvalidArgumentException
-     * @throws \BearFramework\App\Config\InvalidOptionException
      * @return string|null The content of the file or null if file does not exists.
      */
     public function getContent(string $filename, array $options = []): ?string
@@ -150,9 +145,6 @@ class Assets
     {
         $app = App::get();
         $parsePath = function($path) use ($app) {
-            if ($app->config->assetsPathPrefix === null) {
-                return null;
-            }
             if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
                 return null;
             }

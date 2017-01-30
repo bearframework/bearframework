@@ -91,31 +91,6 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetFileNameInvalidArguments3()
-    {
-        $app = $this->getApp([
-            'dataDir' => null
-        ]);
-        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
-        $app->data->getFilename('key');
-    }
-
-    /**
-     * 
-     */
-    public function testGetFileNameInvalidArguments4()
-    {
-        $app = $this->getApp([
-            'dataDir' => null
-        ]);
-
-        $this->setExpectedException('\BearFramework\App\Config\InvalidOptionException');
-        $app->data->getValue('users/1');
-    }
-
-    /**
-     * 
-     */
 //    public function testGetKeyFromFilenameInvalidArguments2()
 //    {
 //        $app = $this->getApp();
