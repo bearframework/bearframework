@@ -19,12 +19,12 @@ class ErrorHandler
 
     /**
      * 
-     * @param \Exception $exception
+     * @param \Throwable $exception
      * @return void No value is returned.
      */
-    static function handleException(\Exception $exception): void
+    static function handleException(\Throwable $exception): void
     {
-        self::handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
+        self::handleError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace());
     }
 
     /**
@@ -74,7 +74,7 @@ class ErrorHandler
             $data .= "\nMessage: " . $message;
             $data .= "\nFile: " . $file;
             $data .= "\nLine: " . $line;
-            $data .= "\nTrace: " . $trace;
+            $data .= "\nTrace: " . implode("\n", $trace);
             $data .= "\nGET: " . print_r(isset($_GET) ? $_GET : null, true);
             $data .= "\nPOST: " . print_r(isset($_POST) ? $_POST : null, true);
             $data .= "\nSERVER: " . print_r(isset($_SERVER) ? $_SERVER : null, true);
