@@ -75,7 +75,7 @@ class ErrorHandler
             $data .= "\nMessage: " . $message;
             $data .= "\nFile: " . $file;
             $data .= "\nLine: " . $line;
-            $data .= "\nTrace: " . implode("\n", $trace);
+            $data .= "\nTrace: " . print_r($trace, true);
             $data .= "\nGET: " . print_r(isset($_GET) ? $_GET : null, true);
             $data .= "\nPOST: " . print_r(isset($_POST) ? $_POST : null, true);
             $data .= "\nSERVER: " . print_r(isset($_SERVER) ? $_SERVER : null, true);
