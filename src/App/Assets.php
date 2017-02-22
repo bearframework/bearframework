@@ -340,7 +340,7 @@ class Assets
         }
         if (isset($options['height'])) {
             if (!is_int($options['height'])) {
-                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['width']) . ' given.');
+                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['height']) . ' given.');
             }
             if ($options['height'] < 1) {
                 throw new \InvalidArgumentException('The value of the height option cannot be lower than 1.');
