@@ -98,7 +98,7 @@ class Assets
             }
         }
 
-        throw new \InvalidArgumentException('The filename specified is located in a dir that is not added');
+        throw new \InvalidArgumentException('The filename specified (' . $filename . ') is located in a dir that is not added');
     }
 
     /**
