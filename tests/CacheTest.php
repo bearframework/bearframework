@@ -63,4 +63,88 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->delete('key1');
     }
 
+    /**
+     * 
+     */
+    public function testClear()
+    {
+        $app = $this->getApp();
+
+        $app->cache->set($app->cache->make('key1', 'data1'));
+        $app->cache->set($app->cache->make('key2', 'data2'));
+
+        $this->assertTrue($app->cache->get('key1') !== null);
+        $this->assertTrue($app->cache->get('key2') !== null);
+
+        $app->cache->clear();
+
+        $this->assertTrue($app->cache->get('key1') === null);
+        $this->assertTrue($app->cache->get('key2') === null);
+    }
+
+    /**
+     * 
+     */
+    public function testHooks()
+    {
+        $app = $this->getApp();
+
+        $lastHookData = null;
+
+        $app->hooks->add('cacheItemChanged', function(\BearFramework\App\Hooks\CacheItemChangedData $data) use (&$lastHookData) {
+            $lastHookData = $data;
+        });
+
+        $app->hooks->add('cacheItemRequested', function(\BearFramework\App\Hooks\CacheItemRequestedData $data) use (&$lastHookData) {
+            $lastHookData = $data;
+        });
+
+        $cacheItem = $app->cache->make('key1', 'data1');
+        $app->cache->set($cacheItem);
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemChangedData);
+        $this->assertTrue($lastHookData->action === 'set');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->cache->exists('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'exists');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->cache->get('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'get');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->cache->getValue('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getValue');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->cache->delete('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemChangedData);
+        $this->assertTrue($lastHookData->action === 'delete');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->cache->exists('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'exists');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->cache->get('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'get');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->cache->getValue('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getValue');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+    }
+
 }

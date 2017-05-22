@@ -292,4 +292,133 @@ class DataTest extends BearFrameworkTestCase
         $app->data->makePrivate('lockeddata1');
     }
 
+    /**
+     * 
+     */
+    public function testHooks()
+    {
+        $app = $this->getApp();
+
+        $lastHookData = null;
+
+        $app->hooks->add('dataItemChanged', function(\BearFramework\App\Hooks\DataItemChangedData $data) use (&$lastHookData) {
+            $lastHookData = $data;
+        });
+
+        $app->hooks->add('dataItemRequested', function(\BearFramework\App\Hooks\DataItemRequestedData $data) use (&$lastHookData) {
+            $lastHookData = $data;
+        });
+
+        $app->hooks->add('dataListRequested', function(\BearFramework\App\Hooks\DataListRequestedData $data) use (&$lastHookData) {
+            $lastHookData = $data;
+        });
+
+        $dataItem = $app->data->make('key1', 'data1');
+        $dataItem->metadata->metaKey1 = 'metaValue1';
+        $dataItem->metadata->metaKey2 = 'metaValue2';
+        $app->data->set($dataItem);
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'set');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->data->setValue('key1', 'data2');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'setValue');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->data->append('key1', 'data3');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'append');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->data->duplicate('key1', 'key2');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'duplicate');
+        $this->assertTrue($lastHookData->key === 'key2');
+
+        $app->data->rename('key2', 'key3');
+        //todo check key2
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'rename');
+        $this->assertTrue($lastHookData->key === 'key3');
+
+        $app->data->setMetadata('key1', 'metaKey3', 'metaValue3');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'setMetadata');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->data->deleteMetadata('key1', 'metaKey3');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'deleteMetadata');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->data->exists('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'exists');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->data->get('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'get');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->data->getValue('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getValue');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->data->getMetadata('key1', 'metaKey1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getMetadata');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->data->getMetadataList('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getMetadataList');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === true);
+
+        $app->data->delete('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemChangedData);
+        $this->assertTrue($lastHookData->action === 'delete');
+        $this->assertTrue($lastHookData->key === 'key1');
+
+        $app->data->exists('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'exists');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->data->get('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'get');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->data->getValue('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getValue');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->data->getMetadata('key1', 'metaKey1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getMetadata');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->data->getMetadataList('key1');
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataItemRequestedData);
+        $this->assertTrue($lastHookData->action === 'getMetadataList');
+        $this->assertTrue($lastHookData->key === 'key1');
+        $this->assertTrue($lastHookData->exists === false);
+
+        $app->data->getList();
+        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\DataListRequestedData);
+    }
+
 }

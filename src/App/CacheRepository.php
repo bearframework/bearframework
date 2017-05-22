@@ -10,6 +10,7 @@
 namespace BearFramework\App;
 
 use BearFramework\App\CacheItem;
+use BearFramework\App;
 
 /**
  * Data cache
@@ -66,7 +67,14 @@ class CacheRepository
      */
     public function set(CacheItem $item): \BearFramework\App\CacheRepository
     {
+        $app = App::get();
         $this->cacheDriver->set($item->key, $item->value, $item->ttl);
+        if ($app->hooks->exists('cacheItemChanged')) {
+            $data = new \BearFramework\App\Hooks\CacheItemChangedData();
+            $data->action = 'set';
+            $data->key = $item->key;
+            $app->hooks->execute('cacheItemChanged', $data);
+        }
         return $this;
     }
 
@@ -78,7 +86,15 @@ class CacheRepository
      */
     public function get(string $key): ?\BearFramework\App\CacheItem
     {
+        $app = App::get();
         $value = $this->cacheDriver->get($key);
+        if ($app->hooks->exists('cacheItemRequested')) {
+            $data = new \BearFramework\App\Hooks\CacheItemRequestedData();
+            $data->action = 'get';
+            $data->key = $key;
+            $data->exists = $value !== null;
+            $app->hooks->execute('cacheItemRequested', $data);
+        }
         if ($value !== null) {
             return $this->make($key, $value);
         }
@@ -93,11 +109,19 @@ class CacheRepository
      */
     public function getValue(string $key)
     {
-        $cacheItem = $this->get($key);
-        if ($cacheItem === null) {
-            return null;
+        $app = App::get();
+        $value = $this->cacheDriver->get($key);
+        if ($app->hooks->exists('cacheItemRequested')) {
+            $data = new \BearFramework\App\Hooks\CacheItemRequestedData();
+            $data->action = 'getValue';
+            $data->key = $key;
+            $data->exists = $value !== null;
+            $app->hooks->execute('cacheItemRequested', $data);
         }
-        return $cacheItem->value;
+        if ($value !== null) {
+            return $value;
+        }
+        return null;
     }
 
     /**
@@ -108,7 +132,15 @@ class CacheRepository
      */
     public function exists(string $key): bool
     {
+        $app = App::get();
         $value = $this->cacheDriver->get($key);
+        if ($app->hooks->exists('cacheItemRequested')) {
+            $data = new \BearFramework\App\Hooks\CacheItemRequestedData();
+            $data->action = 'exists';
+            $data->key = $key;
+            $data->exists = $value !== null;
+            $app->hooks->execute('cacheItemRequested', $data);
+        }
         return $value !== null;
     }
 
@@ -120,7 +152,14 @@ class CacheRepository
      */
     public function delete(string $key): \BearFramework\App\CacheRepository
     {
+        $app = App::get();
         $this->cacheDriver->delete($key);
+        if ($app->hooks->exists('cacheItemChanged')) {
+            $data = new \BearFramework\App\Hooks\CacheItemChangedData();
+            $data->action = 'delete';
+            $data->key = $key;
+            $app->hooks->execute('cacheItemChanged', $data);
+        }
         return $this;
     }
 
