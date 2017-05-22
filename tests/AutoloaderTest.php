@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Video embed
- * https://github.com/ivopetkov/video-embed
- * Copyright 2016, Ivo Petkov
+ * Bear Framework
+ * http://bearframework.com
+ * Copyright (c) 2016-2017 Ivo Petkov
  * Free to use under the MIT license.
  */
 
