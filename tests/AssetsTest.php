@@ -155,6 +155,67 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testAssetPrepareHook()
+    {
+        $app = $this->getApp();
+
+        $this->createDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $filename1 = $app->config->appDir . '/assets/file1.svg';
+        $this->createFile($filename1, 'sample-svg-content-1');
+        $filename2 = $app->config->appDir . '/assets/file2.svg';
+        $this->createFile($filename2, 'sample-svg-content-2');
+
+        $app->hooks->add('assetPrepare', function(\BearFramework\App\Hooks\AssetPrepareData $data) use ($filename2) {
+            $data->filename = $filename2;
+        });
+        $content = $app->assets->getContent($filename1);
+        $this->assertTrue($content === 'sample-svg-content-2');
+    }
+
+    /**
+     * 
+     */
+    public function testAssetPreparedHook()
+    {
+        $app = $this->getApp();
+
+        $this->createDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $filename1 = $app->config->appDir . '/assets/file1.svg';
+        $this->createFile($filename1, 'sample-svg-content-1');
+        $filename2 = $app->config->appDir . '/assets/file2.svg';
+        $this->createFile($filename2, 'sample-svg-content-2');
+
+        $app->hooks->add('assetPrepared', function(\BearFramework\App\Hooks\AssetPreparedData $data) use ($filename2) {
+            $data->filename = $filename2;
+        });
+        $content = $app->assets->getContent($filename1);
+        $this->assertTrue($content === 'sample-svg-content-2');
+    }
+
+    /**
+     * 
+     */
+    public function testAssetUrlCreatedDataHook()
+    {
+        $app = $this->getApp();
+
+        $this->createDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $filename = $app->config->appDir . '/assets/file.svg';
+        $this->createFile($filename, 'sample-svg-content');
+
+        $app->hooks->add('assetUrlCreated', function(\BearFramework\App\Hooks\AssetUrlCreatedData $data) {
+            $data->url = 'http://example.com/file.svg';
+        });
+        $url = $app->assets->getUrl($filename);
+        $this->assertTrue($url === 'http://example.com/file.svg');
+    }
+
+    /**
+     * 
+     */
 //    public function testAddDirInvalidArguments2()
 //    {
 //        $app = $this->getApp();

@@ -60,16 +60,17 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        
+
         $app = App::get();
         $filename = $this->getAbsolutePath($filename);
-        if(isset($options['version'])){
-            $options['version'] = substr(md5(md5($options['version']).md5($filename)), 0, 10);
-        }   
+
+        if (isset($options['version'])) {
+            $options['version'] = substr(md5(md5($options['version']) . md5($filename)), 0, 10);
+        }
         if (!empty($options)) {
             $this->validateOptions($options);
         }
-        
+
         $dataDir = $app->config->dataDir;
         if (strlen($dataDir) > 0 && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
             $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
@@ -87,17 +88,34 @@ class Assets
         if (isset($options['version'])) {
             $optionsString .= '-v' . $options['version'];
         }
-        if (isset($options['robotsNoIndex']) &&  $options['robotsNoIndex'] === true) {
+        if (isset($options['robotsNoIndex']) && $options['robotsNoIndex'] === true) {
             $optionsString .= '-r1';
         }
         $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
+        $url = null;
         foreach ($this->dirs as $dir) {
             if (strlen($dir) > 0 && strpos($filename, $dir) === 0) {
-                return $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
+                $url = $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
+                break;
             }
         }
 
+        if ($app->hooks->exists('assetUrlCreated')) {
+            $data = new \BearFramework\App\Hooks\AssetUrlCreatedData();
+            $data->filename = $filename;
+            $data->options = $options;
+            $data->url = $url;
+            $app->hooks->execute('assetUrlCreated', $data);
+            $url = $data->url;
+            if (strlen($url) === 0) {
+                $url = null;
+            }
+        }
+
+        if ($url !== null) {
+            return $url;
+        }
         throw new \InvalidArgumentException('The filename specified (' . $filename . ') is located in a dir that is not added');
     }
 
@@ -261,7 +279,19 @@ class Assets
             $this->validateOptions($options);
         }
         if (strlen($filename) > 0 && is_file($filename)) {
+            $executeAssetPrepared = function(&$filename) use ($app) {
+                if ($app->hooks->exists('assetPrepared')) {
+                    $data = new \BearFramework\App\Hooks\AssetPreparedData();
+                    $data->filename = $filename;
+                    $app->hooks->execute('assetPrepared', $data);
+                    $filename = $data->filename;
+                    if (strlen($filename) === 0 || !is_file($filename)) {
+                        throw new \Exception('Invalid filename returned by assetPrepared handler.');
+                    }
+                }
+            };
             if (!isset($options['width']) && !isset($options['height'])) {
+                $executeAssetPrepared($filename);
                 return $filename;
             }
             $pathinfo = pathinfo($filename);
@@ -288,6 +318,7 @@ class Assets
                         $app->images->resize($filename, $tempFilename, ['width' => $width, 'height' => $height]);
                     }
                 }
+                $executeAssetPrepared($tempFilename);
                 return $tempFilename;
             }
             return null;

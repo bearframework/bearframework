@@ -39,6 +39,8 @@ class AutoloaderTest extends BearFrameworkAutoloaderTestCase
             'BearFramework\App\ErrorHandler' => 'src/App/ErrorHandler.php',
             'BearFramework\App\HooksRepository' => 'src/App/HooksRepository.php',
             'BearFramework\App\Hooks\AssetPrepareData' => 'src/App/Hooks/AssetPrepareData.php',
+            'BearFramework\App\Hooks\AssetPreparedData' => 'src/App/Hooks/AssetPreparedData.php',
+            'BearFramework\App\Hooks\AssetUrlCreatedData' => 'src/App/Hooks/AssetUrlCreatedData.php',
             'BearFramework\App\Hooks\CacheItemChangedData' => 'src/App/Hooks/CacheItemChangedData.php',
             'BearFramework\App\Hooks\CacheItemRequestedData' => 'src/App/Hooks/CacheItemRequestedData.php',
             'BearFramework\App\Hooks\DataItemChangedData' => 'src/App/Hooks/DataItemChangedData.php',
