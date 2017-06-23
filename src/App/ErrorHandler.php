@@ -67,10 +67,10 @@ class ErrorHandler
                 
             }
         }
+        if (ob_get_length() > 0) {
+            ob_clean();
+        }
         if ($app->config->displayErrors) {
-            if (ob_get_length() > 0) {
-                ob_clean();
-            }
             $data = "Error:";
             $data .= "\nMessage: " . $message;
             $data .= "\nFile: " . $file;
