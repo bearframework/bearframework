@@ -307,13 +307,18 @@ class Assets
                     $width = isset($options['width']) ? $options['width'] : null;
                     $height = isset($options['height']) ? $options['height'] : null;
                     if ($width !== null || $height !== null) {
-
                         if ($width === null) {
                             $imageSize = $app->images->getSize($filename);
                             $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
+                            if($width === 0){
+                                $width = 1;
+                            }
                         } elseif ($height === null) {
                             $imageSize = $app->images->getSize($filename);
                             $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
+                            if($height === 0){
+                                $height = 1;
+                            }
                         }
                         $app->images->resize($filename, $tempFilename, ['width' => $width, 'height' => $height]);
                     }
