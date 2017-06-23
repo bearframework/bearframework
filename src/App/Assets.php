@@ -72,7 +72,7 @@ class Assets
         }
 
         $dataDir = $app->config->dataDir;
-        if (strlen($dataDir) > 0 && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
+        if (isset($dataDir[0]) && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
             $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
         }
         $optionsString = '';
@@ -95,7 +95,7 @@ class Assets
 
         $url = null;
         foreach ($this->dirs as $dir) {
-            if (strlen($dir) > 0 && strpos($filename, $dir) === 0) {
+            if (isset($dir[0]) && strpos($filename, $dir) === 0) {
                 $url = $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
                 break;
             }
