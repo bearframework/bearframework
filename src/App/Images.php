@@ -117,6 +117,12 @@ class Images
         } elseif ($height === null && $width !== null) {
             $height = (int) floor($sourceImageHeight / $sourceImageWidth * $width);
         }
+        if ($width === 0) {
+            $width = 1;
+        }
+        if ($height === 0) {
+            $height = 1;
+        }
 
         if ($sourceImageWidth === $width && $sourceImageHeight === $height) {
             copy($sourceFilename, $destinationFilename);
