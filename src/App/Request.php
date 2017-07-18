@@ -166,7 +166,7 @@ class Request
                 'init' => function() {
                     $cookies = new App\Request\CookiesRepository();
                     foreach ($_COOKIE as $name => $value) {
-                        $cookies->set($cookies->make($name, $value));
+                        $cookies->set($cookies->make((string) $name, (string) $value));
                     }
                     return $cookies;
                 },
