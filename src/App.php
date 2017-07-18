@@ -139,7 +139,9 @@ class App
                                         $data->filename = null;
                                     }
                                 }
-                            });
+                            }, [
+                        'priority' => 1 // It must be executed first, so others can receive a valid filename
+                    ]);
                 }
                 return $assets;
             },
