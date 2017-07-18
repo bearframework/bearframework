@@ -294,39 +294,29 @@ class Assets
                 $executeAssetPrepared($filename);
                 return $filename;
             }
-            $pathinfo = pathinfo($filename);
-            if (isset($pathinfo['extension'])) {
-                $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $pathinfo['extension']);
-                if (!is_file($tempFilename)) {
-                    $pathinfo = pathinfo($tempFilename);
-                    if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
-                        if (!is_dir($pathinfo['dirname'])) {
-                            mkdir($pathinfo['dirname'], 0777, true);
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+            if ($extension === '') {
+                $extension = 'tmp';
+            }
+            $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+            if (!is_file($tempFilename)) {
+                $dir = pathinfo($tempFilename, PATHINFO_DIRNAME);
+                if (!is_dir($dir)) {
+                    try {
+                        mkdir($dir, 0777, true);
+                    } catch (\Exception $e) {
+                        if ($e->getMessage() !== 'mkdir(): File exists') { // The directory may be just created in other process.
+                            throw $e;
                         }
-                    }
-                    $width = isset($options['width']) ? $options['width'] : null;
-                    $height = isset($options['height']) ? $options['height'] : null;
-                    if ($width !== null || $height !== null) {
-                        if ($width === null) {
-                            $imageSize = $app->images->getSize($filename);
-                            $width = (int) floor($imageSize[0] / $imageSize[1] * $height);
-                            if($width === 0){
-                                $width = 1;
-                            }
-                        } elseif ($height === null) {
-                            $imageSize = $app->images->getSize($filename);
-                            $height = (int) floor($imageSize[1] / $imageSize[0] * $width);
-                            if($height === 0){
-                                $height = 1;
-                            }
-                        }
-                        $app->images->resize($filename, $tempFilename, ['width' => $width, 'height' => $height]);
                     }
                 }
-                $executeAssetPrepared($tempFilename);
-                return $tempFilename;
+                $app->images->resize($filename, $tempFilename, [
+                    'width' => (isset($options['width']) ? $options['width'] : null),
+                    'height' => (isset($options['height']) ? $options['height'] : null)
+                ]);
             }
-            return null;
+            $executeAssetPrepared($tempFilename);
+            return $tempFilename;
         }
         return null;
     }
