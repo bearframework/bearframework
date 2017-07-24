@@ -32,7 +32,11 @@ class Assets
     /**
      * 
      */
+    private static $cache = [];
 
+    /**
+     * 
+     */
     public function __construct()
     {
         self::$os = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 0 : 1;
@@ -65,7 +69,7 @@ class Assets
         $filename = $this->getAbsolutePath($filename);
 
         if (isset($options['version'])) {
-            $options['version'] = substr(md5(md5($options['version']) . md5($filename)), 0, 10);
+            $options['version'] = substr(md5(md5($filename) . $options['version']), 0, 10);
         }
         if (!empty($options)) {
             $this->validateOptions($options);
@@ -93,13 +97,17 @@ class Assets
         }
         $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
-        $url = null;
-        foreach ($this->dirs as $dir) {
-            if (isset($dir[0]) && strpos($filename, $dir) === 0) {
-                $url = $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
-                break;
+        $pathCacheKey = '1' . $filename;
+        if (!isset(self::$cache[$pathCacheKey])) {
+            self::$cache[$pathCacheKey] = false;
+            foreach ($this->dirs as $dir) {
+                if (isset($dir[0]) && strpos($filename, $dir) === 0) {
+                    self::$cache[$pathCacheKey] = str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
+                    break;
+                }
             }
         }
+        $url = self::$cache[$pathCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$pathCacheKey];
 
         if ($app->hooks->exists('assetUrlCreated')) {
             $data = new \BearFramework\App\Hooks\AssetUrlCreatedData();
@@ -326,26 +334,30 @@ class Assets
      */
     private function getAbsolutePath(string $path): string
     {
-        if (self::$os === 1 && ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR)) { // is absolute on linux
-        } elseif (self::$os === 0 && preg_match('/^[A-Z]:/i', $path) === 1) { // is absolute on windows
-        } else {
-            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
-        }
-        $parts = array_filter(explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path)), function($value) {
-            return isset($value{0}) && $value !== '.';
-        });
-        $temp = [];
-        foreach ($parts as $part) {
-            if ($part === '..') {
-                if (self::$os === 0 && sizeof($temp) === 1) {
-                    continue;
-                }
-                array_pop($temp);
+        $cacheKey = '0' . $path;
+        if (!isset(self::$cache[$cacheKey])) {
+            if (self::$os === 1 && ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR)) { // is absolute on linux
+            } elseif (self::$os === 0 && preg_match('/^[A-Z]:/i', $path) === 1) { // is absolute on windows
             } else {
-                $temp[] = $part;
+                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
             }
+            $parts = explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path));
+            $temp = [];
+            foreach ($parts as $part) {
+                if ($part === '..') {
+                    if (self::$os === 0 && sizeof($temp) === 1) {
+                        continue;
+                    }
+                    array_pop($temp);
+                } else {
+                    if ($part !== '.') {
+                        $temp[] = $part;
+                    }
+                }
+            }
+            self::$cache[$cacheKey] = (self::$os === 0 ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
         }
-        return (self::$os === 0 ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
+        return self::$cache[$cacheKey];
     }
 
     /**
