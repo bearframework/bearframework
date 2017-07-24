@@ -350,7 +350,7 @@ class Assets
                     }
                     array_pop($temp);
                 } else {
-                    if ($part !== '.') {
+                    if ($part !== '.' && $part !== '') {
                         $temp[] = $part;
                     }
                 }
