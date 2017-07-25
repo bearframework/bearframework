@@ -50,7 +50,7 @@ class Assets
      */
     public function addDir(string $pathname): \BearFramework\App\Assets
     {
-        $this->dirs[] = $this->getAbsolutePath($pathname);
+        $this->dirs[] = rtrim($this->getAbsolutePath($pathname), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         return $this;
     }
 
@@ -64,7 +64,6 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-
         $app = App::get();
         $filename = $this->getAbsolutePath($filename);
 
@@ -79,6 +78,11 @@ class Assets
         if (isset($dataDir[0]) && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
             $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
         }
+
+        $pathInfo = pathinfo($filename);
+        $fileDir = $pathInfo['dirname'] . DIRECTORY_SEPARATOR;
+        $fileBasename = $pathInfo['basename'];
+
         $optionsString = '';
         if (isset($options['width'])) {
             $optionsString .= '-w' . $options['width'];
@@ -97,17 +101,17 @@ class Assets
         }
         $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
-        $pathCacheKey = '1' . $filename;
-        if (!isset(self::$cache[$pathCacheKey])) {
-            self::$cache[$pathCacheKey] = false;
+        $fileDirCacheKey = '1' . $fileDir;
+        if (!isset(self::$cache[$fileDirCacheKey])) {
+            self::$cache[$fileDirCacheKey] = false;
             foreach ($this->dirs as $dir) {
-                if (isset($dir[0]) && strpos($filename, $dir) === 0) {
-                    self::$cache[$pathCacheKey] = str_replace(DIRECTORY_SEPARATOR, '/', substr($filename, strlen($dir)));
+                if (strpos($fileDir, $dir) === 0) {
+                    self::$cache[$fileDirCacheKey] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', substr($fileDir, strlen($dir)));
                     break;
                 }
             }
         }
-        $url = self::$cache[$pathCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$pathCacheKey];
+        $url = self::$cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$fileDirCacheKey] . $fileBasename;
 
         if ($app->hooks->exists('assetUrlCreated')) {
             $data = new \BearFramework\App\Hooks\AssetUrlCreatedData();
@@ -194,8 +198,8 @@ class Assets
             $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
             $filename = null;
             foreach ($this->dirs as $dir) {
-                if ($hash === substr(md5(md5($dir . DIRECTORY_SEPARATOR . $path) . md5($optionsString)), 0, 12)) {
-                    $filename = $dir . DIRECTORY_SEPARATOR . $path;
+                if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
+                    $filename = $dir . $path;
                     break;
                 }
             }
@@ -334,28 +338,31 @@ class Assets
      */
     private function getAbsolutePath(string $path): string
     {
+        $doubleSeparator = DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
+        $path = str_replace(['/', '\\', DIRECTORY_SEPARATOR . '.' . DIRECTORY_SEPARATOR, $doubleSeparator, $doubleSeparator, $doubleSeparator, $doubleSeparator, $doubleSeparator], DIRECTORY_SEPARATOR, $path);
         $cacheKey = '0' . $path;
         if (!isset(self::$cache[$cacheKey])) {
-            if (self::$os === 1 && ($path{0} === DIRECTORY_SEPARATOR || substr($path, 0, 2) == '.' . DIRECTORY_SEPARATOR)) { // is absolute on linux
+            if (self::$os === 1 && $path{0} === DIRECTORY_SEPARATOR) { // is absolute on linux
             } elseif (self::$os === 0 && preg_match('/^[A-Z]:/i', $path) === 1) { // is absolute on windows
             } else {
                 $path = getcwd() . DIRECTORY_SEPARATOR . $path;
             }
-            $parts = explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path));
-            $temp = [];
-            foreach ($parts as $part) {
-                if ($part === '..') {
-                    if (self::$os === 0 && sizeof($temp) === 1) {
-                        continue;
-                    }
-                    array_pop($temp);
-                } else {
-                    if ($part !== '.' && $part !== '') {
+            if (strpos($path, '..') !== false) {
+                $parts = explode(DIRECTORY_SEPARATOR, $path);
+                $temp = [];
+                foreach ($parts as $part) {
+                    if ($part === '..') {
+                        if (self::$os === 0 && sizeof($temp) === 1) {
+                            continue;
+                        }
+                        array_pop($temp);
+                    } else {
                         $temp[] = $part;
                     }
                 }
+                $path = implode(DIRECTORY_SEPARATOR, $temp);
             }
-            self::$cache[$cacheKey] = (self::$os === 0 ? '' : DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $temp);
+            self::$cache[$cacheKey] = $path;
         }
         return self::$cache[$cacheKey];
     }
