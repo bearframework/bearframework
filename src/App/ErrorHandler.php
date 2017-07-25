@@ -58,7 +58,7 @@ class ErrorHandler
         foreach ($backtrace as $backtraceRow) {
             $simpleBacktrace[] = (isset($backtraceRow['file']) ? $backtraceRow['file'] : '') . ':' . (isset($backtraceRow['line']) ? $backtraceRow['line'] : '');
         }
-        
+
         $id = uniqid();
 
         $data = $message . ' in ' . $file . ':' . $line;
@@ -88,17 +88,16 @@ class ErrorHandler
             http_response_code(503);
             echo "Error occurred:\n\n";
             echo $data;
-            exit;
         } else {
             $response = new App\Response\TemporaryUnavailable();
+            try {
+                $app->respond($response);
+            } catch (\Exception $e) {
+                http_response_code(503);
+                echo 'Temporary Unavailable';
+            }
         }
-        try {
-            $app->respond($response);
-        } catch (\Exception $e) {
-            http_response_code(503);
-            echo 'Temporary Unavailable';
-            exit;
-        }
+        exit;
     }
 
 }
