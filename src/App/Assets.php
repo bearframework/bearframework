@@ -99,6 +99,10 @@ class Assets
         if (isset($options['robotsNoIndex']) && $options['robotsNoIndex'] === true) {
             $optionsString .= '-r1';
         }
+        if (isset($options['outputType']) && isset($pathInfo['extension'])) {
+            $optionsString .= '-o' . $pathInfo['extension'];
+            $fileBasename = substr($fileBasename, 0, -strlen($pathInfo['extension'])) . $options['outputType'];
+        }
         $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
         $fileDirCacheKey = '1' . $fileDir;
@@ -152,6 +156,9 @@ class Assets
         if (isset($options['height'])) {
             $urlOptions['height'] = $options['height'];
         }
+        if (isset($options['outputType'])) {
+            $urlOptions['outputType'] = $options['outputType'];
+        }
         $url = $this->getUrl($filename, $urlOptions);
         $path = substr($url, strlen($app->request->base));
 
@@ -193,48 +200,52 @@ class Assets
             if (sizeof($partParts) !== 2) {
                 return null;
             }
+            $result = [
+                'filename' => null,
+                'options' => []
+            ];
             $hash = substr($partParts[0], 0, 12);
             $optionsString = (string) substr($partParts[0], 12);
             $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
-            $filename = null;
-            foreach ($this->dirs as $dir) {
-                if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
-                    $filename = $dir . $path;
-                    break;
-                }
-            }
-            if ($filename !== null) {
-                $result = [
-                    'filename' => $filename,
-                    'options' => []
-                ];
-                if ($optionsString !== '') {
-                    $options = explode('-', trim($optionsString, '-'));
-                    foreach ($options as $option) {
-                        if (substr($option, 0, 1) === 'w') {
-                            $value = (int) substr($option, 1);
-                            if ($value >= 1 && $value <= 100000) {
-                                $result['options']['width'] = $value;
-                            }
-                        }
-                        if (substr($option, 0, 1) === 'h') {
-                            $value = (int) substr($option, 1);
-                            if ($value >= 1 && $value <= 100000) {
-                                $result['options']['height'] = $value;
-                            }
-                        }
-                        if (substr($option, 0, 1) === 'c') {
-                            $value = (int) substr($option, 1);
-                            if ($value >= 0) {
-                                $result['options']['cacheMaxAge'] = $value;
-                            }
-                        }
-                        if (substr($option, 0, 2) === 'r1') {
-                            $result['options']['robotsNoIndex'] = true;
+
+            if ($optionsString !== '') {
+                $options = explode('-', trim($optionsString, '-'));
+                foreach ($options as $option) {
+                    if (substr($option, 0, 1) === 'w') {
+                        $value = (int) substr($option, 1);
+                        if ($value >= 1 && $value <= 100000) {
+                            $result['options']['width'] = $value;
                         }
                     }
+                    if (substr($option, 0, 1) === 'h') {
+                        $value = (int) substr($option, 1);
+                        if ($value >= 1 && $value <= 100000) {
+                            $result['options']['height'] = $value;
+                        }
+                    }
+                    if (substr($option, 0, 1) === 'c') {
+                        $value = (int) substr($option, 1);
+                        if ($value >= 0) {
+                            $result['options']['cacheMaxAge'] = $value;
+                        }
+                    }
+                    if (substr($option, 0, 2) === 'r1') {
+                        $result['options']['robotsNoIndex'] = true;
+                    }
+                    if (substr($option, 0, 1) === 'o') {
+                        $value = substr($option, 1);
+                        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
+                        $path = substr($path, 0, -strlen($pathExtension)) . $value;
+                        $result['options']['outputType'] = $pathExtension;
+                    }
                 }
-                return $result;
+            }
+
+            foreach ($this->dirs as $dir) {
+                if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
+                    $result['filename'] = $dir . $path;
+                    return $result;
+                }
             }
             return null;
         };
@@ -309,6 +320,9 @@ class Assets
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
             if ($extension === '') {
                 $extension = 'tmp';
+            }
+            if (isset($options['outputType'])) {
+                $extension = $options['outputType'];
             }
             $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
             if (!is_file($tempFilename)) {
