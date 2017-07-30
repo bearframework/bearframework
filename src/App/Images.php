@@ -168,7 +168,7 @@ class Images
                     } elseif ($outputType == 'gif') {
                         $result = imagegif($resultImage, $destinationFilename);
                     } elseif ($outputType == 'webp') {
-                        $result = imagewebp($resultImage, $destinationFilename);
+                        $result = imagewebp($resultImage, $destinationFilename, 100);
                     }
                 }
                 imagedestroy($resultImage);
