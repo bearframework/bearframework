@@ -38,6 +38,9 @@ class ContextsRepository
      */
     public function get(string $filename)
     {
+        if (isset(self::$objectsCache[$filename])) {
+            return clone(self::$objectsCache[$filename]);
+        }
         $matchedDir = null;
         for ($i = 0; $i < 2; $i++) { // first try - check cache, second try - update cache and check again
             foreach (self::$dirsCache as $dir) {
@@ -51,10 +54,14 @@ class ContextsRepository
             }
             if ($i === 0) {
                 $app = App::get();
-                $appDir = $app->config->appDir;
-                if ($appDir !== null && !isset(self::$dirsCache['app'])) {
-                    $dir = $appDir . DIRECTORY_SEPARATOR;
-                    self::$dirsCache['app'] = [$dir, strlen($dir)];
+                if (!isset(self::$dirsCache['app'])) {
+                    $appDir = $app->config->appDir;
+                    if ($appDir !== null) {
+                        $dir = $appDir . DIRECTORY_SEPARATOR;
+                        self::$dirsCache['app'] = [$dir, strlen($dir)];
+                    } else {
+                        self::$dirsCache['app'] = ['', 0];
+                    }
                 }
                 $addons = $app->addons->getList();
                 foreach ($addons as $addon) {
@@ -70,6 +77,7 @@ class ContextsRepository
                 return clone(self::$objectsCache[$matchedDir]);
             }
             self::$objectsCache[$matchedDir] = new App\Context(substr($matchedDir, 0, -1));
+            self::$objectsCache[$filename] = clone(self::$objectsCache[$matchedDir]);
             return clone(self::$objectsCache[$matchedDir]);
         }
         throw new \Exception('Connot find context for ' . $filename);

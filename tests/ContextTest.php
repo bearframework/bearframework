@@ -30,6 +30,12 @@ class ContextTest extends BearFrameworkTestCase
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
+        $context = $app->context->get($app->config->appDir . DIRECTORY_SEPARATOR . 'index.php'); // test cache hit
+        $this->assertTrue($context->dir === $app->config->appDir);
+
+        $context = $app->context->get($app->config->appDir . DIRECTORY_SEPARATOR . 'index2.php'); // test cache hit
+        $this->assertTrue($context->dir === $app->config->appDir);
+
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
