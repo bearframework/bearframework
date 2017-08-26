@@ -126,6 +126,15 @@ class RoutesRepository
                 }
             }
         }
+        if ($request->method === 'HEAD') {
+            $getRequest = clone($request);
+            $getRequest->method = 'GET';
+            $response = $this->getResponse($getRequest);
+            if ($response instanceof App\Response) {
+                $response->content = '';
+                return $response;
+            }
+        }
         return null;
     }
 

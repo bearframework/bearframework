@@ -323,6 +323,27 @@ class RoutesTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testHeadResponse()
+    {
+        $app = $this->getApp();
+
+        $app->routes->add('/', function() {
+            $response = new \BearFramework\App\Response\HTML('home');
+            $response->headers->set($response->headers->make('X-Custom-Header', '123'));
+            return $response;
+        });
+        $request = new \BearFramework\App\Request();
+        $request->path->set('/');
+        $request->method = 'HEAD';
+        $response = $app->routes->getResponse($request);
+        $this->assertTrue($response instanceof \BearFramework\App\Response\HTML);
+        $this->assertTrue($response->content === '');
+        $this->assertTrue($response->headers->getValue('X-Custom-Header') === '123');
+    }
+
+    /**
+     * 
+     */
     public function testMissingRoute()
     {
         $app = $this->getApp();
