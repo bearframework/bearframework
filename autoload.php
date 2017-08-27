@@ -35,6 +35,7 @@ $classes = [
     'BearFramework\App\Hooks\DataItemChangedData' => 'src/App/Hooks/DataItemChangedData.php',
     'BearFramework\App\Hooks\DataItemRequestedData' => 'src/App/Hooks/DataItemRequestedData.php',
     'BearFramework\App\Hooks\DataListRequestedData' => 'src/App/Hooks/DataListRequestedData.php',
+    'BearFramework\App\Hooks\ImageGetSizeData' => 'src/App/Hooks/ImageGetSizeData.php',
     'BearFramework\App\ICacheDriver' => 'src/App/ICacheDriver.php',
     'BearFramework\App\ILogger' => 'src/App/ILogger.php',
     'BearFramework\App\Images' => 'src/App/Images.php',

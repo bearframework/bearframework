@@ -9,6 +9,8 @@
 
 namespace BearFramework\App;
 
+use BearFramework\App;
+
 /**
  * Images utilities.
  */
@@ -24,18 +26,38 @@ class Images
      */
     public function getSize(string $filename): array
     {
+        $app = App::get();
+        $hooks = $app->hooks;
+        if ($hooks->exists('imageGetSize')) {
+            $data = new \BearFramework\App\Hooks\ImageGetSizeData();
+            $data->filename = $filename;
+            $hooks->execute('imageGetSize', $data);
+            if ($data->width !== null && $data->height !== null) {
+                return [(int) $data->width, (int) $data->height];
+            }
+            $filename = $data->filename;
+        }
         if (realpath($filename) === false) {
             throw new \InvalidArgumentException('The filename specified does not exist (' . $filename . ')');
         }
         try {
+            $result = null;
             $size = getimagesize($filename);
             if (is_array($size)) {
-                return [(int) $size[0], (int) $size[1]];
-            }
-            if (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
+                $result = [(int) $size[0], (int) $size[1]];
+            } elseif (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
                 $sourceImage = imagecreatefromwebp($filename);
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
+            }
+            if ($result !== null) {
+                if ($hooks->exists('imageGetSizeDone')) {
+                    $data = new \BearFramework\App\Hooks\ImageGetSizeData();
+                    $data->filename = $filename;
+                    $data->width = $result[0];
+                    $data->height = $result[1];
+                    $hooks->execute('imageGetSizeDone', $data);
+                }
                 return $result;
             }
         } catch (\Exception $e) {

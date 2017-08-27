@@ -35,6 +35,59 @@ class ImagesTest extends BearFrameworkTestCase
     }
 
     /**
+     * Return size in imageGetSize
+     */
+    public function testGetSizeHooks1()
+    {
+        $app = $this->getApp();
+        $app->hooks->add('imageGetSize', function(\BearFramework\App\Hooks\ImageGetSizeData $data) {
+            if ($data->filename === 'samplefile.jpg') {
+                $data->width = 200;
+                $data->height = 100;
+            }
+        });
+        $size = $app->images->getSize('samplefile.jpg');
+        $this->assertTrue($size[0] === 200);
+        $this->assertTrue($size[1] === 100);
+    }
+
+    /**
+     * Return size of other image (alias) in imageGetSize
+     */
+    public function testGetSizeHooks2()
+    {
+        $app = $this->getApp();
+
+        $filename = $app->config->appDir . '/assets/logo.jpg';
+        $this->createSampleFile($filename, 'jpg');
+        $app->hooks->add('imageGetSize', function(\BearFramework\App\Hooks\ImageGetSizeData $data) use ($filename) {
+            if ($data->filename === 'samplefile.jpg') {
+                $data->filename = $filename;
+            }
+        });
+        $size = $app->images->getSize('samplefile.jpg');
+        $this->assertTrue($size[0] === 100);
+        $this->assertTrue($size[1] === 70);
+    }
+
+    /**
+     * Log imageGetSize
+     */
+    public function testGetSizeHooks3()
+    {
+        $app = $this->getApp();
+
+        $imageWidth = null;
+        $app->hooks->add('imageGetSizeDone', function(\BearFramework\App\Hooks\ImageGetSizeData $data) use (&$imageWidth) {
+            $imageWidth = $data->width;
+        });
+        $filename = $app->config->appDir . '/assets/logo.jpg';
+        $this->createSampleFile($filename, 'jpg');
+        $app->images->getSize($filename);
+        $this->assertTrue($imageWidth === 100);
+    }
+
+    /**
      * 
      */
     public function testGetSizeInvalidArgument2()
