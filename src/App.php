@@ -120,7 +120,21 @@ class App
         ]);
         $this->defineProperty('hooks', [
             'init' => function() {
-                return new App\HooksRepository();
+                $hooks = new App\HooksRepository();
+                if ($this->config->dataDir !== null) {
+                    $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+                    $hooks->add('assetPrepare', function(\BearFramework\App\Hooks\AssetPrepareData $data) use ($dataAssetsDir) {
+                                if (strpos($data->filename, $dataAssetsDir) === 0) {
+                                    $key = str_replace('\\', '/', substr($data->filename, strlen($dataAssetsDir)));
+                                    if ($this->data->isPublic($key)) {
+                                        $data->filename = $this->data->getFilename($key);
+                                    } else {
+                                        $data->filename = null;
+                                    }
+                                }
+                            });
+                }
+                return $hooks;
             },
             'readonly' => true
         ]);
@@ -130,19 +144,8 @@ class App
                 if ($this->config->dataDir !== null) {
                     $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
                     $assets->addDir($dataAssetsDir);
-                    $this->hooks->add('assetPrepare', function($data) use ($dataAssetsDir) {
-                                if (strpos($data->filename, $dataAssetsDir) === 0) {
-                                    $key = str_replace('\\', '/', substr($data->filename, strlen($dataAssetsDir)));
-                                    if ($this->data->isPublic($key)) {
-                                        $data->filename = $this->data->getFilename($key);
-                                    } else {
-                                        $data->filename = null;
-                                    }
-                                }
-                            }, [
-                        'priority' => 1 // It must be executed first, so others can receive a valid filename
-                    ]);
                 }
+                $hooks = $this->hooks; // Trigger adding assetPrepare hook 
                 return $assets;
             },
             'readonly' => true

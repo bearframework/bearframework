@@ -32,27 +32,4 @@ class HooksTest extends BearFrameworkTestCase
         $this->assertTrue($result === '123456');
     }
 
-    /**
-     * 
-     */
-    public function testPriority()
-    {
-        $app = $this->getApp();
-        $result = '';
-        $app->hooks->add('sampleName', function() use (&$result) {
-            $result .= '78';
-        }, ['priority' => 101]);
-        $app->hooks->add('sampleName', function() use (&$result) {
-            $result .= '34';
-        });
-        $app->hooks->add('sampleName', function() use (&$result) {
-            $result .= '56';
-        });
-        $app->hooks->add('sampleName', function() use (&$result) {
-            $result .= '12';
-        }, ['priority' => 99]);
-        $app->hooks->execute('sampleName');
-        $this->assertTrue($result === '12345678');
-    }
-
 }
