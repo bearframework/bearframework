@@ -24,17 +24,15 @@ class Images
      */
     public function getSize(string $filename): array
     {
-        $filename = realpath($filename);
-        if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified does not exist');
+        if (realpath($filename) === false) {
+            throw new \InvalidArgumentException('The filename specified does not exist (' . $filename . ')');
         }
         try {
             $size = getimagesize($filename);
             if (is_array($size)) {
                 return [(int) $size[0], (int) $size[1]];
             }
-            $pathInfo = pathinfo($filename);
-            if (isset($pathInfo['extension']) && $pathInfo['extension'] === 'webp' && function_exists('imagecreatefromwebp')) {
+            if (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
                 $sourceImage = imagecreatefromwebp($filename);
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
