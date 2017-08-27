@@ -21,12 +21,13 @@ class Urls
      * Constructs a url for the path specified.
      * 
      * @param string $path The path.
+     * @param bool $encode Whether to encode the path.
      * @return string Absolute URL containing the base URL plus the path given.
      */
-    public function get(string $path = '/')
+    public function get(string $path = '/', bool $encode = true)
     {
         $app = App::get();
-        return $app->request->base . $path;
+        return $app->request->base . ($encode ? implode('/', array_map('urlencode', explode('/', $path))) : $path);
     }
 
 }

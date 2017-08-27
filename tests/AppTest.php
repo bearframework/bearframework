@@ -78,6 +78,28 @@ class AppTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testConstructor3()
+    {
+        $_SERVER['REQUEST_URI'] = '/www/%D0%BF%D1%8A%D1%821/%D0%BF%D1%8A%D1%822/';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_SCHEME'] = 'https';
+        $_SERVER['SERVER_NAME'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/www/index.php';
+        $app = new \BearFramework\App();
+        $app->initialize();
+        $this->assertTrue($app instanceof \BearFramework\App);
+        $this->assertTrue($app->request->method === 'GET');
+        $this->assertTrue($app->request->scheme === 'https');
+        $this->assertTrue($app->request->host === 'example.com');
+        $this->assertTrue($app->request->base === 'https://example.com/www');
+        $this->assertTrue((string) $app->request->path === '/%D0%BF%D1%8A%D1%821/%D0%BF%D1%8A%D1%822/');
+        $this->assertTrue((string) $app->request->path->getSegment(0) === 'път1');
+        $this->assertTrue((string) $app->request->path->getSegment(1) === 'път2');
+    }
+
+    /**
+     * 
+     */
     public function testUglyURLs()
     {
         $_SERVER['REQUEST_URI'] = '/www/index.php/path1/';

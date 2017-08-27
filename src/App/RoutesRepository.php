@@ -84,7 +84,7 @@ class RoutesRepository
         $requestPath = (string) $request->path;
         foreach ($this->data as $route) {
             foreach ($route[0] as $pattern) {
-                $found = preg_match('/^' . str_replace(['/', '?', '*'], ['\/', '[^\/]+?', '.+?'], $pattern) . '$/u', $requestPath) === 1;
+                $found = preg_match('/^' . str_replace(['%2F', '%3F', '%2A'], ['\/', '[^\/]+?', '.+?'], urlencode($pattern)) . '$/u', $requestPath) === 1; // symbols: /, ?, *
                 if ($found && !empty($route[2])) {
                     $hasMethodOption = false;
                     $isMethodValid = false;

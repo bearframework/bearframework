@@ -95,11 +95,6 @@ class Request
         if ($initializeFromEnvironment && isset($_SERVER)) {
             $this->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
             $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? $_SERVER['REQUEST_URI'] : '/';
-            $pathSegments = explode('/', $path);
-            foreach ($pathSegments as $i => $pathSegment) {
-                $pathSegments[$i] = str_replace('/', '%2F', urldecode($pathSegment)); // Preserve encoded forward slash
-            }
-            $path = implode('/', $pathSegments);
             $position = strpos($path, '?');
             if ($position !== false) {
                 $path = substr($path, 0, $position);

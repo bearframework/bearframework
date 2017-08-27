@@ -43,11 +43,12 @@ class PathRepository
      * Sets a new path.
      * 
      * @param string $path The new path.
+     * @param bool $encode Whether to encode the path.
      * @return \BearFramework\App\Request\PathRepository A reference to itself.
      */
-    public function set(string $path): \BearFramework\App\Request\PathRepository
+    public function set(string $path, bool $encode = true): \BearFramework\App\Request\PathRepository
     {
-        $this->path = $path;
+        $this->path = $encode ? implode('/', array_map('urlencode', explode('/', $path))) : $path;
         return $this;
     }
 
@@ -65,15 +66,16 @@ class PathRepository
      * Returns the value of the path segment for the index specified or null if not found.
      * 
      * @param int $index the index of the path segment.
+     * @param bool $decode whether to apply urldecode.
      * @return string|null The value of the path segment for the index specified or null if not found.
      */
-    public function getSegment($index): ?string
+    public function getSegment($index, $decode = true): ?string
     {
         $path = trim($this->path, '/');
         if (isset($path{0})) {
             $parts = explode('/', $path);
             if (array_key_exists($index, $parts)) {
-                return $parts[$index];
+                return $decode ? urldecode($parts[$index]) : $parts[$index];
             }
         }
         return null;
