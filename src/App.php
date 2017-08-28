@@ -121,32 +121,26 @@ class App
         $this->defineProperty('hooks', [
             'init' => function() {
                 $hooks = new App\HooksRepository();
-                if ($this->config->dataDir !== null) {
-                    $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-                    $hooks->add('assetPrepare', function(\BearFramework\App\Hooks\AssetPrepareData $data) use ($dataAssetsDir) {
-                                if (strpos($data->filename, $dataAssetsDir) === 0) {
-                                    $key = str_replace('\\', '/', substr($data->filename, strlen($dataAssetsDir)));
+                $hooks->add('assetPrepare', function(&$filename) {
+                            if ($this->config->dataDir !== null) {
+                                $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+                                if (strpos($filename, $dataAssetsDir) === 0) {
+                                    $key = str_replace('\\', '/', substr($filename, strlen($dataAssetsDir)));
                                     if ($this->data->isPublic($key)) {
-                                        $data->filename = $this->data->getFilename($key);
+                                        $filename = $this->data->getFilename($key);
                                     } else {
-                                        $data->filename = null;
+                                        $filename = null;
                                     }
                                 }
-                            });
-                }
+                            }
+                        });
                 return $hooks;
             },
             'readonly' => true
         ]);
         $this->defineProperty('assets', [
             'init' => function() {
-                $assets = new App\Assets();
-                if ($this->config->dataDir !== null) {
-                    $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-                    $assets->addDir($dataAssetsDir);
-                }
-                $hooks = $this->hooks; // Trigger adding assetPrepare hook 
-                return $assets;
+                return new App\Assets();
             },
             'readonly' => true
         ]);
@@ -283,6 +277,11 @@ class App
                         throw $e;
                     }
                 }
+            }
+
+            if ($this->config->dataDir !== null) {
+                $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+                $this->assets->addDir($dataAssetsDir);
             }
 
             $this->hooks->execute('initialized');
