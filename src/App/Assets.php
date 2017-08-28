@@ -65,68 +65,72 @@ class Assets
     public function getUrl(string $filename, array $options = []): string
     {
         $app = App::get();
-        $filename = $this->getAbsolutePath($filename);
+        $hooks = $app->hooks;
 
-        if (isset($options['version'])) {
-            $options['version'] = substr(md5(md5($filename) . $options['version']), 0, 10);
-        }
-        if (!empty($options)) {
-            $this->validateOptions($options);
-        }
-
-        $dataDir = $app->config->dataDir;
-        if (isset($dataDir[0]) && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
-            $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
+        $url = null;
+        if ($hooks->exists('assetGetUrl')) {
+            $returnValue = null;
+            $hooks->execute('assetGetUrl', $filename, $options, $returnValue);
+            if (is_string($returnValue)) {
+                $url = $returnValue;
+            }
         }
 
-        $pathInfo = pathinfo($filename);
-        $fileDir = $pathInfo['dirname'] . DIRECTORY_SEPARATOR;
-        $fileBasename = $pathInfo['basename'];
+        if ($url === null) {
+            $filename = $this->getAbsolutePath($filename);
 
-        $optionsString = '';
-        if (isset($options['width'])) {
-            $optionsString .= '-w' . $options['width'];
-        }
-        if (isset($options['height'])) {
-            $optionsString .= '-h' . $options['height'];
-        }
-        if (isset($options['cacheMaxAge'])) {
-            $optionsString .= '-c' . $options['cacheMaxAge'];
-        }
-        if (isset($options['version'])) {
-            $optionsString .= '-v' . $options['version'];
-        }
-        if (isset($options['robotsNoIndex']) && $options['robotsNoIndex'] === true) {
-            $optionsString .= '-r1';
-        }
-        if (isset($options['outputType']) && isset($pathInfo['extension'])) {
-            $optionsString .= '-o' . $pathInfo['extension'];
-            $fileBasename = substr($fileBasename, 0, -strlen($pathInfo['extension'])) . $options['outputType'];
-        }
-        $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
+            if (isset($options['version'])) {
+                $options['version'] = substr(md5(md5($filename) . $options['version']), 0, 10);
+            }
+            if (!empty($options)) {
+                $this->validateOptions($options);
+            }
 
-        $fileDirCacheKey = '1' . $fileDir;
-        if (!isset(self::$cache[$fileDirCacheKey])) {
-            self::$cache[$fileDirCacheKey] = false;
-            foreach ($this->dirs as $dir) {
-                if (strpos($fileDir, $dir) === 0) {
-                    self::$cache[$fileDirCacheKey] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', substr($fileDir, strlen($dir)));
-                    break;
+            $dataDir = $app->config->dataDir;
+            if (isset($dataDir[0]) && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
+                $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
+            }
+
+            $pathInfo = pathinfo($filename);
+            $fileDir = $pathInfo['dirname'] . DIRECTORY_SEPARATOR;
+            $fileBasename = $pathInfo['basename'];
+
+            $optionsString = '';
+            if (isset($options['width'])) {
+                $optionsString .= '-w' . $options['width'];
+            }
+            if (isset($options['height'])) {
+                $optionsString .= '-h' . $options['height'];
+            }
+            if (isset($options['cacheMaxAge'])) {
+                $optionsString .= '-c' . $options['cacheMaxAge'];
+            }
+            if (isset($options['version'])) {
+                $optionsString .= '-v' . $options['version'];
+            }
+            if (isset($options['robotsNoIndex']) && $options['robotsNoIndex'] === true) {
+                $optionsString .= '-r1';
+            }
+            if (isset($options['outputType']) && isset($pathInfo['extension'])) {
+                $optionsString .= '-o' . $pathInfo['extension'];
+                $fileBasename = substr($fileBasename, 0, -strlen($pathInfo['extension'])) . $options['outputType'];
+            }
+            $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
+
+            $fileDirCacheKey = '1' . $fileDir;
+            if (!isset(self::$cache[$fileDirCacheKey])) {
+                self::$cache[$fileDirCacheKey] = false;
+                foreach ($this->dirs as $dir) {
+                    if (strpos($fileDir, $dir) === 0) {
+                        self::$cache[$fileDirCacheKey] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', substr($fileDir, strlen($dir)));
+                        break;
+                    }
                 }
             }
+            $url = self::$cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$fileDirCacheKey] . $fileBasename;
         }
-        $url = self::$cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$fileDirCacheKey] . $fileBasename;
-
-        if ($app->hooks->exists('assetUrlCreated')) {
-            $data = new \BearFramework\App\Hooks\AssetUrlCreatedData();
-            $data->filename = $filename;
-            $data->options = $options;
-            $data->url = $url;
-            $app->hooks->execute('assetUrlCreated', $data);
-            $url = $data->url;
-            if (strlen($url) === 0) {
-                $url = null;
-            }
+        if ($hooks->exists('assetGetUrlDone')) {
+            $hooks->execute('assetGetUrlDone', $filename, $options, $url);
         }
 
         if ($url !== null) {
@@ -286,65 +290,58 @@ class Assets
      */
     public function prepare(string $filename, array $options = []): ?string
     {
-        if (!empty($options)) {
-            $this->validateOptions($options);
-        }
         $app = App::get();
-        if ($app->hooks->exists('assetPrepare')) {
-            $data = new \BearFramework\App\Hooks\AssetPrepareData();
-            $data->filename = $filename;
-            $data->width = isset($options['width']) ? $options['width'] : null;
-            $data->height = isset($options['height']) ? $options['height'] : null;
-            $app->hooks->execute('assetPrepare', $data);
-            $filename = $data->filename;
-            $options['width'] = $data->width;
-            $options['height'] = $data->height;
-            $this->validateOptions($options);
+        $hooks = $app->hooks;
+
+        $result = null;
+
+        $preventDefault = false;
+        if ($hooks->exists('assetPrepare')) {
+            $returnValue = null;
+            $hooks->execute('assetPrepare', $filename, $options, $returnValue, $preventDefault);
+            if (is_string($returnValue)) {
+                $result = $returnValue;
+            }
         }
-        if (strlen($filename) > 0 && is_file($filename)) {
-            $executeAssetPrepared = function(&$filename) use ($app) {
-                if ($app->hooks->exists('assetPrepared')) {
-                    $data = new \BearFramework\App\Hooks\AssetPreparedData();
-                    $data->filename = $filename;
-                    $app->hooks->execute('assetPrepared', $data);
-                    $filename = $data->filename;
-                    if (strlen($filename) === 0 || !is_file($filename)) {
-                        throw new \Exception('Invalid filename returned by assetPrepared handler.');
+
+        if ($result === null && !$preventDefault) {
+            if (!empty($options)) {
+                $this->validateOptions($options);
+            }
+            if (strlen($filename) > 0 && is_file($filename)) {
+                if (!isset($options['width']) && !isset($options['height'])) {
+                    $result = $filename;
+                } else {
+                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                    if ($extension === '') {
+                        $extension = 'tmp';
                     }
-                }
-            };
-            if (!isset($options['width']) && !isset($options['height'])) {
-                $executeAssetPrepared($filename);
-                return $filename;
-            }
-            $extension = pathinfo($filename, PATHINFO_EXTENSION);
-            if ($extension === '') {
-                $extension = 'tmp';
-            }
-            if (isset($options['outputType'])) {
-                $extension = $options['outputType'];
-            }
-            $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
-            if (!is_file($tempFilename)) {
-                $dir = pathinfo($tempFilename, PATHINFO_DIRNAME);
-                if (!is_dir($dir)) {
-                    try {
-                        mkdir($dir, 0777, true);
-                    } catch (\Exception $e) {
-                        if ($e->getMessage() !== 'mkdir(): File exists') { // The directory may be just created in other process.
-                            throw $e;
+                    if (isset($options['outputType'])) {
+                        $extension = $options['outputType'];
+                    }
+                    $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+                    if (!is_file($tempFilename)) {
+                        $dir = pathinfo($tempFilename, PATHINFO_DIRNAME);
+                        if (!is_dir($dir)) {
+                            try {
+                                mkdir($dir, 0777, true);
+                            } catch (\Exception $e) {
+                                if ($e->getMessage() !== 'mkdir(): File exists') { // The directory may be just created in other process.
+                                    throw $e;
+                                }
+                            }
                         }
+                        $app->images->resize($filename, $tempFilename, [
+                            'width' => (isset($options['width']) ? $options['width'] : null),
+                            'height' => (isset($options['height']) ? $options['height'] : null)
+                        ]);
                     }
+                    $result = $tempFilename;
                 }
-                $app->images->resize($filename, $tempFilename, [
-                    'width' => (isset($options['width']) ? $options['width'] : null),
-                    'height' => (isset($options['height']) ? $options['height'] : null)
-                ]);
             }
-            $executeAssetPrepared($tempFilename);
-            return $tempFilename;
         }
-        return null;
+        $hooks->execute('assetPrepareDone', $filename, $options, $result);
+        return $result;
     }
 
     /**

@@ -75,35 +75,33 @@ class DataRepository
     /**
      * Stores a data item.
      * 
-     * @param \BearFramework\App\DataItem $item The cache item to store.
+     * @param \BearFramework\App\DataItem $item The data item to store.
      * @return \BearFramework\App\DataRepository A reference to itself.
      */
     public function set(DataItem $item): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        $command = [
-            'command' => 'set',
-            'key' => $item->key,
-            'body' => $item->value,
-            'metadata.*' => ''
-        ];
-        $metadata = $item->metadata->toArray();
-        foreach ($metadata as $name => $value) {
-            $command['metadata.' . $name] = $value;
-        }
-        try {
-            $this->execute([$command]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'set';
-                $data->key = $item->key;
-                $app->hooks->execute('dataItemChanged', $data);
+        $hooks = $app->hooks;
+
+        $item = clone($item);
+        $preventDefault = false;
+        $hooks->execute('dataItemSet', $item, $preventDefault);
+        if (!$preventDefault) {
+            $command = [
+                'command' => 'set',
+                'key' => $item->key,
+                'body' => $item->value,
+                'metadata.*' => ''
+            ];
+            $metadata = $item->metadata->toArray();
+            foreach ($metadata as $name => $value) {
+                $command['metadata.' . $name] = $value;
             }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+            $this->execute([$command]);
         }
+        $hooks->execute('dataItemSetDone', $item);
+        $key = $item->key;
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
@@ -117,7 +115,11 @@ class DataRepository
     public function setValue(string $key, string $value): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemSetValue', $key, $value, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'set',
@@ -125,17 +127,9 @@ class DataRepository
                     'body' => $value
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'setValue';
-                $data->key = $key;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemSetValueDone', $key, $value);
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
@@ -149,28 +143,31 @@ class DataRepository
     public function get(string $key): ?\BearFramework\App\DataItem
     {
         $app = App::get();
-        try {
-            $result = $this->execute([
-                [
-                    'command' => 'get',
-                    'key' => $key,
-                    'result' => ['key', 'body', 'metadata']
-                ]
-            ]);
-            if ($app->hooks->exists('dataItemRequested')) {
-                $data = new \BearFramework\App\Hooks\DataItemRequestedData();
-                $data->action = 'get';
-                $data->key = $key;
-                $data->exists = isset($result[0]['key']);
-                $app->hooks->execute('dataItemRequested', $data);
+        $hooks = $app->hooks;
+
+        $item = null;
+        $returnValue = null;
+        $preventDefault = false;
+        $hooks->execute('dataItemGet', $key, $returnValue, $preventDefault);
+        if ($returnValue instanceof \BearFramework\App\DataItem) {
+            $item = $returnValue;
+        } else {
+            if (!$preventDefault) {
+                $result = $this->execute([
+                    [
+                        'command' => 'get',
+                        'key' => $key,
+                        'result' => ['key', 'body', 'metadata']
+                    ]
+                ]);
+                if (isset($result[0]['key'])) {
+                    $item = $this->makeDataItemFromRawData($result[0]);
+                }
             }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
         }
-        if (isset($result[0]['key'])) {
-            return $this->makeDataItemFromRawData($result[0]);
-        }
-        return null;
+        $hooks->execute('dataItemGetDone', $key, $item);
+        $hooks->execute('dataItemRequested', $key);
+        return $item;
     }
 
     /**
@@ -183,28 +180,31 @@ class DataRepository
     public function getValue(string $key): ?string
     {
         $app = App::get();
-        try {
-            $result = $this->execute([
-                [
-                    'command' => 'get',
-                    'key' => $key,
-                    'result' => ['body']
-                ]
-            ]);
-            if ($app->hooks->exists('dataItemRequested')) {
-                $data = new \BearFramework\App\Hooks\DataItemRequestedData();
-                $data->action = 'getValue';
-                $data->key = $key;
-                $data->exists = isset($result[0]['body']);
-                $app->hooks->execute('dataItemRequested', $data);
+        $hooks = $app->hooks;
+
+        $value = null;
+        $returnValue = null;
+        $preventDefault = false;
+        $hooks->execute('dataItemGetValue', $key, $returnValue, $preventDefault);
+        if ($returnValue !== null) {
+            $value = $returnValue;
+        } else {
+            if (!$preventDefault) {
+                $result = $this->execute([
+                    [
+                        'command' => 'get',
+                        'key' => $key,
+                        'result' => ['body']
+                    ]
+                ]);
+                if (isset($result[0]['body'])) {
+                    $value = $result[0]['body'];
+                }
             }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
         }
-        if (isset($result[0]['body'])) {
-            return $result[0]['body'];
-        }
-        return null;
+        $hooks->execute('dataItemGetValueDone', $key, $value);
+        $hooks->execute('dataItemRequested', $key);
+        return $value;
     }
 
     /**
@@ -217,7 +217,13 @@ class DataRepository
     public function exists(string $key): bool
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $returnValue = null;
+        $hooks->execute('dataItemExists', $key, $returnValue);
+        if (is_bool($returnValue)) {
+            $exists = $returnValue;
+        } else {
             $result = $this->execute([
                 [
                     'command' => 'get',
@@ -225,17 +231,12 @@ class DataRepository
                     'result' => ['key']
                 ]
             ]);
-            if ($app->hooks->exists('dataItemRequested')) {
-                $data = new \BearFramework\App\Hooks\DataItemRequestedData();
-                $data->action = 'exists';
-                $data->key = $key;
-                $data->exists = isset($result[0]['key']);
-                $app->hooks->execute('dataItemRequested', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
+            $exists = isset($result[0]['key']);
         }
-        return isset($result[0]['key']);
+
+        $hooks->execute('dataItemExistsDone', $key, $exists);
+        $hooks->execute('dataItemRequested', $key);
+        return $exists;
     }
 
     /**
@@ -250,7 +251,11 @@ class DataRepository
     public function append(string $key, string $content): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemAppend', $key, $content, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'append',
@@ -258,17 +263,9 @@ class DataRepository
                     'body' => $content
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'append';
-                $data->key = $key;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemAppendDone', $key, $content);
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
@@ -284,7 +281,11 @@ class DataRepository
     public function duplicate(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemDuplicate', $sourceKey, $destinationKey, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'duplicate',
@@ -292,17 +293,9 @@ class DataRepository
                     'targetKey' => $destinationKey
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'duplicate';
-                $data->key = $destinationKey;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemDuplicateDone', $sourceKey, $destinationKey);
+        $hooks->execute('dataItemChanged', $destinationKey);
         return $this;
     }
 
@@ -318,7 +311,11 @@ class DataRepository
     public function rename(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemRename', $sourceKey, $destinationKey, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'rename',
@@ -326,21 +323,10 @@ class DataRepository
                     'targetKey' => $destinationKey
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'rename';
-                $data->key = $sourceKey;
-                $app->hooks->execute('dataItemChanged', $data);
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'rename';
-                $data->key = $destinationKey;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemRenameDone', $sourceKey, $destinationKey);
+        $hooks->execute('dataItemChanged', $sourceKey);
+        $hooks->execute('dataItemChanged', $destinationKey);
         return $this;
     }
 
@@ -355,24 +341,20 @@ class DataRepository
     public function delete(string $key): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemDelete', $key, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'delete',
                     'key' => $key
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'delete';
-                $data->key = $key;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemDeleteDone', $key);
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
@@ -389,7 +371,11 @@ class DataRepository
     public function setMetadata(string $key, string $name, string $value): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemSetMetadata', $key, $name, $value, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'set',
@@ -397,17 +383,9 @@ class DataRepository
                     'metadata.' . $name => $value
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'setMetadata';
-                $data->key = $key;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemSetMetadataDone', $key, $name, $value);
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
@@ -422,26 +400,30 @@ class DataRepository
     public function getMetadata(string $key, string $name): ?string
     {
         $app = App::get();
-        try {
-            $result = $this->execute([
-                [
-                    'command' => 'get',
-                    'key' => $key,
-                    'result' => ['metadata.' . $name]
-                ]
+        $hooks = $app->hooks;
+
+        $value = null;
+        $returnValue = null;
+        $preventDefault = false;
+        $hooks->execute('dataItemGetMetadata', $key, $name, $returnValue, $preventDefault);
+        if (is_string($returnValue)) {
+            $value = $returnValue;
+        } else {
+            if (!$preventDefault) {
+                $result = $this->execute([
+                    [
+                        'command' => 'get',
+                        'key' => $key,
+                        'result' => ['metadata.' . $name]
                     ]
-            );
-            if ($app->hooks->exists('dataItemRequested')) {
-                $data = new \BearFramework\App\Hooks\DataItemRequestedData();
-                $data->action = 'getMetadata';
-                $data->key = $key;
-                $data->exists = isset($result[0]['metadata.' . $name]);
-                $app->hooks->execute('dataItemRequested', $data);
+                        ]
+                );
+                $value = isset($result[0]['metadata.' . $name]) ? $result[0]['metadata.' . $name] : null;
             }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
         }
-        return isset($result[0]['metadata.' . $name]) ? $result[0]['metadata.' . $name] : null;
+        $hooks->execute('dataItemGetMetadataDone', $key, $name, $value);
+        $hooks->execute('dataItemRequested', $key);
+        return $value;
     }
 
     /**
@@ -456,7 +438,11 @@ class DataRepository
     public function deleteMetadata(string $key, string $name): \BearFramework\App\DataRepository
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('dataItemDeleteMetadata', $key, $name, $preventDefault);
+        if (!$preventDefault) {
             $this->execute([
                 [
                     'command' => 'set',
@@ -464,17 +450,9 @@ class DataRepository
                     'metadata.' . $name => ''
                 ]
             ]);
-            if ($app->hooks->exists('dataItemChanged')) {
-                $data = new \BearFramework\App\Hooks\DataItemChangedData();
-                $data->action = 'deleteMetadata';
-                $data->key = $key;
-                $app->hooks->execute('dataItemChanged', $data);
-            }
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
         }
+        $hooks->execute('dataItemDeleteMetadataDone', $key, $name);
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
@@ -488,7 +466,14 @@ class DataRepository
     public function getMetadataList(string $key): \BearFramework\DataList
     {
         $app = App::get();
-        try {
+        $hooks = $app->hooks;
+
+        $value = null;
+        $returnValue = null;
+        $hooks->execute('dataItemGetMetadataList', $key, $returnValue);
+        if ($returnValue instanceof \BearFramework\DataList) {
+            $value = $returnValue;
+        } else {
             $result = $this->execute([
                 [
                     'command' => 'get',
@@ -497,26 +482,20 @@ class DataRepository
                 ]
                     ]
             );
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        }
-        $objectMetadata = [];
-        foreach ($result[0] as $name => $value) {
-            if (strpos($name, 'metadata.') === 0) {
-                $name = substr($name, 9);
-                if ($name !== 'internalFrameworkPropertyPublic') {
-                    $objectMetadata[] = ['name' => $name, 'value' => $value];
+            $objectMetadata = [];
+            foreach ($result[0] as $name => $value) {
+                if (strpos($name, 'metadata.') === 0) {
+                    $name = substr($name, 9);
+                    if ($name !== 'internalFrameworkPropertyPublic') {
+                        $objectMetadata[] = ['name' => $name, 'value' => $value];
+                    }
                 }
             }
+            $value = new \BearFramework\DataList($objectMetadata);
         }
-        if ($app->hooks->exists('dataItemRequested')) {
-            $data = new \BearFramework\App\Hooks\DataItemRequestedData();
-            $data->action = 'getMetadataList';
-            $data->key = $key;
-            $data->exists = !empty($objectMetadata);
-            $app->hooks->execute('dataItemRequested', $data);
-        }
-        return new \BearFramework\DataList($objectMetadata);
+        $hooks->execute('dataItemGetMetadataListDone', $key, $value);
+        $hooks->execute('dataItemRequested', $key);
+        return $value;
     }
 
     /**
@@ -524,15 +503,21 @@ class DataRepository
      * 
      * @return \BearFramework\DataList A list of all items in the data storage.
      */
-    public function getList()
+    public function getList(): \BearFramework\DataList
     {
         $app = App::get();
-        $list = new \BearFramework\DataList(function($context) {
-            $whereOptions = [];
-            foreach ($context->filterByProperties as $filter) {
-                $whereOptions[] = [$filter->property, $filter->value, $filter->operator];
-            }
-            try {
+        $hooks = $app->hooks;
+
+        $returnValue = null;
+        $hooks->execute('dataGetList', $returnValue);
+        if ($returnValue instanceof \BearFramework\DataList) {
+            $value = $returnValue;
+        } else {
+            $value = new \BearFramework\DataList(function($context) {
+                $whereOptions = [];
+                foreach ($context->filterByProperties as $filter) {
+                    $whereOptions[] = [$filter->property, $filter->value, $filter->operator];
+                }
                 $result = $this->execute([
                     [
                         'command' => 'search',
@@ -540,20 +525,16 @@ class DataRepository
                         'result' => ['key', 'body', 'metadata']
                     ]
                 ]);
-            } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-                throw new \Exception($e->getMessage());
-            }
-            $list = [];
-            foreach ($result[0] as $rawData) {
-                $list[] = $this->makeDataItemFromRawData($rawData);
-            }
-            return $list;
-        });
-        if ($app->hooks->exists('dataListRequested')) {
-            $data = new \BearFramework\App\Hooks\DataListRequestedData();
-            $app->hooks->execute('dataListRequested', $data);
+                $list = [];
+                foreach ($result[0] as $rawData) {
+                    $list[] = $this->makeDataItemFromRawData($rawData);
+                }
+                return $list;
+            });
         }
-        return $list;
+        $hooks->execute('dataGetListDone', $value);
+        $hooks->execute('dataListRequested');
+        return $value;
     }
 
     /**
@@ -566,7 +547,17 @@ class DataRepository
      */
     public function makePublic(string $key): \BearFramework\App\DataRepository
     {
-        $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
+        $app = App::get();
+        $hooks = $app->hooks;
+
+        $hooks->execute('dataItemMakePublic', $key, $preventDefault);
+        if (!$preventDefault) {
+            $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
+        }
+        $hooks->execute('dataItemMakePublicDone', $key);
+        if ($preventDefault) {
+            $hooks->execute('dataItemChanged', $key);
+        }
         return $this;
     }
 
@@ -580,7 +571,17 @@ class DataRepository
      */
     public function makePrivate(string $key): \BearFramework\App\DataRepository
     {
-        $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
+        $app = App::get();
+        $hooks = $app->hooks;
+
+        $hooks->execute('dataItemMakePrivate', $key, $preventDefault);
+        if (!$preventDefault) {
+            $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
+        }
+        $hooks->execute('dataItemMakePrivateDone', $key);
+        if ($preventDefault) {
+            $hooks->execute('dataItemChanged', $key);
+        }
         return $this;
     }
 
@@ -593,7 +594,19 @@ class DataRepository
      */
     public function isPublic(string $key): bool
     {
-        return $this->getMetadata($key, 'internalFrameworkPropertyPublic') === '1';
+        $app = App::get();
+        $hooks = $app->hooks;
+
+        $returnValue = null;
+        $hooks->execute('dataItemIsPublic', $key, $returnValue);
+        if (is_bool($returnValue)) {
+            $isPublic = $returnValue;
+        } else {
+            $isPublic = $this->getMetadata($key, 'internalFrameworkPropertyPublic') === '1';
+        }
+        $hooks->execute('dataItemIsPublicDone', $key, $isPublic);
+        $hooks->execute('dataItemRequested', $key);
+        return $isPublic;
     }
 
     /**
@@ -616,10 +629,25 @@ class DataRepository
      */
     public function getFilename(string $key): string
     {
-        if (!$this->isValidKey($key)) {
-            throw new \InvalidArgumentException('The key argument is not valid');
+        $app = App::get();
+        $hooks = $app->hooks;
+
+        $value = null;
+        $returnValue = null;
+        $preventDefault = false;
+        $hooks->execute('dataItemGetFilename', $key, $returnValue, $preventDefault);
+        if ($returnValue !== null) {
+            $value = $returnValue;
+        } else {
+            if (!$preventDefault) {
+                if (!$this->isValidKey($key)) {
+                    throw new \InvalidArgumentException('The key argument is not valid');
+                }
+                $value = $this->dir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
+            }
         }
-        return $this->dir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
+        $hooks->execute('dataItemGetFilenameDone', $key, $value);
+        return $value;
     }
 
     /**

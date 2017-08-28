@@ -68,13 +68,17 @@ class CacheRepository
     public function set(CacheItem $item): \BearFramework\App\CacheRepository
     {
         $app = App::get();
-        $this->cacheDriver->set($item->key, $item->value, $item->ttl);
-        if ($app->hooks->exists('cacheItemChanged')) {
-            $data = new \BearFramework\App\Hooks\CacheItemChangedData();
-            $data->action = 'set';
-            $data->key = $item->key;
-            $app->hooks->execute('cacheItemChanged', $data);
+        $hooks = $app->hooks;
+
+        $item = clone($item);
+        $preventDefault = false;
+        $hooks->execute('cacheItemSet', $item, $preventDefault);
+        if (!$preventDefault) {
+            $this->cacheDriver->set($item->key, $item->value, $item->ttl);
         }
+        $hooks->execute('cacheItemSetDone', $item);
+        $key = $item->key;
+        $hooks->execute('cacheItemChanged', $key);
         return $this;
     }
 
@@ -87,18 +91,25 @@ class CacheRepository
     public function get(string $key): ?\BearFramework\App\CacheItem
     {
         $app = App::get();
-        $value = $this->cacheDriver->get($key);
-        if ($app->hooks->exists('cacheItemRequested')) {
-            $data = new \BearFramework\App\Hooks\CacheItemRequestedData();
-            $data->action = 'get';
-            $data->key = $key;
-            $data->exists = $value !== null;
-            $app->hooks->execute('cacheItemRequested', $data);
+        $hooks = $app->hooks;
+
+        $item = null;
+        $returnValue = null;
+        $preventDefault = false;
+        $hooks->execute('cacheItemGet', $key, $returnValue, $preventDefault);
+        if ($returnValue instanceof \BearFramework\App\CacheItem) {
+            $item = $returnValue;
+        } else {
+            if (!$preventDefault) {
+                $value = $this->cacheDriver->get($key);
+                if ($value !== null) {
+                    $item = $this->make($key, $value);
+                }
+            }
         }
-        if ($value !== null) {
-            return $this->make($key, $value);
-        }
-        return null;
+        $hooks->execute('cacheItemGetDone', $key, $item);
+        $hooks->execute('cacheItemRequested', $key);
+        return $item;
     }
 
     /**
@@ -110,18 +121,22 @@ class CacheRepository
     public function getValue(string $key)
     {
         $app = App::get();
-        $value = $this->cacheDriver->get($key);
-        if ($app->hooks->exists('cacheItemRequested')) {
-            $data = new \BearFramework\App\Hooks\CacheItemRequestedData();
-            $data->action = 'getValue';
-            $data->key = $key;
-            $data->exists = $value !== null;
-            $app->hooks->execute('cacheItemRequested', $data);
+        $hooks = $app->hooks;
+
+        $value = null;
+        $returnValue = null;
+        $preventDefault = false;
+        $hooks->execute('cacheItemGetValue', $key, $returnValue, $preventDefault);
+        if ($returnValue !== null) {
+            $value = $returnValue;
+        } else {
+            if (!$preventDefault) {
+                $value = $this->cacheDriver->get($key);
+            }
         }
-        if ($value !== null) {
-            return $value;
-        }
-        return null;
+        $hooks->execute('cacheItemGetValueDone', $key, $value);
+        $hooks->execute('cacheItemRequested', $key);
+        return $value;
     }
 
     /**
@@ -133,15 +148,19 @@ class CacheRepository
     public function exists(string $key): bool
     {
         $app = App::get();
-        $value = $this->cacheDriver->get($key);
-        if ($app->hooks->exists('cacheItemRequested')) {
-            $data = new \BearFramework\App\Hooks\CacheItemRequestedData();
-            $data->action = 'exists';
-            $data->key = $key;
-            $data->exists = $value !== null;
-            $app->hooks->execute('cacheItemRequested', $data);
+        $hooks = $app->hooks;
+
+        $returnValue = null;
+        $hooks->execute('cacheItemExists', $key, $returnValue);
+        if (is_bool($returnValue)) {
+            $exists = $returnValue;
+        } else {
+            $exists = $this->cacheDriver->get($key) !== null;
         }
-        return $value !== null;
+
+        $hooks->execute('cacheItemExistsDone', $key, $exists);
+        $hooks->execute('cacheItemRequested', $key);
+        return $exists;
     }
 
     /**
@@ -153,13 +172,15 @@ class CacheRepository
     public function delete(string $key): \BearFramework\App\CacheRepository
     {
         $app = App::get();
-        $this->cacheDriver->delete($key);
-        if ($app->hooks->exists('cacheItemChanged')) {
-            $data = new \BearFramework\App\Hooks\CacheItemChangedData();
-            $data->action = 'delete';
-            $data->key = $key;
-            $app->hooks->execute('cacheItemChanged', $data);
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('cacheItemDelete', $key, $preventDefault);
+        if (!$preventDefault) {
+            $this->cacheDriver->delete($key);
         }
+        $hooks->execute('cacheItemDeleteDone', $key);
+        $hooks->execute('cacheItemChanged', $key);
         return $this;
     }
 
@@ -168,7 +189,15 @@ class CacheRepository
      */
     public function clear(): \BearFramework\App\CacheRepository
     {
-        $this->cacheDriver->clear();
+        $app = App::get();
+        $hooks = $app->hooks;
+
+        $preventDefault = false;
+        $hooks->execute('cacheClear', $preventDefault);
+        if (!$preventDefault) {
+            $this->cacheDriver->clear();
+        }
+        $hooks->execute('cacheClearDone');
         return $this;
     }
 

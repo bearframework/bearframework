@@ -83,68 +83,64 @@ class CacheTest extends BearFrameworkTestCase
     }
 
     /**
-     * 
+     * Modify value
      */
-    public function testHooks()
+    public function testHooks1()
     {
         $app = $this->getApp();
 
-        $lastHookData = null;
-
-        $app->hooks->add('cacheItemChanged', function(\BearFramework\App\Hooks\CacheItemChangedData $data) use (&$lastHookData) {
-            $lastHookData = $data;
-        });
-
-        $app->hooks->add('cacheItemRequested', function(\BearFramework\App\Hooks\CacheItemRequestedData $data) use (&$lastHookData) {
-            $lastHookData = $data;
+        $app->hooks->add('cacheItemSet', function(CacheItem $item) {
+            $item->value = 'data2';
         });
 
         $cacheItem = $app->cache->make('key1', 'data1');
         $app->cache->set($cacheItem);
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemChangedData);
-        $this->assertTrue($lastHookData->action === 'set');
-        $this->assertTrue($lastHookData->key === 'key1');
+        $cacheItem = $app->cache->get('key1');
+        $this->assertTrue($cacheItem->key === 'key1');
+        $this->assertTrue($cacheItem->value === 'data2');
+    }
 
-        $app->cache->exists('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
-        $this->assertTrue($lastHookData->action === 'exists');
-        $this->assertTrue($lastHookData->key === 'key1');
-        $this->assertTrue($lastHookData->exists === true);
+    /**
+     * Prevent defaults
+     */
+    public function testHooks2()
+    {
+        $app = $this->getApp();
 
-        $app->cache->get('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
-        $this->assertTrue($lastHookData->action === 'get');
-        $this->assertTrue($lastHookData->key === 'key1');
-        $this->assertTrue($lastHookData->exists === true);
+        $cache = [];
 
-        $app->cache->getValue('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
-        $this->assertTrue($lastHookData->action === 'getValue');
-        $this->assertTrue($lastHookData->key === 'key1');
-        $this->assertTrue($lastHookData->exists === true);
+        $app->hooks->add('cacheItemSet', function(CacheItem $item, &$preventDefault) use (&$cache) {
+            $preventDefault = true;
+            $cache[$item->key] = clone($item);
+        });
 
-        $app->cache->delete('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemChangedData);
-        $this->assertTrue($lastHookData->action === 'delete');
-        $this->assertTrue($lastHookData->key === 'key1');
+        $app->hooks->add('cacheItemGet', function(string $key, &$returnValue, &$preventDefault) use (&$cache) {
+            $preventDefault = true;
+            if (isset($cache[$key])) {
+                $returnValue = clone($cache[$key]);
+            }
+        });
 
-        $app->cache->exists('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
-        $this->assertTrue($lastHookData->action === 'exists');
-        $this->assertTrue($lastHookData->key === 'key1');
-        $this->assertTrue($lastHookData->exists === false);
+        $app->hooks->add('cacheItemGetValue', function(string $key, &$returnValue, &$preventDefault) use (&$cache) {
+            $preventDefault = true;
+            if (isset($cache[$key])) {
+                $returnValue = $cache[$key]->value;
+            }
+        });
 
-        $app->cache->get('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
-        $this->assertTrue($lastHookData->action === 'get');
-        $this->assertTrue($lastHookData->key === 'key1');
-        $this->assertTrue($lastHookData->exists === false);
+        $app->hooks->add('cacheItemExists', function(string $key, &$returnValue) use (&$cache) {
+            $returnValue = isset($cache[$key]);
+        });
 
-        $app->cache->getValue('key1');
-        $this->assertTrue($lastHookData instanceof \BearFramework\App\Hooks\CacheItemRequestedData);
-        $this->assertTrue($lastHookData->action === 'getValue');
-        $this->assertTrue($lastHookData->key === 'key1');
-        $this->assertTrue($lastHookData->exists === false);
+        $cacheItem = $app->cache->make('key1', 'data1');
+        $app->cache->set($cacheItem);
+        $cacheItem = $app->cache->get('key1');
+        $this->assertTrue($cacheItem->key === 'key1');
+        $this->assertTrue($cacheItem->value === 'data1');
+        $this->assertTrue($app->cache->getValue('key1') === 'data1');
+        $this->assertTrue($app->cache->getValue('key2') === null);
+        $this->assertTrue($app->cache->exists('key1') === true);
+        $this->assertTrue($app->cache->exists('key2') === false);
     }
 
 }

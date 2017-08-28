@@ -166,8 +166,8 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config->appDir . '/assets/file2.svg';
         $this->createFile($filename2, 'sample-svg-content-2');
 
-        $app->hooks->add('assetPrepare', function(\BearFramework\App\Hooks\AssetPrepareData $data) use ($filename2) {
-            $data->filename = $filename2;
+        $app->hooks->add('assetPrepare', function(&$filename, $options, $returnValue, $preventDefault) use ($filename2) {
+            $filename = $filename2;
         });
         $content = $app->assets->getContent($filename1);
         $this->assertTrue($content === 'sample-svg-content-2');
@@ -187,8 +187,8 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config->appDir . '/assets/file2.svg';
         $this->createFile($filename2, 'sample-svg-content-2');
 
-        $app->hooks->add('assetPrepared', function(\BearFramework\App\Hooks\AssetPreparedData $data) use ($filename2) {
-            $data->filename = $filename2;
+        $app->hooks->add('assetPrepareDone', function($filename, $options, &$returnValue) use ($filename2) {
+            $returnValue = $filename2;
         });
         $content = $app->assets->getContent($filename1);
         $this->assertTrue($content === 'sample-svg-content-2');
@@ -206,8 +206,8 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config->appDir . '/assets/file.svg';
         $this->createFile($filename, 'sample-svg-content');
 
-        $app->hooks->add('assetUrlCreated', function(\BearFramework\App\Hooks\AssetUrlCreatedData $data) {
-            $data->url = 'http://example.com/file.svg';
+        $app->hooks->add('assetGetUrlDone', function($filename, $options, &$url) {
+            $url = 'http://example.com/file.svg';
         });
         $url = $app->assets->getUrl($filename);
         $this->assertTrue($url === 'http://example.com/file.svg');
