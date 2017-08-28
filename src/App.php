@@ -279,11 +279,6 @@ class App
                 }
             }
 
-            if ($this->config->dataDir !== null) {
-                $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-                $this->assets->addDir($dataAssetsDir);
-            }
-
             $this->hooks->execute('initialized');
         }
     }

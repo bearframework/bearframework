@@ -86,9 +86,11 @@ class Assets
                 $this->validateOptions($options);
             }
 
+            $dirs = $this->dirs;
             $dataDir = $app->config->dataDir;
             if (isset($dataDir[0]) && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
                 $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
+                $dirs[] = $dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
             }
 
             $pathInfo = pathinfo($filename);
@@ -120,7 +122,7 @@ class Assets
             $fileDirCacheKey = '1' . $fileDir;
             if (!isset(self::$cache[$fileDirCacheKey])) {
                 self::$cache[$fileDirCacheKey] = false;
-                foreach ($this->dirs as $dir) {
+                foreach ($dirs as $dir) {
                     if (strpos($fileDir, $dir) === 0) {
                         self::$cache[$fileDirCacheKey] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', substr($fileDir, strlen($dir)));
                         break;
@@ -129,6 +131,7 @@ class Assets
             }
             $url = self::$cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$fileDirCacheKey] . $fileBasename;
         }
+
         if ($hooks->exists('assetGetUrlDone')) {
             $hooks->execute('assetGetUrlDone', $filename, $options, $url);
         }
@@ -245,7 +248,13 @@ class Assets
                 }
             }
 
-            foreach ($this->dirs as $dir) {
+            $dirs = $this->dirs;
+            $dataDir = $app->config->dataDir;
+            if (isset($dataDir[0])) {
+                $dirs[] = $dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+            }
+
+            foreach ($dirs as $dir) {
                 if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
                     $result['filename'] = $dir . $path;
                     return $result;
