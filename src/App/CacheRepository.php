@@ -77,7 +77,8 @@ class CacheRepository
             $this->cacheDriver->set($item->key, $item->value, $item->ttl);
         }
         $hooks->execute('cacheItemSetDone', $item);
-        $hooks->execute('cacheItemChanged', $item->key);
+        $key = $item->key;
+        $hooks->execute('cacheItemChanged', $key);
         return $this;
     }
 

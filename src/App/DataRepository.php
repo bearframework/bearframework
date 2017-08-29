@@ -100,7 +100,8 @@ class DataRepository
             $this->execute([$command]);
         }
         $hooks->execute('dataItemSetDone', $item);
-        $hooks->execute('dataItemChanged', $item->key);
+        $key = $item->key;
+        $hooks->execute('dataItemChanged', $key);
         return $this;
     }
 
