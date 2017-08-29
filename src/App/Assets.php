@@ -303,13 +303,29 @@ class Assets
         $hooks = $app->hooks;
 
         $result = null;
+        
+        if ($app->config->dataDir !== null) {
+            $dataAssetsDir = $app->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+            if (strpos($filename, $dataAssetsDir) === 0) {
+                $key = str_replace('\\', '/', substr($filename, strlen($dataAssetsDir)));
+                if ($app->data->isPublic($key)) {
+                    $filename = $app->data->getFilename($key);
+                } else {
+                    $filename = null;
+                }
+            }
+        }
 
         $preventDefault = false;
-        if ($hooks->exists('assetPrepare')) {
-            $returnValue = null;
-            $hooks->execute('assetPrepare', $filename, $options, $returnValue, $preventDefault);
-            if (is_string($returnValue)) {
-                $result = $returnValue;
+        if($filename === null){
+            $preventDefault = true;
+        }else{
+            if ($hooks->exists('assetPrepare')) {
+                $returnValue = null;
+                $hooks->execute('assetPrepare', $filename, $options, $returnValue, $preventDefault);
+                if (is_string($returnValue)) {
+                    $result = $returnValue;
+                }
             }
         }
 

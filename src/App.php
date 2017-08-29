@@ -120,21 +120,7 @@ class App
         ]);
         $this->defineProperty('hooks', [
             'init' => function() {
-                $hooks = new App\HooksRepository();
-                $hooks->add('assetPrepare', function(&$filename) {
-                            if ($this->config->dataDir !== null) {
-                                $dataAssetsDir = $this->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-                                if (strpos($filename, $dataAssetsDir) === 0) {
-                                    $key = str_replace('\\', '/', substr($filename, strlen($dataAssetsDir)));
-                                    if ($this->data->isPublic($key)) {
-                                        $filename = $this->data->getFilename($key);
-                                    } else {
-                                        $filename = null;
-                                    }
-                                }
-                            }
-                        });
-                return $hooks;
+                return new App\HooksRepository();
             },
             'readonly' => true
         ]);
