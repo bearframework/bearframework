@@ -57,9 +57,7 @@ class Images
                 throw new \InvalidArgumentException('Cannot get size of ' . $filename . ' (reason: ' . (isset($reason) ? $reason : 'unknown') . ')');
             }
         }
-        if ($hooks->exists('imageGetSizeDone')) {
-            $hooks->execute('imageGetSizeDone', $filename, $result);
-        }
+        $hooks->execute('imageGetSizeDone', $filename, $result);
         return $result;
     }
 
@@ -79,9 +77,7 @@ class Images
         $hooks = $app->hooks;
 
         $done = false;
-        if ($hooks->exists('imageResize')) {
-            $hooks->execute('imageResize', $sourceFilename, $destinationFilename, $options, $done);
-        }
+        $hooks->execute('imageResize', $sourceFilename, $destinationFilename, $options, $done);
         if (!$done) {
             if (realpath($sourceFilename) === false) {
                 throw new \InvalidArgumentException('The sourceFilename specified does not exist (' . $sourceFilename . ')');

@@ -100,8 +100,7 @@ class DataRepository
             $this->execute([$command]);
         }
         $hooks->execute('dataItemSetDone', $item);
-        $key = $item->key;
-        $hooks->execute('dataItemChanged', $key);
+        $hooks->execute('dataItemChanged', $item->key);
         return $this;
     }
 
@@ -550,6 +549,7 @@ class DataRepository
         $app = App::get();
         $hooks = $app->hooks;
 
+        $preventDefault = false;
         $hooks->execute('dataItemMakePublic', $key, $preventDefault);
         if (!$preventDefault) {
             $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
@@ -574,6 +574,7 @@ class DataRepository
         $app = App::get();
         $hooks = $app->hooks;
 
+        $preventDefault = false;
         $hooks->execute('dataItemMakePrivate', $key, $preventDefault);
         if (!$preventDefault) {
             $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
