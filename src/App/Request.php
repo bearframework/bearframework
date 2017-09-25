@@ -165,7 +165,23 @@ class Request
             $this->defineProperty('cookies', [
                 'init' => function() {
                     $cookies = new App\Request\CookiesRepository();
-                    foreach ($_COOKIE as $name => $value) {
+                    $stringifyKeys = function($rawCookies, $level = 0) use (&$stringifyKeys) {
+                                $result = [];
+                                foreach ($rawCookies as $name => $value) {
+                                    $name = (string) $name;
+                                    if (is_array($value)) {
+                                        $temp = $stringifyKeys($value, $level + 1);
+                                        foreach ($temp as $subKey => $subValue) {
+                                            $result[($level === 0 ? $name : '[' . $name . ']') . $subKey] = $subValue;
+                                        }
+                                    } else {
+                                        $result[($level === 0 ? $name : '[' . $name . ']')] = (string) $value;
+                                    }
+                                }
+                                return $result;
+                            };
+                    $stringifiedCookies = $stringifyKeys($_COOKIE);
+                    foreach ($stringifiedCookies as $name => $value) {
                         $cookies->set($cookies->make((string) $name, (string) $value));
                     }
                     return $cookies;
