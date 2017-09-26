@@ -302,6 +302,10 @@ class Assets
         $app = App::get();
         $hooks = $app->hooks;
 
+        if (!empty($options)) {
+            $this->validateOptions($options);
+        }
+        
         $result = null;
         
         if ($app->config->dataDir !== null) {
@@ -316,53 +320,37 @@ class Assets
             }
         }
 
-        $preventDefault = false;
-        if($filename === null){
-            $preventDefault = true;
-        }else{
-            if ($hooks->exists('assetPrepare')) {
-                $returnValue = null;
-                $hooks->execute('assetPrepare', $filename, $options, $returnValue, $preventDefault);
-                if (is_string($returnValue)) {
-                    $result = $returnValue;
+        $hooks->execute('assetPrepare', $filename, $options);
+        
+        if (strlen($filename) > 0 && is_file($filename)) {
+            if (!isset($options['width']) && !isset($options['height'])) {
+                $result = $filename;
+            } else {
+                $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                if ($extension === '') {
+                    $extension = 'tmp';
                 }
-            }
-        }
-
-        if ($result === null && !$preventDefault) {
-            if (!empty($options)) {
-                $this->validateOptions($options);
-            }
-            if (strlen($filename) > 0 && is_file($filename)) {
-                if (!isset($options['width']) && !isset($options['height'])) {
-                    $result = $filename;
-                } else {
-                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                    if ($extension === '') {
-                        $extension = 'tmp';
-                    }
-                    if (isset($options['outputType'])) {
-                        $extension = $options['outputType'];
-                    }
-                    $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
-                    if (!is_file($tempFilename)) {
-                        $dir = pathinfo($tempFilename, PATHINFO_DIRNAME);
-                        if (!is_dir($dir)) {
-                            try {
-                                mkdir($dir, 0777, true);
-                            } catch (\Exception $e) {
-                                if ($e->getMessage() !== 'mkdir(): File exists') { // The directory may be just created in other process.
-                                    throw $e;
-                                }
+                if (isset($options['outputType'])) {
+                    $extension = $options['outputType'];
+                }
+                $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+                if (!is_file($tempFilename)) {
+                    $dir = pathinfo($tempFilename, PATHINFO_DIRNAME);
+                    if (!is_dir($dir)) {
+                        try {
+                            mkdir($dir, 0777, true);
+                        } catch (\Exception $e) {
+                            if ($e->getMessage() !== 'mkdir(): File exists') { // The directory may be just created in other process.
+                                throw $e;
                             }
                         }
-                        $app->images->resize($filename, $tempFilename, [
-                            'width' => (isset($options['width']) ? $options['width'] : null),
-                            'height' => (isset($options['height']) ? $options['height'] : null)
-                        ]);
                     }
-                    $result = $tempFilename;
+                    $app->images->resize($filename, $tempFilename, [
+                        'width' => (isset($options['width']) ? $options['width'] : null),
+                        'height' => (isset($options['height']) ? $options['height'] : null)
+                    ]);
                 }
+                $result = $tempFilename;
             }
         }
         $hooks->execute('assetPrepareDone', $filename, $options, $result);
