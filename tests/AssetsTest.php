@@ -166,7 +166,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config->appDir . '/assets/file2.svg';
         $this->createFile($filename2, 'sample-svg-content-2');
 
-        $app->hooks->add('assetPrepare', function(&$filename, $options, $returnValue, $preventDefault) use ($filename2) {
+        $app->hooks->add('assetPrepare', function(&$filename, $options) use ($filename2) {
             $filename = $filename2;
         });
         $content = $app->assets->getContent($filename1);
