@@ -227,7 +227,9 @@ class App
         if (!$this->initialized) {
             // @codeCoverageIgnoreStart
             if ($this->config->updateEnvironment) {
-                ini_set('mbstring.func_overload', 7);
+                if (version_compare(PHP_VERSION, '7.2.0', '<')) {
+                    ini_set('mbstring.func_overload', 7);
+                }
                 ini_set("pcre.backtrack_limit", 100000000);
                 ini_set("pcre.recursion_limit", 100000000);
             }
