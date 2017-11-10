@@ -40,7 +40,7 @@ class App
      * 
      * @var string
      */
-    const VERSION = 'dev';
+    const VERSION = '0.10.0';
 
     /**
      * The instance of the App object. Only one can be created.
