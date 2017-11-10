@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "ivopetkov/object-storage": "0.2.*",
+        "ivopetkov/object-storage": "0.2.*|0.3.*",
         "ivopetkov/data-object": "0.5.*"
     },
     "require-dev": {
