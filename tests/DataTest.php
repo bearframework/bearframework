@@ -127,13 +127,13 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetExceptions1()
-    {
-        $app = $this->getApp();
-        $this->createFile($app->config->dataDir . '/objects', 'data');
-        $this->setExpectedException('\Exception');
-        $app->data->get('data1');
-    }
+//    public function testGetExceptions1()
+//    {
+//        $app = $this->getApp();
+//        $this->createFile($app->config->dataDir . '/objects', 'data');
+//        $this->setExpectedException('\Exception');
+//        $app->data->get('data1');
+//    }
 
     /**
      * 
@@ -243,6 +243,7 @@ class DataTest extends BearFrameworkTestCase
     public function testDeleteExceptions2()
     {
         $app = $this->getApp();
+        $app->data->setValue('lockeddata1', 'data');
         $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
         $this->setExpectedException('\BearFramework\App\Data\DataLockedException');
         $app->data->delete('lockeddata1');
