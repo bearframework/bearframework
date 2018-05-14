@@ -113,6 +113,9 @@ class Assets
             if (isset($options['robotsNoIndex']) && $options['robotsNoIndex'] === true) {
                 $optionsString .= '-r1';
             }
+            if (isset($options['download']) && $options['download'] === true) {
+                $optionsString .= '-d';
+            }
             if (isset($options['outputType']) && isset($pathInfo['extension'])) {
                 $optionsString .= '-o' . $pathInfo['extension'];
                 $fileBasename = substr($fileBasename, 0, -strlen($pathInfo['extension'])) . $options['outputType'];
@@ -239,6 +242,9 @@ class Assets
                     if (substr($option, 0, 2) === 'r1') {
                         $result['options']['robotsNoIndex'] = true;
                     }
+                    if (substr($option, 0, 1) === 'd') {
+                        $result['options']['download'] = true;
+                    }
                     if (substr($option, 0, 1) === 'o') {
                         $value = substr($option, 1);
                         $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
@@ -280,6 +286,9 @@ class Assets
             }
             if (isset($options['robotsNoIndex'])) {
                 $response->headers->set($response->headers->make('X-Robots-Tag', 'noindex'));
+            }
+            if (isset($options['download'])) {
+                $response->headers->set($response->headers->make('Content-Disposition', 'attachment; filename=' . pathinfo($filename, PATHINFO_BASENAME)));
             }
             $mimeType = $this->getMimeType($filename);
             if ($mimeType !== null) {
