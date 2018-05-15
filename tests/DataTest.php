@@ -229,17 +229,6 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testDeleteExceptions1()
-    {
-        $app = $this->getApp();
-        $this->createDir($app->config->dataDir . '/objects/data1');
-        $this->setExpectedException('\Exception');
-        $app->data->delete('data1');
-    }
-
-    /**
-     * 
-     */
     public function testDeleteExceptions2()
     {
         $app = $this->getApp();
