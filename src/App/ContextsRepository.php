@@ -44,7 +44,7 @@ class ContextsRepository
         $matchedDir = null;
         for ($i = 0; $i < 2; $i++) { // first try - check cache, second try - update cache and check again
             foreach (self::$dirsCache as $dir) {
-                if (substr($filename, 0, $dir[1]) === $dir[0] || $dir[0] === $filename . DIRECTORY_SEPARATOR) {
+                if ($dir[1] > 0 && (substr($filename, 0, $dir[1]) === $dir[0] || $dir[0] === $filename . DIRECTORY_SEPARATOR)) {
                     $matchedDir = $dir[0];
                     break;
                 }
