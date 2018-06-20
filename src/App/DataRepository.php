@@ -518,11 +518,24 @@ class DataRepository
                 foreach ($context->filterByProperties as $filter) {
                     $whereOptions[] = [$filter->property, $filter->value, $filter->operator];
                 }
+                $resultKeys = ['key', 'body', 'metadata'];
+                if (isset($context->requestedProperties) && !empty($context->requestedProperties)) {
+                    $resultKeys = ['key'];
+                    foreach ($context->requestedProperties as $requestedProperty) {
+                        if ($requestedProperty === 'value') {
+                            $resultKeys[] = 'body';
+                        } elseif ($requestedProperty === 'metadata') {
+                            $resultKeys[] = 'metadata';
+                        }
+                    }
+                    $resultKeys = array_unique($resultKeys);
+                }
+
                 $result = $this->execute([
                     [
                         'command' => 'search',
                         'where' => $whereOptions,
-                        'result' => ['key', 'body', 'metadata']
+                        'result' => $resultKeys
                     ]
                 ]);
                 $list = [];
@@ -659,7 +672,7 @@ class DataRepository
      */
     private function makeDataItemFromRawData(array $rawData): \BearFramework\App\DataItem
     {
-        $dataItem = $this->make($rawData['key'], $rawData['body']);
+        $dataItem = $this->make(isset($rawData['key']) ? $rawData['key'] : null, isset($rawData['body']) ? $rawData['body'] : null);
         foreach ($rawData as $name => $value) {
             if (strpos($name, 'metadata.') === 0) {
                 $name = substr($name, 9);
