@@ -18,6 +18,8 @@ class CacheItem
 {
 
     use \IvoPetkov\DataObjectTrait;
+    use \IvoPetkov\DataObjectToArrayTrait;
+    use \IvoPetkov\DataObjectToJSONTrait;
 
     function __construct()
     {

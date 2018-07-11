@@ -34,6 +34,8 @@ class App
 {
 
     use \IvoPetkov\DataObjectTrait;
+    use \IvoPetkov\DataObjectToArrayTrait;
+    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * Current Bear Framework version.

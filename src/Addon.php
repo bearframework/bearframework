@@ -19,6 +19,8 @@ class Addon
 {
 
     use \IvoPetkov\DataObjectTrait;
+    use \IvoPetkov\DataObjectToArrayTrait;
+    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * 

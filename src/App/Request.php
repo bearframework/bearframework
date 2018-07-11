@@ -29,6 +29,8 @@ class Request
 {
 
     use \IvoPetkov\DataObjectTrait;
+    use \IvoPetkov\DataObjectToArrayTrait;
+    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * 
