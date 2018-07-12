@@ -18,9 +18,14 @@
         "ivopetkov/data-object": "0.5.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8"
+        "phpunit/phpunit": "7.*"
     },
     "autoload": {
         "files": ["autoload.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "": "tests/utilities/"
+        }   
     }
 }

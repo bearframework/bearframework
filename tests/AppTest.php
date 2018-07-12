@@ -128,7 +128,7 @@ class AppTest extends BearFrameworkTestCase
     public function testAppIndex()
     {
         $app = $this->getApp([], false, false);
-        $this->createFile($app->config->appDir . '/index.php', '<?php
+        $this->makeFile($app->config->appDir . '/index.php', '<?php
 $app = \BearFramework\App::get();
 $app->routes->add(\'/\', function() {
     return new \BearFramework\App\Response(\'content\');
@@ -164,7 +164,7 @@ $app->routes->add(\'/\', function() {
     function testMultipleApps()
     {
         $app = $this->getApp([], true);
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $app = $this->getApp([], true);
     }
 
@@ -174,7 +174,7 @@ $app->routes->add(\'/\', function() {
     function testClone()
     {
         $app = $this->getApp();
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         clone($app);
     }
 
@@ -184,7 +184,7 @@ $app->routes->add(\'/\', function() {
 //    function testUnserialize()
 //    {
 //        $app = $this->getApp();
-//        $this->setExpectedException('Exception');
+//        $this->expectException('Exception');
 //        unserialize(serialize($app));
 //    }
 
@@ -193,7 +193,7 @@ $app->routes->add(\'/\', function() {
      */
     public function testNotCreatedApp()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         \BearFramework\App::get();
     }
 

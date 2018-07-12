@@ -22,8 +22,8 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $app->request->base = 'http://example.com/www';
 
-        $this->createFile($app->config->appDir . '/index.php', '<?php ');
-        $this->createFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
+        $this->makeFile($app->config->appDir . '/index.php', '<?php ');
+        $this->makeFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
 
         $context = $app->context->get($app->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
         $this->assertTrue($context->dir === $app->config->appDir);
@@ -39,13 +39,13 @@ class ContextTest extends BearFrameworkTestCase
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
-        $this->createSampleFile($app->config->appDir . '/assets/logo.png', 'png');
+        $this->makeSampleFile($app->config->appDir . '/assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
 
         $filename = 'assets/file.svg';
-        $this->createFile($context->dir . '/' . $filename, 'sample-svg-content');
+        $this->makeFile($context->dir . '/' . $filename, 'sample-svg-content');
         $content = $context->assets->getContent($filename);
         $this->assertTrue($content === 'sample-svg-content');
         $content = $context->assets->getContent($filename, ['encoding' => 'base64']);
@@ -65,8 +65,8 @@ class ContextTest extends BearFrameworkTestCase
         $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid() . DIRECTORY_SEPARATOR;
         $app->request->base = 'http://example.com/www';
 
-        $this->createFile($addonDir . 'index.php', '<?php ');
-        $this->createFile($addonDir . 'class1.php', '<?php class TempClass1{}');
+        $this->makeFile($addonDir . 'index.php', '<?php ');
+        $this->makeFile($addonDir . 'class1.php', '<?php class TempClass1{}');
 
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon', ['option1' => 5]);
@@ -79,13 +79,13 @@ class ContextTest extends BearFrameworkTestCase
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
-        $this->createSampleFile($addonDir . 'assets/logo.png', 'png');
+        $this->makeSampleFile($addonDir . 'assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
 
 //        $filename = 'assets/file.svg';
-//        $this->createFile($context->dir . '/' . $filename, 'sample-svg-content');
+//        $this->makeFile($context->dir . '/' . $filename, 'sample-svg-content');
 //        $content = $context->assets->getContent($filename);
 //        $this->assertTrue($content === 'sample-svg-content');
 //        $content = $context->assets->getContent($filename, ['encoding' => 'base64']);
@@ -104,7 +104,7 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp(['appDir' => null]);
         $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid() . DIRECTORY_SEPARATOR;
 
-        $this->createFile($addonDir . 'index.php', '<?php ');
+        $this->makeFile($addonDir . 'index.php', '<?php ');
 
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon');
@@ -123,9 +123,9 @@ class ContextTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $addonDir = $app->config->addonsDir . '/tempaddong' . uniqid() . '/';
-        $this->createFile($addonDir . 'index.php', '<?php ');
+        $this->makeFile($addonDir . 'index.php', '<?php ');
         // Addon is not added
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $app->context->get($addonDir);
     }
 

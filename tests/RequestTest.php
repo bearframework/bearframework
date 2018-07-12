@@ -133,7 +133,7 @@ class RequestTest extends BearFrameworkTestCase
 //    function testInvalidHeaders()
 //    {
 //        $request = new \BearFramework\App\Request();
-//        $this->setExpectedException('InvalidArgumentException');
+//        $this->expectException('InvalidArgumentException');
 //        echo $request->headers = 1;
 //    }
 

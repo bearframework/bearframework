@@ -71,7 +71,7 @@ class ContainerTest extends BearFrameworkTestCase
     public function testGetMissingService1()
     {
         $app = $this->getApp();
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $app->container->get('missingService');
     }
 

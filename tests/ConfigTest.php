@@ -72,7 +72,7 @@ class ConfigTest extends BearFrameworkTestCase
     public function testGet3()
     {
         $config = new \BearFramework\App\Config();
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         echo $config->customOption;
     }
 
@@ -122,10 +122,10 @@ class ConfigTest extends BearFrameworkTestCase
     public function testDirectories()
     {
         $app = $this->getApp();
-        $rootDir = $this->getTestDir();
-        $this->createDir($rootDir . 'app');
-        $this->createDir($rootDir . 'data');
-        $this->createDir($rootDir . 'logs');
+        $rootDir = $this->getTempDir();
+        $this->makeDir($rootDir . 'app');
+        $this->makeDir($rootDir . 'data');
+        $this->makeDir($rootDir . 'logs');
         $config = new \BearFramework\App\Config([
             'appDir' => $rootDir . 'app',
             'dataDir' => $rootDir . 'data',
@@ -150,9 +150,9 @@ class ConfigTest extends BearFrameworkTestCase
     public function testLoad()
     {
         $app = $this->getApp();
-        $rootDir = $this->getTestDir();
+        $rootDir = $this->getTempDir();
         $filename = $rootDir . 'config.php';
-        $this->createFile($filename, '<?php
+        $this->makeFile($filename, '<?php
 return [
     "option1" => "one",
     "option2" => 2,
@@ -171,7 +171,7 @@ return [
      */
     public function testInvalidArguments2()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         new \BearFramework\App\Config([
             'appDir' => 'missing/dir'
         ]);
@@ -182,7 +182,7 @@ return [
      */
     public function testInvalidArguments3()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         new \BearFramework\App\Config([
             'dataDir' => 'missing/dir'
         ]);
@@ -193,7 +193,7 @@ return [
      */
     public function testInvalidArguments4()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         new \BearFramework\App\Config([
             'logsDir' => 'missing/dir'
         ]);
@@ -205,7 +205,7 @@ return [
     public function testInvalidArguments5()
     {
         $config = new \BearFramework\App\Config();
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $config->appDir = 'missing/dir';
     }
 
@@ -215,7 +215,7 @@ return [
     public function testInvalidArguments6()
     {
         $config = new \BearFramework\App\Config();
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $config->dataDir = 'missing/dir';
     }
 
@@ -225,7 +225,7 @@ return [
     public function testInvalidArguments7()
     {
         $config = new \BearFramework\App\Config();
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $config->logsDir = 'missing/dir';
     }
 
@@ -235,7 +235,7 @@ return [
     public function testInvalidArguments9()
     {
         $app = $this->getApp();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $app->config->load('missing/file');
     }
 
@@ -245,12 +245,12 @@ return [
     public function testInvalidArguments10()
     {
         $app = $this->getApp();
-        $rootDir = $this->getTestDir();
+        $rootDir = $this->getTempDir();
         $filename = $rootDir . 'config.php';
-        $this->createFile($filename, '<?php
+        $this->makeFile($filename, '<?php
 echo 1;
 ');
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $app->config->load($filename);
     }
 

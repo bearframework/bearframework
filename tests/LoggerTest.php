@@ -34,7 +34,7 @@ class LogTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $app->logger->log('', 'message');
     }
 
@@ -47,7 +47,7 @@ class LogTest extends BearFrameworkTestCase
         $level = 'warning';
         $filename = $app->config->logsDir . DIRECTORY_SEPARATOR . $level . '-' . date('Y-m-d') . '.log';
         mkdir($filename, 0777, true);
-        $this->setExpectedException('\Exception');
+        $this->expectException('\Exception');
         $app->logger->log($level, 'message');
     }
 

@@ -19,7 +19,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testFileReader1()
     {
         $app = $this->getApp();
-        $this->createFile($app->config->appDir . '/file', '123');
+        $this->makeFile($app->config->appDir . '/file', '123');
         $response = new \BearFramework\App\Response\FileReader($app->config->appDir . '/file');
         $this->assertTrue($response->filename === realpath($app->config->appDir . '/file'));
         $this->assertTrue(isset($response->filename));
@@ -33,7 +33,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testFileReader2()
     {
         $app = $this->getApp();
-        $this->createFile($app->config->appDir . '/file', '123');
+        $this->makeFile($app->config->appDir . '/file', '123');
         $app->routes->add('/', function() use ($app) {
             return new \BearFramework\App\Response\FileReader($app->config->appDir . '/file');
         });
@@ -46,7 +46,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
      */
     public function testFileReaderInvalidArgument1()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $response = new \BearFramework\App\Response\FileReader(1);
     }
 
@@ -55,7 +55,7 @@ class ResponseTypesTest extends BearFrameworkTestCase
      */
     public function testFileReaderInvalidArgument2()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $response = new \BearFramework\App\Response\FileReader('missing/file');
     }
 
