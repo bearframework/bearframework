@@ -21,13 +21,25 @@ class ContextsRepository
      *
      * @var array 
      */
-    private static $dirsCache = [];
+    private $dirs = [];
 
     /**
      *
      * @var array 
      */
     private static $objectsCache = [];
+
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        $app = App::get();
+        $appDir = $app->config->appDir;
+        if ($appDir !== null) {
+            $this->add($appDir . DIRECTORY_SEPARATOR);
+        }
+    }
 
     /**
      * Returns a context object for the filename specified.
@@ -42,34 +54,10 @@ class ContextsRepository
             return clone(self::$objectsCache[$filename]);
         }
         $matchedDir = null;
-        for ($i = 0; $i < 2; $i++) { // first try - check cache, second try - update cache and check again
-            foreach (self::$dirsCache as $dir) {
-                if ($dir[1] > 0 && (substr($filename, 0, $dir[1]) === $dir[0] || $dir[0] === $filename . DIRECTORY_SEPARATOR)) {
-                    $matchedDir = $dir[0];
-                    break;
-                }
-            }
-            if ($matchedDir !== null) {
+        foreach ($this->dirs as $dir => $length) {
+            if ($dir === $filename . DIRECTORY_SEPARATOR || substr($filename, 0, $length) === $dir) {
+                $matchedDir = $dir;
                 break;
-            }
-            if ($i === 0) {
-                $app = App::get();
-                if (!isset(self::$dirsCache['app'])) {
-                    $appDir = $app->config->appDir;
-                    if ($appDir !== null) {
-                        $dir = $appDir . DIRECTORY_SEPARATOR;
-                        self::$dirsCache['app'] = [$dir, strlen($dir)];
-                    } else {
-                        self::$dirsCache['app'] = ['', 0];
-                    }
-                }
-                $addons = $app->addons->getList();
-                foreach ($addons as $addon) {
-                    if (!isset(self::$dirsCache[$addon->id])) {
-                        $dir = $addon->dir . DIRECTORY_SEPARATOR;
-                        self::$dirsCache[$addon->id] = [$dir, strlen($dir)];
-                    }
-                }
             }
         }
         if ($matchedDir !== null) {
@@ -81,6 +69,20 @@ class ContextsRepository
             return clone(self::$objectsCache[$matchedDir]);
         }
         throw new \Exception('Connot find context for ' . $filename);
+    }
+
+    /**
+     * Registers a new context dir.
+     * 
+     * @param string $dir The context dir.
+     * @return \BearFramework\App\ContextsRepository A reference to itself.
+     */
+    public function add(string $dir): \BearFramework\App\ContextsRepository
+    {
+        $dir = rtrim($dir, '\\/') . DIRECTORY_SEPARATOR;
+        $this->dirs[$dir] = strlen($dir);
+        arsort($this->dirs);
+        return $this;
     }
 
 }

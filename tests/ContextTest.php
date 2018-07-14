@@ -83,17 +83,30 @@ class ContextTest extends BearFrameworkTestCase
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
+    }
 
-//        $filename = 'assets/file.svg';
-//        $this->makeFile($context->dir . '/' . $filename, 'sample-svg-content');
-//        $content = $context->assets->getContent($filename);
-//        $this->assertTrue($content === 'sample-svg-content');
-//        $content = $context->assets->getContent($filename, ['encoding' => 'base64']);
-//        $this->assertTrue($content === 'c2FtcGxlLXN2Zy1jb250ZW50');
-//        $content = $context->assets->getContent($filename, ['encoding' => 'data-uri']);
-//        $this->assertTrue($content === 'data:image/svg+xml,sample-svg-content');
-//        $content = $context->assets->getContent($filename, ['encoding' => 'data-uri-base64']);
-//        $this->assertTrue($content === 'data:image/svg+xml;base64,c2FtcGxlLXN2Zy1jb250ZW50');
+    /**
+     * 
+     */
+    public function testAddonContextInAnotherAddonContext()
+    {
+        $app = $this->getApp();
+
+        $addon1Dir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'addon1' . DIRECTORY_SEPARATOR;
+        $this->makeFile($addon1Dir . 'index.php', '<?php ');
+        BearFramework\Addons::register('addon1', $addon1Dir);
+        $app->addons->add('addon1');
+
+        $addon2Dir = $addon1Dir . 'vendor' . DIRECTORY_SEPARATOR . 'addon2' . DIRECTORY_SEPARATOR;
+        $this->makeFile($addon2Dir . 'index.php', '<?php ');
+        BearFramework\Addons::register('addon2', $addon2Dir);
+        $app->addons->add('addon2');
+
+        $context1 = $app->context->get($addon1Dir . 'index.php');
+        $this->assertTrue($context1->dir === rtrim($addon1Dir, DIRECTORY_SEPARATOR));
+
+        $context2 = $app->context->get($addon2Dir . 'index.php');
+        $this->assertTrue($context2->dir === rtrim($addon2Dir, DIRECTORY_SEPARATOR));
     }
 
     /**

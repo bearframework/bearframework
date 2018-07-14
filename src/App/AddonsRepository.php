@@ -9,6 +9,8 @@
 
 namespace BearFramework\App;
 
+use BearFramework\App;
+
 /**
  *  Provides a way to enable addons and manage their options.
  */
@@ -38,6 +40,7 @@ class AddonsRepository
         if ($registeredAddon === null) {
             throw new \InvalidArgumentException('The addon ' . $id . ' is not registered!');
         }
+        $app = App::get();
         $registeredAddonOptions = $registeredAddon->options;
         if (isset($registeredAddonOptions['require']) && is_array($registeredAddonOptions['require'])) {
             foreach ($registeredAddonOptions['require'] as $requiredAddonID) {
@@ -47,9 +50,11 @@ class AddonsRepository
             }
         }
 
-        $this->data[$id] = new \BearFramework\App\Addon($id, $registeredAddon->dir, $options);
+        $dir = $registeredAddon->dir;
+        $this->data[$id] = new \BearFramework\App\Addon($id, $dir, $options);
+        $app->context->add($dir);
 
-        $indexFilename = $registeredAddon->dir . DIRECTORY_SEPARATOR . 'index.php';
+        $indexFilename = $dir . DIRECTORY_SEPARATOR . 'index.php';
         if (is_file($indexFilename)) {
             ob_start();
             try {
