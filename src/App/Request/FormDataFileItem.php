@@ -21,15 +21,16 @@ class FormDataFileItem extends FormDataItem
     {
 
         parent::__construct();
-        $this->defineProperty('filename', [
-            'type' => 'string'
-        ]);
-        $this->defineProperty('size', [
-            'type' => '?int'
-        ]);
-        $this->defineProperty('type', [
-            'type' => '?string'
-        ]);
+        $this
+                ->defineProperty('filename', [
+                    'type' => 'string'
+                ])
+                ->defineProperty('size', [
+                    'type' => '?int'
+                ])
+                ->defineProperty('type', [
+                    'type' => '?string'
+                ]);
     }
 
 }

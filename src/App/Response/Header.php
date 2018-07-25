@@ -22,12 +22,13 @@ class Header
 
     function __construct()
     {
-        $this->defineProperty('name', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('value', [
-            'type' => '?string'
-        ]);
+        $this
+                ->defineProperty('name', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('value', [
+                    'type' => '?string'
+                ]);
     }
 
 }

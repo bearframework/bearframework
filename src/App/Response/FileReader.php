@@ -30,22 +30,23 @@ class FileReader extends \BearFramework\App\Response
     {
         parent::__construct('');
 
-        $this->defineProperty('filename', [
-            'type' => 'string',
-            'init' => function() {
-                return '';
-            },
-            'set' => function($value) {
-                $filename = realpath($value);
-                if ($filename === false || !is_readable($filename)) {
-                    throw new \InvalidArgumentException('The filename specified (' . $value . ') does not exist or is not readable.');
-                }
-                return $filename;
-            },
-            'unset' => function() {
-                return '';
-            },
-        ]);
+        $this
+                ->defineProperty('filename', [
+                    'type' => 'string',
+                    'init' => function() {
+                        return '';
+                    },
+                    'set' => function($value) {
+                        $filename = realpath($value);
+                        if ($filename === false || !is_readable($filename)) {
+                            throw new \InvalidArgumentException('The filename specified (' . $value . ') does not exist or is not readable.');
+                        }
+                        return $filename;
+                    },
+                    'unset' => function() {
+                        return '';
+                    },
+                ]);
 
         if (isset($filename{0})) {
             $this->filename = $filename;

@@ -27,27 +27,28 @@ class Cookie
 
     function __construct()
     {
-        $this->defineProperty('name', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('value', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('expire', [
-            'type' => '?int'
-        ]);
-        $this->defineProperty('path', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('domain', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('secure', [
-            'type' => '?bool'
-        ]);
-        $this->defineProperty('httpOnly', [
-            'type' => '?bool'
-        ]);
+        $this
+                ->defineProperty('name', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('value', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('expire', [
+                    'type' => '?int'
+                ])
+                ->defineProperty('path', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('domain', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('secure', [
+                    'type' => '?bool'
+                ])
+                ->defineProperty('httpOnly', [
+                    'type' => '?bool'
+                ]);
     }
 
 }

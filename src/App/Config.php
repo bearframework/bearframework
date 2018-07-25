@@ -35,81 +35,82 @@ class Config
      */
     public function __construct(array $options = [])
     {
-        $this->defineProperty('appDir', [
-            'type' => '?string',
-            'set' => function($value) {
-                if ($value === null) {
-                    return null;
-                }
-                $value = realpath($value);
-                if ($value === false) {
-                    throw new \Exception('The value of the appDir option is not a real directory');
-                }
-                return $value;
-            }
-        ]);
-        $this->defineProperty('dataDir', [
-            'type' => '?string',
-            'set' => function($value) {
-                if ($value === null) {
-                    return null;
-                }
-                $value = realpath($value);
-                if ($value === false) {
-                    throw new \Exception('The value of the dataDir option is not a real directory');
-                }
-                return $value;
-            }
-        ]);
-        $this->defineProperty('logsDir', [
-            'type' => '?string',
-            'set' => function($value) {
-                if ($value === null) {
-                    return null;
-                }
-                $value = realpath($value);
-                if ($value === false) {
-                    throw new \Exception('The value of the logsDir option is not a real directory');
-                }
-                return $value;
-            }
-        ]);
-        $this->defineProperty('updateEnvironment', [
-            'type' => 'bool',
-            'init' => function() {
-                return true;
-            }
-        ]);
-        $this->defineProperty('handleErrors', [
-            'type' => 'bool',
-            'init' => function() {
-                return true;
-            }
-        ]);
-        $this->defineProperty('displayErrors', [
-            'type' => 'bool',
-            'init' => function() {
-                return false;
-            }
-        ]);
-        $this->defineProperty('logErrors', [
-            'type' => 'bool',
-            'init' => function() {
-                return false;
-            }
-        ]);
-        $this->defineProperty('assetsPathPrefix', [
-            'type' => 'string',
-            'set' => function($value) {
-                if (!isset($value{0})) {
-                    throw new \Exception('The value of the assetsPathPrefix option cannot be empty.');
-                }
-                return $value;
-            },
-            'init' => function() {
-                return '/assets/';
-            }
-        ]);
+        $this
+                ->defineProperty('appDir', [
+                    'type' => '?string',
+                    'set' => function($value) {
+                        if ($value === null) {
+                            return null;
+                        }
+                        $value = realpath($value);
+                        if ($value === false) {
+                            throw new \Exception('The value of the appDir option is not a real directory');
+                        }
+                        return $value;
+                    }
+                ])
+                ->defineProperty('dataDir', [
+                    'type' => '?string',
+                    'set' => function($value) {
+                        if ($value === null) {
+                            return null;
+                        }
+                        $value = realpath($value);
+                        if ($value === false) {
+                            throw new \Exception('The value of the dataDir option is not a real directory');
+                        }
+                        return $value;
+                    }
+                ])
+                ->defineProperty('logsDir', [
+                    'type' => '?string',
+                    'set' => function($value) {
+                        if ($value === null) {
+                            return null;
+                        }
+                        $value = realpath($value);
+                        if ($value === false) {
+                            throw new \Exception('The value of the logsDir option is not a real directory');
+                        }
+                        return $value;
+                    }
+                ])
+                ->defineProperty('updateEnvironment', [
+                    'type' => 'bool',
+                    'init' => function() {
+                        return true;
+                    }
+                ])
+                ->defineProperty('handleErrors', [
+                    'type' => 'bool',
+                    'init' => function() {
+                        return true;
+                    }
+                ])
+                ->defineProperty('displayErrors', [
+                    'type' => 'bool',
+                    'init' => function() {
+                        return false;
+                    }
+                ])
+                ->defineProperty('logErrors', [
+                    'type' => 'bool',
+                    'init' => function() {
+                        return false;
+                    }
+                ])
+                ->defineProperty('assetsPathPrefix', [
+                    'type' => 'string',
+                    'set' => function($value) {
+                        if (!isset($value{0})) {
+                            throw new \Exception('The value of the assetsPathPrefix option cannot be empty.');
+                        }
+                        return $value;
+                    },
+                    'init' => function() {
+                        return '/assets/';
+                    }
+                ]);
 
         foreach ($options as $name => $value) {
             $this->$name = $value;

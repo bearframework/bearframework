@@ -39,60 +39,57 @@ class Request
     public function __construct(bool $initializeFromEnvironment = false)
     {
 
-        $this->defineProperty('method', [
-            'type' => '?string'
-        ]);
-
-        $this->defineProperty('base', [
-            'type' => '?string'
-        ]);
-
         $updateBase = function($name, $value) {
             $data = parse_url($this->base);
             $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
         };
 
-        $this->defineProperty('scheme', [
-            'type' => '?string',
-            'get' => function() {
-                $data = parse_url($this->base);
-                return isset($data['scheme']) ? $data['scheme'] : null;
-            },
-            'set' => function($value) use (&$updateBase) {
-                $updateBase('scheme', $value);
-            },
-            'unset' => function() use (&$updateBase) {
-                $updateBase('scheme', '');
-            }
-        ]);
-
-        $this->defineProperty('host', [
-            'type' => '?string',
-            'get' => function() {
-                $data = parse_url($this->base);
-                return isset($data['host']) ? $data['host'] : null;
-            },
-            'set' => function($value) use (&$updateBase) {
-                $updateBase('host', $value);
-            },
-            'unset' => function() use (&$updateBase) {
-                $updateBase('host', '');
-            }
-        ]);
-
-        $this->defineProperty('port', [
-            'type' => '?int',
-            'get' => function() {
-                $data = parse_url($this->base);
-                return isset($data['port']) ? $data['port'] : null;
-            },
-            'set' => function($value) use (&$updateBase) {
-                $updateBase('port', $value);
-            },
-            'unset' => function() use (&$updateBase) {
-                $updateBase('port', '');
-            }
-        ]);
+        $this
+                ->defineProperty('method', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('base', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('scheme', [
+                    'type' => '?string',
+                    'get' => function() {
+                        $data = parse_url($this->base);
+                        return isset($data['scheme']) ? $data['scheme'] : null;
+                    },
+                    'set' => function($value) use (&$updateBase) {
+                        $updateBase('scheme', $value);
+                    },
+                    'unset' => function() use (&$updateBase) {
+                        $updateBase('scheme', '');
+                    }
+                ])
+                ->defineProperty('host', [
+                    'type' => '?string',
+                    'get' => function() {
+                        $data = parse_url($this->base);
+                        return isset($data['host']) ? $data['host'] : null;
+                    },
+                    'set' => function($value) use (&$updateBase) {
+                        $updateBase('host', $value);
+                    },
+                    'unset' => function() use (&$updateBase) {
+                        $updateBase('host', '');
+                    }
+                ])
+                ->defineProperty('port', [
+                    'type' => '?int',
+                    'get' => function() {
+                        $data = parse_url($this->base);
+                        return isset($data['port']) ? $data['port'] : null;
+                    },
+                    'set' => function($value) use (&$updateBase) {
+                        $updateBase('port', $value);
+                    },
+                    'unset' => function() use (&$updateBase) {
+                        $updateBase('port', '');
+                    }
+                ]);
 
         if ($initializeFromEnvironment && isset($_SERVER)) {
             $this->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
@@ -129,129 +126,131 @@ class Request
             }
             $this->base = $scheme . '://' . $host . ($port !== '' ? ':' . $port : '') . $basePath;
 
-            $this->defineProperty('path', [
-                'init' => function() use ($path) {
-                    return new App\Request\PathRepository(isset($path{0}) ? $path : '/');
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('query', [
-                'init' => function() {
-                    $query = new App\Request\QueryRepository();
-                    $walkVariables = function($variables, $parent = null) use (&$query, &$walkVariables) {
-                                foreach ($variables as $name => $value) {
-                                    if (is_array($value)) {
-                                        $walkVariables($value, $name);
-                                        continue;
-                                    }
-                                    $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
-                                }
-                            };
-                    $walkVariables($_GET);
-                    return $query;
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('headers', [
-                'init' => function() {
-                    $headers = new App\Request\HeadersRepository();
-                    foreach ($_SERVER as $name => $value) {
-                        if (substr($name, 0, 5) == 'HTTP_') {
-                            $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
-                        }
-                    }
-                    return $headers;
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('cookies', [
-                'init' => function() {
-                    $cookies = new App\Request\CookiesRepository();
-                    $stringifyKeys = function($rawCookies, $level = 0) use (&$stringifyKeys) {
-                                $result = [];
-                                foreach ($rawCookies as $name => $value) {
-                                    $name = (string) $name;
-                                    if (is_array($value)) {
-                                        $temp = $stringifyKeys($value, $level + 1);
-                                        foreach ($temp as $subKey => $subValue) {
-                                            $result[($level === 0 ? $name : '[' . $name . ']') . $subKey] = $subValue;
+            $this
+                    ->defineProperty('path', [
+                        'init' => function() use ($path) {
+                            return new App\Request\PathRepository(isset($path{0}) ? $path : '/');
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('query', [
+                        'init' => function() {
+                            $query = new App\Request\QueryRepository();
+                            $walkVariables = function($variables, $parent = null) use (&$query, &$walkVariables) {
+                                        foreach ($variables as $name => $value) {
+                                            if (is_array($value)) {
+                                                $walkVariables($value, $name);
+                                                continue;
+                                            }
+                                            $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
                                         }
-                                    } else {
-                                        $result[($level === 0 ? $name : '[' . $name . ']')] = (string) $value;
-                                    }
+                                    };
+                            $walkVariables($_GET);
+                            return $query;
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('headers', [
+                        'init' => function() {
+                            $headers = new App\Request\HeadersRepository();
+                            foreach ($_SERVER as $name => $value) {
+                                if (substr($name, 0, 5) == 'HTTP_') {
+                                    $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
                                 }
-                                return $result;
-                            };
-                    $stringifiedCookies = $stringifyKeys($_COOKIE);
-                    foreach ($stringifiedCookies as $name => $value) {
-                        $cookies->set($cookies->make((string) $name, (string) $value));
-                    }
-                    return $cookies;
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('formData', [
-                'init' => function() {
-                    $data = new App\Request\FormDataRepository();
-                    $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
-                                foreach ($variables as $name => $value) {
-                                    if (is_array($value)) {
-                                        $walkVariables($value, $name);
-                                        continue;
-                                    }
-                                    $data->set($data->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
-                                }
-                            };
-                    $walkVariables($_POST);
-                    foreach ($_FILES as $name => $value) {
-                        if (is_uploaded_file($value['tmp_name'])) {
-                            if ($value['error'] !== UPLOAD_ERR_OK) {
-                                throw new \Exception('File upload error (' . $value['error'] . ')');
                             }
-                            $file = new \BearFramework\App\Request\FormDataFileItem();
-                            $file->name = $name;
-                            $file->value = $value['name'];
-                            $file->filename = $value['tmp_name'];
-                            $file->size = $value['size'];
-                            $file->type = $value['type'];
-                            $data->set($file);
-                        }
-                    }
-                    return $data;
-                },
-                'readonly' => true
-            ]);
+                            return $headers;
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('cookies', [
+                        'init' => function() {
+                            $cookies = new App\Request\CookiesRepository();
+                            $stringifyKeys = function($rawCookies, $level = 0) use (&$stringifyKeys) {
+                                        $result = [];
+                                        foreach ($rawCookies as $name => $value) {
+                                            $name = (string) $name;
+                                            if (is_array($value)) {
+                                                $temp = $stringifyKeys($value, $level + 1);
+                                                foreach ($temp as $subKey => $subValue) {
+                                                    $result[($level === 0 ? $name : '[' . $name . ']') . $subKey] = $subValue;
+                                                }
+                                            } else {
+                                                $result[($level === 0 ? $name : '[' . $name . ']')] = (string) $value;
+                                            }
+                                        }
+                                        return $result;
+                                    };
+                            $stringifiedCookies = $stringifyKeys($_COOKIE);
+                            foreach ($stringifiedCookies as $name => $value) {
+                                $cookies->set($cookies->make((string) $name, (string) $value));
+                            }
+                            return $cookies;
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('formData', [
+                        'init' => function() {
+                            $data = new App\Request\FormDataRepository();
+                            $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
+                                        foreach ($variables as $name => $value) {
+                                            if (is_array($value)) {
+                                                $walkVariables($value, $name);
+                                                continue;
+                                            }
+                                            $data->set($data->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                                        }
+                                    };
+                            $walkVariables($_POST);
+                            foreach ($_FILES as $name => $value) {
+                                if (is_uploaded_file($value['tmp_name'])) {
+                                    if ($value['error'] !== UPLOAD_ERR_OK) {
+                                        throw new \Exception('File upload error (' . $value['error'] . ')');
+                                    }
+                                    $file = new \BearFramework\App\Request\FormDataFileItem();
+                                    $file->name = $name;
+                                    $file->value = $value['name'];
+                                    $file->filename = $value['tmp_name'];
+                                    $file->size = $value['size'];
+                                    $file->type = $value['type'];
+                                    $data->set($file);
+                                }
+                            }
+                            return $data;
+                        },
+                        'readonly' => true
+                    ]);
         } else {
-            $this->defineProperty('path', [
-                'init' => function() {
-                    return new App\Request\PathRepository();
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('query', [
-                'init' => function() {
-                    return new App\Request\QueryRepository();
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('headers', [
-                'init' => function() {
-                    return new App\Request\HeadersRepository();
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('cookies', [
-                'init' => function() {
-                    return new App\Request\CookiesRepository();
-                },
-                'readonly' => true
-            ]);
-            $this->defineProperty('formData', [
-                'init' => function() {
-                    return new App\Request\FormDataRepository();
-                },
-                'readonly' => true
-            ]);
+            $this
+                    ->defineProperty('path', [
+                        'init' => function() {
+                            return new App\Request\PathRepository();
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('query', [
+                        'init' => function() {
+                            return new App\Request\QueryRepository();
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('headers', [
+                        'init' => function() {
+                            return new App\Request\HeadersRepository();
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('cookies', [
+                        'init' => function() {
+                            return new App\Request\CookiesRepository();
+                        },
+                        'readonly' => true
+                    ])
+                    ->defineProperty('formData', [
+                        'init' => function() {
+                            return new App\Request\FormDataRepository();
+                        },
+                        'readonly' => true
+                    ]);
         }
     }
 

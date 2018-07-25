@@ -31,24 +31,25 @@ class Context
      */
     public function __construct(string $dir)
     {
-        $this->defineProperty('dir', [
-            'get' => function() use ($dir) {
-                return $dir;
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('assets', [
-            'init' => function() use ($dir) {
-                return new App\Context\Assets($dir);
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('classes', [
-            'init' => function() use ($dir) {
-                return new App\Context\Classes($dir);
-            },
-            'readonly' => true
-        ]);
+        $this
+                ->defineProperty('dir', [
+                    'get' => function() use ($dir) {
+                        return $dir;
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('assets', [
+                    'init' => function() use ($dir) {
+                        return new App\Context\Assets($dir);
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('classes', [
+                    'init' => function() use ($dir) {
+                        return new App\Context\Classes($dir);
+                    },
+                    'readonly' => true
+                ]);
     }
 
 }

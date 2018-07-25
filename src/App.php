@@ -62,140 +62,141 @@ class App
         }
         self::$instance = &$this;
 
-        $this->defineProperty('config', [
-            'init' => function() {
-                return new App\Config();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('container', [
-            'init' => function() {
-                $container = new App\Container();
-                $container->set('Logger', function() {
-                            if ($this->config->logsDir === null) {
-                                throw new \Exception('The value of the logsDir config variable is empty.');
+        $this
+                ->defineProperty('config', [
+                    'init' => function() {
+                        return new App\Config();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('container', [
+                    'init' => function() {
+                        $container = new App\Container();
+                        $container->set('Logger', function() {
+                                    if ($this->config->logsDir === null) {
+                                        throw new \Exception('The value of the logsDir config variable is empty.');
+                                    }
+                                    return new App\DefaultLogger($this->config->logsDir);
+                                });
+                        $container->set('CacheDriver', App\DefaultCacheDriver::class);
+                        return $container;
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('request', [
+                    'init' => function() {
+                        return new App\Request(true);
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('routes', [
+                    'init' => function() {
+                        $routes = new App\RoutesRepository();
+                        $routes->add($this->config->assetsPathPrefix . '*', function() {
+                                    $response = $this->assets->getResponse($this->request);
+                                    if ($response !== null) {
+                                        return $response;
+                                    }
+                                });
+                        return $routes;
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('logger', [
+                    'init' => function() {
+                        return $this->container->get('Logger');
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('addons', [
+                    'init' => function() {
+                        return new App\AddonsRepository();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('hooks', [
+                    'init' => function() {
+                        return new App\HooksRepository();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('assets', [
+                    'init' => function() {
+                        return new App\Assets();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('data', [
+                    'init' => function() {
+                        if ($this->config->dataDir === null) {
+                            throw new \Exception('The value of the dataDir config variable is empty.');
+                        }
+                        return new App\DataRepository($this->config->dataDir);
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('cache', [
+                    'init' => function() {
+                        return new App\CacheRepository($this->container->get('CacheDriver'));
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('classes', [
+                    'init' => function() {
+                        return new App\ClassesRepository();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('urls', [
+                    'init' => function() {
+                        return new App\Urls();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('images', [
+                    'init' => function() {
+                        return new App\Images();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('context', [
+                    'init' => function() {
+                        return new App\ContextsRepository();
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('shortcuts', [
+                    'init' => function() {
+                        $initPropertyMethod = function($callback) { // needed to preserve the $this context
+                                    return $callback();
+                                };
+                        $addPropertyMethod = function($name, $callback) use (&$initPropertyMethod) {
+                                    $this->defineProperty($name, [
+                                        'init' => function() use (&$callback, &$initPropertyMethod) {
+                                            return $initPropertyMethod($callback);
+                                        },
+                                        'readonly' => true
+                                    ]);
+                                };
+
+                        return new class($addPropertyMethod) {
+
+                            private $addPropertyMethod = null;
+
+                            public function __construct($addPropertyMethod)
+                            {
+                                $this->addPropertyMethod = $addPropertyMethod;
                             }
-                            return new App\DefaultLogger($this->config->logsDir);
-                        });
-                $container->set('CacheDriver', App\DefaultCacheDriver::class);
-                return $container;
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('request', [
-            'init' => function() {
-                return new App\Request(true);
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('routes', [
-            'init' => function() {
-                $routes = new App\RoutesRepository();
-                $routes->add($this->config->assetsPathPrefix . '*', function() {
-                            $response = $this->assets->getResponse($this->request);
-                            if ($response !== null) {
-                                return $response;
+
+                            public function add(string $name, callable $callback)
+                            {
+                                call_user_func($this->addPropertyMethod, $name, $callback);
+                                return $this;
                             }
-                        });
-                return $routes;
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('logger', [
-            'init' => function() {
-                return $this->container->get('Logger');
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('addons', [
-            'init' => function() {
-                return new App\AddonsRepository();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('hooks', [
-            'init' => function() {
-                return new App\HooksRepository();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('assets', [
-            'init' => function() {
-                return new App\Assets();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('data', [
-            'init' => function() {
-                if ($this->config->dataDir === null) {
-                    throw new \Exception('The value of the dataDir config variable is empty.');
-                }
-                return new App\DataRepository($this->config->dataDir);
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('cache', [
-            'init' => function() {
-                return new App\CacheRepository($this->container->get('CacheDriver'));
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('classes', [
-            'init' => function() {
-                return new App\ClassesRepository();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('urls', [
-            'init' => function() {
-                return new App\Urls();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('images', [
-            'init' => function() {
-                return new App\Images();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('context', [
-            'init' => function() {
-                return new App\ContextsRepository();
-            },
-            'readonly' => true
-        ]);
-        $this->defineProperty('shortcuts', [
-            'init' => function() {
-                $initPropertyMethod = function($callback) { // needed to preserve the $this context
-                            return $callback();
                         };
-                $addPropertyMethod = function($name, $callback) use (&$initPropertyMethod) {
-                            $this->defineProperty($name, [
-                                'init' => function() use (&$callback, &$initPropertyMethod) {
-                                    return $initPropertyMethod($callback);
-                                },
-                                'readonly' => true
-                            ]);
-                        };
-
-                return new class($addPropertyMethod) {
-
-                    private $addPropertyMethod = null;
-
-                    public function __construct($addPropertyMethod)
-                    {
-                        $this->addPropertyMethod = $addPropertyMethod;
-                    }
-
-                    public function add(string $name, callable $callback)
-                    {
-                        call_user_func($this->addPropertyMethod, $name, $callback);
-                        return $this;
-                    }
-                };
-            },
-            'readonly' => true
-        ]);
+                    },
+                    'readonly' => true
+                ]);
     }
 
     /**

@@ -25,18 +25,19 @@ class DataItem
 
     function __construct()
     {
-        $this->defineProperty('key', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('value', [
-            'type' => '?string'
-        ]);
-        $this->defineProperty('metadata', [
-            'init' => function() {
-                return new \IvoPetkov\DataObject();
-            },
-            'readonly' => true
-        ]);
+        $this
+                ->defineProperty('key', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('value', [
+                    'type' => '?string'
+                ])
+                ->defineProperty('metadata', [
+                    'init' => function() {
+                        return new \IvoPetkov\DataObject();
+                    },
+                    'readonly' => true
+                ]);
     }
 
 }
