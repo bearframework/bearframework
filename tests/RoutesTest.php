@@ -7,11 +7,31 @@
  * Free to use under the MIT license.
  */
 
+use BearFramework\App\Request;
+use BearFramework\App\Response;
+
 /**
  * @runTestsInSeparateProcesses
  */
 class RoutesTest extends BearFrameworkTestCase
 {
+
+    /**
+     * 
+     */
+    public function testRequestArgument()
+    {
+        $app = $this->getApp();
+
+        $app->request->path->set('/hi');
+        $app->request->method = 'GET';
+        $app->routes->add('/', function(Request $request) {
+            return new Response\HTML((string) $request->path . '!!!');
+        });
+
+        $app->run();
+        $this->expectOutputString('/hi!!!');
+    }
 
     /**
      * 
@@ -23,7 +43,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/');
         $app->request->method = 'GET';
         $app->routes->add('/', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the home page');
+            return new Response\HTML('Hi from the home page');
         });
 
         $app->run();
@@ -40,7 +60,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/');
         $app->request->method = 'GET';
         $app->routes->add('/products/', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the products page');
+            return new Response\HTML('Hi from the products page');
         });
 
         $app->run();
@@ -57,7 +77,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/laptop/');
         $app->request->method = 'GET';
         $app->routes->add('/products/*', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the product page');
+            return new Response\HTML('Hi from the product page');
         });
 
         $app->run();
@@ -74,7 +94,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/laptop/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/*', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the product page');
+            return new Response\HTML('Hi from the product page');
         });
 
         $app->run();
@@ -91,7 +111,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/laptop/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/*/options/', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the product page');
+            return new Response\HTML('Hi from the product page');
         });
 
         $app->run();
@@ -108,7 +128,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/laptop/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/*ions/', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the product page');
+            return new Response\HTML('Hi from the product page');
         });
 
         $app->run();
@@ -125,7 +145,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
+            return new Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -142,7 +162,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?', function() {
-            return new \BearFramework\App\Response\HTML('');
+            return new Response\HTML('');
         });
 
         $app->run();
@@ -159,7 +179,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/review/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/review/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
+            return new Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -176,7 +196,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/?/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1) . '-' . $app->request->path->getSegment(2));
+            return new Response\HTML($app->request->path->getSegment(1) . '-' . $app->request->path->getSegment(2));
         });
 
         $app->run();
@@ -193,7 +213,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/color/blue/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/options/?/blue/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1) . '-' . $app->request->path->getSegment(3));
+            return new Response\HTML($app->request->path->getSegment(1) . '-' . $app->request->path->getSegment(3));
         });
 
         $app->run();
@@ -210,7 +230,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?options/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML('product');
+            return new Response\HTML('product');
         });
 
         $app->run();
@@ -227,7 +247,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options/');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/options/', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
+            return new Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -244,7 +264,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/product/options');
         $app->request->method = 'GET';
         $app->routes->add('/products/?/options', function() use ($app) {
-            return new \BearFramework\App\Response\HTML($app->request->path->getSegment(1));
+            return new Response\HTML($app->request->path->getSegment(1));
         });
 
         $app->run();
@@ -261,7 +281,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/services/');
         $app->request->method = 'GET';
         $app->routes->add(['/services/', '/our-services/'], function() {
-            return new \BearFramework\App\Response\HTML('Hi from the services page');
+            return new Response\HTML('Hi from the services page');
         });
 
         $app->run();
@@ -278,7 +298,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/our-services/');
         $app->request->method = 'GET';
         $app->routes->add(['/services/', '/our-services/'], function() {
-            return new \BearFramework\App\Response\HTML('Hi from the services page');
+            return new Response\HTML('Hi from the services page');
         });
 
         $app->run();
@@ -295,7 +315,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app->request->path->set('/products/');
         $app->request->method = 'GET';
         $app->routes->add('/', function() {
-            return new \BearFramework\App\Response\HTML('Hi from the home page');
+            return new Response\HTML('Hi from the home page');
         });
 
         $app->run();
@@ -310,13 +330,13 @@ class RoutesTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $app->routes->add('/', function() {
-            return new \BearFramework\App\Response\HTML('home');
+            return new Response\HTML('home');
         });
         $request = new \BearFramework\App\Request();
         $request->path->set('/');
         $request->method = 'GET';
         $response = $app->routes->getResponse($request);
-        $this->assertTrue($response instanceof \BearFramework\App\Response\HTML);
+        $this->assertTrue($response instanceof Response\HTML);
         $this->assertTrue($response->content === 'home');
     }
 
@@ -328,7 +348,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $app->routes->add('/', function() {
-            $response = new \BearFramework\App\Response\HTML('home');
+            $response = new Response\HTML('home');
             $response->headers->set($response->headers->make('X-Custom-Header', '123'));
             return $response;
         });
@@ -336,7 +356,7 @@ class RoutesTest extends BearFrameworkTestCase
         $request->path->set('/');
         $request->method = 'HEAD';
         $response = $app->routes->getResponse($request);
-        $this->assertTrue($response instanceof \BearFramework\App\Response\HTML);
+        $this->assertTrue($response instanceof Response\HTML);
         $this->assertTrue($response->content === '');
         $this->assertTrue($response->headers->getValue('X-Custom-Header') === '123');
     }
@@ -349,7 +369,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $app->routes->add('/', function() {
-            return new \BearFramework\App\Response\HTML('home');
+            return new Response\HTML('home');
         });
         $request = new \BearFramework\App\Request();
         $request->path->set('/products/');
@@ -366,14 +386,14 @@ class RoutesTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $app->routes->add('/', function() {
-            return new \BearFramework\App\Response\HTML('home');
+            return new Response\HTML('home');
         }, ['GET', 'HTTPS']);
         $request = new \BearFramework\App\Request();
         $request->method = 'GET';
         $request->base = 'https://example.com';
         $request->path->set('/');
         $response = $app->routes->getResponse($request);
-        $this->assertTrue($response instanceof \BearFramework\App\Response\HTML);
+        $this->assertTrue($response instanceof Response\HTML);
         $this->assertTrue($response->content === 'home');
     }
 
@@ -385,7 +405,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $app->routes->add('/', function() {
-            return new \BearFramework\App\Response\HTML('home');
+            return new Response\HTML('home');
         }, ['POST']);
         $request = new \BearFramework\App\Request();
         $request->method = 'GET';

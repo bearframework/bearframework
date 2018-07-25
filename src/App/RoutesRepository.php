@@ -112,7 +112,7 @@ class RoutesRepository
                     foreach ($route[1] as $callable) {
                         ob_start();
                         try {
-                            $response = call_user_func($callable);
+                            $response = call_user_func($callable, $request);
                             ob_end_clean();
                         } catch (\Exception $e) {
                             ob_end_clean();
