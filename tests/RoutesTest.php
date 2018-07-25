@@ -25,7 +25,7 @@ class RoutesTest extends BearFrameworkTestCase
 
         $app->request->path->set('/hi');
         $app->request->method = 'GET';
-        $app->routes->add('/', function(Request $request) {
+        $app->routes->add('/hi', function(Request $request) {
             return new Response\HTML((string) $request->path . '!!!');
         });
 
