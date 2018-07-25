@@ -89,8 +89,9 @@ class Request
                     'unset' => function() use (&$updateBase) {
                         $updateBase('port', '');
                     }
-                ]);
+        ]);
 
+        $path = '';
         if ($initializeFromEnvironment && isset($_SERVER)) {
             $this->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
             $path = isset($_SERVER['REQUEST_URI']) && strlen($_SERVER['REQUEST_URI']) > 0 ? $_SERVER['REQUEST_URI'] : '/';
@@ -125,17 +126,19 @@ class Request
                 $port = '';
             }
             $this->base = $scheme . '://' . $host . ($port !== '' ? ':' . $port : '') . $basePath;
+        }
 
-            $this
-                    ->defineProperty('path', [
-                        'init' => function() use ($path) {
-                            return new App\Request\PathRepository(isset($path{0}) ? $path : '/');
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('query', [
-                        'init' => function() {
-                            $query = new App\Request\QueryRepository();
+        $this
+                ->defineProperty('path', [
+                    'init' => function() use ($path) {
+                        return new App\Request\PathRepository(isset($path{0}) ? $path : '/');
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('query', [
+                    'init' => function() use ($initializeFromEnvironment) {
+                        $query = new App\Request\QueryRepository();
+                        if ($initializeFromEnvironment && isset($_GET)) {
                             $walkVariables = function($variables, $parent = null) use (&$query, &$walkVariables) {
                                         foreach ($variables as $name => $value) {
                                             if (is_array($value)) {
@@ -146,25 +149,29 @@ class Request
                                         }
                                     };
                             $walkVariables($_GET);
-                            return $query;
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('headers', [
-                        'init' => function() {
-                            $headers = new App\Request\HeadersRepository();
+                        }
+                        return $query;
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('headers', [
+                    'init' => function() use ($initializeFromEnvironment) {
+                        $headers = new App\Request\HeadersRepository();
+                        if ($initializeFromEnvironment && isset($_SERVER)) {
                             foreach ($_SERVER as $name => $value) {
                                 if (substr($name, 0, 5) == 'HTTP_') {
                                     $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
                                 }
                             }
-                            return $headers;
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('cookies', [
-                        'init' => function() {
-                            $cookies = new App\Request\CookiesRepository();
+                        }
+                        return $headers;
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('cookies', [
+                    'init' => function() use ($initializeFromEnvironment) {
+                        $cookies = new App\Request\CookiesRepository();
+                        if ($initializeFromEnvironment && isset($_COOKIE)) {
                             $stringifyKeys = function($rawCookies, $level = 0) use (&$stringifyKeys) {
                                         $result = [];
                                         foreach ($rawCookies as $name => $value) {
@@ -184,13 +191,15 @@ class Request
                             foreach ($stringifiedCookies as $name => $value) {
                                 $cookies->set($cookies->make((string) $name, (string) $value));
                             }
-                            return $cookies;
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('formData', [
-                        'init' => function() {
-                            $data = new App\Request\FormDataRepository();
+                        }
+                        return $cookies;
+                    },
+                    'readonly' => true
+                ])
+                ->defineProperty('formData', [
+                    'init' => function() use ($initializeFromEnvironment) {
+                        $data = new App\Request\FormDataRepository();
+                        if ($initializeFromEnvironment && isset($_POST, $_FILES)) {
                             $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
                                         foreach ($variables as $name => $value) {
                                             if (is_array($value)) {
@@ -215,43 +224,11 @@ class Request
                                     $data->set($file);
                                 }
                             }
-                            return $data;
-                        },
-                        'readonly' => true
-                    ]);
-        } else {
-            $this
-                    ->defineProperty('path', [
-                        'init' => function() {
-                            return new App\Request\PathRepository();
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('query', [
-                        'init' => function() {
-                            return new App\Request\QueryRepository();
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('headers', [
-                        'init' => function() {
-                            return new App\Request\HeadersRepository();
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('cookies', [
-                        'init' => function() {
-                            return new App\Request\CookiesRepository();
-                        },
-                        'readonly' => true
-                    ])
-                    ->defineProperty('formData', [
-                        'init' => function() {
-                            return new App\Request\FormDataRepository();
-                        },
-                        'readonly' => true
-                    ]);
-        }
+                        }
+                        return $data;
+                    },
+                    'readonly' => true
+        ]);
     }
 
 }
