@@ -29,6 +29,7 @@ class Event
     {
         $this->
                 defineProperty('name', [
+                    'type' => 'string',
                     'get' => function() use ($name) {
                         return $name;
                     },
