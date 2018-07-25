@@ -8,6 +8,7 @@
  */
 
 $classes = [
+    'BearFramework' => 'src/BearFramework.php',
     'BearFramework\App\Addon' => 'src/App/Addon.php',
     'BearFramework\App\AddonsRepository' => 'src/App/AddonsRepository.php',
     'BearFramework\App\Assets' => 'src/App/Assets.php',

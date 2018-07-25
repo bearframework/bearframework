@@ -38,13 +38,6 @@ class App
     use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
-     * Current Bear Framework version.
-     * 
-     * @var string
-     */
-    const VERSION = '0.10.7';
-
-    /**
      * The instance of the App object. Only one can be created.
      * 
      * @var \BearFramework\App 
