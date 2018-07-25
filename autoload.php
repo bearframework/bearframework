@@ -62,6 +62,7 @@ $classes = [
     'BearFramework\Addons' => 'src/Addons.php',
     'BearFramework\App' => 'src/App.php',
     'BearFramework\DataList' => 'src/DataList.php',
+    'BearFramework\DataObject' => 'src/DataObject.php',
 ];
 
 spl_autoload_register(function ($class) use ($classes) {
