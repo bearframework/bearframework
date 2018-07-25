@@ -32,7 +32,7 @@ class CacheRepository
      * 
      * @param \BearFramework\App\ICacheDriver $cacheDriver The cache driver to use.
      */
-    function __construct(ICacheDriver $cacheDriver)
+    public function __construct(ICacheDriver $cacheDriver)
     {
         $this->cacheDriver = $cacheDriver;
     }

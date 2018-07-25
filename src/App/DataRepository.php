@@ -40,7 +40,7 @@ class DataRepository
      * 
      * @param string $dir The directory where the data will be stored.
      */
-    function __construct(string $dir)
+    public function __construct(string $dir)
     {
         $dir = realpath($dir);
         if ($dir === false) {

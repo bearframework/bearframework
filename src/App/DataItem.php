@@ -23,7 +23,7 @@ class DataItem
     use \IvoPetkov\DataObjectToArrayTrait;
     use \IvoPetkov\DataObjectToJSONTrait;
 
-    function __construct()
+    public function __construct()
     {
         $this
                 ->defineProperty('key', [

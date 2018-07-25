@@ -27,7 +27,7 @@ class DefaultLogger implements ILogger
      * 
      * @param string $dir The directory where the logs will be stored.
      */
-    function __construct($dir)
+    public function __construct($dir)
     {
         $dir = realpath($dir);
         if ($dir === false) {

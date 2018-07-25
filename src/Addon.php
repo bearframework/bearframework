@@ -28,7 +28,7 @@ class Addon
      * @param string $dir
      * @param array $options
      */
-    function __construct(string $id, string $dir, array $options)
+    public function __construct(string $id, string $dir, array $options)
     {
         $this
                 ->defineProperty('id', [

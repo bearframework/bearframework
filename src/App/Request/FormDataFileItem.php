@@ -17,7 +17,7 @@ namespace BearFramework\App\Request;
 class FormDataFileItem extends FormDataItem
 {
 
-    function __construct()
+    public function __construct()
     {
 
         parent::__construct();
