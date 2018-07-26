@@ -454,7 +454,7 @@ class Assets
     {
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['extension'])) {
-            $extension = $pathinfo['extension'];
+            $extension = strtolower($pathinfo['extension']);
             $mimeTypes = array(
                 '3dml' => 'text/vnd.in3d.3dml',
                 '3ds' => 'image/x-3ds',
