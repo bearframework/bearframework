@@ -306,7 +306,7 @@ class Assets
      * @param array $options A list of options for the filename.
      * @return string|null The local filename of the prepared file or null.
      */
-    public function prepare(string $filename, array $options = []): ?string
+    private function prepare(string $filename, array $options = []): ?string
     {
         $app = App::get();
         $hooks = $app->hooks;
