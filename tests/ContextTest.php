@@ -88,6 +88,26 @@ class ContextTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testAutoDetectContext()
+    {
+        $app = $this->getApp();
+        $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid();
+
+        $this->makeFile($addonDir . '/index.php', '<?php
+            
+$app = BearFramework\App::get();
+$context = $app->context->get();
+$app->config->valueToCheck = $context->dir;
+');
+
+        BearFramework\Addons::register('tempaddon', $addonDir);
+        $app->addons->add('tempaddon');
+        $this->assertTrue($app->config->valueToCheck === $addonDir);
+    }
+
+    /**
+     * 
+     */
     public function testAddonContextInAnotherAddonContext()
     {
         $app = $this->getApp();

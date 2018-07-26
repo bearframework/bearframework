@@ -44,12 +44,19 @@ class ContextsRepository
     /**
      * Returns a context object for the filename specified.
      * 
-     * @param string $filename The filename used to find the context.
+     * @param string|null $filename The filename used to find the context. Will be automatically detected if not provided.
      * @throws \Exception
      * @return \BearFramework\App\Context The context object for the filename specified.
      */
-    public function get(string $filename)
+    public function get(string $filename = null)
     {
+        if ($filename === null) {
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+            if (!isset($trace[0])) {
+                throw new \Exception('Connot detect context!');
+            }
+            $filename = $trace[0]['file'];
+        }
         if (isset(self::$objectsCache[$filename])) {
             return clone(self::$objectsCache[$filename]);
         }
