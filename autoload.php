@@ -32,7 +32,6 @@ $classes = [
     'BearFramework\App\HooksRepository' => 'src/App/HooksRepository.php',
     'BearFramework\App\ICacheDriver' => 'src/App/ICacheDriver.php',
     'BearFramework\App\ILogger' => 'src/App/ILogger.php',
-    'BearFramework\App\Images' => 'src/App/Images.php',
     'BearFramework\App\Request' => 'src/App/Request.php',
     'BearFramework\App\Request\Cookie' => 'src/App/Request/Cookie.php',
     'BearFramework\App\Request\CookiesRepository' => 'src/App/Request/CookiesRepository.php',

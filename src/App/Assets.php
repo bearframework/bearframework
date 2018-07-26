@@ -317,9 +317,9 @@ class Assets
         if (!empty($options)) {
             $this->validateOptions($options);
         }
-        
+
         $result = null;
-        
+
         if ($app->config->dataDir !== null) {
             $dataAssetsDir = $app->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
             if (strpos($filename, $dataAssetsDir) === 0) {
@@ -331,9 +331,9 @@ class Assets
                 }
             }
         }
-        
+
         $hooks->execute('assetPrepare', $filename, $options);
-        
+
         if (strlen($filename) > 0 && is_file($filename)) {
             if (!isset($options['width']) && !isset($options['height'])) {
                 $result = $filename;
@@ -357,7 +357,7 @@ class Assets
                             }
                         }
                     }
-                    $app->images->resize($filename, $tempFilename, [
+                    $this->resize($filename, $tempFilename, [
                         'width' => (isset($options['width']) ? $options['width'] : null),
                         'height' => (isset($options['height']) ? $options['height'] : null)
                     ]);
@@ -443,6 +443,185 @@ class Assets
         if (isset($options['robotsNoIndex'])) {
             if (!is_bool($options['robotsNoIndex'])) {
                 throw new \InvalidArgumentException('The value of the robotsNoIndex option must be of type bool, ' . gettype($options['robotsNoIndex']) . ' given.');
+            }
+        }
+    }
+
+    /**
+     * Returns the size (if available) of the asset specified.
+     * 
+     * @param string $filename The filename of the asset.
+     * @throws \InvalidArgumentException
+     * @return array[int,int] The size of the asset specified.
+     */
+    public function getSize(string $filename): array
+    {
+        $app = App::get();
+        $hooks = $app->hooks;
+
+        $result = null;
+        if ($hooks->exists('assetGetSize')) {
+            $returnValue = null;
+            $hooks->execute('assetGetSize', $filename, $returnValue);
+            if (is_array($returnValue) && isset($returnValue[0], $returnValue[1]) && is_int($returnValue[0]) && is_int($returnValue[1])) {
+                $result = $returnValue;
+            }
+        }
+        if ($result === null) {
+            if (realpath($filename) === false) {
+                throw new \InvalidArgumentException('The filename specified does not exist (' . $filename . ')');
+            }
+            try {
+                $size = getimagesize($filename);
+                if (is_array($size)) {
+                    $result = [(int) $size[0], (int) $size[1]];
+                } elseif (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
+                    $sourceImage = imagecreatefromwebp($filename);
+                    $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
+                    imagedestroy($sourceImage);
+                }
+            } catch (\Exception $e) {
+                $reason = $e->getMessage();
+            }
+            if ($result === null) {
+                throw new \InvalidArgumentException('Cannot get size of ' . $filename . ' (reason: ' . (isset($reason) ? $reason : 'unknown') . ')');
+            }
+        }
+        $hooks->execute('assetGetSizeDone', $filename, $result);
+        return $result;
+    }
+
+    /**
+     * Resizes an asset file.
+     * 
+     * @param string $sourceFilename The asset file to resize.
+     * @param string $destinationFilename The filename where the result asset will be saved.
+     * @param array $options Resize options. You can resize the file by providing "width", "height" or both.
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     * @return void No value is returned.
+     */
+    private function resize(string $sourceFilename, string $destinationFilename, array $options = []): void
+    {
+        if (realpath($sourceFilename) === false) {
+            throw new \InvalidArgumentException('The sourceFilename specified does not exist (' . $sourceFilename . ')');
+        }
+        if (isset($options['width']) && (!is_int($options['width']) || $options['width'] < 1 || $options['width'] > 100000)) {
+            throw new \InvalidArgumentException('The width value must be higher than 0 and lower than 100001');
+        }
+        if (isset($options['height']) && (!is_int($options['height']) || $options['height'] < 1 || $options['height'] > 100000)) {
+            throw new \InvalidArgumentException('The height value must be higher than 0 and lower than 100001');
+        }
+        $outputType = null;
+        $sourcePathInfo = pathinfo($sourceFilename);
+        $destinationPathInfo = pathinfo($destinationFilename);
+        if (isset($destinationPathInfo['extension'])) {
+            $extension = strtolower($destinationPathInfo['extension']);
+            if ($extension === 'png') {
+                $outputType = 'png';
+            } elseif ($extension === 'gif') {
+                $outputType = 'gif';
+            } elseif ($extension === 'jpg' || $extension === 'jpeg') {
+                $outputType = 'jpg';
+            } elseif ($extension === 'webp') {
+                $outputType = 'webp';
+            }
+        }
+        if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg' && $outputType !== 'webp') {
+            throw new \InvalidArgumentException('The output format is not supported!');
+        }
+
+        try {
+            if (isset($sourcePathInfo['extension']) && strtolower($sourcePathInfo['extension']) === 'webp') {
+                $sourceSize = $this->getSize($sourceFilename);
+                $sourceWidth = $sourceSize[0];
+                $sourceHeight = $sourceSize[1];
+                $sourceMimeType = 'image/webp';
+            } else {
+                $sourceImageInfo = getimagesize($sourceFilename);
+                if (!is_array($sourceImageInfo)) {
+                    throw new \InvalidArgumentException('Cannot get source asset size of ' . $sourceFilename . '!');
+                }
+                $sourceWidth = $sourceImageInfo[0];
+                $sourceHeight = $sourceImageInfo[1];
+                $sourceMimeType = $sourceImageInfo['mime'];
+            }
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('Unknown error (' . $e->getMessage() . ')');
+        }
+
+        $width = isset($options['width']) ? $options['width'] : null;
+        $height = isset($options['height']) ? $options['height'] : null;
+
+        if ($width === null && $height === null) {
+            $width = $sourceWidth;
+            $height = $sourceHeight;
+        } elseif ($width === null && $height !== null) {
+            $width = (int) floor($sourceWidth / $sourceHeight * $height);
+        } elseif ($height === null && $width !== null) {
+            $height = (int) floor($sourceHeight / $sourceWidth * $width);
+        }
+        if ($width === 0) {
+            $width = 1;
+        }
+        if ($height === 0) {
+            $height = 1;
+        }
+
+        if ($sourceWidth === $width && $sourceHeight === $height) {
+            copy($sourceFilename, $destinationFilename);
+        } else {
+
+            $sourceImage = null;
+            if ($sourceMimeType === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+                $sourceImage = imagecreatefromjpeg($sourceFilename);
+            } elseif ($sourceMimeType === 'image/png' && function_exists('imagecreatefrompng')) {
+                $sourceImage = imagecreatefrompng($sourceFilename);
+            } elseif ($sourceMimeType === 'image/gif' && function_exists('imagecreatefromgif')) {
+                $sourceImage = imagecreatefromgif($sourceFilename);
+            } elseif ($sourceMimeType === 'image/webp' && function_exists('imagecreatefromwebp')) {
+                $sourceImage = imagecreatefromwebp($sourceFilename);
+            }
+
+            if (!$sourceImage) {
+                throw new \InvalidArgumentException('Cannot read the source image (' . $sourceFilename . ')');
+            }
+            $result = false;
+            try {
+                $resultImage = imagecreatetruecolor($width, $height);
+                imagealphablending($resultImage, false);
+                imagesavealpha($resultImage, true);
+                imagefill($resultImage, 0, 0, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
+                $widthRatio = $sourceWidth / $width;
+                $heightRatio = $sourceHeight / $height;
+                $resizedImageHeight = $height;
+                $resizedImageWidth = $width;
+                if ($widthRatio > $heightRatio) {
+                    $resizedImageWidth = ceil($sourceWidth / $heightRatio);
+                } else {
+                    $resizedImageHeight = ceil($sourceHeight / $widthRatio);
+                }
+                $destinationX = - ($resizedImageWidth - $width) / 2;
+                $destinationY = - ($resizedImageHeight - $height) / 2;
+
+                if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
+                    if ($outputType == 'jpg') {
+                        $result = imagejpeg($resultImage, $destinationFilename, 100);
+                    } elseif ($outputType == 'png') {
+                        $result = imagepng($resultImage, $destinationFilename, 9);
+                    } elseif ($outputType == 'gif') {
+                        $result = imagegif($resultImage, $destinationFilename);
+                    } elseif ($outputType == 'webp') {
+                        $result = imagewebp($resultImage, $destinationFilename, 100);
+                    }
+                }
+                imagedestroy($resultImage);
+            } catch (\Exception $e) {
+                
+            }
+            imagedestroy($sourceImage);
+            if (!$result) {
+                throw new \Exception('Cannot save resized asset (' . $destinationFilename . ')');
             }
         }
     }
