@@ -150,6 +150,8 @@ class AssetsTest extends BearFrameworkTestCase
         $this->assertTrue($content === 'data:image/svg+xml,sample-svg-content');
         $content = $app->assets->getContent($filename, ['encoding' => 'data-uri-base64']);
         $this->assertTrue($content === 'data:image/svg+xml;base64,c2FtcGxlLXN2Zy1jb250ZW50');
+        $this->expectException('InvalidArgumentException');
+        $app->assets->getContent($filename, ['encoding' => 'unknown']);
     }
 
     /**

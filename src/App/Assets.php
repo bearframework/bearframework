@@ -149,7 +149,7 @@ class Assets
      * Returns the content of the file specified.
      * 
      * @param string $filename The filename.
-     * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
+     * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64, data-uri, data-uri-base64).
      * @throws \InvalidArgumentException
      * @return string|null The content of the file or null if file does not exists.
      */
@@ -185,9 +185,12 @@ class Assets
             } elseif ($options['encoding'] === 'data-uri') {
                 $mimeType = $this->getMimeType($filename);
                 return 'data:' . $mimeType . ',' . $content;
+            } elseif ($options['encoding'] === 'data-uri-base64') {
+                $mimeType = $this->getMimeType($filename);
+                return 'data:' . $mimeType . ';base64,' . base64_encode($content);
+            } else {
+                throw new \InvalidArgumentException('Unsupported encoding type (' . $options['encoding'] . ')');
             }
-            $mimeType = $this->getMimeType($filename);
-            return 'data:' . $mimeType . ';base64,' . base64_encode($content);
         }
         return $content;
     }
@@ -328,7 +331,7 @@ class Assets
                 }
             }
         }
-
+        
         $hooks->execute('assetPrepare', $filename, $options);
         
         if (strlen($filename) > 0 && is_file($filename)) {
