@@ -544,27 +544,6 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
-     * Custom resize in imageResize
-     */
-//    public function testResizeHooks1()
-//    {
-//        $app = $this->getApp();
-//        $app->assets->addDir($app->config->appDir . '/assets/');
-//        // it's fake resize, just copy
-//        $app->hooks->add('imageResize', function(string &$sourceFilename, string &$destinationFilename, array &$options, bool &$done) {
-//            copy($sourceFilename, $destinationFilename);
-//            $done = true;
-//        });
-//        $sourceFilename = $app->config->appDir . '/assets/logo.jpg';
-//        $destinationFilename = $app->config->appDir . '/assets/logo_resized.jpg';
-//        $this->makeSampleFile($sourceFilename, 'jpg');
-//        file_put_contents($destinationFilename, $app->assets->getContent($sourceFilename, ['width' => 50]));
-//        $size = $app->assets->getSize($destinationFilename);
-//        $this->assertTrue($size[0] === 100);
-//        $this->assertTrue($size[1] === 70);
-//    }
-
-    /**
      * 
      */
     public function testResizeInvalidArgument4()
