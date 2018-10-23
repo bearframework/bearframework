@@ -214,7 +214,7 @@ class App
     }
 
     /**
-     * Initializes the environment, the error handlers and includes the application index.php file.
+     * Initializes the application by running the index.php file in the appDir specified.
      * 
      * @param string $appDir
      * @return void No value is returned
@@ -222,34 +222,35 @@ class App
      */
     public function initialize(string $appDir = null): void
     {
-        if (!$this->initialized) {
-            $this->initialized = true;
-
-            if (strlen($appDir) > 0) {
-                $appDir = realpath($appDir);
-                if ($appDir === false) {
-                    throw new \Exception('The value of the appDir argument is not a real directory!');
-                }
-                $this->context->add($appDir);
-                $indexFilename = realpath($appDir . DIRECTORY_SEPARATOR . 'index.php');
-                if ($indexFilename !== false) {
-                    ob_start();
-                    try {
-                        (static function($__filename) {
-                            include $__filename;
-                        })($indexFilename);
-                        ob_end_clean();
-                    } catch (\Exception $e) {
-                        ob_end_clean();
-                        throw $e;
-                    }
-                } else {
-                    throw new \Exception('Cannot find index.php file in the appDir specified!');
-                }
-            }
-
-            $this->hooks->execute('initialized');
+        if ($this->initialized) {
+            throw new \Exception('The app is already initialized!');
         }
+        $this->initialized = true;
+
+        if (strlen($appDir) > 0) {
+            $appDir = realpath($appDir);
+            if ($appDir === false) {
+                throw new \Exception('The value of the appDir argument is not a real directory!');
+            }
+            $this->context->add($appDir);
+            $indexFilename = realpath($appDir . DIRECTORY_SEPARATOR . 'index.php');
+            if ($indexFilename !== false) {
+                ob_start();
+                try {
+                    (static function($__filename) {
+                        include $__filename;
+                    })($indexFilename);
+                    ob_end_clean();
+                } catch (\Exception $e) {
+                    ob_end_clean();
+                    throw $e;
+                }
+            } else {
+                throw new \Exception('Cannot find index.php file in the appDir specified!');
+            }
+        }
+
+        $this->hooks->execute('initialized');
     }
 
     /**
@@ -286,7 +287,9 @@ class App
      */
     public function run(): void
     {
-        $this->initialize();
+        if (!$this->initialized) {
+            $this->initialize();
+        }
         $response = $this->routes->getResponse($this->request);
         if (!($response instanceof App\Response)) {
             $response = new App\Response\NotFound();
