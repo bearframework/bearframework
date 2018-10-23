@@ -166,7 +166,7 @@ class RoutesTest extends BearFrameworkTestCase
         });
 
         $app->run();
-        $this->expectOutputString('Not Found');
+        $this->assertEquals(http_response_code(), 404);
     }
 
     /**
@@ -234,7 +234,7 @@ class RoutesTest extends BearFrameworkTestCase
         });
 
         $app->run();
-        $this->expectOutputString('Not Found');
+        $this->assertEquals(http_response_code(), 404);
     }
 
     /**
@@ -319,7 +319,7 @@ class RoutesTest extends BearFrameworkTestCase
         });
 
         $app->run();
-        $this->expectOutputString('Not Found');
+        $this->assertEquals(http_response_code(), 404);
     }
 
     /**

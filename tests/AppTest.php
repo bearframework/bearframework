@@ -127,13 +127,14 @@ class AppTest extends BearFrameworkTestCase
      */
     public function testAppIndex()
     {
-        $app = $this->getApp([], false, false);
-        $this->makeFile($app->config->appDir . '/index.php', '<?php
+        $app = $this->getApp([
+            'appIndexContent' => '<?php
 $app = \BearFramework\App::get();
 $app->routes->add(\'/\', function() {
     return new \BearFramework\App\Response(\'content\');
 });
-');
+'
+        ]);
         $app->run();
         $this->expectOutputString('content');
     }
@@ -145,7 +146,7 @@ $app->routes->add(\'/\', function() {
     {
         $app = $this->getApp();
         $app->run();
-        $this->expectOutputString('Not Found');
+        $this->assertEquals(http_response_code(), 404);
     }
 
     /**
@@ -163,9 +164,9 @@ $app->routes->add(\'/\', function() {
      */
     function testMultipleApps()
     {
-        $app = $this->getApp([], true);
+        $app = $this->makeApp();
         $this->expectException('Exception');
-        $app = $this->getApp([], true);
+        $app = $this->makeApp();
     }
 
     /**

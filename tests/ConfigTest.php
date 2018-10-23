@@ -16,28 +16,7 @@ class ConfigTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testConstructor()
-    {
-        $config = new \BearFramework\App\Config([
-            'displayErrors' => true
-        ]);
-        $this->assertTrue($config->displayErrors === true);
-    }
-
-    /**
-     * 
-     */
-    public function testSet1a()
-    {
-        $config = new \BearFramework\App\Config();
-        $config->logErrors = true;
-        $this->assertTrue($config->logErrors === true);
-    }
-
-    /**
-     * 
-     */
-    public function testSet1b()
+    public function testSet()
     {
         $config = new \BearFramework\App\Config();
         $config->customVar = 5;
@@ -50,17 +29,6 @@ class ConfigTest extends BearFrameworkTestCase
     public function testGet1()
     {
         $config = new \BearFramework\App\Config([
-            'displayErrors' => true
-        ]);
-        $this->assertTrue($config->displayErrors === true);
-    }
-
-    /**
-     * 
-     */
-    public function testGet2()
-    {
-        $config = new \BearFramework\App\Config([
             'customOption' => 5
         ]);
         $this->assertTrue($config->customOption === 5);
@@ -69,7 +37,7 @@ class ConfigTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGet3()
+    public function testGet2()
     {
         $config = new \BearFramework\App\Config();
         $this->expectException('Exception');
@@ -79,27 +47,7 @@ class ConfigTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testIsset1a()
-    {
-        $config = new \BearFramework\App\Config();
-        $this->assertTrue(isset($config->displayErrors));
-    }
-
-    /**
-     * 
-     */
-    public function testIsset1b()
-    {
-        $config = new \BearFramework\App\Config([
-            'displayErrors' => true
-        ]);
-        $this->assertTrue(isset($config->displayErrors));
-    }
-
-    /**
-     * 
-     */
-    public function testIsset2()
+    public function testIsset1()
     {
         $config = new \BearFramework\App\Config([
             'customOption' => 5
@@ -110,38 +58,10 @@ class ConfigTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testIsset3()
+    public function testIsset2()
     {
         $config = new \BearFramework\App\Config();
         $this->assertFalse(isset($config->customOption));
-    }
-
-    /**
-     * 
-     */
-    public function testDirectories()
-    {
-        $app = $this->getApp();
-        $rootDir = $this->getTempDir();
-        $this->makeDir($rootDir . 'app');
-        $this->makeDir($rootDir . 'data');
-        $this->makeDir($rootDir . 'logs');
-        $config = new \BearFramework\App\Config([
-            'appDir' => $rootDir . 'app',
-            'dataDir' => $rootDir . 'data',
-            'logsDir' => $rootDir . 'logs',
-        ]);
-        $this->assertTrue($config->appDir === realpath($rootDir . 'app'));
-        $this->assertTrue($config->dataDir === realpath($rootDir . 'data'));
-        $this->assertTrue($config->logsDir === realpath($rootDir . 'logs'));
-
-        $config = new \BearFramework\App\Config();
-        $config->appDir = $rootDir . 'app/';
-        $config->dataDir = $rootDir . 'data/';
-        $config->logsDir = $rootDir . 'logs/';
-        $this->assertTrue($config->appDir === realpath($rootDir . 'app'));
-        $this->assertTrue($config->dataDir === realpath($rootDir . 'data'));
-        $this->assertTrue($config->logsDir === realpath($rootDir . 'logs'));
     }
 
     /**
@@ -169,70 +89,7 @@ return [
     /**
      * 
      */
-    public function testInvalidArguments2()
-    {
-        $this->expectException('Exception');
-        new \BearFramework\App\Config([
-            'appDir' => 'missing/dir'
-        ]);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments3()
-    {
-        $this->expectException('Exception');
-        new \BearFramework\App\Config([
-            'dataDir' => 'missing/dir'
-        ]);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments4()
-    {
-        $this->expectException('Exception');
-        new \BearFramework\App\Config([
-            'logsDir' => 'missing/dir'
-        ]);
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments5()
-    {
-        $config = new \BearFramework\App\Config();
-        $this->expectException('Exception');
-        $config->appDir = 'missing/dir';
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments6()
-    {
-        $config = new \BearFramework\App\Config();
-        $this->expectException('Exception');
-        $config->dataDir = 'missing/dir';
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments7()
-    {
-        $config = new \BearFramework\App\Config();
-        $this->expectException('Exception');
-        $config->logsDir = 'missing/dir';
-    }
-
-    /**
-     * 
-     */
-    public function testInvalidArguments9()
+    public function testInvalidArguments1()
     {
         $app = $this->getApp();
         $this->expectException('InvalidArgumentException');
@@ -242,7 +99,7 @@ return [
     /**
      * 
      */
-    public function testInvalidArguments10()
+    public function testInvalidArguments2()
     {
         $app = $this->getApp();
         $rootDir = $this->getTempDir();

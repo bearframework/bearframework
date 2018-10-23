@@ -134,7 +134,7 @@ $app->config->valueToCheck = $context->dir;
      */
     public function testAddonContextWithNoAppContext()
     {
-        $app = $this->getApp(['appDir' => null]);
+        $app = $this->getApp(['appIndexContent' => null]);
         $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid() . DIRECTORY_SEPARATOR;
 
         $this->makeFile($addonDir . 'index.php', '<?php ');

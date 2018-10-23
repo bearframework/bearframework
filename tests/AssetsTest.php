@@ -43,7 +43,7 @@ class AssetsTest extends BearFrameworkTestCase
         $path = substr($url, strlen($app->request->base));
         $app->request->path->set($path);
         $app->run();
-        $this->expectOutputString('Not Found');
+        $this->assertEquals(http_response_code(), 404);
     }
 
     /**

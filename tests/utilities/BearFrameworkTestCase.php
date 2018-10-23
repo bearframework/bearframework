@@ -24,51 +24,65 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
     /**
      * 
      * @param array $config
-     * @param bool $createNew
      * @return \BearFramework\App
      */
-    function getApp($config = [], $createNew = false, $initialize = true)
+    public function getApp(array $config = []): \BearFramework\App
     {
-        if ($this->app == null || $createNew) {
-            $rootDir = $this->getTempDir();
-            $this->app = new BearFramework\App();
-            mkdir($rootDir . 'app/', 0777, true);
-            mkdir($rootDir . 'data/', 0777, true);
-            mkdir($rootDir . 'logs/', 0777, true);
-            mkdir($rootDir . 'addons/', 0777, true);
+        if ($this->app === null) {
+            $this->app = $this->makeApp($config);
+        }
+        return $this->app;
+    }
 
-            $initialConfig = [
-                'appDir' => $rootDir . 'app/',
-                'dataDir' => $rootDir . 'data/',
-                'logsDir' => $rootDir . 'logs/',
-                'addonsDir' => realpath($rootDir . 'addons/'),
-                'handleErrors' => false
-            ];
-            $config = array_merge($initialConfig, $config);
-            foreach ($config as $key => $value) {
-                $this->app->config->$key = $value;
-            }
+    /**
+     * 
+     * @param array $config
+     * @return \BearFramework\App
+     */
+    public function makeApp(array $config = []): \BearFramework\App
+    {
+        $rootDir = $this->getTempDir();
+        $app = new BearFramework\App();
 
-            $app = &$this->app;
-            $this->app->hooks->add('initialized', function() use ($app) {
-                $app->request->base = 'http://example.com/www';
-                $app->request->method = 'GET';
-            });
-            if ($initialize) {
-                $app->initialize();
-            }
+        $appDir = $rootDir . 'app';
+        $dataDir = $rootDir . 'data';
+        $logsDir = $rootDir . 'logs';
+        $addonsDir = $rootDir . 'addons';
+
+        mkdir($appDir, 0777, true);
+        mkdir($dataDir, 0777, true);
+        mkdir($logsDir, 0777, true);
+        mkdir($addonsDir, 0777, true);
+
+        $initialConfig = [
+            'appDir' => realpath($appDir),
+            'dataDir' => realpath($dataDir),
+            'logsDir' => realpath($logsDir),
+            'addonsDir' => realpath($addonsDir)
+        ];
+        $config = array_merge($initialConfig, $config);
+        foreach ($config as $key => $value) {
+            $app->config->$key = $value;
+        }
+        $app->request->base = 'http://example.com/www';
+        $app->request->method = 'GET';
+
+        $appIndexContent = isset($config['appIndexContent']) ? (string) $config['appIndexContent'] : '<?php ';
+        if (strlen($appIndexContent) > 0) {
+            file_put_contents($appDir . DIRECTORY_SEPARATOR . 'index.php', $appIndexContent);
+            $app->initialize($appDir);
         }
 
-        return $this->app;
+        return $app;
     }
 
     /**
      * 
      * @return string
      */
-    protected function getTempDir(): string
+    public function getTempDir(): string
     {
-        $dir = sys_get_temp_dir() . '/bearframework-addon-unittests/' . uniqid();
+        $dir = sys_get_temp_dir() . '/bearframework-unittests/' . uniqid();
         $this->makeDir($dir);
         return $dir;
     }
@@ -78,7 +92,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
      * @param string $dir
      * @return void
      */
-    protected function makeDir(string $dir): void
+    public function makeDir(string $dir): void
     {
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
@@ -91,7 +105,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
      * @param string $content
      * @return void
      */
-    protected function makeFile(string $filename, string $content): void
+    public function makeFile(string $filename, string $content): void
     {
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
@@ -107,7 +121,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
      * @return void
      * @throws \Exception
      */
-    protected function makeSampleFile(string $filename, string $type): void
+    public function makeSampleFile(string $filename, string $type): void
     {
         if ($type === 'png') {
             $this->makeFile($filename, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAGQAAABGCAIAAAC15KY+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AIECCIIiEjqvwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAd0lEQVR42u3QMQEAAAgDILV/51nBzwci0CmuRoEsWbJkyZKlQJYsWbJkyVIgS5YsWbJkKZAlS5YsWbIUyJIlS5YsWQpkyZIlS5YsBbJkyZIlS5YCWbJkyZIlS4EsWbJkyZKlQJYsWbJkyVIgS5YsWbJkKZAl69sC1G0Bi52qvwoAAAAASUVORK5CYII='));
