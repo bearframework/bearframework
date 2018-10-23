@@ -19,7 +19,7 @@ class TemporaryUnavailable extends \BearFramework\App\Response
      * 
      * @param string $content The content of the response.
      */
-    public function __construct(string $content = 'Temporary Unavailable')
+    public function __construct(string $content = '')
     {
         parent::__construct($content);
         $this->statusCode = 503;

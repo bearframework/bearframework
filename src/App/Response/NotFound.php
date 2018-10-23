@@ -19,7 +19,7 @@ class NotFound extends \BearFramework\App\Response
      * 
      * @param string $content The content of the response.
      */
-    public function __construct(string $content = 'Not Found')
+    public function __construct(string $content = '')
     {
         parent::__construct($content);
         $this->statusCode = 404;
