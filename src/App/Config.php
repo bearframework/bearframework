@@ -14,7 +14,6 @@ namespace BearFramework\App;
  * 
  * @property string|null $dataDir The directory where the application data are located.
  * @property string|null $logsDir The directory where the application log files are located.
- * @property bool $updateEnvironment Update the PHP environment to make it work better.
  * @property string $assetsPathPrefix The prefix of the assets URLs.
  */
 class Config
@@ -56,12 +55,6 @@ class Config
                             throw new \Exception('The value of the logsDir option is not a real directory');
                         }
                         return $value;
-                    }
-                ])
-                ->defineProperty('updateEnvironment', [
-                    'type' => 'bool',
-                    'init' => function() {
-                        return true;
                     }
                 ])
                 ->defineProperty('assetsPathPrefix', [
