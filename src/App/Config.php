@@ -12,7 +12,6 @@ namespace BearFramework\App;
 /**
  * The application configuration.
  * 
- * @property string|null $appDir The directory where the application source files are located.
  * @property string|null $dataDir The directory where the application data are located.
  * @property string|null $logsDir The directory where the application log files are located.
  * @property bool $updateEnvironment Update the PHP environment to make it work better.
@@ -33,19 +32,6 @@ class Config
     public function __construct(array $options = [])
     {
         $this
-                ->defineProperty('appDir', [
-                    'type' => '?string',
-                    'set' => function($value) {
-                        if ($value === null) {
-                            return null;
-                        }
-                        $value = realpath($value);
-                        if ($value === false) {
-                            throw new \Exception('The value of the appDir option is not a real directory');
-                        }
-                        return $value;
-                    }
-                ])
                 ->defineProperty('dataDir', [
                     'type' => '?string',
                     'set' => function($value) {
@@ -89,7 +75,7 @@ class Config
                     'init' => function() {
                         return '/assets/';
                     }
-                ]);
+        ]);
 
         foreach ($options as $name => $value) {
             $this->$name = $value;

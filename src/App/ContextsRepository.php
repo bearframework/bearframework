@@ -30,18 +30,6 @@ class ContextsRepository
     private static $objectsCache = [];
 
     /**
-     * 
-     */
-    public function __construct()
-    {
-        $app = App::get();
-        $appDir = $app->config->appDir;
-        if ($appDir !== null) {
-            $this->add($appDir . DIRECTORY_SEPARATOR);
-        }
-    }
-
-    /**
      * Returns a context object for the filename specified.
      * 
      * @param string|null $filename The filename used to find the context. Will be automatically detected if not provided.

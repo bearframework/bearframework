@@ -216,9 +216,11 @@ class App
     /**
      * Initializes the environment, the error handlers and includes the application index.php file.
      * 
+     * @param string $appDir
      * @return void No value is returned
+     * @throws \Exception
      */
-    public function initialize(): void
+    public function initialize(string $appDir = null): void
     {
         if (!$this->initialized) {
             // @codeCoverageIgnoreStart
@@ -233,8 +235,13 @@ class App
 
             $this->initialized = true;
 
-            if (strlen($this->config->appDir) > 0) {
-                $indexFilename = realpath($this->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
+            if (strlen($appDir) > 0) {
+                $appDir = realpath($appDir);
+                if ($appDir === false) {
+                    throw new \Exception('The value of the appDir argument is not a real directory!');
+                }
+                $this->context->add($appDir);
+                $indexFilename = realpath($appDir . DIRECTORY_SEPARATOR . 'index.php');
                 if ($indexFilename !== false) {
                     ob_start();
                     try {
@@ -246,6 +253,8 @@ class App
                         ob_end_clean();
                         throw $e;
                     }
+                } else {
+                    throw new \Exception('Cannot find index.php file in the appDir specified!');
                 }
             }
 
