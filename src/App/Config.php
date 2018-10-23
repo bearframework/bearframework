@@ -16,9 +16,6 @@ namespace BearFramework\App;
  * @property string|null $dataDir The directory where the application data are located.
  * @property string|null $logsDir The directory where the application log files are located.
  * @property bool $updateEnvironment Update the PHP environment to make it work better.
- * @property bool $handleErrors Automatically handle errors and display friendly responses.
- * @property bool $displayErrors Display the first handled error. Useful while developing.
- * @property bool $logErrors Log the handled errors.
  * @property string $assetsPathPrefix The prefix of the assets URLs.
  */
 class Config
@@ -79,24 +76,6 @@ class Config
                     'type' => 'bool',
                     'init' => function() {
                         return true;
-                    }
-                ])
-                ->defineProperty('handleErrors', [
-                    'type' => 'bool',
-                    'init' => function() {
-                        return true;
-                    }
-                ])
-                ->defineProperty('displayErrors', [
-                    'type' => 'bool',
-                    'init' => function() {
-                        return false;
-                    }
-                ])
-                ->defineProperty('logErrors', [
-                    'type' => 'bool',
-                    'init' => function() {
-                        return false;
                     }
                 ])
                 ->defineProperty('assetsPathPrefix', [

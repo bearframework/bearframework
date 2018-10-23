@@ -21,9 +21,10 @@ class ErrorHandler
     /**
      * 
      * @param \Throwable $exception
+     * @param array $options
      * @return void No value is returned.
      */
-    static function handleException(\Throwable $exception): void
+    static function handleException(\Throwable $exception, array $options): void
     {
         $errors = [];
         while ($exception instanceof \Exception) {
@@ -33,15 +34,16 @@ class ErrorHandler
             $exception = $exception->getPrevious();
         }
         $errors = array_reverse($errors);
-        self::handleErrors($errors);
+        self::handleErrors($errors, $options);
     }
 
     /**
      * 
      * @param array $errorData
+     * @param array $options
      * @return void No value is returned.
      */
-    static function handleFatalError(array $errorData): void
+    static function handleFatalError(array $errorData, array $options): void
     {
         if (ob_get_length() > 0) {
             ob_end_clean();
@@ -49,16 +51,20 @@ class ErrorHandler
         $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
         $message = 'Fatal error: ' . trim($messageParts[0]) . ' in ' . $errorData['file'] . ':' . (int) $errorData['line'];
         $trace = isset($messageParts[1]) ? [trim(str_replace('Stack trace:', '', $messageParts[1]))] : [];
-        self::handleErrors([['message' => $message, 'trace' => $trace]]);
+        self::handleErrors([['message' => $message, 'trace' => $trace]], $options);
     }
 
     /**
      * 
      * @param array $errors
+     * @param array $options
      * @return void No value is returned.
      */
-    static private function handleErrors(array $errors): void
+    static private function handleErrors(array $errors, $options): void
     {
+        $logErrors = isset($options['logErrors']) && (bool) $options['logErrors'] === true;
+        $displayErrors = isset($options['displayErrors']) && (bool) $options['displayErrors'] === true;
+
         $app = App::get();
         $logKey = uniqid();
 
@@ -103,7 +109,7 @@ class ErrorHandler
             'SERVER' => $_SERVER
                         ], true), false, true);
 
-        if ($app->config->logErrors) {
+        if ($logErrors) {
             try {
                 $app->logger->log('error', $simpleLog);
                 $app->logger->log('error-' . $logKey, $fullLog);
@@ -114,7 +120,7 @@ class ErrorHandler
         if (ob_get_length() > 0) {
             ob_clean();
         }
-        if ($app->config->displayErrors) {
+        if ($displayErrors) {
             http_response_code(503);
             echo (($errorsCount > 1) ? $errorsCount . ' errors occurred:' : 'Error occurred:') . "\n\n";
             echo $fullLog;

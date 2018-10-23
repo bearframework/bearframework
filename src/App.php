@@ -51,6 +51,13 @@ class App
     private $initialized = false;
 
     /**
+     * Information about whether the error handler is enabled.
+     * 
+     * @var bool 
+     */
+    private $errorHandlerEnabled = false;
+
+    /**
      * 
      * @throws \Exception
      */
@@ -189,7 +196,7 @@ class App
                         };
                     },
                     'readonly' => true
-                ]);
+        ]);
     }
 
     /**
@@ -222,20 +229,6 @@ class App
                 ini_set("pcre.backtrack_limit", 100000000);
                 ini_set("pcre.recursion_limit", 100000000);
             }
-            if ($this->config->handleErrors) {
-                set_exception_handler(function($exception) {
-                    \BearFramework\App\ErrorHandler::handleException($exception);
-                });
-                register_shutdown_function(function() {
-                    $errorData = error_get_last();
-                    if (is_array($errorData)) {
-                        \BearFramework\App\ErrorHandler::handleFatalError($errorData);
-                    }
-                });
-                set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
-                    throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
-                });
-            }
             // @codeCoverageIgnoreEnd
 
             $this->initialized = true;
@@ -258,6 +251,33 @@ class App
 
             $this->hooks->execute('initialized');
         }
+    }
+
+    /**
+     * Enables an error handler.
+     * 
+     * @param array $options Error handler options. Available values: logErrors (bool), displayErrors (bool).
+     * @return void No value is returned.
+     * @throws \Exception
+     */
+    public function enableErrorHandler(array $options): void
+    {
+        if ($this->errorHandlerEnabled) {
+            throw new \Exception('The error handler is already enabled!');
+        }
+        set_exception_handler(function($exception) use ($options) {
+            \BearFramework\App\ErrorHandler::handleException($exception, $options);
+        });
+        register_shutdown_function(function() use ($options) {
+            $errorData = error_get_last();
+            if (is_array($errorData)) {
+                \BearFramework\App\ErrorHandler::handleFatalError($errorData, $options);
+            }
+        });
+        set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
+            throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
+        });
+        $this->errorHandlerEnabled = true;
     }
 
     /**
