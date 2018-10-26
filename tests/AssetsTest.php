@@ -56,6 +56,7 @@ class AssetsTest extends BearFrameworkTestCase
         $this->makeDir($app->config->addonsDir . '/addon1/assets/');
         $app->assets->addDir($app->config->appDir . '/assets/');
         $app->assets->addDir($app->config->addonsDir . '/addon1/assets/');
+        $app->assets->addDir('appdata://assets/');
 
         $fileTypes = ['jpg', 'png', 'gif'];
         $imageOptionsTypes = ['width', 'height', 'both'];
@@ -81,12 +82,12 @@ class AssetsTest extends BearFrameworkTestCase
                     }
 
                     // File in app dir
-                    $filename = $app->config->appDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'logo.' . $fileType;
+                    $filename = $app->config->appDir . '/assets/logo.' . $fileType;
                     $this->makeSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
                     $response = $getAssetResponse($url);
-                    $this->assertTrue($response->filename === $filename);
+                    $this->assertTrue($response->filename === str_replace('\\', '/', $filename));
 
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
@@ -95,12 +96,12 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($size[1] === $testImageHeight);
 
                     // File in addon dir
-                    $filename = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'addon1' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'logo.' . $fileType;
+                    $filename = $app->config->addonsDir . '/addon1/assets/logo.' . $fileType;
                     $this->makeSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
                     $response = $getAssetResponse($url);
-                    $this->assertTrue($response->filename === $filename);
+                    $this->assertTrue($response->filename === str_replace('\\', '/', $filename));
 
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
@@ -109,21 +110,15 @@ class AssetsTest extends BearFrameworkTestCase
                     $this->assertTrue($size[1] === $testImageHeight);
 
                     // File in data dir
-                    $key = 'logo.' . $fileType;
+                    $key = 'assets/logo.' . $fileType;
                     $filename = $app->data->getFilename($key);
-                    $pathinfo = pathinfo($filename);
                     $this->makeSampleFile($filename, $fileType);
 
                     $url = $app->assets->getUrl($filename);
-                    $app->data->makePublic($key);
                     $response = $getAssetResponse($url);
-                    $this->assertTrue($response->filename === $filename);
-                    $app->data->makePrivate($key);
-                    $response = $getAssetResponse($url);
-                    $this->assertTrue($response === null);
+                    $this->assertTrue($response->filename === str_replace('\\', '/', $filename));
 
                     $url = $app->assets->getUrl($filename, $options);
-                    $app->data->makePublic($key);
                     $response = $getAssetResponse($url);
                     $size = $app->assets->getSize($response->filename);
                     $this->assertTrue($size[0] === $testImageWidth);

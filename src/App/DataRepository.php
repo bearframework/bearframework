@@ -461,7 +461,6 @@ class DataRepository
         } else {
             $driver = $this->getDriver();
             $value = $driver->getMetadataList($key);
-            // TODO remove internalFrameworkPropertyPublic
         }
         $hooks->execute('dataItemGetMetadataListDone', $key, $value);
         $hooks->execute('dataItemRequested', $key);
@@ -493,81 +492,6 @@ class DataRepository
         $hooks->execute('dataGetListDone', $value);
         $hooks->execute('dataListRequested');
         return $value;
-    }
-
-    /**
-     * Marks a data item as public so it can be accessed as an asset.
-     * 
-     * @param string $key The key of the data item.
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
-     */
-    public function makePublic(string $key): \BearFramework\App\DataRepository
-    {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemMakePublic', $key, $preventDefault);
-        if (!$preventDefault) {
-            $this->setMetadata($key, 'internalFrameworkPropertyPublic', '1');
-        }
-        $hooks->execute('dataItemMakePublicDone', $key);
-        if ($preventDefault) {
-            $hooks->execute('dataItemChanged', $key);
-        }
-        return $this;
-    }
-
-    /**
-     * Marks a data item as private, so it cannot be accessed as an asset.
-     * 
-     * @param string $key The key of the data item.
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
-     */
-    public function makePrivate(string $key): \BearFramework\App\DataRepository
-    {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemMakePrivate', $key, $preventDefault);
-        if (!$preventDefault) {
-            $this->deleteMetadata($key, 'internalFrameworkPropertyPublic');
-        }
-        $hooks->execute('dataItemMakePrivateDone', $key);
-        if ($preventDefault) {
-            $hooks->execute('dataItemChanged', $key);
-        }
-        return $this;
-    }
-
-    /**
-     * Checks if a data item is marked as public.
-     * 
-     * @param string $key The key of the data item.
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     * @return bool TRUE if public. FALSE otherwise.
-     */
-    public function isPublic(string $key): bool
-    {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $returnValue = null;
-        $hooks->execute('dataItemIsPublic', $key, $returnValue);
-        if (is_bool($returnValue)) {
-            $isPublic = $returnValue;
-        } else {
-            $isPublic = $this->getMetadata($key, 'internalFrameworkPropertyPublic') === '1';
-        }
-        $hooks->execute('dataItemIsPublicDone', $key, $isPublic);
-        $hooks->execute('dataItemRequested', $key);
-        return $isPublic;
     }
 
     /**

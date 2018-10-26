@@ -128,9 +128,7 @@ class App
                 ])
                 ->defineProperty('assets', [
                     'init' => function() {
-                        $assets = new App\Assets();
-                        $assets->addDir('appdata://');
-                        return $assets;
+                        return new App\Assets();
                     },
                     'readonly' => true
                 ])

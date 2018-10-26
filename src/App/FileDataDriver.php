@@ -318,9 +318,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
         foreach ($result[0] as $name => $value) {
             if (strpos($name, 'metadata.') === 0) {
                 $name = substr($name, 9);
-                //if ($name !== 'internalFrameworkPropertyPublic') { TODO REMOVE
                 $objectMetadata[] = ['name' => $name, 'value' => $value];
-                //}
             }
         }
         return new \BearFramework\DataList($objectMetadata);
@@ -408,9 +406,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
         foreach ($rawData as $name => $value) {
             if (strpos($name, 'metadata.') === 0) {
                 $name = substr($name, 9);
-                // if ($name !== 'internalFrameworkPropertyPublic') { TODO REMOVE
                 $dataItem->metadata->$name = $value;
-                //}
             }
         }
         return $dataItem;

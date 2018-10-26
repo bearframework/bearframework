@@ -26,7 +26,6 @@ class DataTest extends BearFrameworkTestCase
         $dataItem = $app->data->make('users/1', '{"name":"John Smith","email":"john@example.com"}');
         $dataItem->metadata->lastAccessTime = '1234567890';
         $app->data->set($dataItem);
-        $app->data->makePublic('user/1');
 
         $this->assertTrue($app->data->getValue('users/1') === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($app->data->getMetadata('users/1', 'lastAccessTime') === '1234567890');
@@ -236,50 +235,6 @@ class DataTest extends BearFrameworkTestCase
         $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
         $this->expectException('\BearFramework\App\Data\DataLockedException');
         $app->data->delete('lockeddata1');
-    }
-
-    /**
-     * 
-     */
-    public function testMakePublicExceptions1()
-    {
-        $app = $this->getApp();
-        $this->makeDir($app->config->dataDir . '/objects/data1');
-        $this->expectException('\Exception');
-        $app->data->makePublic('data1');
-    }
-
-    /**
-     * 
-     */
-    public function testMakePublicExceptions2()
-    {
-        $app = $this->getApp();
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
-        $this->expectException('\BearFramework\App\Data\DataLockedException');
-        $app->data->makePublic('lockeddata1');
-    }
-
-    /**
-     * 
-     */
-    public function testMakePrivateExceptions1()
-    {
-        $app = $this->getApp();
-        $this->makeDir($app->config->dataDir . '/objects/data1');
-        $this->expectException('\Exception');
-        $app->data->makePrivate('data1');
-    }
-
-    /**
-     * 
-     */
-    public function testMakePrivateExceptions2()
-    {
-        $app = $this->getApp();
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
-        $this->expectException('\BearFramework\App\Data\DataLockedException');
-        $app->data->makePrivate('lockeddata1');
     }
 
     /**

@@ -25,22 +25,15 @@ class Assets
     private $dirs = [];
 
     /**
-     * 
+     *
+     * @var array 
      */
-    private static $os = null; // 0 - windows, 1 - linux
+    private $optimizedDirs = null;
 
     /**
      * 
      */
-    private static $cache = [];
-
-    /**
-     * 
-     */
-    public function __construct()
-    {
-        self::$os = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 0 : 1;
-    }
+    private $cache = [];
 
     /**
      * Registers a directory that will be publicly accessible.
@@ -50,12 +43,29 @@ class Assets
      */
     public function addDir(string $pathname): \BearFramework\App\Assets
     {
-        $pathname = $this->getAbsolutePath($pathname);
-        if (substr($pathname, -3) !== '://') {
-            $pathname = rtrim($pathname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        }
         $this->dirs[] = $pathname;
+        $this->optimizedDirs = null;
         return $this;
+    }
+
+    /**
+     * Must be called before using $this->optimizedDirs
+     */
+    private function optimizeDirs()
+    {
+        if ($this->optimizedDirs === null) {
+            $this->optimizedDirs = [];
+            foreach ($this->dirs as $pathname) {
+                $pathname = $this->getAbsolutePath($pathname);
+                if (substr($pathname, -3) !== '://') {
+                    $pathname = rtrim($pathname, '/') . '/';
+                }
+                $pathname = $this->getAbsolutePath($pathname);
+                $this->optimizedDirs[$pathname] = strlen($pathname);
+            }
+            arsort($this->optimizedDirs);
+            $this->optimizedDirs = array_keys($this->optimizedDirs);
+        }
     }
 
     /**
@@ -90,15 +100,14 @@ class Assets
                 $this->validateOptions($options);
             }
 
-            $dirs = $this->dirs;
             if (strpos($filename, '://') !== false) {
-                $filenameParts = explode('://', $filename, 2);
-                $fileDir = $filenameParts[0] . '://';
-                $fileBasename = $filenameParts[1];
-                $dirs[] = $fileDir;
+                $temp = explode('://', $filename);
+                $pathInfo = pathinfo($temp[1]);
+                $fileDir = $temp[0] . '://' . ($pathInfo['dirname'] !== '.' ? $pathInfo['dirname'] . '/' : '');
+                $fileBasename = $pathInfo['basename'];
             } else {
                 $pathInfo = pathinfo($filename);
-                $fileDir = $pathInfo['dirname'] . DIRECTORY_SEPARATOR;
+                $fileDir = $pathInfo['dirname'] . '/';
                 $fileBasename = $pathInfo['basename'];
             }
 
@@ -128,16 +137,17 @@ class Assets
             $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
 
             $fileDirCacheKey = '1' . $fileDir;
-            if (!isset(self::$cache[$fileDirCacheKey])) {
-                self::$cache[$fileDirCacheKey] = false;
-                foreach ($dirs as $dir) {
+            if (!isset($this->cache[$fileDirCacheKey])) {
+                $this->cache[$fileDirCacheKey] = false;
+                $this->optimizeDirs();
+                foreach ($this->optimizedDirs as $dir) {
                     if (strpos($fileDir, $dir) === 0) {
-                        self::$cache[$fileDirCacheKey] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', substr($fileDir, strlen($dir)));
+                        $this->cache[$fileDirCacheKey] = '/' . substr($fileDir, strlen($dir));
                         break;
                     }
                 }
             }
-            $url = self::$cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . self::$cache[$fileDirCacheKey] . $fileBasename;
+            $url = $this->cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename;
         }
 
         if ($hooks->exists('assetGetUrlDone')) {
@@ -224,7 +234,7 @@ class Assets
             ];
             $hash = substr($partParts[0], 0, 12);
             $optionsString = (string) substr($partParts[0], 12);
-            $path = $partParts[1]; // str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);// TODO
+            $path = $partParts[1];
 
             if ($optionsString !== '') {
                 $options = explode('-', trim($optionsString, '-'));
@@ -262,8 +272,8 @@ class Assets
                 }
             }
 
-            $dirs = $this->dirs;
-            foreach ($dirs as $dir) {
+            $this->optimizeDirs();
+            foreach ($this->optimizedDirs as $dir) {
                 if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
                     $result['filename'] = $dir . $path;
                     return $result;
@@ -320,13 +330,6 @@ class Assets
 
         $result = null;
 
-        if (strpos($filename, 'appdata://') === 0) {
-            $dataItemKey = substr($filename, 10);
-            if (!$app->data->isPublic($dataItemKey)) {
-                $filename = null;
-            }
-        }
-
         $hooks->execute('assetPrepare', $filename, $options);
 
         if (strlen($filename) > 0 && is_file($filename)) {
@@ -359,36 +362,60 @@ class Assets
      */
     private function getAbsolutePath(string $path): string
     {
-        if (strpos($path, '://') !== false) {
-            return $path;
-        }
-        $doubleSeparator = DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
-        $path = str_replace(['/', '\\', DIRECTORY_SEPARATOR . '.' . DIRECTORY_SEPARATOR, $doubleSeparator, $doubleSeparator, $doubleSeparator, $doubleSeparator, $doubleSeparator], DIRECTORY_SEPARATOR, $path);
         $cacheKey = '0' . $path;
-        if (!isset(self::$cache[$cacheKey])) {
-            if (self::$os === 1 && $path{0} === DIRECTORY_SEPARATOR) { // is absolute on linux
-            } elseif (self::$os === 0 && preg_match('/^[A-Z]:/i', $path) === 1) { // is absolute on windows
-            } else {
-                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+        if (!isset($this->cache[$cacheKey])) {
+            for ($i = 0; $i < 2; $i++) {
+                if (strpos($path, '://') !== false) { // is url
+                    $temp = explode('://', $path, 2);
+                    $root = $temp[0] . '://';
+                    $path = $temp[1];
+                    break;
+                } elseif (substr($path, 0, 1) === '/') { // is absolute on linux
+                    $root = '/';
+                    $path = substr($path, 1);
+                    break;
+                } elseif (preg_match('/^[A-Za-z]:[\/\\\]/i', $path) === 1) { // is absolute on windows
+                    $root = substr($path, 0, 2) . '/';
+                    $path = substr($path, 3);
+                    break;
+                } else {
+                    if ($i === 0) {
+                        $path = getcwd() . '/' . $path;
+                    } else {
+                        throw new \Exception('Cannot find absolute path for "' . $path . '"!');
+                    }
+                }
+            }
+            $path = str_replace('\\', '/', $path);
+            for ($i = 0; $i < 100000; $i++) {
+                $newPath = str_replace(['/./', '//'], '/', $path);
+                if (substr($newPath, 0, 2) === './') {
+                    $newPath = substr($newPath, 2);
+                }
+                if (substr($newPath, -2) === '/.') {
+                    $newPath = substr($newPath, 0, -2);
+                }
+                if ($newPath !== $path) {
+                    $path = $newPath;
+                } else {
+                    break;
+                }
             }
             if (strpos($path, '..') !== false) {
-                $parts = explode(DIRECTORY_SEPARATOR, $path);
+                $parts = explode('/', $path);
                 $temp = [];
                 foreach ($parts as $part) {
                     if ($part === '..') {
-                        if (self::$os === 0 && sizeof($temp) === 1) {
-                            continue;
-                        }
                         array_pop($temp);
                     } else {
                         $temp[] = $part;
                     }
                 }
-                $path = implode(DIRECTORY_SEPARATOR, $temp);
+                $path = implode('/', $temp);
             }
-            self::$cache[$cacheKey] = $path;
+            $this->cache[$cacheKey] = $root . $path;
         }
-        return self::$cache[$cacheKey];
+        return $this->cache[$cacheKey];
     }
 
     /**
