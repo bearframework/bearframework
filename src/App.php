@@ -128,16 +128,15 @@ class App
                 ])
                 ->defineProperty('assets', [
                     'init' => function() {
-                        return new App\Assets();
+                        $assets = new App\Assets();
+                        $assets->addDir('appdata://');
+                        return $assets;
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('data', [
                     'init' => function() {
-                        if ($this->config->dataDir === null) {
-                            throw new \Exception('The value of the dataDir config variable is empty.');
-                        }
-                        return new App\DataRepository($this->config->dataDir);
+                        return new App\DataRepository(['filenameProtocol' => 'appdata']);
                     },
                     'readonly' => true
                 ])

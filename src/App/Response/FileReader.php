@@ -37,16 +37,15 @@ class FileReader extends \BearFramework\App\Response
                         return '';
                     },
                     'set' => function($value) {
-                        $filename = realpath($value);
-                        if ($filename === false || !is_readable($filename)) {
-                            throw new \InvalidArgumentException('The filename specified (' . $value . ') does not exist or is not readable.');
+                        if (is_file($value) && is_readable($value)) {
+                            return $value;
                         }
-                        return $filename;
+                        throw new \InvalidArgumentException('The filename specified (' . $value . ') does not exist or is not readable.');
                     },
                     'unset' => function() {
                         return '';
                     },
-                ]);
+        ]);
 
         if (isset($filename{0})) {
             $this->filename = $filename;

@@ -12,7 +12,6 @@ namespace BearFramework\App;
 /**
  * The application configuration.
  * 
- * @property string|null $dataDir The directory where the application data are located.
  * @property string|null $logsDir The directory where the application log files are located.
  * @property string $assetsPathPrefix The prefix of the assets URLs.
  */
@@ -31,19 +30,6 @@ class Config
     public function __construct(array $options = [])
     {
         $this
-                ->defineProperty('dataDir', [
-                    'type' => '?string',
-                    'set' => function($value) {
-                        if ($value === null) {
-                            return null;
-                        }
-                        $value = realpath($value);
-                        if ($value === false) {
-                            throw new \Exception('The value of the dataDir option is not a real directory');
-                        }
-                        return $value;
-                    }
-                ])
                 ->defineProperty('logsDir', [
                     'type' => '?string',
                     'set' => function($value) {

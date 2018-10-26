@@ -50,7 +50,11 @@ class Assets
      */
     public function addDir(string $pathname): \BearFramework\App\Assets
     {
-        $this->dirs[] = rtrim($this->getAbsolutePath($pathname), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $pathname = $this->getAbsolutePath($pathname);
+        if (substr($pathname, -3) !== '://') {
+            $pathname = rtrim($pathname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }
+        $this->dirs[] = $pathname;
         return $this;
     }
 
@@ -87,15 +91,16 @@ class Assets
             }
 
             $dirs = $this->dirs;
-            $dataDir = $app->config->dataDir;
-            if (isset($dataDir[0]) && strpos($filename, $dataDir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR) === 0) {
-                $filename = $dataDir . DIRECTORY_SEPARATOR . 'assets' . substr($filename, strlen($dataDir) + 8);
-                $dirs[] = $dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
+            if (strpos($filename, '://') !== false) {
+                $filenameParts = explode('://', $filename, 2);
+                $fileDir = $filenameParts[0] . '://';
+                $fileBasename = $filenameParts[1];
+                $dirs[] = $fileDir;
+            } else {
+                $pathInfo = pathinfo($filename);
+                $fileDir = $pathInfo['dirname'] . DIRECTORY_SEPARATOR;
+                $fileBasename = $pathInfo['basename'];
             }
-
-            $pathInfo = pathinfo($filename);
-            $fileDir = $pathInfo['dirname'] . DIRECTORY_SEPARATOR;
-            $fileBasename = $pathInfo['basename'];
 
             $optionsString = '';
             if (isset($options['width'])) {
@@ -219,7 +224,7 @@ class Assets
             ];
             $hash = substr($partParts[0], 0, 12);
             $optionsString = (string) substr($partParts[0], 12);
-            $path = str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);
+            $path = $partParts[1]; // str_replace('/', DIRECTORY_SEPARATOR, $partParts[1]);// TODO
 
             if ($optionsString !== '') {
                 $options = explode('-', trim($optionsString, '-'));
@@ -258,11 +263,6 @@ class Assets
             }
 
             $dirs = $this->dirs;
-            $dataDir = $app->config->dataDir;
-            if (isset($dataDir[0])) {
-                $dirs[] = $dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-            }
-
             foreach ($dirs as $dir) {
                 if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
                     $result['filename'] = $dir . $path;
@@ -320,15 +320,10 @@ class Assets
 
         $result = null;
 
-        if ($app->config->dataDir !== null) {
-            $dataAssetsDir = $app->config->dataDir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
-            if (strpos($filename, $dataAssetsDir) === 0) {
-                $key = str_replace('\\', '/', substr($filename, strlen($dataAssetsDir)));
-                if ($app->data->isPublic($key)) {
-                    $filename = $app->data->getFilename($key);
-                } else {
-                    $filename = null;
-                }
+        if (strpos($filename, 'appdata://') === 0) {
+            $dataItemKey = substr($filename, 10);
+            if (!$app->data->isPublic($dataItemKey)) {
+                $filename = null;
             }
         }
 
@@ -347,16 +342,6 @@ class Assets
                 }
                 $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
                 if (!is_file($tempFilename)) {
-                    $dir = pathinfo($tempFilename, PATHINFO_DIRNAME);
-                    if (!is_dir($dir)) {
-                        try {
-                            mkdir($dir, 0777, true);
-                        } catch (\Exception $e) {
-                            if ($e->getMessage() !== 'mkdir(): File exists') { // The directory may be just created in other process.
-                                throw $e;
-                            }
-                        }
-                    }
                     $this->resize($filename, $tempFilename, [
                         'width' => (isset($options['width']) ? $options['width'] : null),
                         'height' => (isset($options['height']) ? $options['height'] : null)
@@ -374,6 +359,9 @@ class Assets
      */
     private function getAbsolutePath(string $path): string
     {
+        if (strpos($path, '://') !== false) {
+            return $path;
+        }
         $doubleSeparator = DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
         $path = str_replace(['/', '\\', DIRECTORY_SEPARATOR . '.' . DIRECTORY_SEPARATOR, $doubleSeparator, $doubleSeparator, $doubleSeparator, $doubleSeparator, $doubleSeparator], DIRECTORY_SEPARATOR, $path);
         $cacheKey = '0' . $path;
@@ -468,7 +456,7 @@ class Assets
             }
         }
         if ($result === null) {
-            if (realpath($filename) === false) {
+            if (!is_file($filename)) {
                 throw new \InvalidArgumentException('The filename specified does not exist (' . $filename . ')');
             }
             try {
@@ -503,7 +491,7 @@ class Assets
      */
     private function resize(string $sourceFilename, string $destinationFilename, array $options = []): void
     {
-        if (realpath($sourceFilename) === false) {
+        if (!is_file($sourceFilename)) {
             throw new \InvalidArgumentException('The sourceFilename specified does not exist (' . $sourceFilename . ')');
         }
         if (isset($options['width']) && (!is_int($options['width']) || $options['width'] < 1 || $options['width'] > 100000)) {

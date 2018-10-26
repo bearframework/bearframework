@@ -19,42 +19,90 @@ class DataRepository
 {
 
     /**
-     * The instance of the data storage library
-     * 
-     * @var type 
-     */
-    private $instance = null;
-
-    /**
      *
-     * @var string 
-     */
-    private $dir = null;
-
-    /**
-     * 
+     * @var ?\BearFramework\App\DataItem 
      */
     private static $newDataItemCache = null;
 
     /**
-     * 
-     * @param string $dir The directory where the data will be stored.
+     *
+     * @var ?\BearFramework\App\IDataDriver  
      */
-    public function __construct(string $dir)
+    private $driver = null;
+
+    /**
+     *
+     * @var ?string 
+     */
+    private $filenameProtocol = null;
+
+    /**
+     * Constructs a new data repository.
+     * 
+     * @param array $options Available options: filenameProtocol - a protocol used for working with data items as files.
+     * @throws \Exception
+     */
+    public function __construct(array $options = [])
     {
-        $dir = realpath($dir);
-        if ($dir === false) {
-            throw new \Exception('The directory specified is not valid.');
+        if (isset($options['filenameProtocol'])) {
+            if (is_string($options['filenameProtocol'])) {
+                $this->filenameProtocol = $options['filenameProtocol'];
+                if (stream_wrapper_register($this->filenameProtocol, "BearFramework\App\Internal\DataItemStreamWrapper") === false) {
+                    throw new \Exception('A filename protocol named ' . $this->filenameProtocol . ' is already defined!');
+                }
+            }
         }
-        $this->dir = $dir;
-        $this->instance = new \IvoPetkov\ObjectStorage($dir);
+    }
+
+    /**
+     * Enables the file data driver using the directory specified.
+     * 
+     * @param string $dir The directory used for file storage.
+     * @return void No value is returned.
+     */
+    public function useFileDriver(string $dir): void
+    {
+        $this->setDriver(new \BearFramework\App\FileDataDriver($dir));
+    }
+
+    /**
+     * Sets a new data driver.
+     * 
+     * @param \BearFramework\App\IDataDriver $driver The data driver to use for data storage.
+     * @return void No value is returned.
+     * @throws \Exception
+     */
+    public function setDriver(\BearFramework\App\IDataDriver $driver): void
+    {
+        if ($this->driver !== null) {
+            throw new \Exception('A data driver is already set!');
+        }
+        $this->driver = $driver;
+        if ($this->filenameProtocol !== null) {
+            $app = App::get();
+            \BearFramework\App\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$app, $this, $driver];
+        }
+    }
+
+    /**
+     * Returns the data driver.
+     * 
+     * @return \BearFramework\App\IDataDriver
+     * @throws \Exception
+     */
+    private function getDriver(): \BearFramework\App\IDataDriver
+    {
+        if ($this->driver !== null) {
+            return $this->driver;
+        }
+        throw new \Exception('No data driver specified! Use useFileDriver() or setDriver() to specify one.');
     }
 
     /**
      * Constructs a new data item and returns it.
      * 
-     * @var string|null $key The key of the data item.
-     * @var string|null $value The value of the data item.
+     * @param string|null $key The key of the data item.
+     * @param string|null $value The value of the data item.
      * @return \BearFramework\App\DataItem Returns a new data item.
      */
     public function make(string $key = null, string $value = null): \BearFramework\App\DataItem
@@ -77,6 +125,8 @@ class DataRepository
      * 
      * @param \BearFramework\App\DataItem $item The data item to store.
      * @return \BearFramework\App\DataRepository A reference to itself.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function set(DataItem $item): \BearFramework\App\DataRepository
     {
@@ -87,17 +137,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemSet', $item, $preventDefault);
         if (!$preventDefault) {
-            $command = [
-                'command' => 'set',
-                'key' => $item->key,
-                'body' => $item->value,
-                'metadata.*' => ''
-            ];
-            $metadata = $item->metadata->toArray();
-            foreach ($metadata as $name => $value) {
-                $command['metadata.' . $name] = $value;
-            }
-            $this->execute([$command]);
+            $driver = $this->getDriver();
+            $driver->set($item);
         }
         $hooks->execute('dataItemSetDone', $item);
         $key = $item->key;
@@ -108,9 +149,11 @@ class DataRepository
     /**
      * Sets a new value of the item specified or creates a new item with the key and value specified.
      * 
-     * @var string $key The key of the data item.
-     * @var string $value The value of the data item.
+     * @param string $key The key of the data item.
+     * @param string $value The value of the data item.
      * @return \BearFramework\App\DataRepository A reference to itself.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function setValue(string $key, string $value): \BearFramework\App\DataRepository
     {
@@ -120,13 +163,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemSetValue', $key, $value, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'set',
-                    'key' => $key,
-                    'body' => $value
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->setValue($key, $value);
         }
         $hooks->execute('dataItemSetValueDone', $key, $value);
         $hooks->execute('dataItemChanged', $key);
@@ -139,6 +177,7 @@ class DataRepository
      * @param string $key The key of the stored data item.
      * @return \BearFramework\App\DataItem|null A data item or null if not found.
      * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function get(string $key): ?\BearFramework\App\DataItem
     {
@@ -153,16 +192,8 @@ class DataRepository
             $item = $returnValue;
         } else {
             if (!$preventDefault) {
-                $result = $this->execute([
-                    [
-                        'command' => 'get',
-                        'key' => $key,
-                        'result' => ['key', 'body', 'metadata']
-                    ]
-                ]);
-                if (isset($result[0]['key'])) {
-                    $item = $this->makeDataItemFromRawData($result[0]);
-                }
+                $driver = $this->getDriver();
+                $item = $driver->get($key);
             }
         }
         $hooks->execute('dataItemGetDone', $key, $item);
@@ -176,6 +207,7 @@ class DataRepository
      * @param string $key The key of the stored data item.
      * @return string|null The value of a stored data item or null if not found.
      * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function getValue(string $key): ?string
     {
@@ -190,16 +222,8 @@ class DataRepository
             $value = $returnValue;
         } else {
             if (!$preventDefault) {
-                $result = $this->execute([
-                    [
-                        'command' => 'get',
-                        'key' => $key,
-                        'result' => ['body']
-                    ]
-                ]);
-                if (isset($result[0]['body'])) {
-                    $value = $result[0]['body'];
-                }
+                $driver = $this->getDriver();
+                $value = $driver->getValue($key);
             }
         }
         $hooks->execute('dataItemGetValueDone', $key, $value);
@@ -213,6 +237,7 @@ class DataRepository
      * @param string $key The key of the stored data item.
      * @return bool TRUE if the data item exists. FALSE otherwise.
      * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function exists(string $key): bool
     {
@@ -224,14 +249,8 @@ class DataRepository
         if (is_bool($returnValue)) {
             $exists = $returnValue;
         } else {
-            $result = $this->execute([
-                [
-                    'command' => 'get',
-                    'key' => $key,
-                    'result' => ['key']
-                ]
-            ]);
-            $exists = isset($result[0]['key']);
+            $driver = $this->getDriver();
+            $exists = $driver->exists($key);
         }
 
         $hooks->execute('dataItemExistsDone', $key, $exists);
@@ -256,13 +275,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemAppend', $key, $content, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'append',
-                    'key' => $key,
-                    'body' => $content
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->append($key, $content);
         }
         $hooks->execute('dataItemAppendDone', $key, $content);
         $hooks->execute('dataItemChanged', $key);
@@ -286,13 +300,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemDuplicate', $sourceKey, $destinationKey, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'duplicate',
-                    'sourceKey' => $sourceKey,
-                    'targetKey' => $destinationKey
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->duplicate($sourceKey, $destinationKey);
         }
         $hooks->execute('dataItemDuplicateDone', $sourceKey, $destinationKey);
         $hooks->execute('dataItemChanged', $destinationKey);
@@ -316,13 +325,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemRename', $sourceKey, $destinationKey, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'rename',
-                    'sourceKey' => $sourceKey,
-                    'targetKey' => $destinationKey
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->rename($sourceKey, $destinationKey);
         }
         $hooks->execute('dataItemRenameDone', $sourceKey, $destinationKey);
         $hooks->execute('dataItemChanged', $sourceKey);
@@ -346,12 +350,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemDelete', $key, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'delete',
-                    'key' => $key
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->delete($key);
         }
         $hooks->execute('dataItemDeleteDone', $key);
         $hooks->execute('dataItemChanged', $key);
@@ -376,13 +376,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemSetMetadata', $key, $name, $value, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'set',
-                    'key' => $key,
-                    'metadata.' . $name => $value
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->setMetadata($key, $name, $value);
         }
         $hooks->execute('dataItemSetMetadataDone', $key, $name, $value);
         $hooks->execute('dataItemChanged', $key);
@@ -396,6 +391,7 @@ class DataRepository
      * @param string $name The metadata name.
      * @return string|null The value of the data item metadata.
      * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function getMetadata(string $key, string $name): ?string
     {
@@ -410,15 +406,8 @@ class DataRepository
             $value = $returnValue;
         } else {
             if (!$preventDefault) {
-                $result = $this->execute([
-                    [
-                        'command' => 'get',
-                        'key' => $key,
-                        'result' => ['metadata.' . $name]
-                    ]
-                        ]
-                );
-                $value = isset($result[0]['metadata.' . $name]) ? $result[0]['metadata.' . $name] : null;
+                $driver = $this->getDriver();
+                $value = $driver->getMetadata($key, $name);
             }
         }
         $hooks->execute('dataItemGetMetadataDone', $key, $name, $value);
@@ -443,13 +432,8 @@ class DataRepository
         $preventDefault = false;
         $hooks->execute('dataItemDeleteMetadata', $key, $name, $preventDefault);
         if (!$preventDefault) {
-            $this->execute([
-                [
-                    'command' => 'set',
-                    'key' => $key,
-                    'metadata.' . $name => ''
-                ]
-            ]);
+            $driver = $this->getDriver();
+            $driver->deleteMetadata($key, $name);
         }
         $hooks->execute('dataItemDeleteMetadataDone', $key, $name);
         $hooks->execute('dataItemChanged', $key);
@@ -462,6 +446,7 @@ class DataRepository
      * @param string $key The data item key.
      * @return \BearFramework\DataList A list containing the metadata for the data item specified.
      * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function getMetadataList(string $key): \BearFramework\DataList
     {
@@ -474,24 +459,9 @@ class DataRepository
         if ($returnValue instanceof \BearFramework\DataList) {
             $value = $returnValue;
         } else {
-            $result = $this->execute([
-                [
-                    'command' => 'get',
-                    'key' => $key,
-                    'result' => ['metadata']
-                ]
-                    ]
-            );
-            $objectMetadata = [];
-            foreach ($result[0] as $name => $value) {
-                if (strpos($name, 'metadata.') === 0) {
-                    $name = substr($name, 9);
-                    if ($name !== 'internalFrameworkPropertyPublic') {
-                        $objectMetadata[] = ['name' => $name, 'value' => $value];
-                    }
-                }
-            }
-            $value = new \BearFramework\DataList($objectMetadata);
+            $driver = $this->getDriver();
+            $value = $driver->getMetadataList($key);
+            // TODO remove internalFrameworkPropertyPublic
         }
         $hooks->execute('dataItemGetMetadataListDone', $key, $value);
         $hooks->execute('dataItemRequested', $key);
@@ -502,6 +472,8 @@ class DataRepository
      * Returns a list of all items in the data storage.
      * 
      * @return \BearFramework\DataList A list of all items in the data storage.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function getList(): \BearFramework\DataList
     {
@@ -514,35 +486,8 @@ class DataRepository
             $value = $returnValue;
         } else {
             $value = new \BearFramework\DataList(function($context) {
-                $whereOptions = [];
-                foreach ($context->filterByProperties as $filter) {
-                    $whereOptions[] = [$filter->property, $filter->value, $filter->operator];
-                }
-                $resultKeys = ['key', 'body', 'metadata'];
-                if (isset($context->requestedProperties) && !empty($context->requestedProperties)) {
-                    $resultKeys = ['key'];
-                    foreach ($context->requestedProperties as $requestedProperty) {
-                        if ($requestedProperty === 'value') {
-                            $resultKeys[] = 'body';
-                        } elseif ($requestedProperty === 'metadata') {
-                            $resultKeys[] = 'metadata';
-                        }
-                    }
-                    $resultKeys = array_unique($resultKeys);
-                }
-
-                $result = $this->execute([
-                    [
-                        'command' => 'search',
-                        'where' => $whereOptions,
-                        'result' => $resultKeys
-                    ]
-                ]);
-                $list = [];
-                foreach ($result[0] as $rawData) {
-                    $list[] = $this->makeDataItemFromRawData($rawData);
-                }
-                return $list;
+                $driver = $this->getDriver();
+                return $driver->getList($context);
             });
         }
         $hooks->execute('dataGetListDone', $value);
@@ -605,6 +550,7 @@ class DataRepository
      * 
      * @param string $key The key of the data item.
      * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
      * @return bool TRUE if public. FALSE otherwise.
      */
     public function isPublic(string $key): bool
@@ -632,18 +578,25 @@ class DataRepository
      */
     public function isValidKey(string $key): bool
     {
-        return $this->instance->isValidKey($key);
+        if (strlen($key) === 0 || $key === '.' || $key === '..' || strpos($key, '/../') !== false || strpos($key, '/./') !== false || strpos($key, '/') === 0 || strpos($key, './') === 0 || strpos($key, '../') === 0 || substr($key, -2) === '/.' || substr($key, -3) === '/..' || substr($key, -1) === '/') {
+            return false;
+        }
+        return preg_match("/^[a-z0-9\.\/\-\_]*$/", $key) === 1;
     }
 
     /**
      * Returns the filename of the data item specified.
      * 
      * @param string $key The key of the data item.
+     * @throws \Exception
      * @throws \InvalidArgumentException
      * @return string The filename of the data item specified.
      */
     public function getFilename(string $key): string
     {
+        if ($this->filenameProtocol === null) {
+            throw new \Exception('No filenameProtocol specified!');
+        }
         $app = App::get();
         $hooks = $app->hooks;
 
@@ -656,50 +609,13 @@ class DataRepository
         } else {
             if (!$preventDefault) {
                 if (!$this->isValidKey($key)) {
-                    throw new \InvalidArgumentException('The key argument is not valid');
+                    throw new \InvalidArgumentException('The key argument is not valid!');
                 }
-                $value = $this->dir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $key);
+                $value = $this->filenameProtocol . '://' . $key;
             }
         }
         $hooks->execute('dataItemGetFilenameDone', $key, $value);
         return $value;
-    }
-
-    /**
-     * 
-     * @param array $rawData
-     * @return \BearFramework\App\DataItem
-     */
-    private function makeDataItemFromRawData(array $rawData): \BearFramework\App\DataItem
-    {
-        $dataItem = $this->make(isset($rawData['key']) ? $rawData['key'] : null, isset($rawData['body']) ? $rawData['body'] : null);
-        foreach ($rawData as $name => $value) {
-            if (strpos($name, 'metadata.') === 0) {
-                $name = substr($name, 9);
-                if ($name !== 'internalFrameworkPropertyPublic') {
-                    $dataItem->metadata->$name = $value;
-                }
-            }
-        }
-        return $dataItem;
-    }
-
-    /**
-     * 
-     * @param array $commands
-     * @return array
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     */
-    private function execute(array $commands): array
-    {
-        try {
-            return $this->instance->execute($commands);
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
-        } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
-            throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
-        }
     }
 
 }

@@ -67,6 +67,8 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
         $app->request->base = 'http://example.com/www';
         $app->request->method = 'GET';
 
+        $app->data->useFileDriver(realpath($dataDir));
+
         $appIndexContent = isset($config['appIndexContent']) ? (string) $config['appIndexContent'] : '<?php ';
         if (strlen($appIndexContent) > 0) {
             file_put_contents($appDir . DIRECTORY_SEPARATOR . 'index.php', $appIndexContent);
@@ -107,9 +109,11 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
      */
     public function makeFile(string $filename, string $content): void
     {
-        $pathinfo = pathinfo($filename);
-        if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
-            $this->makeDir($pathinfo['dirname']);
+        if (strpos($filename, '://') === false) {
+            $pathinfo = pathinfo($filename);
+            if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
+                $this->makeDir($pathinfo['dirname']);
+            }
         }
         file_put_contents($filename, $content);
     }

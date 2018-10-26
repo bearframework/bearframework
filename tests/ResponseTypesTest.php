@@ -19,9 +19,10 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testFileReader1()
     {
         $app = $this->getApp();
-        $this->makeFile($app->config->appDir . '/file', '123');
-        $response = new \BearFramework\App\Response\FileReader($app->config->appDir . '/file');
-        $this->assertTrue($response->filename === realpath($app->config->appDir . '/file'));
+        $filename = $app->config->appDir . DIRECTORY_SEPARATOR . 'file';
+        $this->makeFile($filename, '123');
+        $response = new \BearFramework\App\Response\FileReader($filename);
+        $this->assertTrue($response->filename === realpath($filename));
         $this->assertTrue(isset($response->filename));
         unset($response->filename);
         $this->assertTrue($response->filename === '');
@@ -33,9 +34,9 @@ class ResponseTypesTest extends BearFrameworkTestCase
     public function testFileReader2()
     {
         $app = $this->getApp();
-        $this->makeFile($app->config->appDir . '/file', '123');
+        $this->makeFile($app->config->appDir . DIRECTORY_SEPARATOR . 'file', '123');
         $app->routes->add('/', function() use ($app) {
-            return new \BearFramework\App\Response\FileReader($app->config->appDir . '/file');
+            return new \BearFramework\App\Response\FileReader($app->config->appDir . DIRECTORY_SEPARATOR . 'file');
         });
         $app->run();
         $this->expectOutputString('123');
