@@ -18,7 +18,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Container $container Services container.
  * @property-read \BearFramework\App\Request $request Provides information about the current request.
  * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
- * @property-read \BearFramework\App\ILogger $logger Provides logging functionality.
+ * @property-read \BearFramework\App\LogsRepository $logs Provides logging functionality.
  * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
  * @property-read \BearFramework\App\HooksRepository $hooks Provides functionality for notifications and executing custom code.
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
@@ -78,12 +78,6 @@ class App
                 ->defineProperty('container', [
                     'init' => function() {
                         $container = new App\Container();
-                        $container->set('Logger', function() {
-                                    if ($this->config->logsDir === null) {
-                                        throw new \Exception('The value of the logsDir config variable is empty.');
-                                    }
-                                    return new App\DefaultLogger($this->config->logsDir);
-                                });
                         return $container;
                     },
                     'readonly' => true
@@ -107,9 +101,9 @@ class App
                     },
                     'readonly' => true
                 ])
-                ->defineProperty('logger', [
+                ->defineProperty('logs', [
                     'init' => function() {
-                        return $this->container->get('Logger');
+                         return new App\LogsRepository();
                     },
                     'readonly' => true
                 ])

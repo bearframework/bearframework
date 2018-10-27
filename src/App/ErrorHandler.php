@@ -111,8 +111,8 @@ class ErrorHandler
 
         if ($logErrors) {
             try {
-                $app->logger->log('error', $simpleLog);
-                $app->logger->log('error-' . $logKey, $fullLog);
+                $app->logs->log('error', $simpleLog);
+                $app->logs->log('error-' . $logKey, $fullLog);
             } catch (\Exception $e) {
                 
             }

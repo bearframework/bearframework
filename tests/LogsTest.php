@@ -10,7 +10,7 @@
 /**
  * @runTestsInSeparateProcesses
  */
-class LogTest extends BearFrameworkTestCase
+class LogsTest extends BearFrameworkTestCase
 {
 
     /**
@@ -21,9 +21,9 @@ class LogTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $uniqueMessage = md5(uniqid());
-        $level = 'warning';
-        $filename = $app->config->logsDir . '/' . $level . '-' . date('Y-m-d') . '.log';
-        $app->logger->log($level, $uniqueMessage);
+        $name = 'warning';
+        $filename = $app->config->logsDir . '/' . $name . '-' . date('Y-m-d') . '.log';
+        $app->logs->log($name, $uniqueMessage);
         $this->assertTrue(is_file($filename) && strpos(file_get_contents($filename), $uniqueMessage) !== false);
     }
 
@@ -35,7 +35,7 @@ class LogTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $this->expectException('InvalidArgumentException');
-        $app->logger->log('', 'message');
+        $app->logs->log('', 'message');
     }
 
     /**
@@ -44,11 +44,11 @@ class LogTest extends BearFrameworkTestCase
     public function testInvalidFile()
     {
         $app = $this->getApp();
-        $level = 'warning';
-        $filename = $app->config->logsDir . '/' . $level . '-' . date('Y-m-d') . '.log';
+        $name = 'warning';
+        $filename = $app->config->logsDir . '/' . $name . '-' . date('Y-m-d') . '.log';
         mkdir($filename, 0777, true);
         $this->expectException('\Exception');
-        $app->logger->log($level, 'message');
+        $app->logs->log($name, 'message');
     }
 
 }

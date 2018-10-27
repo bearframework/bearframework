@@ -17,11 +17,12 @@ interface ILogger
 {
 
     /**
+     * Logs the data specified.
      * 
-     * @param string $level
-     * @param string $message
-     * @param array $context
+     * @param string $name The name of the log context.
+     * @param string $message The message that will be logged.
+     * @param array $data Additional information to log.
      * @return void No value is returned.
      */
-    public function log(string $level, string $message, array $context = []): void;
+    public function log(string $name, string $message, array $data = []): void;
 }
