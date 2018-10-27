@@ -12,7 +12,7 @@ namespace BearFramework\App;
 /**
  * Shortcuts container for the application object.
  * 
- * @method \BearFramework\App\ShortcutsRepository add(string $name, callable $callback) Adds a new shortcut.
+ * @method \BearFramework\App\ShortcutsRepository add(string $name, callable $callback) Creates a new shortcut.
  * @codeCoverageIgnore
  */
 class ShortcutsRepository

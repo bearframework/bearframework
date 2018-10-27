@@ -30,4 +30,31 @@ class ShortcutsTest extends BearFrameworkTestCase
         $this->assertTrue($app->var1 === 123);
     }
 
+    /**
+     * 
+     */
+    public function testDuplicates()
+    {
+        $app = $this->getApp();
+        $app->shortcuts->add('aaa', function() {
+            return 1;
+        });
+        $this->expectException('\Exception');
+        $app->shortcuts->add('aaa', function() {
+            return 2;
+        });
+    }
+
+    /**
+     * 
+     */
+    public function testTaken()
+    {
+        $app = $this->getApp();
+        $this->expectException('\Exception');
+        $app->shortcuts->add('data', function() {
+            return 2;
+        });
+    }
+
 }

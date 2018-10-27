@@ -95,7 +95,7 @@ class App
                 ])
                 ->defineProperty('logs', [
                     'init' => function() {
-                         return new App\LogsRepository();
+                        return new App\LogsRepository();
                     },
                     'readonly' => true
                 ])
@@ -153,6 +153,9 @@ class App
                                     return $callback();
                                 };
                         $addPropertyMethod = function($name, $callback) use (&$initPropertyMethod) {
+                                    if (isset($this->$name)) {
+                                        throw new \Exception('A property/shortcut named "' . $name . '" already exists!');
+                                    }
                                     $this->defineProperty($name, [
                                         'init' => function() use (&$callback, &$initPropertyMethod) {
                                             return $initPropertyMethod($callback);
