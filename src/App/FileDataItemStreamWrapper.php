@@ -190,7 +190,7 @@ class FileDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
      */
     private function getFilename(): string
     {
-        return $this->dir . DIRECTORY_SEPARATOR . 'objects' . DIRECTORY_SEPARATOR . $this->key;
+        return $this->dir . '/objects/' . $this->key;
     }
 
 }

@@ -35,7 +35,7 @@ class Classes
      */
     public function __construct(string $dir)
     {
-        $this->dir = $dir;
+        $this->dir = str_replace('\\', '/', $dir);
         self::$appClassesReference = App::get()->classes;
     }
 
@@ -48,7 +48,7 @@ class Classes
      */
     public function add(string $class, string $filename): \BearFramework\App\Context\Classes
     {
-        self::$appClassesReference->add($class, $this->dir . DIRECTORY_SEPARATOR . $filename);
+        self::$appClassesReference->add($class, $this->dir . '/' . $filename);
         return $this;
     }
 

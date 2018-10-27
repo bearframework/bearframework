@@ -28,7 +28,7 @@ class AddonsTest extends BearFrameworkTestCase
         $this->assertTrue(BearFramework\Addons::getList()->length === 2);
 
         $this->assertTrue(BearFramework\Addons::exists('addon1'));
-        $this->assertTrue(BearFramework\Addons::get('addon1')->dir === realpath($app->config->addonsDir . '/addon1/'));
+        $this->assertTrue(BearFramework\Addons::get('addon1')->dir === $app->config->addonsDir . '/addon1');
         $this->assertTrue(BearFramework\Addons::exists('addon3') === false);
         $this->assertTrue(BearFramework\Addons::get('addon2')->options['require'][0] === 'addon1');
 
@@ -100,10 +100,10 @@ class AddonsTest extends BearFrameworkTestCase
 
         $list = BearFramework\Addons::getList();
         $this->assertTrue($list[0]->id === 'addon1');
-        $this->assertTrue($list[0]->dir === realpath($app->config->addonsDir . '/addon1/'));
+        $this->assertTrue($list[0]->dir === $app->config->addonsDir . '/addon1');
         $this->assertTrue($list[0]->options === []);
         $this->assertTrue($list[1]->id === 'addon2');
-        $this->assertTrue($list[1]->dir === realpath($app->config->addonsDir . '/addon2/'));
+        $this->assertTrue($list[1]->dir === $app->config->addonsDir . '/addon2');
         $this->assertTrue($list[1]->options === []);
     }
 

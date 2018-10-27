@@ -54,7 +54,7 @@ class AddonsRepository
         $this->data[$id] = new \BearFramework\App\Addon($id, $dir, $options);
         $app->context->add($dir);
 
-        $indexFilename = $dir . DIRECTORY_SEPARATOR . 'index.php';
+        $indexFilename = $dir . '/index.php';
         if (is_file($indexFilename)) {
             ob_start();
             try {

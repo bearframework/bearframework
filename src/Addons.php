@@ -41,7 +41,7 @@ class Addons
         if ($dir === false) {
             throw new \InvalidArgumentException('The value of the dir argument is not a valid directory.');
         }
-        self::$data[$id] = new \BearFramework\Addon($id, $dir, $options);
+        self::$data[$id] = new \BearFramework\Addon($id, str_replace('\\', '/', $dir), $options);
         return true;
     }
 

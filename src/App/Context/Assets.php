@@ -35,7 +35,7 @@ class Assets
      */
     public function __construct(string $dir)
     {
-        $this->dir = $dir;
+        $this->dir = str_replace('\\', '/', $dir);
         self::$appAssetsReference = App::get()->assets;
     }
 
@@ -47,7 +47,7 @@ class Assets
      */
     public function addDir(string $pathname): \BearFramework\App\Context\Assets
     {
-        self::$appAssetsReference->addDir($this->dir . DIRECTORY_SEPARATOR . $pathname);
+        self::$appAssetsReference->addDir($this->dir . '/' . $pathname);
         return $this;
     }
 
@@ -60,7 +60,7 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        return self::$appAssetsReference->getUrl($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
+        return self::$appAssetsReference->getUrl($this->dir . '/' . $filename, $options);
     }
 
     /**
@@ -72,7 +72,7 @@ class Assets
      */
     public function getContent(string $filename, array $options = []): ?string
     {
-        return self::$appAssetsReference->getContent($this->dir . DIRECTORY_SEPARATOR . $filename, $options);
+        return self::$appAssetsReference->getContent($this->dir . '/' . $filename, $options);
     }
 
 }

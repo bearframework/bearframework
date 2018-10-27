@@ -45,12 +45,13 @@ class ContextsRepository
             }
             $filename = $trace[0]['file'];
         }
+        $filename = str_replace('\\', '/', $filename);
         if (isset(self::$objectsCache[$filename])) {
             return clone(self::$objectsCache[$filename]);
         }
         $matchedDir = null;
         foreach ($this->dirs as $dir => $length) {
-            if ($dir === $filename . DIRECTORY_SEPARATOR || substr($filename, 0, $length) === $dir) {
+            if ($dir === $filename . '/' || substr($filename, 0, $length) === $dir) {
                 $matchedDir = $dir;
                 break;
             }
@@ -74,7 +75,7 @@ class ContextsRepository
      */
     public function add(string $dir): \BearFramework\App\ContextsRepository
     {
-        $dir = rtrim($dir, '\\/') . DIRECTORY_SEPARATOR;
+        $dir = rtrim(str_replace('\\', '/', $dir), '\\/') . '/';
         $this->dirs[$dir] = strlen($dir);
         arsort($this->dirs);
         return $this;

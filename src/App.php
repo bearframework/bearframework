@@ -230,7 +230,7 @@ class App
                 throw new \Exception('The value of the appDir argument is not a real directory!');
             }
             $this->context->add($appDir);
-            $indexFilename = realpath($appDir . DIRECTORY_SEPARATOR . 'index.php');
+            $indexFilename = realpath($appDir . '/index.php');
             if ($indexFilename !== false) {
                 ob_start();
                 try {

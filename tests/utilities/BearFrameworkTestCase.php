@@ -55,10 +55,10 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
         mkdir($addonsDir, 0777, true);
 
         $initialConfig = [
-            'appDir' => realpath($appDir),
-            'dataDir' => realpath($dataDir),
-            'logsDir' => realpath($logsDir),
-            'addonsDir' => realpath($addonsDir)
+            'appDir' => str_replace('\\', '/', realpath($appDir)),
+            'dataDir' => str_replace('\\', '/', realpath($dataDir)),
+            'logsDir' => str_replace('\\', '/', realpath($logsDir)),
+            'addonsDir' => str_replace('\\', '/', realpath($addonsDir))
         ];
         $config = array_merge($initialConfig, $config);
         foreach ($config as $key => $value) {
@@ -71,7 +71,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
 
         $appIndexContent = isset($config['appIndexContent']) ? (string) $config['appIndexContent'] : '<?php ';
         if (strlen($appIndexContent) > 0) {
-            file_put_contents($appDir . DIRECTORY_SEPARATOR . 'index.php', $appIndexContent);
+            file_put_contents($appDir . '/index.php', $appIndexContent);
             $app->initialize($appDir);
         }
 

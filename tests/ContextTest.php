@@ -25,15 +25,15 @@ class ContextTest extends BearFrameworkTestCase
         $this->makeFile($app->config->appDir . '/index.php', '<?php ');
         $this->makeFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
 
-        $context = $app->context->get($app->config->appDir . DIRECTORY_SEPARATOR . 'index.php');
+        $context = $app->context->get($app->config->appDir . '/index.php');
         $this->assertTrue($context->dir === $app->config->appDir);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
-        $context = $app->context->get($app->config->appDir . DIRECTORY_SEPARATOR . 'index.php'); // test cache hit
+        $context = $app->context->get($app->config->appDir . '/index.php'); // test cache hit
         $this->assertTrue($context->dir === $app->config->appDir);
 
-        $context = $app->context->get($app->config->appDir . DIRECTORY_SEPARATOR . 'index2.php'); // test cache hit
+        $context = $app->context->get($app->config->appDir . '/index2.php'); // test cache hit
         $this->assertTrue($context->dir === $app->config->appDir);
 
         $context->classes->add('TempClass1', 'class1.php');
@@ -62,24 +62,24 @@ class ContextTest extends BearFrameworkTestCase
     public function testAddonContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid() . DIRECTORY_SEPARATOR;
+        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid();
         $app->request->base = 'http://example.com/www';
 
-        $this->makeFile($addonDir . 'index.php', '<?php ');
-        $this->makeFile($addonDir . 'class1.php', '<?php class TempClass1{}');
+        $this->makeFile($addonDir . '/index.php', '<?php ');
+        $this->makeFile($addonDir . '/class1.php', '<?php class TempClass1{}');
 
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon', ['option1' => 5]);
 
-        $context = $app->context->get($addonDir . 'index.php');
-        $this->assertTrue($context->dir === rtrim($addonDir, DIRECTORY_SEPARATOR));
+        $context = $app->context->get($addonDir . '/index.php');
+        $this->assertTrue($context->dir === $addonDir);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
-        $this->makeSampleFile($addonDir . 'assets/logo.png', 'png');
+        $this->makeSampleFile($addonDir . '/assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
@@ -91,7 +91,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testAutoDetectContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid();
+        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid();
 
         $this->makeFile($addonDir . '/index.php', '<?php
             
@@ -112,21 +112,21 @@ $app->config->valueToCheck = $context->dir;
     {
         $app = $this->getApp();
 
-        $addon1Dir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'addon1' . DIRECTORY_SEPARATOR;
-        $this->makeFile($addon1Dir . 'index.php', '<?php ');
+        $addon1Dir = $app->config->addonsDir . '/addon1';
+        $this->makeFile($addon1Dir . '/index.php', '<?php ');
         BearFramework\Addons::register('addon1', $addon1Dir);
         $app->addons->add('addon1');
 
-        $addon2Dir = $addon1Dir . 'vendor' . DIRECTORY_SEPARATOR . 'addon2' . DIRECTORY_SEPARATOR;
-        $this->makeFile($addon2Dir . 'index.php', '<?php ');
+        $addon2Dir = $addon1Dir . 'vendor/addon2';
+        $this->makeFile($addon2Dir . '/index.php', '<?php ');
         BearFramework\Addons::register('addon2', $addon2Dir);
         $app->addons->add('addon2');
 
-        $context1 = $app->context->get($addon1Dir . 'index.php');
-        $this->assertTrue($context1->dir === rtrim($addon1Dir, DIRECTORY_SEPARATOR));
+        $context1 = $app->context->get($addon1Dir . '/index.php');
+        $this->assertTrue($context1->dir === $addon1Dir);
 
-        $context2 = $app->context->get($addon2Dir . 'index.php');
-        $this->assertTrue($context2->dir === rtrim($addon2Dir, DIRECTORY_SEPARATOR));
+        $context2 = $app->context->get($addon2Dir . '/index.php');
+        $this->assertTrue($context2->dir === $addon2Dir);
     }
 
     /**
@@ -135,18 +135,18 @@ $app->config->valueToCheck = $context->dir;
     public function testAddonContextWithNoAppContext()
     {
         $app = $this->getApp(['appIndexContent' => null]);
-        $addonDir = $app->config->addonsDir . DIRECTORY_SEPARATOR . 'tempaddon' . uniqid() . DIRECTORY_SEPARATOR;
+        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid();
 
-        $this->makeFile($addonDir . 'index.php', '<?php ');
+        $this->makeFile($addonDir . '/index.php', '<?php ');
 
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon');
 
-        $context = $app->context->get($addonDir . 'index.php');
-        $this->assertTrue($context->dir === rtrim($addonDir, DIRECTORY_SEPARATOR));
+        $context = $app->context->get($addonDir . '/index.php');
+        $this->assertTrue($context->dir === $addonDir);
 
         $context = $app->context->get($addonDir);
-        $this->assertTrue($context->dir === rtrim($addonDir, DIRECTORY_SEPARATOR));
+        $this->assertTrue($context->dir === $addonDir);
     }
 
     /**

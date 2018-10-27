@@ -52,7 +52,7 @@ class DefaultLogger implements ILogger
             throw new \InvalidArgumentException('The level argument must not be empty');
         }
 
-        $filename = $this->dir . DIRECTORY_SEPARATOR . $level . '-' . date('Y-m-d') . '.log';
+        $filename = $this->dir . '/' . $level . '-' . date('Y-m-d') . '.log';
         try {
             $microtime = microtime(true);
             $microtimeParts = explode('.', $microtime);
