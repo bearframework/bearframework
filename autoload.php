@@ -16,7 +16,6 @@ $classes = [
     'BearFramework\App\CacheRepository' => 'src/App/CacheRepository.php',
     'BearFramework\App\ClassesRepository' => 'src/App/ClassesRepository.php',
     'BearFramework\App\Config' => 'src/App/Config.php',
-    'BearFramework\App\Container' => 'src/App/Container.php',
     'BearFramework\App\Context' => 'src/App/Context.php',
     'BearFramework\App\Context\Assets' => 'src/App/Context/Assets.php',
     'BearFramework\App\Context\Classes' => 'src/App/Context/Classes.php',

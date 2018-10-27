@@ -15,7 +15,6 @@ use BearFramework\App;
  * The is the class used to instantiate and configure you application.
  * 
  * @property-read \BearFramework\App\Config $config The application configuration.
- * @property-read \BearFramework\App\Container $container Services container.
  * @property-read \BearFramework\App\Request $request Provides information about the current request.
  * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
  * @property-read \BearFramework\App\LogsRepository $logs Provides logging functionality.
@@ -72,13 +71,6 @@ class App
                 ->defineProperty('config', [
                     'init' => function() {
                         return new App\Config();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('container', [
-                    'init' => function() {
-                        $container = new App\Container();
-                        return $container;
                     },
                     'readonly' => true
                 ])
