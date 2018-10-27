@@ -54,11 +54,16 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
         mkdir($logsDir, 0777, true);
         mkdir($addonsDir, 0777, true);
 
+        $appDir = str_replace('\\', '/', realpath($appDir));
+        $dataDir = str_replace('\\', '/', realpath($dataDir));
+        $logsDir = str_replace('\\', '/', realpath($logsDir));
+        $addonsDir = str_replace('\\', '/', realpath($addonsDir));
+
         $initialConfig = [
-            'appDir' => str_replace('\\', '/', realpath($appDir)),
-            'dataDir' => str_replace('\\', '/', realpath($dataDir)),
-            'logsDir' => str_replace('\\', '/', realpath($logsDir)),
-            'addonsDir' => str_replace('\\', '/', realpath($addonsDir))
+            'appDir' => $appDir,
+            'dataDir' => $dataDir,
+            'logsDir' => $logsDir,
+            'addonsDir' => $addonsDir
         ];
         $config = array_merge($initialConfig, $config);
         foreach ($config as $key => $value) {
