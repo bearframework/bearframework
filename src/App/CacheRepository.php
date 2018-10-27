@@ -25,16 +25,48 @@ class CacheRepository
 
     /**
      *
+     * @var ?\BearFramework\App\ICacheDriver  
      */
-    private $cacheDriver = null;
+    private $driver = null;
 
     /**
+     * Enables the app cache driver. The cached data will be stored in the app data repository.
      * 
-     * @param \BearFramework\App\ICacheDriver $cacheDriver The cache driver to use.
+     * @return void No value is returned.
      */
-    public function __construct(ICacheDriver $cacheDriver)
+    public function useAppDataDriver(): void
     {
-        $this->cacheDriver = $cacheDriver;
+        $app = App::get();
+        $this->setDriver(new \BearFramework\App\DataCacheDriver($app->data));
+    }
+
+    /**
+     * Sets a new cache driver.
+     * 
+     * @param \BearFramework\App\ICacheDriver $driver The driver to use for cache storage.
+     * @return void No value is returned.
+     * @throws \Exception
+     */
+    public function setDriver(\BearFramework\App\ICacheDriver $driver): void
+    {
+        if ($this->driver !== null) {
+            throw new \Exception('A cache driver is already set!');
+        }
+        $this->driver = $driver;
+    }
+
+    /**
+     * Returns the cache driver.
+     * 
+     * @return \BearFramework\App\ICacheDriver
+     * @throws \Exception
+     */
+    private function getDriver(): \BearFramework\App\ICacheDriver
+    {
+        if ($this->driver !== null) {
+            return $this->driver;
+        }
+        throw new \Exception('No cache driver specified! Use useAppDataDriver() or setDriver() to specify one.');
     }
 
     /**
@@ -69,12 +101,13 @@ class CacheRepository
     {
         $app = App::get();
         $hooks = $app->hooks;
+        $driver = $this->getDriver();
 
         $item = clone($item);
         $preventDefault = false;
         $hooks->execute('cacheItemSet', $item, $preventDefault);
         if (!$preventDefault) {
-            $this->cacheDriver->set($item->key, $item->value, $item->ttl);
+            $driver->set($item->key, $item->value, $item->ttl);
         }
         $hooks->execute('cacheItemSetDone', $item);
         $key = $item->key;
@@ -92,6 +125,7 @@ class CacheRepository
     {
         $app = App::get();
         $hooks = $app->hooks;
+        $driver = $this->getDriver();
 
         $item = null;
         $returnValue = null;
@@ -101,7 +135,7 @@ class CacheRepository
             $item = $returnValue;
         } else {
             if (!$preventDefault) {
-                $value = $this->cacheDriver->get($key);
+                $value = $driver->get($key);
                 if ($value !== null) {
                     $item = $this->make($key, $value);
                 }
@@ -122,6 +156,7 @@ class CacheRepository
     {
         $app = App::get();
         $hooks = $app->hooks;
+        $driver = $this->getDriver();
 
         $value = null;
         $returnValue = null;
@@ -131,7 +166,7 @@ class CacheRepository
             $value = $returnValue;
         } else {
             if (!$preventDefault) {
-                $value = $this->cacheDriver->get($key);
+                $value = $driver->get($key);
             }
         }
         $hooks->execute('cacheItemGetValueDone', $key, $value);
@@ -149,13 +184,14 @@ class CacheRepository
     {
         $app = App::get();
         $hooks = $app->hooks;
+        $driver = $this->getDriver();
 
         $returnValue = null;
         $hooks->execute('cacheItemExists', $key, $returnValue);
         if (is_bool($returnValue)) {
             $exists = $returnValue;
         } else {
-            $exists = $this->cacheDriver->get($key) !== null;
+            $exists = $driver->get($key) !== null;
         }
 
         $hooks->execute('cacheItemExistsDone', $key, $exists);
@@ -173,11 +209,12 @@ class CacheRepository
     {
         $app = App::get();
         $hooks = $app->hooks;
+        $driver = $this->getDriver();
 
         $preventDefault = false;
         $hooks->execute('cacheItemDelete', $key, $preventDefault);
         if (!$preventDefault) {
-            $this->cacheDriver->delete($key);
+            $driver->delete($key);
         }
         $hooks->execute('cacheItemDeleteDone', $key);
         $hooks->execute('cacheItemChanged', $key);
@@ -191,11 +228,12 @@ class CacheRepository
     {
         $app = App::get();
         $hooks = $app->hooks;
+        $driver = $this->getDriver();
 
         $preventDefault = false;
         $hooks->execute('cacheClear', $preventDefault);
         if (!$preventDefault) {
-            $this->cacheDriver->clear();
+            $driver->clear();
         }
         $hooks->execute('cacheClearDone');
         return $this;

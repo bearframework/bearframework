@@ -12,10 +12,26 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * The default cache driver. It uses the $app->data to store the values.
+ * A data cache driver. It uses the data repository provided to store the values.
  */
-class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
+class DataCacheDriver implements \BearFramework\App\ICacheDriver
 {
+
+    /**
+     *
+     * @var \BearFramework\App\DataRepository 
+     */
+    private $data = null;
+
+    /**
+     * Constructs a new data cache driver.
+     * 
+     * @param \BearFramework\App\DataRepository $data The data repository to use to store data.
+     */
+    public function __construct(\BearFramework\App\DataRepository $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Stores a value in the cache.
@@ -27,10 +43,9 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function set(string $key, $value, int $ttl = null): void
     {
-        $app = App::get();
         $keyMD5 = md5($key);
         $key = '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2';
-        $app->data->setValue($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $value])));
+        $this->data->setValue($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $value])));
     }
 
     /**
@@ -41,9 +56,8 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function get(string $key)
     {
-        $app = App::get();
         $keyMD5 = md5($key);
-        $value = $app->data->getValue('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        $value = $this->data->getValue('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
         if ($value !== null) {
             try {
                 $value = unserialize(gzuncompress($value));
@@ -69,9 +83,8 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function delete(string $key): void
     {
-        $app = App::get();
         $keyMD5 = md5($key);
-        $app->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        $this->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
     }
 
     /**
@@ -120,11 +133,10 @@ class DefaultCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function clear(): void
     {
-        $app = App::get();
-        $list = $app->data->getList()
+        $list = $this->data->getList()
                 ->filterBy('key', '.temp/cache/', 'startWith');
         foreach ($list as $item) {
-            $app->data->delete($item->key);
+            $this->data->delete($item->key);
         };
     }
 

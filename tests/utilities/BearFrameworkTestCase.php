@@ -68,6 +68,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
         $app->request->method = 'GET';
 
         $app->data->useFileDriver(realpath($dataDir));
+        $app->cache->useAppDataDriver();
 
         $appIndexContent = isset($config['appIndexContent']) ? (string) $config['appIndexContent'] : '<?php ';
         if (strlen($appIndexContent) > 0) {

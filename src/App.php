@@ -84,7 +84,6 @@ class App
                                     }
                                     return new App\DefaultLogger($this->config->logsDir);
                                 });
-                        $container->set('CacheDriver', App\DefaultCacheDriver::class);
                         return $container;
                     },
                     'readonly' => true
@@ -140,7 +139,7 @@ class App
                 ])
                 ->defineProperty('cache', [
                     'init' => function() {
-                        return new App\CacheRepository($this->container->get('CacheDriver'));
+                        return new App\CacheRepository();
                     },
                     'readonly' => true
                 ])
