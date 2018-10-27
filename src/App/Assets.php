@@ -53,19 +53,17 @@ class Assets
      */
     private function optimizeDirs()
     {
-        if ($this->optimizedDirs === null) {
-            $this->optimizedDirs = [];
-            foreach ($this->dirs as $pathname) {
-                $pathname = $this->getAbsolutePath($pathname);
-                if (substr($pathname, -3) !== '://') {
-                    $pathname = rtrim($pathname, '/') . '/';
-                }
-                $pathname = $this->getAbsolutePath($pathname);
-                $this->optimizedDirs[$pathname] = strlen($pathname);
+        $this->optimizedDirs = [];
+        foreach ($this->dirs as $pathname) {
+            $pathname = $this->getAbsolutePath($pathname);
+            if (substr($pathname, -3) !== '://') {
+                $pathname = rtrim($pathname, '/') . '/';
             }
-            arsort($this->optimizedDirs);
-            $this->optimizedDirs = array_keys($this->optimizedDirs);
+            $pathname = $this->getAbsolutePath($pathname);
+            $this->optimizedDirs[$pathname] = strlen($pathname);
         }
+        arsort($this->optimizedDirs);
+        $this->optimizedDirs = array_keys($this->optimizedDirs);
     }
 
     /**
@@ -139,7 +137,9 @@ class Assets
             $fileDirCacheKey = '1' . $fileDir;
             if (!isset($this->cache[$fileDirCacheKey])) {
                 $this->cache[$fileDirCacheKey] = false;
-                $this->optimizeDirs();
+                if ($this->optimizedDirs === null) {
+                    $this->optimizeDirs();
+                }
                 foreach ($this->optimizedDirs as $dir) {
                     if (strpos($fileDir, $dir) === 0) {
                         $this->cache[$fileDirCacheKey] = '/' . substr($fileDir, strlen($dir));
@@ -272,7 +272,9 @@ class Assets
                 }
             }
 
-            $this->optimizeDirs();
+            if ($this->optimizedDirs === null) {
+                $this->optimizeDirs();
+            }
             foreach ($this->optimizedDirs as $dir) {
                 if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
                     $result['filename'] = $dir . $path;
