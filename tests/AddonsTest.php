@@ -35,18 +35,16 @@ class AddonsTest extends BearFrameworkTestCase
         $this->assertFalse($app->addons->exists('addon1'));
         $this->assertFalse($app->addons->exists('addon2'));
 
-        $app->addons->add('addon2', ['var' => 5]);
+        $app->addons->add('addon2');
 
         $this->assertTrue($app->addons->exists('addon1'));
         $this->assertTrue($app->addons->exists('addon2'));
 
         $addon1 = $app->addons->get('addon1');
         $this->assertTrue($addon1->id === 'addon1');
-        $this->assertTrue($addon1->options === []);
 
         $addon2 = $app->addons->get('addon2');
         $this->assertTrue($addon2->id === 'addon2');
-        $this->assertTrue($addon2->options['var'] === 5);
 
         $this->expectException('Exception');
         $context = $app->context->get($app->config->addonsDir . '/addon3/');
@@ -103,10 +101,8 @@ class AddonsTest extends BearFrameworkTestCase
         $list = BearFramework\Addons::getList();
         $this->assertTrue($list[0]->id === 'addon1');
         $this->assertTrue($list[0]->dir === $app->config->addonsDir . '/addon1');
-        $this->assertTrue($list[0]->options === []);
         $this->assertTrue($list[1]->id === 'addon2');
         $this->assertTrue($list[1]->dir === $app->config->addonsDir . '/addon2');
-        $this->assertTrue($list[1]->options === []);
     }
 
     /**

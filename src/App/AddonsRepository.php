@@ -12,7 +12,7 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- *  Provides a way to enable addons and manage their options.
+ *  Provides a way to enable addons.
  */
 class AddonsRepository
 {
@@ -24,14 +24,13 @@ class AddonsRepository
     private $data = [];
 
     /**
-     * Enables an addon and saves the provided options.
+     * Enables an addon.
      * 
      * @param string $id The id of the addon.
-     * @param array $options The options of the addon.
      * @throws \Exception
      * @return \BearFramework\App\AddonsRepository A reference to itself.
      */
-    public function add(string $id, array $options = []): \BearFramework\App\AddonsRepository
+    public function add(string $id): \BearFramework\App\AddonsRepository
     {
         if (!isset($this->data[$id])) {
             $registeredAddon = \BearFramework\Addons::get($id);
@@ -49,7 +48,7 @@ class AddonsRepository
             }
 
             $dir = $registeredAddon->dir;
-            $this->data[$id] = new \BearFramework\App\Addon($id, $dir, $options);
+            $this->data[$id] = new \BearFramework\App\Addon($id, $dir);
             $app->context->add($dir);
         }
         return $this;

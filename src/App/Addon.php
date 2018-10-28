@@ -12,7 +12,6 @@ namespace BearFramework\App;
 /**
  * @property-read string $id The id of the addon.
  * @property-read string $dir The directory where the addon files are located.
- * @property-read array $options The options of the addon.
  */
 class Addon
 {
@@ -25,9 +24,8 @@ class Addon
      * 
      * @param string $id
      * @param string $dir
-     * @param array $options
      */
-    public function __construct(string $id, string $dir, array $options)
+    public function __construct(string $id, string $dir)
     {
         $this
                 ->defineProperty('id', [
@@ -43,14 +41,7 @@ class Addon
                         return $dir;
                     },
                     'readonly' => true
-                ])
-                ->defineProperty('options', [
-                    'type' => 'array',
-                    'get' => function() use ($options) {
-                        return $options;
-                    },
-                    'readonly' => true
-                ]);
+        ]);
     }
 
 }
