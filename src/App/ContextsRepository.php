@@ -12,7 +12,7 @@ namespace BearFramework\App;
 use BearFramework\App;
 
 /**
- * Provides information about your code context (is it in the app dir, or is it in an addon dir).
+ * Provides information about your code context (the directory its located).
  */
 class ContextsRepository
 {

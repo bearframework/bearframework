@@ -25,7 +25,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
  * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for registering and autoloading classes.
  * @property-read \BearFramework\App\Urls $urls URLs utilities.
- * @property-read \BearFramework\App\ContextsRepository $context Provides information about your code context (is it in the app dir, or is it in an addon dir).
+ * @property-read \BearFramework\App\ContextsRepository $context Provides information about your code context (the directory its located).
  * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
  */
 class App
