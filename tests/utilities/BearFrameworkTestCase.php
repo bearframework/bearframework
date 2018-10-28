@@ -79,7 +79,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
         $appIndexContent = isset($config['appIndexContent']) ? (string) $config['appIndexContent'] : '<?php ';
         if (strlen($appIndexContent) > 0) {
             file_put_contents($appDir . '/index.php', $appIndexContent);
-            $app->initialize($appDir);
+            $app->context->add($appDir);
         }
 
         return $app;

@@ -34,7 +34,6 @@ class AppTest extends BearFrameworkTestCase
         $_GET['var2']['varA'] = 'A';
         $_GET['var2']['varB'] = 'B';
         $app = new \BearFramework\App();
-        $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue(\BearFramework\App::get() instanceof \BearFramework\App);
         $this->assertTrue($app->request->method === 'GET');
@@ -65,7 +64,6 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
         $_GET['var1'] = '1';
         $app = new \BearFramework\App();
-        $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->method === 'POST');
         $this->assertTrue($app->request->scheme === 'https');
@@ -86,7 +84,6 @@ class AppTest extends BearFrameworkTestCase
         $_SERVER['SERVER_NAME'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/www/index.php';
         $app = new \BearFramework\App();
-        $app->initialize();
         $this->assertTrue($app instanceof \BearFramework\App);
         $this->assertTrue($app->request->method === 'GET');
         $this->assertTrue($app->request->scheme === 'https');

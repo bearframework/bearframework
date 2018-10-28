@@ -78,7 +78,7 @@ class AddonsTest extends BearFrameworkTestCase
 
         BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
 
-        $this->expectException('InvalidArgumentException');
+        $this->expectException('Exception');
         $this->assertTrue($app->addons->add('addon1'));
     }
 

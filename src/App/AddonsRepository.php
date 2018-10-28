@@ -28,7 +28,7 @@ class AddonsRepository
      * 
      * @param string $id The id of the addon.
      * @param array $options The options of the addon.
-     * @throws \InvalidArgumentException
+     * @throws \Exception
      * @return bool TRUE if successfully loaded. FALSE otherwise.
      */
     public function add(string $id, array $options = []): bool
@@ -38,7 +38,7 @@ class AddonsRepository
         }
         $registeredAddon = \BearFramework\Addons::get($id);
         if ($registeredAddon === null) {
-            throw new \InvalidArgumentException('The addon ' . $id . ' is not registered!');
+            throw new \Exception('The addon ' . $id . ' is not registered!');
         }
         $app = App::get();
         $registeredAddonOptions = $registeredAddon->options;
@@ -53,23 +53,7 @@ class AddonsRepository
         $dir = $registeredAddon->dir;
         $this->data[$id] = new \BearFramework\App\Addon($id, $dir, $options);
         $app->context->add($dir);
-
-        $indexFilename = $dir . '/index.php';
-        if (is_file($indexFilename)) {
-            ob_start();
-            try {
-                (static function($__filename) {
-                    include_once $__filename;
-                })($indexFilename);
-                ob_end_clean();
-            } catch (\Exception $e) {
-                ob_end_clean();
-                throw $e;
-            }
-            return true;
-        } else {
-            throw new \InvalidArgumentException('Invalid addon (the index file is missing)');
-        }
+        return true;
     }
 
     /**

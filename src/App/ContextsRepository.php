@@ -71,13 +71,31 @@ class ContextsRepository
      * Registers a new context dir.
      * 
      * @param string $dir The context dir.
+     * @throws \Exception
      * @return \BearFramework\App\ContextsRepository A reference to itself.
      */
     public function add(string $dir): \BearFramework\App\ContextsRepository
     {
         $dir = rtrim(str_replace('\\', '/', $dir), '\\/') . '/';
-        $this->dirs[$dir] = strlen($dir);
-        arsort($this->dirs);
+        if (!isset($this->dirs[$dir])) {
+            $this->dirs[$dir] = strlen($dir);
+            arsort($this->dirs);
+            $indexFilename = realpath($dir . 'index.php');
+            if (is_file($indexFilename)) {
+                ob_start();
+                try {
+                    (static function($__filename) {
+                        include $__filename;
+                    })($indexFilename);
+                    ob_end_clean();
+                } catch (\Exception $e) {
+                    ob_end_clean();
+                    throw $e;
+                }
+            } else {
+                throw new \Exception('Cannot find index.php file in the dir specified (' . $dir . ')!');
+            }
+        }
         return $this;
     }
 

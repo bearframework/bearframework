@@ -43,13 +43,6 @@ class App
     private static $instance = null;
 
     /**
-     * Information about whether the application is initialized.
-     * 
-     * @var bool 
-     */
-    private $initialized = false;
-
-    /**
      * Information about whether the error handler is enabled.
      * 
      * @var bool 
@@ -199,46 +192,6 @@ class App
     }
 
     /**
-     * Initializes the application by running the index.php file in the appDir specified.
-     * 
-     * @param string $appDir
-     * @return void No value is returned
-     * @throws \Exception
-     */
-    public function initialize(string $appDir = null): void
-    {
-        if ($this->initialized) {
-            throw new \Exception('The app is already initialized!');
-        }
-        $this->initialized = true;
-
-        if (strlen($appDir) > 0) {
-            $appDir = realpath($appDir);
-            if ($appDir === false) {
-                throw new \Exception('The value of the appDir argument is not a real directory!');
-            }
-            $this->context->add($appDir);
-            $indexFilename = realpath($appDir . '/index.php');
-            if ($indexFilename !== false) {
-                ob_start();
-                try {
-                    (static function($__filename) {
-                        include $__filename;
-                    })($indexFilename);
-                    ob_end_clean();
-                } catch (\Exception $e) {
-                    ob_end_clean();
-                    throw $e;
-                }
-            } else {
-                throw new \Exception('Cannot find index.php file in the appDir specified!');
-            }
-        }
-
-        $this->hooks->execute('initialized');
-    }
-
-    /**
      * Enables an error handler.
      * 
      * @param array $options Error handler options. Available values: logErrors (bool), displayErrors (bool).
@@ -266,15 +219,12 @@ class App
     }
 
     /**
-     * Call this method to execute the application. This method initializes the applications and outputs the response.
+     * Call this method to find the response in the registered routes and send it.
      * 
      * @return void No value is returned.
      */
     public function run(): void
     {
-        if (!$this->initialized) {
-            $this->initialize();
-        }
         $response = $this->routes->getResponse($this->request);
         if (!($response instanceof App\Response)) {
             $response = new App\Response\NotFound();
