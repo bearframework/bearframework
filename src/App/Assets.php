@@ -513,46 +513,73 @@ class Assets
     }
 
     /**
-     * Returns the size (if available) of the asset specified.
+     * Returns a list of details for the filename specified.
      * 
      * @param string $filename The filename of the asset.
-     * @throws \InvalidArgumentException
-     * @return array[int,int] The size of the asset specified.
+     * @param array $list A list of details to return. Available values: mimeType, size, width, height.
+     * @return array A list of tails for the filename specified.
      */
-    public function getSize(string $filename): array
+    public function getDetails(string $filename, array $list): array
     {
         $app = App::get();
         $hooks = $app->hooks;
-
         $result = null;
-        if ($hooks->exists('assetGetSize')) {
+        if ($hooks->exists('assetGetDetails')) {
             $returnValue = null;
-            $hooks->execute('assetGetSize', $filename, $returnValue);
-            if (is_array($returnValue) && isset($returnValue[0], $returnValue[1]) && is_int($returnValue[0]) && is_int($returnValue[1])) {
+            $hooks->execute('assetGetDetails', $filename, $list, $returnValue);
+            if (is_array($returnValue)) {
                 $result = $returnValue;
             }
         }
         if ($result === null) {
-            if (!is_file($filename)) {
-                throw new \InvalidArgumentException('The filename specified does not exist (' . $filename . ')');
+            $result = [];
+            $temp = array_flip($list);
+            if (isset($temp['mimeType'])) {
+                $result['mimeType'] = $this->getMimeType($filename);
             }
-            try {
-                $size = getimagesize($filename);
-                if (is_array($size)) {
-                    $result = [(int) $size[0], (int) $size[1]];
-                } elseif (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
-                    $sourceImage = imagecreatefromwebp($filename);
-                    $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
-                    imagedestroy($sourceImage);
+            if (isset($temp['width']) || isset($temp['height']) || isset($temp['size'])) {
+                $fileExists = is_file($filename);
+            }
+            if (isset($temp['width']) || isset($temp['height'])) {
+                if ($fileExists) {
+                    $imageSize = $this->getImageSize($filename);
                 }
-            } catch (\Exception $e) {
-                $reason = $e->getMessage();
+                if (isset($temp['width'])) {
+                    $result['width'] = $fileExists ? $imageSize[0] : null;
+                }
+                if (isset($temp['height'])) {
+                    $result['height'] = $fileExists ? $imageSize[1] : null;
+                }
             }
-            if ($result === null) {
-                throw new \InvalidArgumentException('Cannot get size of ' . $filename . ' (reason: ' . (isset($reason) ? $reason : 'unknown') . ')');
+            if (isset($temp['size'])) {
+                $result['size'] = $fileExists ? filesize($filename) : null;
             }
         }
-        $hooks->execute('assetGetSizeDone', $filename, $result);
+        $hooks->execute('assetGetDetailsDone', $filename, $list, $result);
+        return $result;
+    }
+
+    /**
+     * Returns the size (if available) of the asset specified.
+     * 
+     * @param string $filename The filename of the asset.
+     * @return array[int|null,int|null] The size of the asset specified.
+     */
+    private function getImageSize(string $filename): array
+    {
+        $result = [null, null];
+        try {
+            $size = getimagesize($filename);
+            if (is_array($size)) {
+                $result = [(int) $size[0], (int) $size[1]];
+            } elseif (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
+                $sourceImage = imagecreatefromwebp($filename);
+                $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
+                imagedestroy($sourceImage);
+            }
+        } catch (\Exception $e) {
+            
+        }
         return $result;
     }
 
@@ -598,7 +625,7 @@ class Assets
 
         try {
             if (isset($sourcePathInfo['extension']) && strtolower($sourcePathInfo['extension']) === 'webp') {
-                $sourceSize = $this->getSize($sourceFilename);
+                $sourceSize = $this->getImageSize($sourceFilename);
                 $sourceWidth = $sourceSize[0];
                 $sourceHeight = $sourceSize[1];
                 $sourceMimeType = 'image/webp';
@@ -697,7 +724,7 @@ class Assets
      * @param string $filename The filename.
      * @return string|null The mimetype of the filename specified.
      */
-    public function getMimeType(string $filename)
+    private function getMimeType(string $filename)
     {
         $pathinfo = pathinfo($filename);
         if (isset($pathinfo['extension'])) {

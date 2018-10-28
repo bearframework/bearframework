@@ -91,9 +91,8 @@ class AssetsTest extends BearFrameworkTestCase
 
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
-                    $size = $app->assets->getSize($response->filename);
-                    $this->assertTrue($size[0] === $thisImageWidth);
-                    $this->assertTrue($size[1] === $thisImageHeight);
+                    $this->assertTrue($app->assets->getDetails($response->filename, ['width'])['width'] === $thisImageWidth);
+                    $this->assertTrue($app->assets->getDetails($response->filename, ['height'])['height'] === $thisImageHeight);
 
                     // File in addon dir
                     $filename = $app->config->addonsDir . '/addon1/assets/logo.' . $fileType;
@@ -105,9 +104,8 @@ class AssetsTest extends BearFrameworkTestCase
 
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
-                    $size = $app->assets->getSize($response->filename);
-                    $this->assertTrue($size[0] === $thisImageWidth);
-                    $this->assertTrue($size[1] === $thisImageHeight);
+                    $this->assertTrue($app->assets->getDetails($response->filename, ['width'])['width'] === $thisImageWidth);
+                    $this->assertTrue($app->assets->getDetails($response->filename, ['height'])['height'] === $thisImageHeight);
 
                     // File in data dir
                     $key = 'assets/logo.' . $fileType;
@@ -120,9 +118,8 @@ class AssetsTest extends BearFrameworkTestCase
 
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
-                    $size = $app->assets->getSize($response->filename);
-                    $this->assertTrue($size[0] === $thisImageWidth);
-                    $this->assertTrue($size[1] === $thisImageHeight);
+                    $this->assertTrue($app->assets->getDetails($response->filename, ['width'])['width'] === $thisImageWidth);
+                    $this->assertTrue($app->assets->getDetails($response->filename, ['height'])['height'] === $thisImageHeight);
                 }
             }
         }
@@ -379,22 +376,22 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetMimeType1()
+    public function testGetDetailsMimeType1()
     {
         $app = $this->getApp();
 
-        $result = $app->assets->getMimeType('logo.png');
+        $result = $app->assets->getDetails('logo.png', ['mimeType'])['mimeType'];
         $this->assertTrue($result === 'image/png');
     }
 
     /**
      * 
      */
-    public function testGetMimeType2()
+    public function testGetDetailsMimeType2()
     {
         $app = $this->getApp();
 
-        $result = $app->assets->getMimeType('logo.unknown');
+        $result = $app->assets->getDetails('logo.unknown', ['mimeType'])['mimeType'];
         $this->assertTrue($result === null);
     }
 
@@ -417,7 +414,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testGetSize()
+    public function testGetDetailsSize()
     {
         $app = $this->getApp();
 
@@ -429,96 +426,84 @@ class AssetsTest extends BearFrameworkTestCase
         foreach ($fileTypes as $fileType) {
             $filename = $app->config->appDir . '/assets/logo.' . $fileType;
             $this->makeSampleFile($filename, $fileType);
-            $size = $app->assets->getSize($filename);
-            $this->assertTrue($size[0] === 100);
-            $this->assertTrue($size[1] === 70);
+            $this->assertTrue($app->assets->getDetails($filename, ['width'])['width'] === 100);
+            $this->assertTrue($app->assets->getDetails($filename, ['height'])['height'] === 70);
         }
     }
 
     /**
-     * Return size in assetGetSize
+     * Return size in assetGetDetails
      */
-    public function testGetSizeHooks1()
+    public function testGetDetailsHooks1()
     {
         $app = $this->getApp();
-        $app->hooks->add('assetGetSize', function($filename, &$returnValue) {
-            if ($filename === 'samplefile.jpg') {
-                $returnValue = [200, 100];
-            }
+        $app->hooks->add('assetGetDetails', function($filename, $list, &$returnValue) {
+            $returnValue = ['width' => 200, 'height' => 100];
         });
-        $size = $app->assets->getSize('samplefile.jpg');
-        $this->assertTrue($size[0] === 200);
-        $this->assertTrue($size[1] === 100);
+        $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 200);
+        $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['height'])['height'] === 100);
     }
 
     /**
-     * Return size of other image (alias) in assetGetSize
+     * Return size of other image (alias) in assetGetDetails
      */
-    public function testGetSizeHooks2()
+    public function testGetDetailsHooks2()
     {
         $app = $this->getApp();
 
         $filename = $app->config->appDir . '/assets/logo.jpg';
         $this->makeSampleFile($filename, 'jpg');
-        $app->hooks->add('assetGetSize', function(&$_filename, &$returnValue) use ($filename) {
-            if ($_filename === 'samplefile.jpg') {
-                $_filename = $filename;
-            }
+        $app->hooks->add('assetGetDetails', function(&$_filename, &$list, &$returnValue) use ($filename) {
+            $_filename = $filename;
         });
-        $size = $app->assets->getSize('samplefile.jpg');
-        $this->assertTrue($size[0] === 100);
-        $this->assertTrue($size[1] === 70);
+        $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 100);
+        $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['height'])['height'] === 70);
     }
 
     /**
-     * Log assetGetSize
+     * Log assetGetDetails
      */
-    public function testGetSizeHooks3()
+    public function testGetDetailsHooks3()
     {
         $app = $this->getApp();
 
         $imageWidth = null;
-        $app->hooks->add('assetGetSizeDone', function($filename, $returnValue) use (&$imageWidth) {
-            $imageWidth = $returnValue[0];
+        $app->hooks->add('assetGetDetailsDone', function($filename, $list, $returnValue) use (&$imageWidth) {
+            $imageWidth = $returnValue['width'];
         });
         $filename = $app->config->appDir . '/assets/logo.jpg';
         $this->makeSampleFile($filename, 'jpg');
-        $app->assets->getSize($filename);
+        $app->assets->getDetails($filename, ['width']);
         $this->assertTrue($imageWidth === 100);
     }
 
     /**
      * 
      */
-    public function testGetSizeInvalidArgument2()
+    public function testGetDetails()
     {
         $app = $this->getApp();
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getSize('missing/file.png');
-    }
+        $result = $app->assets->getDetails('missing/file.png', ['mimeType', 'size', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === 'image/png');
+        $this->assertTrue($result['size'] === null);
+        $this->assertTrue($result['width'] === null);
+        $this->assertTrue($result['height'] === null);
 
-    /**
-     * 
-     */
-    public function testGetSizeInvalidArgument3()
-    {
-        $app = $this->getApp();
-        $sourceFilename = $app->config->appDir . '/assets/logo.png';
-        $this->makeSampleFile($sourceFilename, 'broken');
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getSize($sourceFilename);
-    }
+        $filename = $app->config->appDir . '/assets/logo.png';
+        $this->makeSampleFile($filename, 'broken');
+        $result = $app->assets->getDetails($filename, ['mimeType', 'size', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === 'image/png');
+        $this->assertTrue($result['size'] === 4);
+        $this->assertTrue($result['width'] === null);
+        $this->assertTrue($result['height'] === null);
 
-    /**
-     * 
-     */
-    public function testGetSizeInvalidArgument4()
-    {
-        $app = $this->getApp();
-        $sourceFilename = $app->config->appDir . '/assets/file.mp3';
-        $this->makeSampleFile($sourceFilename, 'broken');
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getSize($sourceFilename);
+        $filename = $app->config->appDir . '/assets/file.unknown';
+        $this->makeSampleFile($filename, 'broken');
+        $result = $app->assets->getDetails($filename, ['mimeType', 'size', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === null);
+        $this->assertTrue($result['size'] === 4);
+        $this->assertTrue($result['width'] === null);
+        $this->assertTrue($result['height'] === null);
     }
 
     /**
@@ -540,15 +525,13 @@ class AssetsTest extends BearFrameworkTestCase
 
             $destinationFilename = $app->config->appDir . '/assets/file1_1.' . $fileType;
             file_put_contents($destinationFilename, $app->assets->getContent($sourceFilename, ['width' => 50, 'height' => 35]));
-            $size = $app->assets->getSize($destinationFilename);
-            $this->assertTrue($size[0] === 50);
-            $this->assertTrue($size[1] === 35);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['width'])['width'] === 50);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['height'])['height'] === 35);
 
             $destinationFilename = $app->config->appDir . '/assets/file1_2.' . $fileType;
             file_put_contents($destinationFilename, $app->assets->getContent($sourceFilename, ['width' => 35, 'height' => 45]));
-            $size = $app->assets->getSize($destinationFilename);
-            $this->assertTrue($size[0] === 35);
-            $this->assertTrue($size[1] === 45);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['width'])['width'] === 35);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['height'])['height'] === 45);
 
 
             $sourceFilename = $app->config->appDir . '/assets/file2.' . $fileType;
@@ -557,21 +540,18 @@ class AssetsTest extends BearFrameworkTestCase
 
             $destinationFilename = $app->config->appDir . '/assets/file2_1.' . $fileType;
             file_put_contents($destinationFilename, $app->assets->getContent($sourceFilename, ['width' => 22]));
-            $size = $app->assets->getSize($destinationFilename);
-            $this->assertTrue($size[0] === 22);
-            $this->assertTrue($size[1] === 11);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['width'])['width'] === 22);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['height'])['height'] === 11);
 
             $destinationFilename = $app->config->appDir . '/assets/file2_2.' . $fileType;
             file_put_contents($destinationFilename, $app->assets->getContent($sourceFilename, ['height' => 11]));
-            $size = $app->assets->getSize($destinationFilename);
-            $this->assertTrue($size[0] === 22);
-            $this->assertTrue($size[1] === 11);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['width'])['width'] === 22);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['height'])['height'] === 11);
 
             $destinationFilename = $app->config->appDir . '/assets/file2_3.' . $fileType;
             file_put_contents($destinationFilename, $app->assets->getContent($sourceFilename));
-            $size = $app->assets->getSize($destinationFilename);
-            $this->assertTrue($size[0] === 44);
-            $this->assertTrue($size[1] === 22);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['width'])['width'] === 44);
+            $this->assertTrue($app->assets->getDetails($destinationFilename, ['height'])['height'] === 22);
         }
     }
 
