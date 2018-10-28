@@ -29,31 +29,30 @@ class AddonsRepository
      * @param string $id The id of the addon.
      * @param array $options The options of the addon.
      * @throws \Exception
-     * @return bool TRUE if successfully loaded. FALSE otherwise.
+     * @return \BearFramework\App\AddonsRepository A reference to itself.
      */
-    public function add(string $id, array $options = []): bool
+    public function add(string $id, array $options = []): \BearFramework\App\AddonsRepository
     {
-        if (isset($this->data[$id])) {
-            return false;
-        }
-        $registeredAddon = \BearFramework\Addons::get($id);
-        if ($registeredAddon === null) {
-            throw new \Exception('The addon ' . $id . ' is not registered!');
-        }
-        $app = App::get();
-        $registeredAddonOptions = $registeredAddon->options;
-        if (isset($registeredAddonOptions['require']) && is_array($registeredAddonOptions['require'])) {
-            foreach ($registeredAddonOptions['require'] as $requiredAddonID) {
-                if (is_string($requiredAddonID)) {
-                    $this->add($requiredAddonID);
+        if (!isset($this->data[$id])) {
+            $registeredAddon = \BearFramework\Addons::get($id);
+            if ($registeredAddon === null) {
+                throw new \Exception('The addon ' . $id . ' is not registered!');
+            }
+            $app = App::get();
+            $registeredAddonOptions = $registeredAddon->options;
+            if (isset($registeredAddonOptions['require']) && is_array($registeredAddonOptions['require'])) {
+                foreach ($registeredAddonOptions['require'] as $requiredAddonID) {
+                    if (is_string($requiredAddonID) && !isset($this->data[$requiredAddonID])) {
+                        $this->add($requiredAddonID);
+                    }
                 }
             }
-        }
 
-        $dir = $registeredAddon->dir;
-        $this->data[$id] = new \BearFramework\App\Addon($id, $dir, $options);
-        $app->context->add($dir);
-        return true;
+            $dir = $registeredAddon->dir;
+            $this->data[$id] = new \BearFramework\App\Addon($id, $dir, $options);
+            $app->context->add($dir);
+        }
+        return $this;
     }
 
     /**

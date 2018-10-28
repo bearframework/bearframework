@@ -63,8 +63,10 @@ class AddonsTest extends BearFrameworkTestCase
 
         BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
 
-        $this->assertTrue($app->addons->add('addon1'));
-        $this->assertFalse($app->addons->add('addon1'));
+        $app->addons
+                ->add('addon1')
+                ->add('addon1');
+        $this->assertTrue(true); // Expect no errors
     }
 
     /**
@@ -79,7 +81,7 @@ class AddonsTest extends BearFrameworkTestCase
         BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
 
         $this->expectException('Exception');
-        $this->assertTrue($app->addons->add('addon1'));
+        $app->addons->add('addon1');
     }
 
     /**
