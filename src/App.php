@@ -32,8 +32,6 @@ class App
 {
 
     use \IvoPetkov\DataObjectTrait;
-    use \IvoPetkov\DataObjectToArrayTrait;
-    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * The instance of the App object. Only one can be created.
