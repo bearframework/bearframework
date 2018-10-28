@@ -11,8 +11,6 @@ namespace BearFramework\App;
 
 /**
  * The application configuration.
- * 
- * @property string $assetsPathPrefix The prefix of the assets URLs.
  */
 class Config
 {
@@ -28,20 +26,6 @@ class Config
      */
     public function __construct(array $options = [])
     {
-        $this
-                ->defineProperty('assetsPathPrefix', [
-                    'type' => 'string',
-                    'set' => function($value) {
-                        if (!isset($value{0})) {
-                            throw new \Exception('The value of the assetsPathPrefix option cannot be empty.');
-                        }
-                        return $value;
-                    },
-                    'init' => function() {
-                        return '/assets/';
-                    }
-        ]);
-
         foreach ($options as $name => $value) {
             $this->$name = $value;
         }
@@ -57,7 +41,7 @@ class Config
     {
         $filename = realpath($filename);
         if ($filename === false) {
-            throw new \InvalidArgumentException('The filename specified (' . $filename . ') is not valid');
+            throw new \InvalidArgumentException('The filename specified (' . $filename . ') is not valid!');
         }
         ob_start();
         try {
@@ -75,7 +59,7 @@ class Config
             }
             return $this;
         }
-        throw new \InvalidArgumentException('The configuration data in ' . $filename . ' is not valid');
+        throw new \InvalidArgumentException('The configuration data in ' . $filename . ' is not valid!');
     }
 
 }

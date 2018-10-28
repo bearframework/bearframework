@@ -71,14 +71,14 @@ class AssetsTest extends BearFrameworkTestCase
         foreach ($fileTypes as $fileType) {
             foreach ($imageOptionsTypes as $imageOptionsType) {
                 foreach ($sizeModifiers as $sizeModifier) {
-                    $testImageWidth = (int) (100 * $sizeModifier);
-                    $testImageHeight = (int) (70 * $sizeModifier);
+                    $thisImageWidth = (int) (100 * $sizeModifier);
+                    $thisImageHeight = (int) (70 * $sizeModifier);
                     if ($imageOptionsType === 'width') {
-                        $options = ['width' => $testImageWidth];
+                        $options = ['width' => $thisImageWidth];
                     } elseif ($imageOptionsType === 'height') {
-                        $options = ['height' => $testImageHeight];
+                        $options = ['height' => $thisImageHeight];
                     } elseif ($imageOptionsType === 'both') {
-                        $options = ['width' => $testImageWidth, 'height' => $testImageHeight];
+                        $options = ['width' => $thisImageWidth, 'height' => $thisImageHeight];
                     }
 
                     // File in app dir
@@ -92,8 +92,8 @@ class AssetsTest extends BearFrameworkTestCase
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
                     $size = $app->assets->getSize($response->filename);
-                    $this->assertTrue($size[0] === $testImageWidth);
-                    $this->assertTrue($size[1] === $testImageHeight);
+                    $this->assertTrue($size[0] === $thisImageWidth);
+                    $this->assertTrue($size[1] === $thisImageHeight);
 
                     // File in addon dir
                     $filename = $app->config->addonsDir . '/addon1/assets/logo.' . $fileType;
@@ -106,8 +106,8 @@ class AssetsTest extends BearFrameworkTestCase
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
                     $size = $app->assets->getSize($response->filename);
-                    $this->assertTrue($size[0] === $testImageWidth);
-                    $this->assertTrue($size[1] === $testImageHeight);
+                    $this->assertTrue($size[0] === $thisImageWidth);
+                    $this->assertTrue($size[1] === $thisImageHeight);
 
                     // File in data dir
                     $key = 'assets/logo.' . $fileType;
@@ -121,8 +121,8 @@ class AssetsTest extends BearFrameworkTestCase
                     $url = $app->assets->getUrl($filename, $options);
                     $response = $getAssetResponse($url);
                     $size = $app->assets->getSize($response->filename);
-                    $this->assertTrue($size[0] === $testImageWidth);
-                    $this->assertTrue($size[1] === $testImageHeight);
+                    $this->assertTrue($size[0] === $thisImageWidth);
+                    $this->assertTrue($size[1] === $thisImageHeight);
                 }
             }
         }
@@ -148,6 +148,42 @@ class AssetsTest extends BearFrameworkTestCase
         $this->assertTrue($content === 'data:image/svg+xml;base64,c2FtcGxlLXN2Zy1jb250ZW50');
         $this->expectException('InvalidArgumentException');
         $app->assets->getContent($filename, ['encoding' => 'unknown']);
+    }
+
+    /**
+     * 
+     */
+    public function testPathPrefix()
+    {
+        $app = $this->getApp();
+
+        $this->makeDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $filename = $app->config->appDir . '/assets/file.svg';
+        $this->makeFile($filename, 'sample-svg-content');
+
+        $urls = [];
+
+        $url = $app->assets->getUrl($filename);
+        $this->assertTrue(strpos($url, 'http://example.com/www/assets/') === 0);
+        $urls[] = $url;
+
+        $app->assets->setPathPrefix('/yyy/zzz/');
+
+        $url = $app->assets->getUrl($filename);
+        $this->assertTrue(strpos($url, 'http://example.com/www/yyy/zzz/') === 0);
+        $urls[] = $url;
+
+        $getAssetResponse = function($url) use ($app) {
+            $request = clone($app->request);
+            $request->path->set(substr($url, strlen($app->request->base)));
+            return $app->assets->getResponse($request);
+        };
+
+        foreach ($urls as $url) {
+            $response = $getAssetResponse($url);
+            $this->assertEquals($response->filename, $filename);
+        }
     }
 
     /**

@@ -73,14 +73,7 @@ class App
                 ])
                 ->defineProperty('routes', [
                     'init' => function() {
-                        $routes = new App\RoutesRepository();
-                        $routes->add($this->config->assetsPathPrefix . '*', function() {
-                                    $response = $this->assets->getResponse($this->request);
-                                    if ($response !== null) {
-                                        return $response;
-                                    }
-                                });
-                        return $routes;
+                        return new App\RoutesRepository();
                     },
                     'readonly' => true
                 ])

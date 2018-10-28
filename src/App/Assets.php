@@ -36,6 +36,48 @@ class Assets
     private $cache = [];
 
     /**
+     *
+     * @var string 
+     */
+    private $pathPrefixes = [];
+
+    /**
+     *
+     * @var string 
+     */
+    private $lastPathPrefix = null;
+
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        $this->setPathPrefix('/assets/');
+    }
+
+    /**
+     * 
+     * @param string $pathPrefix
+     * @return \BearFramework\App\Assets A reference to itself.
+     */
+    public function setPathPrefix(string $pathPrefix): \BearFramework\App\Assets
+    {
+        $this->lastPathPrefix = $pathPrefix;
+        if (!isset($this->pathPrefixes[$pathPrefix])) {
+            $this->pathPrefixes[$pathPrefix] = true;
+            $app = App::get();
+            $app->routes
+                    ->add($this->lastPathPrefix . '*', function() use ($app) {
+                        $response = $this->getResponse($app->request);
+                        if ($response !== null) {
+                            return $response;
+                        }
+                    });
+        }
+        return $this;
+    }
+
+    /**
      * Registers a directory that will be publicly accessible.
      * 
      * @param string $pathname The directory name.
@@ -147,7 +189,7 @@ class Assets
                     }
                 }
             }
-            $url = $this->cache[$fileDirCacheKey] === false ? null : $app->request->base . $app->config->assetsPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename;
+            $url = $this->cache[$fileDirCacheKey] === false ? null : $app->request->base . $this->lastPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename;
         }
 
         if ($hooks->exists('assetGetUrlDone')) {
@@ -218,12 +260,18 @@ class Assets
      */
     public function getResponse(\BearFramework\App\Request $request): ?\BearFramework\App\Response
     {
-        $app = App::get();
-        $parsePath = function($path) use ($app) {
-            if (strpos($path, $app->config->assetsPathPrefix) !== 0) {
+        $parsePath = function($path) {
+            $foundPathPrefix = null;
+            foreach ($this->pathPrefixes as $pathPrefix => $true) {
+                if (strpos($path, $pathPrefix) === 0) {
+                    $foundPathPrefix = $pathPrefix;
+                    break;
+                }
+            }
+            if ($foundPathPrefix === null) {
                 return null;
             }
-            $path = substr($path, strlen($app->config->assetsPathPrefix));
+            $path = substr($path, strlen($foundPathPrefix));
             $partParts = explode('/', $path, 2);
             if (sizeof($partParts) !== 2) {
                 return null;
