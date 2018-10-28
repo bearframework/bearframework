@@ -36,7 +36,7 @@ class ContextsRepository
      * @throws \Exception
      * @return \BearFramework\App\Context The context object for the filename specified.
      */
-    public function get(string $filename = null)
+    public function get(string $filename = null): \BearFramework\App\Context
     {
         if ($filename === null) {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
