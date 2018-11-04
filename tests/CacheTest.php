@@ -107,6 +107,8 @@ class CacheTest extends BearFrameworkTestCase
             $this->assertEquals($event->item->value, 'data1');
             $setDone = true;
         });
+        $app->cache->set($app->cache->make('key1', 'data1'));
+        $this->assertTrue($setDone);
 
         $getDone = false;
         $app->cache->addEventListener('itemGet', function(\BearFramework\App\Cache\ItemGetEvent $event) use (&$getDone) {
@@ -114,6 +116,8 @@ class CacheTest extends BearFrameworkTestCase
             $this->assertEquals($event->item->value, 'data1');
             $getDone = true;
         });
+        $app->cache->get('key1');
+        $this->assertTrue($getDone);
 
         $getValueDone = false;
         $app->cache->addEventListener('itemGetValue', function(\BearFramework\App\Cache\ItemGetValueEvent $event) use (&$getValueDone) {
@@ -121,6 +125,8 @@ class CacheTest extends BearFrameworkTestCase
             $this->assertEquals($event->value, 'data1');
             $getValueDone = true;
         });
+        $app->cache->getValue('key1');
+        $this->assertTrue($getValueDone);
 
         $existsDone = false;
         $app->cache->addEventListener('itemExists', function(\BearFramework\App\Cache\ItemExistsEvent $event) use (&$existsDone) {
@@ -128,34 +134,21 @@ class CacheTest extends BearFrameworkTestCase
             $this->assertEquals($event->exists, true);
             $existsDone = true;
         });
+        $app->cache->exists('key1');
+        $this->assertTrue($existsDone);
 
         $deleteDone = false;
         $app->cache->addEventListener('itemDelete', function(\BearFramework\App\Cache\ItemDeleteEvent $event) use (&$deleteDone) {
             $this->assertEquals($event->key, 'key1');
             $deleteDone = true;
         });
+        $app->cache->delete('key1');
+        $this->assertTrue($deleteDone);
 
         $clearDone = false;
         $app->cache->addEventListener('clear', function(\BearFramework\App\Cache\ClearEvent $event) use (&$clearDone) {
             $clearDone = true;
         });
-
-        $cacheItem = $app->cache->make('key1', 'data1');
-        $app->cache->set($cacheItem);
-        $this->assertTrue($setDone);
-
-        $app->cache->get('key1');
-        $this->assertTrue($getDone);
-
-        $app->cache->getValue('key1');
-        $this->assertTrue($getValueDone);
-
-        $app->cache->exists('key1');
-        $this->assertTrue($existsDone);
-
-        $app->cache->delete('key1');
-        $this->assertTrue($deleteDone);
-
         $app->cache->clear();
         $this->assertTrue($clearDone);
 
