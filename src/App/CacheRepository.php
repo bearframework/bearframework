@@ -18,6 +18,8 @@ use BearFramework\App;
 class CacheRepository
 {
 
+    use \BearFramework\App\EventsTrait;
+
     /**
      *
      */
@@ -99,19 +101,14 @@ class CacheRepository
      */
     public function set(CacheItem $item): \BearFramework\App\CacheRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $driver = $this->getDriver();
-
-        $item = clone($item);
-        $preventDefault = false;
-        $hooks->execute('cacheItemSet', $item, $preventDefault);
-        if (!$preventDefault) {
-            $driver->set($item->key, $item->value, $item->ttl);
+        $driver->set($item->key, $item->value, $item->ttl);
+        if ($this->hasEventListeners('itemSet')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemSetEvent(clone($item)));
         }
-        $hooks->execute('cacheItemSetDone', $item);
-        $key = $item->key;
-        $hooks->execute('cacheItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemChangeEvent($item->key));
+        }
         return $this;
     }
 
@@ -123,26 +120,18 @@ class CacheRepository
      */
     public function get(string $key): ?\BearFramework\App\CacheItem
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $driver = $this->getDriver();
-
         $item = null;
-        $returnValue = null;
-        $preventDefault = false;
-        $hooks->execute('cacheItemGet', $key, $returnValue, $preventDefault);
-        if ($returnValue instanceof \BearFramework\App\CacheItem) {
-            $item = $returnValue;
-        } else {
-            if (!$preventDefault) {
-                $value = $driver->get($key);
-                if ($value !== null) {
-                    $item = $this->make($key, $value);
-                }
-            }
+        $value = $driver->get($key);
+        if ($value !== null) {
+            $item = $this->make($key, $value);
         }
-        $hooks->execute('cacheItemGetDone', $key, $item);
-        $hooks->execute('cacheItemRequested', $key);
+        if ($this->hasEventListeners('itemGet')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemGetEvent($key, $item === null ? null : clone($item)));
+        }
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemRequestEvent($key));
+        }
         return $item;
     }
 
@@ -154,23 +143,14 @@ class CacheRepository
      */
     public function getValue(string $key)
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $driver = $this->getDriver();
-
-        $value = null;
-        $returnValue = null;
-        $preventDefault = false;
-        $hooks->execute('cacheItemGetValue', $key, $returnValue, $preventDefault);
-        if ($returnValue !== null) {
-            $value = $returnValue;
-        } else {
-            if (!$preventDefault) {
-                $value = $driver->get($key);
-            }
+        $value = $driver->get($key);
+        if ($this->hasEventListeners('itemGetValue')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemGetValueEvent($key, $value));
         }
-        $hooks->execute('cacheItemGetValueDone', $key, $value);
-        $hooks->execute('cacheItemRequested', $key);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemRequestEvent($key));
+        }
         return $value;
     }
 
@@ -182,20 +162,14 @@ class CacheRepository
      */
     public function exists(string $key): bool
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $driver = $this->getDriver();
-
-        $returnValue = null;
-        $hooks->execute('cacheItemExists', $key, $returnValue);
-        if (is_bool($returnValue)) {
-            $exists = $returnValue;
-        } else {
-            $exists = $driver->get($key) !== null;
+        $exists = $driver->get($key) !== null;
+        if ($this->hasEventListeners('itemExists')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemExistsEvent($key, $exists));
         }
-
-        $hooks->execute('cacheItemExistsDone', $key, $exists);
-        $hooks->execute('cacheItemRequested', $key);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemRequestEvent($key));
+        }
         return $exists;
     }
 
@@ -207,17 +181,14 @@ class CacheRepository
      */
     public function delete(string $key): \BearFramework\App\CacheRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $driver = $this->getDriver();
-
-        $preventDefault = false;
-        $hooks->execute('cacheItemDelete', $key, $preventDefault);
-        if (!$preventDefault) {
-            $driver->delete($key);
+        $driver->delete($key);
+        if ($this->hasEventListeners('itemDelete')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemDeleteEvent($key));
         }
-        $hooks->execute('cacheItemDeleteDone', $key);
-        $hooks->execute('cacheItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ItemChangeEvent($key));
+        }
         return $this;
     }
 
@@ -226,16 +197,11 @@ class CacheRepository
      */
     public function clear(): \BearFramework\App\CacheRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $driver = $this->getDriver();
-
-        $preventDefault = false;
-        $hooks->execute('cacheClear', $preventDefault);
-        if (!$preventDefault) {
-            $driver->clear();
+        $driver->clear();
+        if ($this->hasEventListeners('clear')) {
+            $this->dispatchEvent(new \BearFramework\App\Cache\ClearEvent());
         }
-        $hooks->execute('cacheClearDone');
         return $this;
     }
 
