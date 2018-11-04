@@ -43,6 +43,9 @@ trait EventsTrait
             foreach ($this->internalEventListenersData[$name] as $i => $value) {
                 if ($value === $listener) {
                     unset($this->internalEventListenersData[$name][$i]);
+                    if (empty($this->internalEventListenersData[$name])) {
+                        unset($this->internalEventListenersData[$name]);
+                    }
                     break;
                 }
             }
@@ -62,6 +65,16 @@ trait EventsTrait
                 call_user_func($listener, $event);
             }
         }
+    }
+
+    /**
+     * 
+     * @param string $name
+     * @return bool
+     */
+    public function hasEventListeners(string $name): bool
+    {
+        return isset($this->internalEventListenersData[$name]);
     }
 
 }

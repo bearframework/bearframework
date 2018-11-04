@@ -82,6 +82,39 @@ class EventsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    function testHasEventListeners()
+    {
+        $object = new class {
+
+            use \BearFramework\App\EventsTrait;
+        };
+
+        $result = [
+            'event1Dispached' => 0,
+            'event1Handled' => 0,
+            'event2Dispached' => 0,
+        ];
+
+        $object->addEventListener('event1', function(\BearFramework\App\Event $event) use (&$result) {
+            $result['event1Handled'] = 1;
+        });
+        if ($object->hasEventListeners('event1')) {
+            $result['event1Dispached'] = 1;
+            $object->dispatchEvent(new \BearFramework\App\Event('event1'));
+        }
+        if ($object->hasEventListeners('event2')) {
+            $result['event2Dispached'] = 1;
+            $object->dispatchEvent(new \BearFramework\App\Event('event2'));
+        }
+
+        $this->assertEquals($result['event1Dispached'], 1);
+        $this->assertEquals($result['event1Handled'], 1);
+        $this->assertEquals($result['event2Dispached'], 0);
+    }
+
+    /**
+     * 
+     */
     function testCustomData()
     {
         $object = new class {
