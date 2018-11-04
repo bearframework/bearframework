@@ -186,7 +186,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testAssetPrepareHook()
+    public function testAssetBeforePrepareEvent()
     {
         $app = $this->getApp();
 
@@ -197,8 +197,8 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config->appDir . '/assets/file2.svg';
         $this->makeFile($filename2, 'sample-svg-content-2');
 
-        $app->hooks->add('assetPrepare', function(&$filename, $options) use ($filename2) {
-            $filename = $filename2;
+        $app->assets->addEventListener('beforePrepare', function(\BearFramework\App\Assets\BeforePrepareEvent $event) use ($filename2) {
+            $event->filename = $filename2;
         });
         $content = $app->assets->getContent($filename1);
         $this->assertTrue($content === 'sample-svg-content-2');
@@ -207,7 +207,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testAssetPreparedHook()
+    public function testAssetPrepareEvent()
     {
         $app = $this->getApp();
 
@@ -218,8 +218,8 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config->appDir . '/assets/file2.svg';
         $this->makeFile($filename2, 'sample-svg-content-2');
 
-        $app->hooks->add('assetPrepareDone', function($filename, $options, &$returnValue) use ($filename2) {
-            $returnValue = $filename2;
+        $app->assets->addEventListener('prepare', function(\BearFramework\App\Assets\PrepareEvent $event) use ($filename2) {
+            $event->returnValue = $filename2;
         });
         $content = $app->assets->getContent($filename1);
         $this->assertTrue($content === 'sample-svg-content-2');
@@ -228,7 +228,7 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testAssetUrlCreatedDataHook()
+    public function testAssetBeforeGetUrlEvent()
     {
         $app = $this->getApp();
 
@@ -237,8 +237,27 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config->appDir . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
 
-        $app->hooks->add('assetGetUrlDone', function($filename, $options, &$url) {
-            $url = 'http://example.com/file.svg';
+        $app->assets->addEventListener('beforeGetUrl', function(\BearFramework\App\Assets\BeforeGetUrlEvent $event) {
+            $event->returnValue = 'http://example.com/file.svg';
+        });
+        $url = $app->assets->getUrl($filename);
+        $this->assertTrue($url === 'http://example.com/file.svg');
+    }
+
+    /**
+     * 
+     */
+    public function testAssetGetUrlEvent()
+    {
+        $app = $this->getApp();
+
+        $this->makeDir($app->config->appDir . '/assets/');
+        $app->assets->addDir($app->config->appDir . '/assets/');
+        $filename = $app->config->appDir . '/assets/file.svg';
+        $this->makeFile($filename, 'sample-svg-content');
+
+        $app->assets->addEventListener('getUrl', function(\BearFramework\App\Assets\GetUrlEvent $event) {
+            $event->url = 'http://example.com/file.svg';
         });
         $url = $app->assets->getUrl($filename);
         $this->assertTrue($url === 'http://example.com/file.svg');
@@ -434,11 +453,11 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * Return size in assetGetDetails
      */
-    public function testGetDetailsHooks1()
+    public function testBeforeGetDetailsEvent1()
     {
         $app = $this->getApp();
-        $app->hooks->add('assetGetDetails', function($filename, $list, &$returnValue) {
-            $returnValue = ['width' => 200, 'height' => 100];
+        $app->assets->addEventListener('beforeGetDetails', function(\BearFramework\App\Assets\BeforeGetDetailsEvent $event) {
+            $event->returnValue = ['width' => 200, 'height' => 100];
         });
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 200);
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['height'])['height'] === 100);
@@ -447,14 +466,14 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * Return size of other image (alias) in assetGetDetails
      */
-    public function testGetDetailsHooks2()
+    public function testBeforeGetDetailsEvent2()
     {
         $app = $this->getApp();
 
         $filename = $app->config->appDir . '/assets/logo.jpg';
         $this->makeSampleFile($filename, 'jpg');
-        $app->hooks->add('assetGetDetails', function(&$_filename, &$list, &$returnValue) use ($filename) {
-            $_filename = $filename;
+        $app->assets->addEventListener('beforeGetDetails', function(\BearFramework\App\Assets\BeforeGetDetailsEvent $event)use ($filename) {
+            $event->filename = $filename;
         });
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 100);
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['height'])['height'] === 70);
@@ -463,13 +482,13 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * Log assetGetDetails
      */
-    public function testGetDetailsHooks3()
+    public function testGetDetailsEvent()
     {
         $app = $this->getApp();
 
         $imageWidth = null;
-        $app->hooks->add('assetGetDetailsDone', function($filename, $list, $returnValue) use (&$imageWidth) {
-            $imageWidth = $returnValue['width'];
+        $app->assets->addEventListener('getDetails', function(\BearFramework\App\Assets\GetDetailsEvent $event) use (&$imageWidth) {
+            $imageWidth = $event->returnValue['width'];
         });
         $filename = $app->config->appDir . '/assets/logo.jpg';
         $this->makeSampleFile($filename, 'jpg');

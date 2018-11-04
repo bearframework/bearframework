@@ -17,6 +17,8 @@ use BearFramework\App;
 class Assets
 {
 
+    use \BearFramework\App\EventsTrait;
+
     /**
      * Publicly accessible directories.
      * 
@@ -119,14 +121,15 @@ class Assets
     public function getUrl(string $filename, array $options = []): string
     {
         $app = App::get();
-        $hooks = $app->hooks;
 
         $url = null;
-        if ($hooks->exists('assetGetUrl')) {
-            $returnValue = null;
-            $hooks->execute('assetGetUrl', $filename, $options, $returnValue);
-            if (is_string($returnValue)) {
-                $url = $returnValue;
+        if ($this->hasEventListeners('beforeGetUrl')) {
+            $event = new \BearFramework\App\Assets\BeforeGetUrlEvent($filename, $options);
+            $this->dispatchEvent($event);
+            $filename = $event->filename;
+            $options = $event->options;
+            if ($event->returnValue !== null) {
+                $url = $event->returnValue;
             }
         }
 
@@ -189,11 +192,13 @@ class Assets
                     }
                 }
             }
-            $url = $this->cache[$fileDirCacheKey] === false ? null : $app->request->base . $this->lastPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename;
+            $url = $this->cache[$fileDirCacheKey] === false ? null : $app->urls->get($this->lastPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
         }
 
-        if ($hooks->exists('assetGetUrlDone')) {
-            $hooks->execute('assetGetUrlDone', $filename, $options, $url);
+        if ($this->hasEventListeners('getUrl')) {
+            $event = new \BearFramework\App\Assets\GetUrlEvent($filename, $options, $url);
+            $this->dispatchEvent($event);
+            $url = $event->url;
         }
 
         if ($url !== null) {
@@ -372,7 +377,6 @@ class Assets
     private function prepare(string $filename, array $options = []): ?string
     {
         $app = App::get();
-        $hooks = $app->hooks;
 
         if (!empty($options)) {
             $this->validateOptions($options);
@@ -380,7 +384,12 @@ class Assets
 
         $result = null;
 
-        $hooks->execute('assetPrepare', $filename, $options);
+        if ($this->hasEventListeners('beforePrepare')) {
+            $event = new \BearFramework\App\Assets\BeforePrepareEvent($filename, $options);
+            $this->dispatchEvent($event);
+            $filename = $event->filename;
+            $options = $event->options;
+        }
 
         if (strlen($filename) > 0 && is_file($filename)) {
             if (!isset($options['width']) && !isset($options['height'])) {
@@ -403,7 +412,11 @@ class Assets
                 $result = $tempFilename;
             }
         }
-        $hooks->execute('assetPrepareDone', $filename, $options, $result);
+        if ($this->hasEventListeners('prepare')) {
+            $event = new \BearFramework\App\Assets\PrepareEvent($filename, $options, $result);
+            $this->dispatchEvent($event);
+            $result = $event->returnValue;
+        }
         return $result;
     }
 
@@ -521,16 +534,17 @@ class Assets
      */
     public function getDetails(string $filename, array $list): array
     {
-        $app = App::get();
-        $hooks = $app->hooks;
         $result = null;
-        if ($hooks->exists('assetGetDetails')) {
-            $returnValue = null;
-            $hooks->execute('assetGetDetails', $filename, $list, $returnValue);
-            if (is_array($returnValue)) {
-                $result = $returnValue;
+        if ($this->hasEventListeners('beforeGetDetails')) {
+            $event = new \BearFramework\App\Assets\BeforeGetDetailsEvent($filename, $list);
+            $this->dispatchEvent($event);
+            $filename = $event->filename;
+            $list = $event->list;
+            if ($event->returnValue !== null) {
+                $result = $event->returnValue;
             }
         }
+
         if ($result === null) {
             $result = [];
             $temp = array_flip($list);
@@ -555,7 +569,11 @@ class Assets
                 $result['size'] = $fileExists ? filesize($filename) : null;
             }
         }
-        $hooks->execute('assetGetDetailsDone', $filename, $list, $result);
+        if ($this->hasEventListeners('getDetails')) {
+            $event = new \BearFramework\App\Assets\GetDetailsEvent($filename, $list, $result);
+            $this->dispatchEvent($event);
+            $result = $event->returnValue;
+        }
         return $result;
     }
 
