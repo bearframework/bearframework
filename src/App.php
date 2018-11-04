@@ -32,6 +32,7 @@ class App
 {
 
     use \IvoPetkov\DataObjectTrait;
+    use \BearFramework\App\EventsTrait;
 
     /**
      * The instance of the App object. Only one can be created.
@@ -231,7 +232,9 @@ class App
      */
     public function respond(\BearFramework\App\Response $response): void
     {
-        $this->hooks->execute('responseCreated', $response);
+        if ($this->hasEventListeners('responseCreated')) {
+            $this->dispatchEvent(new \BearFramework\App\ResponseCreatedEvent($response));
+        }
         http_response_code($response->statusCode);
         if (!headers_sent()) {
             $headers = $response->headers->getList();
@@ -254,7 +257,9 @@ class App
         } else {
             echo $response->content;
         }
-        $this->hooks->execute('responseSent', $response);
+        if ($this->hasEventListeners('responseSent')) {
+            $this->dispatchEvent(new \BearFramework\App\ResponseSentEvent($response));
+        }
     }
 
     /**

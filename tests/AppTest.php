@@ -253,4 +253,33 @@ $app->routes->add(\'/\', function() {
 //        $app->run();
 //        $this->expectOutputString('Temporary Unavailable');
 //    }
+
+    /**
+     * 
+     */
+    function testResponseCreatedEvent()
+    {
+        $app = $this->getApp();
+        $app->addEventListener('responseCreated', function(\BearFramework\App\ResponseCreatedEvent $event) {
+            $event->response->content .= '2';
+        });
+        $this->expectOutputString('Hi2');
+        $app->respond(new \BearFramework\App\Response('Hi'));
+    }
+
+    /**
+     * 
+     */
+    function testResponseSentEvent()
+    {
+        $app = $this->getApp();
+        $app->addEventListener('responseSent', function(\BearFramework\App\ResponseSentEvent $event) {
+            $event->response->content .= '2';
+        });
+        $this->expectOutputString('Hi');
+        $response = new \BearFramework\App\Response('Hi');
+        $app->respond($response);
+        $this->assertEquals($response->content, 'Hi2');
+    }
+
 }
