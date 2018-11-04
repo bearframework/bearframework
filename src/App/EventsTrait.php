@@ -15,6 +15,10 @@ namespace BearFramework\App;
 trait EventsTrait
 {
 
+    /**
+     *
+     * @var array 
+     */
     private $internalEventListenersData = [];
 
     /**
