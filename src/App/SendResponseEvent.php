@@ -12,7 +12,7 @@ namespace BearFramework\App;
 /**
  * @property \BearFramework\App\Response $response
  */
-class ResponseSentEvent extends \BearFramework\App\Event
+class SendResponseEvent extends \BearFramework\App\Event
 {
 
     /**
@@ -21,11 +21,12 @@ class ResponseSentEvent extends \BearFramework\App\Event
      */
     public function __construct(\BearFramework\App\Response $response)
     {
-        parent::__construct('responseSent');
+        parent::__construct('sendResponse');
         $this
                 ->defineProperty('response', [
                     'type' => \BearFramework\App\Response::class
-        ]);
+                ])
+        ;
         $this->response = $response;
     }
 

@@ -149,10 +149,10 @@ $app->routes->add(\'/\', function() {
     /**
      * 
      */
-    public function testRespond()
+    public function testSendResponse()
     {
         $app = $this->getApp();
-        $app->respond(new \BearFramework\App\Response('The end'));
+        $app->send(new \BearFramework\App\Response('The end'));
         $this->expectOutputString('The end');
     }
 
@@ -198,28 +198,28 @@ $app->routes->add(\'/\', function() {
     /**
      * 
      */
-    function testResponseCreatedEvent()
+    function testBeforeSendResponseEvent()
     {
         $app = $this->getApp();
-        $app->addEventListener('responseCreated', function(\BearFramework\App\ResponseCreatedEvent $event) {
+        $app->addEventListener('beforeSendResponse', function(\BearFramework\App\BeforeSendResponseEvent $event) {
             $event->response->content .= '2';
         });
         $this->expectOutputString('Hi2');
-        $app->respond(new \BearFramework\App\Response('Hi'));
+        $app->send(new \BearFramework\App\Response('Hi'));
     }
 
     /**
      * 
      */
-    function testResponseSentEvent()
+    function testSendResponseEvent()
     {
         $app = $this->getApp();
-        $app->addEventListener('responseSent', function(\BearFramework\App\ResponseSentEvent $event) {
+        $app->addEventListener('sendResponse', function(\BearFramework\App\SendResponseEvent $event) {
             $event->response->content .= '2';
         });
         $this->expectOutputString('Hi');
         $response = new \BearFramework\App\Response('Hi');
-        $app->respond($response);
+        $app->send($response);
         $this->assertEquals($response->content, 'Hi2');
     }
 

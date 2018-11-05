@@ -49,7 +49,7 @@ class ResponseTest extends BearFrameworkTestCase
         $response = new \BearFramework\App\Response('Hi');
         $response->cookies->set($response->cookies->make('name1', 'value1'));
         $response->headers->set($response->headers->make('X-My-Header', '1'));
-        $app->respond($response);
+        $app->send($response);
         $this->expectOutputString('Hi');
     }
 

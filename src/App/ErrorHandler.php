@@ -127,7 +127,7 @@ class ErrorHandler
         } else {
             $response = new App\Response\TemporaryUnavailable();
             try {
-                $app->respond($response);
+                $app->send($response);
             } catch (\Exception $e) {
                 http_response_code(503);
                 echo 'Temporary Unavailable';

@@ -214,7 +214,7 @@ class App
         if (!($response instanceof App\Response)) {
             $response = new App\Response\NotFound();
         }
-        $this->respond($response);
+        $this->send($response);
     }
 
     /**
@@ -223,10 +223,10 @@ class App
      * @param \BearFramework\App\Response $response The response object to output.
      * @return void No value is returned.
      */
-    public function respond(\BearFramework\App\Response $response): void
+    public function send(\BearFramework\App\Response $response): void
     {
-        if ($this->hasEventListeners('responseCreated')) {
-            $this->dispatchEvent(new \BearFramework\App\ResponseCreatedEvent($response));
+        if ($this->hasEventListeners('beforeSendResponse')) {
+            $this->dispatchEvent(new \BearFramework\App\BeforeSendResponseEvent($response));
         }
         http_response_code($response->statusCode);
         if (!headers_sent()) {
@@ -250,8 +250,8 @@ class App
         } else {
             echo $response->content;
         }
-        if ($this->hasEventListeners('responseSent')) {
-            $this->dispatchEvent(new \BearFramework\App\ResponseSentEvent($response));
+        if ($this->hasEventListeners('sendResponse')) {
+            $this->dispatchEvent(new \BearFramework\App\SendResponseEvent($response));
         }
     }
 
