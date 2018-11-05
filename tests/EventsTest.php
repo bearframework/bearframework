@@ -72,7 +72,7 @@ class EventsTest extends BearFrameworkTestCase
         $result = '';
 
         $object->addEventListener('done', function(\BearFramework\App\Event $event) use (&$result) {
-            $result .= $event->name;
+            $result .= $event->getName();
         });
         $object->dispatchEvent(new \BearFramework\App\Event('done'));
 
@@ -135,7 +135,7 @@ class EventsTest extends BearFrameworkTestCase
         $result = '';
 
         $object->addEventListener('done', function(\BearFramework\App\Event $event) use (&$result) {
-            $result .= $event->name . '-' . $event->value;
+            $result .= $event->getName() . '-' . $event->value;
         });
         $object->dispatchEvent($event);
 

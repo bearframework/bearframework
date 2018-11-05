@@ -11,8 +11,6 @@ namespace BearFramework\App;
 
 /**
  * A base event object.
- * 
- * @property string $name The name of the event.
  */
 class Event
 {
@@ -20,19 +18,27 @@ class Event
     use \IvoPetkov\DataObjectTrait;
 
     /**
+     *
+     * @var string 
+     */
+    private $name = null;
+
+    /**
      * 
      * @param string $name The name of the event.
      */
     public function __construct(string $name)
     {
-        $this->
-                defineProperty('name', [
-                    'type' => 'string',
-                    'get' => function() use ($name) {
-                        return $name;
-                    },
-                    'readonly' => true,
-        ]);
+        $this->name = $name;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
 }

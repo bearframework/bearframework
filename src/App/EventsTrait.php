@@ -63,7 +63,7 @@ trait EventsTrait
      */
     public function dispatchEvent(\BearFramework\App\Event $event): void
     {
-        $name = $event->name;
+        $name = $event->getName();
         if (isset($this->internalEventListenersData[$name])) {
             foreach ($this->internalEventListenersData[$name] as $listener) {
                 call_user_func($listener, $event);
