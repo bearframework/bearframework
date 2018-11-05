@@ -290,9 +290,9 @@ class DataItemStreamWrapper
         if ($pathInfo === false) {
             return false;
         }
-        $dataDriver = $pathInfo['dataDriver'];
+        $dataRepository = $pathInfo['dataRepository'];
         try {
-            $dataDriver->delete($pathInfo['key']);
+            $dataRepository->delete($pathInfo['key']); // Events are dispached here
             return true;
         } catch (\Exception $e) {
             return false;
@@ -315,13 +315,13 @@ class DataItemStreamWrapper
         if ($toPathInfo === false) {
             return false;
         }
-        $fromPathDataDriver = $fromPathInfo['dataDriver'];
-        $toPathDataDriver = $toPathInfo['dataDriver'];
-        if ($fromPathDataDriver !== $toPathDataDriver) {
+        $fromPathDataRepository = $fromPathInfo['dataRepository'];
+        $toPathDataRepository = $toPathInfo['dataRepository'];
+        if ($fromPathDataRepository !== $toPathDataRepository) {
             return false;
         }
         try {
-            $fromPathDataDriver->rename($fromPathInfo['key'], $toPathInfo['key']);
+            $fromPathDataRepository->rename($fromPathInfo['key'], $toPathInfo['key']); // Events are dispached here
             return true;
         } catch (\Exception $e) {
             return false;
