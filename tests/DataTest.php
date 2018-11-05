@@ -1068,4 +1068,130 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals(scandir('appdata://'), ['.', '..', 'aa/bb/cc', 'aa/bb/dd', 'aa/bb/ee']);
     }
 
+    /**
+     * 
+     */
+    public function testStreamWrapperEvents()
+    {
+        $app = $this->getApp();
+
+        $exampleValue1 = str_repeat('abcdefghijk', 1000);
+        $exampleValue2 = str_repeat('1234567890', 1000);
+
+        $eventsLogs = [];
+
+        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $event->key];
+        });
+
+        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $event->key];
+        });
+
+        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['setValue', $event->key, $event->value];
+        });
+
+        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValue', $event->key, $event->value];
+        });
+
+        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['append', $event->key, $event->content];
+        });
+
+        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['exists', $event->key, $event->exists];
+        });
+
+        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['rename', $event->sourceKey, $event->destinationKey];
+        });
+
+        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['delete', $event->key];
+        });
+
+        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getList', get_class($event->list)];
+        });
+
+        $eventsLogs = [];
+        file_put_contents('appdata://key1', $exampleValue1);
+        $this->assertEquals($eventsLogs, [
+            ['setValue', 'key1', $exampleValue1],
+            ['change', 'key1']
+        ]);
+
+        $eventsLogs = [];
+        file_get_contents('appdata://key1');
+        $this->assertEquals($eventsLogs, [
+            ['getValue', 'key1', $exampleValue1],
+            ['request', 'key1']
+        ]);
+
+        $eventsLogs = [];
+        $handle = fopen('appdata://key1', "wb");
+        fwrite($handle, $exampleValue2);
+        fclose($handle);
+        $this->assertEquals($eventsLogs, [
+            ['setValue', 'key1', $exampleValue2],
+            ['change', 'key1']
+        ]);
+
+        $eventsLogs = [];
+        $handle = fopen('appdata://key1', "rb");
+        $contents = '';
+        while (!feof($handle)) {
+            $contents .= fread($handle, 8192);
+        }
+        fclose($handle);
+        $this->assertEquals($eventsLogs, [
+            ['getValue', 'key1', $exampleValue2],
+            ['request', 'key1']
+        ]);
+
+        $eventsLogs = [];
+        $handle = fopen('appdata://key1', "ab");
+        fwrite($handle, $exampleValue1);
+        fclose($handle);
+        $this->assertEquals($eventsLogs, [
+            ['append', 'key1', $exampleValue1],
+            ['change', 'key1']
+        ]);
+
+        $eventsLogs = [];
+        is_file('appdata://key1');
+        $this->assertEquals($eventsLogs, [
+            ['exists', 'key1', true],
+            ['request', 'key1']
+        ]);
+
+        $eventsLogs = [];
+        copy('appdata://key1', 'appdata://key2');
+        $this->assertEquals($eventsLogs, [
+            ['exists', 'key2', false],
+            ['request', 'key2'],
+            ['getValue', 'key1', $exampleValue2 . $exampleValue1],
+            ['request', 'key1'],
+            ['setValue', 'key2', $exampleValue2 . $exampleValue1],
+            ['change', 'key2'],
+        ]);
+
+        $eventsLogs = [];
+        rename('appdata://key2', 'appdata://key3');
+        $this->assertEquals($eventsLogs, [
+            ['rename', 'key2', 'key3'],
+            ['change', 'key2'],
+            ['change', 'key3'],
+        ]);
+
+        $eventsLogs = [];
+        unlink('appdata://key1');
+        $this->assertEquals($eventsLogs, [
+            ['delete', 'key1'],
+            ['change', 'key1'],
+        ]);
+    }
+
 }

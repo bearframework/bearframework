@@ -35,6 +35,24 @@ class DataItemStreamWrapper
 
     /**
      *
+     * @var ?array
+     */
+    private $dataItemPathInfo = null;
+
+    /**
+     *
+     * @var array 
+     */
+    private $eventToDispatchOnClose = [];
+
+    /**
+     *
+     * @var ?string 
+     */
+    private $writtenData = null;
+
+    /**
+     *
      * @var array 
      */
     public static $environment = [];
@@ -62,11 +80,9 @@ class DataItemStreamWrapper
      */
     public function stream_open(string $path, string $mode, int $options, $opened_path): bool
     {
-        if (strpos($mode, 't') !== false) {
-            throw new \Exception('The \'t\' (text-mode translation) mode is not supported!');
-        }
-        if (strpos($mode, 'b') === false) {
-            throw new \Exception('The \'b\' (binary) mode is required!');
+        $supportedModes = ['rb', 'r+b', 'wb', 'w+b', 'ab', 'a+b', 'xb', 'x+b', 'cb', 'c+b'];
+        if (array_search($mode, $supportedModes) === false) {
+            throw new \Exception('The mode provided (' . $mode . ') is not supported!');
         }
         $pathInfo = $this->getPathInfo($path);
         if ($pathInfo === false) {
@@ -79,6 +95,28 @@ class DataItemStreamWrapper
         if (array_search($mode, ['r', 'rb']) !== false && !$this->dataItemWrapper->exists()) {
             return false;
         }
+        $this->dataItemPathInfo = $pathInfo;
+        $dataRepository = $pathInfo['dataRepository'];
+        if (array_search($mode, ['wb', 'w+b', 'xb', 'x+b', 'c', 'c+b']) !== false && $dataRepository->hasEventListeners('itemSetValue')) {
+            if ($mode === 'wb') {
+                $mode = 'w+b';
+            } elseif ($mode === 'xb') {
+                $mode = 'x+b';
+            } elseif ($mode === 'cb') {
+                $mode = 'c+b';
+            }
+            $this->eventToDispatchOnClose['itemSetValue'] = 1;
+        }
+        if (array_search($mode, ['ab', 'a+b']) !== false && $dataRepository->hasEventListeners('itemAppend')) {
+            if ($mode === 'ab') {
+                $mode = 'a+b';
+            }
+            $this->eventToDispatchOnClose['itemAppend'] = 1;
+            $this->writtenData = '';
+        }
+        if (array_search($mode, ['rb', 'r+b']) !== false && $dataRepository->hasEventListeners('itemGetValue')) {
+            $this->eventToDispatchOnClose['itemGetValue'] = 1;
+        }
         return $this->dataItemWrapper->open($mode);
     }
 
@@ -88,7 +126,35 @@ class DataItemStreamWrapper
      */
     public function stream_close(): void
     {
+        $hasItemSetValueListeners = isset($this->eventToDispatchOnClose['itemSetValue']);
+        $hasItemAppendListeners = isset($this->eventToDispatchOnClose['itemAppend']);
+        $hasItemGetValueListeners = isset($this->eventToDispatchOnClose['itemGetValue']);
+        if ($hasItemSetValueListeners || $hasItemAppendListeners || $hasItemGetValueListeners) {
+            $dataRepository = $this->dataItemPathInfo['dataRepository'];
+            if ($hasItemSetValueListeners || $hasItemGetValueListeners) {
+                $this->dataItemWrapper->seek(0, SEEK_SET);
+                $value = '';
+                while (!$this->dataItemWrapper->eof()) {
+                    $value .= $this->dataItemWrapper->read(8192);
+                }
+            }
+        }
         $this->dataItemWrapper->close();
+        if ($hasItemSetValueListeners) {
+            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemSetValueEvent($this->key, $value));
+        }
+        if ($hasItemAppendListeners) {
+            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemAppendEvent($this->key, $this->writtenData));
+        }
+        if ($hasItemGetValueListeners) {
+            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemGetValueEvent($this->key, $value));
+        }
+        if (($hasItemSetValueListeners || $hasItemAppendListeners) && $dataRepository->hasEventListeners('itemChange')) {
+            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($this->key));
+        }
+        if ($hasItemGetValueListeners && $dataRepository->hasEventListeners('itemRequest')) {
+            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($this->key));
+        }
     }
 
     /**
@@ -108,6 +174,9 @@ class DataItemStreamWrapper
      */
     public function stream_write(string $data): int
     {
+        if ($this->writtenData !== null) {
+            $this->writtenData .= $data;
+        }
         return $this->dataItemWrapper->write($data);
     }
 
@@ -224,7 +293,6 @@ class DataItemStreamWrapper
      */
     public function url_stat(string $path, int $flags)
     {
-
         if (substr($path, -3) === '://') {
             $mode = 0040666; //dir
             $size = 0;
@@ -253,11 +321,22 @@ class DataItemStreamWrapper
                 }
             } else {
                 $dataDriver = $pathInfo['dataDriver'];
+                $dataRepository = $pathInfo['dataRepository'];
                 if ($dataDriver->exists($key)) {
                     $dataItemWrapper = $dataDriver->getDataItemStreamWrapper($key);
                     $mode = 0100666; // file
                     $size = $dataItemWrapper->size();
+                    $exists = true;
                 } else {
+                    $exists = false;
+                }
+                if ($dataRepository->hasEventListeners('itemExists')) {
+                    $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemExistsEvent($key, $exists));
+                }
+                if ($dataRepository->hasEventListeners('itemRequest')) {
+                    $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+                }
+                if (!$exists) {
                     return false;
                 }
             }
