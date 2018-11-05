@@ -19,7 +19,6 @@ use BearFramework\App;
  * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
  * @property-read \BearFramework\App\LogsRepository $logs Provides logging functionality.
  * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
- * @property-read \BearFramework\App\HooksRepository $hooks Provides functionality for notifications and executing custom code.
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
  * @property-read \BearFramework\App\DataRepository $data A file-based data storage.
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
@@ -87,12 +86,6 @@ class App
                 ->defineProperty('addons', [
                     'init' => function() {
                         return new App\AddonsRepository();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('hooks', [
-                    'init' => function() {
-                        return new App\HooksRepository();
                     },
                     'readonly' => true
                 ])

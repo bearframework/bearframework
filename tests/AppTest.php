@@ -198,65 +198,6 @@ $app->routes->add(\'/\', function() {
     /**
      * 
      */
-//    function testErrorInHooks1()
-//    {
-//        $app = $this->getApp();
-//        $app->routes->add('/', function() {
-//            return new \BearFramework\App\Response\HTML('content');
-//        });
-//        $app->hooks->add('responseCreated', function($response) {
-//            if ($response instanceof \BearFramework\App\Response\HTML) {
-//                echo 5 / 0;
-//            }
-//            if ($response instanceof \BearFramework\App\Response\TemporaryUnavailable) {
-//                $response->content = 'sorry';
-//            }
-//        });
-//        $app->run();
-//        $this->expectOutputString('sorry');
-//    }
-
-    /**
-     * 
-     */
-//    function testErrorInHooks2()
-//    {
-//        $app = $this->getApp();
-//        $app->routes->add('/', function() {
-//            return new \BearFramework\App\Response\HTML('content');
-//        });
-//        $app->hooks->add('responseCreated', function($response) {
-//            if ($response instanceof \BearFramework\App\Response) {
-//                $response->content = function() {
-//                    echo 5 / 0;
-//                };
-//            }
-//        });
-//        $app->run();
-//        $this->expectOutputString('');
-//    }
-
-    /**
-     * 
-     */
-//    function testErrorInHooks3()
-//    {
-//        $app = $this->getApp();
-//        $app->routes->add('/', function() {
-//            return new \BearFramework\App\Response\HTML('content');
-//        });
-//        $app->hooks->add('responseCreated', function($response) {
-//            if ($response instanceof \BearFramework\App\Response\HTML) {
-//                $response->headers = 1;
-//            }
-//        });
-//        $app->run();
-//        $this->expectOutputString('Temporary Unavailable');
-//    }
-
-    /**
-     * 
-     */
     function testResponseCreatedEvent()
     {
         $app = $this->getApp();

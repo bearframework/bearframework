@@ -60,7 +60,6 @@ $classes = [
     'BearFramework\App\FileDataDriver' => 'src/App/FileDataDriver.php',
     'BearFramework\App\FileDataItemStreamWrapper' => 'src/App/FileDataItemStreamWrapper.php',
     'BearFramework\App\FileLogger' => 'src/App/FileLogger.php',
-    'BearFramework\App\HooksRepository' => 'src/App/HooksRepository.php',
     'BearFramework\App\Internal\DataItemStreamWrapper' => 'src/App/Internal/DataItemStreamWrapper.php',
     'BearFramework\App\ICacheDriver' => 'src/App/ICacheDriver.php',
     'BearFramework\App\IDataDriver' => 'src/App/IDataDriver.php',
