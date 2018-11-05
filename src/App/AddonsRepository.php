@@ -28,9 +28,9 @@ class AddonsRepository
      * 
      * @param string $id The id of the addon.
      * @throws \Exception
-     * @return \BearFramework\App\AddonsRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function add(string $id): \BearFramework\App\AddonsRepository
+    public function add(string $id): self
     {
         if (!isset($this->data[$id])) {
             $registeredAddon = \BearFramework\Addons::get($id);

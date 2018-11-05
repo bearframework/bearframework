@@ -54,9 +54,9 @@ class FormDataRepository
      * Sets a form data item.
      * 
      * @param \BearFramework\App\Request\FormDataItem $form data item The form data item to set.
-     * @return \BearFramework\App\Request\FormDataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function set(\BearFramework\App\Request\FormDataItem $dataItem): \BearFramework\App\Request\FormDataRepository
+    public function set(\BearFramework\App\Request\FormDataItem $dataItem): self
     {
         $this->data[$dataItem->name] = $dataItem;
         return $this;
@@ -119,9 +119,9 @@ class FormDataRepository
      * Deletes a form data item if exists.
      * 
      * @param string $name The name of the form data item to delete.
-     * @return \BearFramework\App\Request\FormDataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function delete(string $name): \BearFramework\App\Request\FormDataRepository
+    public function delete(string $name): self
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);

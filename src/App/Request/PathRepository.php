@@ -44,9 +44,9 @@ class PathRepository
      * 
      * @param string $path The new path.
      * @param bool $encode Whether to encode the path.
-     * @return \BearFramework\App\Request\PathRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function set(string $path, bool $encode = true): \BearFramework\App\Request\PathRepository
+    public function set(string $path, bool $encode = true): self
     {
         $this->path = $encode ? implode('/', array_map('urlencode', explode('/', $path))) : $path;
         return $this;

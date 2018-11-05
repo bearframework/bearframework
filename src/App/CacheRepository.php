@@ -97,9 +97,9 @@ class CacheRepository
      * Stores a cache item.
      * 
      * @param \BearFramework\App\CacheItem $item The cache item to store.
-     * @return \BearFramework\App\CacheRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function set(CacheItem $item): \BearFramework\App\CacheRepository
+    public function set(CacheItem $item): self
     {
         $driver = $this->getDriver();
         $driver->set($item->key, $item->value, $item->ttl);
@@ -177,9 +177,9 @@ class CacheRepository
      * Deletes a cache from the cache.
      * 
      * @param string $key The key of the cache item.
-     * @return \BearFramework\App\CacheRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function delete(string $key): \BearFramework\App\CacheRepository
+    public function delete(string $key): self
     {
         $driver = $this->getDriver();
         $driver->delete($key);

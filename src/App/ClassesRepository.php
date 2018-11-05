@@ -37,9 +37,9 @@ class ClassesRepository
      * 
      * @param string $class The class name.
      * @param string $filename The filename that contains the class.
-     * @return \BearFramework\App\ClassesRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function add(string $class, string $filename): \BearFramework\App\ClassesRepository
+    public function add(string $class, string $filename): self
     {
         $this->data[$class] = $filename;
         return $this;
@@ -60,9 +60,9 @@ class ClassesRepository
      * Loads a class if registered.
      * 
      * @param string $class The class name.
-     * @return \BearFramework\App\ClassesRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function load(string $class): \BearFramework\App\ClassesRepository
+    public function load(string $class): self
     {
         if (isset($this->data[$class])) {
             (static function($__filename) {

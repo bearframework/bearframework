@@ -31,9 +31,9 @@ class RoutesRepository
      * @param callable|callable[] $callback Function that is expected to return object of type \BearFramework\App\Response.
      * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
      * @throws \InvalidArgumentException
-     * @return \BearFramework\App\RoutesRepository Returns reference to itself.
+     * @return self Returns Returns a reference to itself.
      */
-    public function add($pattern, $callback, array $options = ['GET']): \BearFramework\App\RoutesRepository
+    public function add($pattern, $callback, array $options = ['GET']): self
     {
         if (is_string($pattern)) {
             if (!isset($pattern{0})) {

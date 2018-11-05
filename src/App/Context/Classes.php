@@ -44,9 +44,9 @@ class Classes
      * 
      * @param string $class The class name.
      * @param string $filename The filename that contains the class.
-     * @return \BearFramework\App\Context\Classes A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function add(string $class, string $filename): \BearFramework\App\Context\Classes
+    public function add(string $class, string $filename): self
     {
         self::$appClassesReference->add($class, $this->dir . '/' . $filename);
         return $this;

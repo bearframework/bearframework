@@ -51,9 +51,9 @@ class CookiesRepository
      * Sets a cookie.
      * 
      * @param \BearFramework\App\Request\Cookie $cookie The cookie to set.
-     * @return \BearFramework\App\Request\CookiesRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function set(\BearFramework\App\Request\Cookie $cookie): \BearFramework\App\Request\CookiesRepository
+    public function set(\BearFramework\App\Request\Cookie $cookie): self
     {
         $this->data[$cookie->name] = $cookie;
         return $this;
@@ -102,9 +102,9 @@ class CookiesRepository
      * Deletes a cookie if exists.
      * 
      * @param string $name The name of the cookie to delete.
-     * @return \BearFramework\App\Request\CookiesRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function delete(string $name): \BearFramework\App\Request\CookiesRepository
+    public function delete(string $name): self
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);

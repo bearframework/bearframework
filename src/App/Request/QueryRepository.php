@@ -19,7 +19,7 @@ class QueryRepository
      * @var array 
      */
     private $data = [];
-    
+
     /**
      *
      */
@@ -51,9 +51,9 @@ class QueryRepository
      * Sets a query item.
      * 
      * @param \BearFramework\App\Request\QueryItem $query item The query item to set.
-     * @return \BearFramework\App\Request\QueryItemsRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function set(\BearFramework\App\Request\QueryItem $queryItem): \BearFramework\App\Request\QueryRepository
+    public function set(\BearFramework\App\Request\QueryItem $queryItem): self
     {
         $this->data[$queryItem->name] = $queryItem;
         return $this;
@@ -102,9 +102,9 @@ class QueryRepository
      * Deletes a query item if exists.
      * 
      * @param string $name The name of the query item to delete.
-     * @return \BearFramework\App\Request\QueryItemsRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function delete(string $name): \BearFramework\App\Request\QueryRepository
+    public function delete(string $name): self
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
@@ -112,7 +112,7 @@ class QueryRepository
         return $this;
     }
 
-   /**
+    /**
      * Returns a list of all query items.
      * 
      * @return \BearFramework\DataList|\BearFramework\App\Request\QueryItem[] An array containing all query items.
@@ -120,13 +120,12 @@ class QueryRepository
     public function getList()
     {
         $list = new \BearFramework\DataList();
-        foreach ($this->data as $queryItem){
+        foreach ($this->data as $queryItem) {
             $list[] = clone($queryItem);
         }
         return $list;
     }
-    
-    
+
     /**
      * Returns the query items as string.
      * 
@@ -145,7 +144,7 @@ class QueryRepository
     public function toString()
     {
         $temp = [];
-        foreach ($this->data as $queryItem){
+        foreach ($this->data as $queryItem) {
             $temp[$queryItem->name] = $queryItem->value;
         }
         return http_build_query($temp);

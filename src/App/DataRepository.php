@@ -126,11 +126,11 @@ class DataRepository
      * Stores a data item.
      * 
      * @param \BearFramework\App\DataItem $item The data item to store.
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function set(DataItem $item): \BearFramework\App\DataRepository
+    public function set(DataItem $item): self
     {
         $driver = $this->getDriver();
         $driver->set($item);
@@ -148,11 +148,11 @@ class DataRepository
      * 
      * @param string $key The key of the data item.
      * @param string $value The value of the data item.
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function setValue(string $key, string $value): \BearFramework\App\DataRepository
+    public function setValue(string $key, string $value): self
     {
         $driver = $this->getDriver();
         $driver->setValue($key, $value);
@@ -235,9 +235,9 @@ class DataRepository
      * @param string $content The content to append.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function append(string $key, string $content): \BearFramework\App\DataRepository
+    public function append(string $key, string $content): self
     {
         $driver = $this->getDriver();
         $driver->append($key, $content);
@@ -257,9 +257,9 @@ class DataRepository
      * @param string $destinationKey The key of the destination data item.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function duplicate(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
+    public function duplicate(string $sourceKey, string $destinationKey): self
     {
         $driver = $this->getDriver();
         $driver->duplicate($sourceKey, $destinationKey);
@@ -282,9 +282,9 @@ class DataRepository
      * @param string $destinationKey The new key of the data item.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function rename(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
+    public function rename(string $sourceKey, string $destinationKey): self
     {
         $driver = $this->getDriver();
         $driver->rename($sourceKey, $destinationKey);
@@ -304,9 +304,9 @@ class DataRepository
      * @param string $key The key of the data item to delete.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function delete(string $key): \BearFramework\App\DataRepository
+    public function delete(string $key): self
     {
         $driver = $this->getDriver();
         $driver->delete($key);
@@ -327,9 +327,9 @@ class DataRepository
      * @param string $value The metadata value.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function setMetadata(string $key, string $name, string $value): \BearFramework\App\DataRepository
+    public function setMetadata(string $key, string $name, string $value): self
     {
         $driver = $this->getDriver();
         $driver->setMetadata($key, $name, $value);
@@ -371,9 +371,9 @@ class DataRepository
      * @param string $name The metadata name.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return \BearFramework\App\DataRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function deleteMetadata(string $key, string $name): \BearFramework\App\DataRepository
+    public function deleteMetadata(string $key, string $name): self
     {
         $driver = $this->getDriver();
         $driver->deleteMetadata($key, $name);

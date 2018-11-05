@@ -51,9 +51,9 @@ class HeadersRepository
      * Sets a header.
      * 
      * @param \BearFramework\App\Request\Header $header The header to set.
-     * @return \BearFramework\App\Request\HeadersRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function set(\BearFramework\App\Request\Header $header): \BearFramework\App\Request\HeadersRepository
+    public function set(\BearFramework\App\Request\Header $header): self
     {
         $this->data[$header->name] = $header;
         return $this;
@@ -102,9 +102,9 @@ class HeadersRepository
      * Deletes a header if exists.
      * 
      * @param string $name The name of the header to delete.
-     * @return \BearFramework\App\Request\HeadersRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function delete(string $name): \BearFramework\App\Request\HeadersRepository
+    public function delete(string $name): self
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);

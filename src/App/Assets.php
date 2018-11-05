@@ -60,9 +60,9 @@ class Assets
     /**
      * 
      * @param string $pathPrefix
-     * @return \BearFramework\App\Assets A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function setPathPrefix(string $pathPrefix): \BearFramework\App\Assets
+    public function setPathPrefix(string $pathPrefix): self
     {
         $this->lastPathPrefix = $pathPrefix;
         if (!isset($this->pathPrefixes[$pathPrefix])) {
@@ -83,9 +83,9 @@ class Assets
      * Registers a directory that will be publicly accessible.
      * 
      * @param string $pathname The directory name.
-     * @return \BearFramework\App\Assets A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function addDir(string $pathname): \BearFramework\App\Assets
+    public function addDir(string $pathname): self
     {
         $this->dirs[] = $pathname;
         $this->optimizedDirs = null;

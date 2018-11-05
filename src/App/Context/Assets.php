@@ -43,9 +43,9 @@ class Assets
      * Registers a directory that will be publicly accessible relative to the current addon or application location.
      * 
      * @param string $pathname The directory name.
-     * @return \BearFramework\App\Context\Assets A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function addDir(string $pathname): \BearFramework\App\Context\Assets
+    public function addDir(string $pathname): self
     {
         self::$appAssetsReference->addDir($this->dir . '/' . $pathname);
         return $this;

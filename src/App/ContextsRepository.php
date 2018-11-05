@@ -72,9 +72,9 @@ class ContextsRepository
      * 
      * @param string $dir The context dir.
      * @throws \Exception
-     * @return \BearFramework\App\ContextsRepository A reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function add(string $dir): \BearFramework\App\ContextsRepository
+    public function add(string $dir): self
     {
         $dir = rtrim(str_replace('\\', '/', $dir), '\\/') . '/';
         if (!isset($this->dirs[$dir])) {
