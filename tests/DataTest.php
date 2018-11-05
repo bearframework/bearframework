@@ -240,127 +240,148 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testHooks1()
+    public function testEvents()
     {
         $app = $this->getApp();
 
-        $lastHookKey = null;
-        $lastHookList = null;
-
-        $app->hooks->add('dataItemChanged', function($key) use (&$lastHookKey) {
-            $lastHookKey = $key;
+        $changeCount = 0;
+        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEvent $event) use (&$changeCount) {
+            $changeCount++;
         });
 
-        $app->hooks->add('dataItemRequested', function($key) use (&$lastHookKey) {
-            $lastHookKey = $key;
+        $requestCount = 0;
+        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEvent $event) use (&$requestCount) {
+            $requestCount++;
         });
 
-        $app->hooks->add('dataListRequested', function() use (&$lastHookList) {
-            $lastHookList = 1;
+        $setDone = false;
+        $app->data->addEventListener('itemSet', function(\BearFramework\App\Data\ItemSetEvent $event) use (&$setDone) {
+            $this->assertEquals($event->item->key, 'key1');
+            $this->assertEquals($event->item->value, 'data1');
+            $setDone = true;
         });
+        $app->data->set($app->data->make('key1', 'data1'));
+        $this->assertTrue($setDone);
 
-        $dataItem = $app->data->make('key1', 'data1');
-        $dataItem->metadata->metaKey1 = 'metaValue1';
-        $dataItem->metadata->metaKey2 = 'metaValue2';
-        $app->data->set($dataItem);
-        $this->assertTrue($lastHookKey === 'key1');
+        $setMetadataDone = false;
+        $app->data->addEventListener('itemSetMetadata', function(\BearFramework\App\Data\ItemSetMetadataEvent $event) use (&$setMetadataDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->name, 'name1');
+            $this->assertEquals($event->value, 'mdata1');
+            $setMetadataDone = true;
+        });
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $this->assertTrue($setMetadataDone);
 
+        $getMetadataDone = false;
+        $app->data->addEventListener('itemGetMetadata', function(\BearFramework\App\Data\ItemGetMetadataEvent $event) use (&$getMetadataDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->name, 'name1');
+            $this->assertEquals($event->value, 'mdata1');
+            $getMetadataDone = true;
+        });
+        $app->data->getMetadata('key1', 'name1');
+        $this->assertTrue($getMetadataDone);
+
+        $deleteMetadataDone = false;
+        $app->data->addEventListener('itemDeleteMetadata', function(\BearFramework\App\Data\ItemDeleteMetadataEvent $event) use (&$deleteMetadataDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->name, 'name1');
+            $deleteMetadataDone = true;
+        });
+        $app->data->deleteMetadata('key1', 'name1');
+        $this->assertTrue($deleteMetadataDone);
+
+        $getMetadataListDone = false;
+        $app->data->addEventListener('itemGetMetadataList', function(\BearFramework\App\Data\ItemGetMetadataListEvent $event) use (&$getMetadataListDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertTrue($event->list instanceof \BearFramework\DataList);
+            $getMetadataListDone = true;
+        });
+        $app->data->getMetadataList('key1');
+        $this->assertTrue($getMetadataListDone);
+
+        $setValueDone = false;
+        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$setValueDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->value, 'data2');
+            $setValueDone = true;
+        });
         $app->data->setValue('key1', 'data2');
-        $this->assertTrue($lastHookKey === 'key1');
+        $this->assertTrue($setValueDone);
 
+        $getDone = false;
+        $app->data->addEventListener('itemGet', function(\BearFramework\App\Data\ItemGetEvent $event) use (&$getDone) {
+            $this->assertEquals($event->item->key, 'key1');
+            $this->assertEquals($event->item->value, 'data2');
+            $getDone = true;
+        });
+        $app->data->get('key1');
+        $this->assertTrue($getDone);
+
+        $getValueDone = false;
+        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEvent $event) use (&$getValueDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->value, 'data2');
+            $getValueDone = true;
+        });
+        $app->data->getValue('key1');
+        $this->assertTrue($getValueDone);
+
+        $appendDone = false;
+        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEvent $event) use (&$appendDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->content, 'data3');
+            $appendDone = true;
+        });
         $app->data->append('key1', 'data3');
-        $this->assertTrue($lastHookKey === 'key1');
+        $this->assertTrue($appendDone);
 
+        $existsDone = false;
+        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEvent $event) use (&$existsDone) {
+            $this->assertEquals($event->key, 'key1');
+            $this->assertEquals($event->exists, true);
+            $existsDone = true;
+        });
+        $app->data->exists('key1');
+        $this->assertTrue($existsDone);
+
+        $duplicateDone = false;
+        $app->data->addEventListener('itemDuplicate', function(\BearFramework\App\Data\ItemDuplicateEvent $event) use (&$duplicateDone) {
+            $this->assertEquals($event->sourceKey, 'key1');
+            $this->assertEquals($event->destinationKey, 'key2');
+            $duplicateDone = true;
+        });
         $app->data->duplicate('key1', 'key2');
-        $this->assertTrue($lastHookKey === 'key2');
+        $this->assertTrue($duplicateDone);
 
+        $renameDone = false;
+        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEvent $event) use (&$renameDone) {
+            $this->assertEquals($event->sourceKey, 'key2');
+            $this->assertEquals($event->destinationKey, 'key3');
+            $renameDone = true;
+        });
         $app->data->rename('key2', 'key3');
-        $this->assertTrue($lastHookKey === 'key3');
+        $this->assertTrue($renameDone);
 
-        $app->data->setMetadata('key1', 'metaKey3', 'metaValue3');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->deleteMetadata('key1', 'metaKey3');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->exists('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->get('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->getValue('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->getMetadata('key1', 'metaKey1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->getMetadataList('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
+        $deleteDone = false;
+        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEvent $event) use (&$deleteDone) {
+            $this->assertEquals($event->key, 'key1');
+            $deleteDone = true;
+        });
         $app->data->delete('key1');
-        $this->assertTrue($lastHookKey === 'key1');
+        $this->assertTrue($deleteDone);
 
-        $app->data->exists('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->get('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->getValue('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->getMetadata('key1', 'metaKey1');
-        $this->assertTrue($lastHookKey === 'key1');
-
-        $app->data->getMetadataList('key1');
-        $this->assertTrue($lastHookKey === 'key1');
-
+        $getListDone = false;
+        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEvent $event) use (&$getListDone) {
+            $this->assertTrue($event->list instanceof \BearFramework\DataList);
+            $getListDone = true;
+        });
         $app->data->getList();
-        $this->assertTrue($lastHookList === 1);
-    }
+        $this->assertTrue($getListDone);
 
-    /**
-     * Prevent defaults
-     */
-    public function testHooks2()
-    {
-        $app = $this->getApp();
-
-        $data = [];
-
-        $app->hooks->add('dataItemSet', function(DataItem $item, &$preventDefault) use (&$data) {
-            $preventDefault = true;
-            $data[$item->key] = clone($item);
-        });
-
-        $app->hooks->add('dataItemGet', function(string $key, &$returnValue, &$preventDefault) use (&$data) {
-            $preventDefault = true;
-            if (isset($data[$key])) {
-                $returnValue = clone($data[$key]);
-            }
-        });
-
-        $app->hooks->add('dataItemGetValue', function(string $key, &$returnValue, &$preventDefault) use (&$data) {
-            $preventDefault = true;
-            if (isset($data[$key])) {
-                $returnValue = $data[$key]->value;
-            }
-        });
-
-        $app->hooks->add('dataItemExists', function(string $key, &$returnValue) use (&$data) {
-            $returnValue = isset($data[$key]);
-        });
-
-        $dataItem = $app->data->make('key1', 'data1');
-        $app->data->set($dataItem);
-        $dataItem = $app->data->get('key1');
-        $this->assertTrue($dataItem->key === 'key1');
-        $this->assertTrue($dataItem->value === 'data1');
-        $this->assertTrue($app->data->getValue('key1') === 'data1');
-        $this->assertTrue($app->data->getValue('key2') === null);
-        $this->assertTrue($app->data->exists('key1') === true);
-        $this->assertTrue($app->data->exists('key2') === false);
+        $this->assertEquals($changeCount, 9); // set + setMetadata + deleteMetadata + setValue + append + duplicate + rename*2 + delete
+        $this->assertEquals($requestCount, 6); // getMetadata + itemGetMetadataList + get + getValue + exists + duplicate
     }
 
     /**

@@ -18,6 +18,8 @@ use BearFramework\App\DataItem;
 class DataRepository
 {
 
+    use \BearFramework\App\EventsTrait;
+
     /**
      *
      * @var ?\BearFramework\App\DataItem 
@@ -130,19 +132,14 @@ class DataRepository
      */
     public function set(DataItem $item): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $item = clone($item);
-        $preventDefault = false;
-        $hooks->execute('dataItemSet', $item, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->set($item);
+        $driver = $this->getDriver();
+        $driver->set($item);
+        if ($this->hasEventListeners('itemSet')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemSetEvent(clone($item)));
         }
-        $hooks->execute('dataItemSetDone', $item);
-        $key = $item->key;
-        $hooks->execute('dataItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($item->key));
+        }
         return $this;
     }
 
@@ -157,17 +154,14 @@ class DataRepository
      */
     public function setValue(string $key, string $value): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemSetValue', $key, $value, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->setValue($key, $value);
+        $driver = $this->getDriver();
+        $driver->setValue($key, $value);
+        if ($this->hasEventListeners('itemSetValue')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemSetValueEvent($key, $value));
         }
-        $hooks->execute('dataItemSetValueDone', $key, $value);
-        $hooks->execute('dataItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+        }
         return $this;
     }
 
@@ -181,23 +175,14 @@ class DataRepository
      */
     public function get(string $key): ?\BearFramework\App\DataItem
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $item = null;
-        $returnValue = null;
-        $preventDefault = false;
-        $hooks->execute('dataItemGet', $key, $returnValue, $preventDefault);
-        if ($returnValue instanceof \BearFramework\App\DataItem) {
-            $item = $returnValue;
-        } else {
-            if (!$preventDefault) {
-                $driver = $this->getDriver();
-                $item = $driver->get($key);
-            }
+        $driver = $this->getDriver();
+        $item = $driver->get($key);
+        if ($this->hasEventListeners('itemGet')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetEvent($key, $item === null ? null : clone($item)));
         }
-        $hooks->execute('dataItemGetDone', $key, $item);
-        $hooks->execute('dataItemRequested', $key);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+        }
         return $item;
     }
 
@@ -211,23 +196,14 @@ class DataRepository
      */
     public function getValue(string $key): ?string
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $value = null;
-        $returnValue = null;
-        $preventDefault = false;
-        $hooks->execute('dataItemGetValue', $key, $returnValue, $preventDefault);
-        if ($returnValue !== null) {
-            $value = $returnValue;
-        } else {
-            if (!$preventDefault) {
-                $driver = $this->getDriver();
-                $value = $driver->getValue($key);
-            }
+        $driver = $this->getDriver();
+        $value = $driver->getValue($key);
+        if ($this->hasEventListeners('itemGetValue')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetValueEvent($key, $value));
         }
-        $hooks->execute('dataItemGetValueDone', $key, $value);
-        $hooks->execute('dataItemRequested', $key);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+        }
         return $value;
     }
 
@@ -241,20 +217,14 @@ class DataRepository
      */
     public function exists(string $key): bool
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $returnValue = null;
-        $hooks->execute('dataItemExists', $key, $returnValue);
-        if (is_bool($returnValue)) {
-            $exists = $returnValue;
-        } else {
-            $driver = $this->getDriver();
-            $exists = $driver->exists($key);
+        $driver = $this->getDriver();
+        $exists = $driver->exists($key);
+        if ($this->hasEventListeners('itemExists')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemExistsEvent($key, $exists));
         }
-
-        $hooks->execute('dataItemExistsDone', $key, $exists);
-        $hooks->execute('dataItemRequested', $key);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+        }
         return $exists;
     }
 
@@ -269,17 +239,14 @@ class DataRepository
      */
     public function append(string $key, string $content): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemAppend', $key, $content, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->append($key, $content);
+        $driver = $this->getDriver();
+        $driver->append($key, $content);
+        if ($this->hasEventListeners('itemAppend')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemAppendEvent($key, $content));
         }
-        $hooks->execute('dataItemAppendDone', $key, $content);
-        $hooks->execute('dataItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+        }
         return $this;
     }
 
@@ -294,17 +261,17 @@ class DataRepository
      */
     public function duplicate(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemDuplicate', $sourceKey, $destinationKey, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->duplicate($sourceKey, $destinationKey);
+        $driver = $this->getDriver();
+        $driver->duplicate($sourceKey, $destinationKey);
+        if ($this->hasEventListeners('itemDuplicate')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemDuplicateEvent($sourceKey, $destinationKey));
         }
-        $hooks->execute('dataItemDuplicateDone', $sourceKey, $destinationKey);
-        $hooks->execute('dataItemChanged', $destinationKey);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($sourceKey));
+        }
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($destinationKey));
+        }
         return $this;
     }
 
@@ -319,18 +286,15 @@ class DataRepository
      */
     public function rename(string $sourceKey, string $destinationKey): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemRename', $sourceKey, $destinationKey, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->rename($sourceKey, $destinationKey);
+        $driver = $this->getDriver();
+        $driver->rename($sourceKey, $destinationKey);
+        if ($this->hasEventListeners('itemRename')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRenameEvent($sourceKey, $destinationKey));
         }
-        $hooks->execute('dataItemRenameDone', $sourceKey, $destinationKey);
-        $hooks->execute('dataItemChanged', $sourceKey);
-        $hooks->execute('dataItemChanged', $destinationKey);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($sourceKey));
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($destinationKey));
+        }
         return $this;
     }
 
@@ -344,17 +308,14 @@ class DataRepository
      */
     public function delete(string $key): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemDelete', $key, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->delete($key);
+        $driver = $this->getDriver();
+        $driver->delete($key);
+        if ($this->hasEventListeners('itemDelete')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemDeleteEvent($key));
         }
-        $hooks->execute('dataItemDeleteDone', $key);
-        $hooks->execute('dataItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+        }
         return $this;
     }
 
@@ -370,17 +331,14 @@ class DataRepository
      */
     public function setMetadata(string $key, string $name, string $value): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemSetMetadata', $key, $name, $value, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->setMetadata($key, $name, $value);
+        $driver = $this->getDriver();
+        $driver->setMetadata($key, $name, $value);
+        if ($this->hasEventListeners('itemSetMetadata')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemSetMetadataEvent($key, $name, $value));
         }
-        $hooks->execute('dataItemSetMetadataDone', $key, $name, $value);
-        $hooks->execute('dataItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+        }
         return $this;
     }
 
@@ -395,23 +353,14 @@ class DataRepository
      */
     public function getMetadata(string $key, string $name): ?string
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $value = null;
-        $returnValue = null;
-        $preventDefault = false;
-        $hooks->execute('dataItemGetMetadata', $key, $name, $returnValue, $preventDefault);
-        if (is_string($returnValue)) {
-            $value = $returnValue;
-        } else {
-            if (!$preventDefault) {
-                $driver = $this->getDriver();
-                $value = $driver->getMetadata($key, $name);
-            }
+        $driver = $this->getDriver();
+        $value = $driver->getMetadata($key, $name);
+        if ($this->hasEventListeners('itemGetMetadata')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetMetadataEvent($key, $name, $value));
         }
-        $hooks->execute('dataItemGetMetadataDone', $key, $name, $value);
-        $hooks->execute('dataItemRequested', $key);
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+        }
         return $value;
     }
 
@@ -426,17 +375,14 @@ class DataRepository
      */
     public function deleteMetadata(string $key, string $name): \BearFramework\App\DataRepository
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $preventDefault = false;
-        $hooks->execute('dataItemDeleteMetadata', $key, $name, $preventDefault);
-        if (!$preventDefault) {
-            $driver = $this->getDriver();
-            $driver->deleteMetadata($key, $name);
+        $driver = $this->getDriver();
+        $driver->deleteMetadata($key, $name);
+        if ($this->hasEventListeners('itemDeleteMetadata')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemDeleteMetadataEvent($key, $name));
         }
-        $hooks->execute('dataItemDeleteMetadataDone', $key, $name);
-        $hooks->execute('dataItemChanged', $key);
+        if ($this->hasEventListeners('itemChange')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+        }
         return $this;
     }
 
@@ -450,21 +396,15 @@ class DataRepository
      */
     public function getMetadataList(string $key): \BearFramework\DataList
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $value = null;
-        $returnValue = null;
-        $hooks->execute('dataItemGetMetadataList', $key, $returnValue);
-        if ($returnValue instanceof \BearFramework\DataList) {
-            $value = $returnValue;
-        } else {
-            $driver = $this->getDriver();
-            $value = $driver->getMetadataList($key);
+        $driver = $this->getDriver();
+        $list = $driver->getMetadataList($key);
+        if ($this->hasEventListeners('itemGetMetadataList')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetMetadataListEvent($key, $list));
         }
-        $hooks->execute('dataItemGetMetadataListDone', $key, $value);
-        $hooks->execute('dataItemRequested', $key);
-        return $value;
+        if ($this->hasEventListeners('itemRequest')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+        }
+        return $list;
     }
 
     /**
@@ -476,22 +416,14 @@ class DataRepository
      */
     public function getList(): \BearFramework\DataList
     {
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $returnValue = null;
-        $hooks->execute('dataGetList', $returnValue);
-        if ($returnValue instanceof \BearFramework\DataList) {
-            $value = $returnValue;
-        } else {
-            $value = new \BearFramework\DataList(function($context) {
-                $driver = $this->getDriver();
-                return $driver->getList($context);
-            });
+        $list = new \BearFramework\DataList(function($context) {
+            $driver = $this->getDriver();
+            return $driver->getList($context);
+        });
+        if ($this->hasEventListeners('getList')) {
+            $this->dispatchEvent(new \BearFramework\App\Data\GetListEvent($list));
         }
-        $hooks->execute('dataGetListDone', $value);
-        $hooks->execute('dataListRequested');
-        return $value;
+        return $list;
     }
 
     /**
@@ -521,25 +453,10 @@ class DataRepository
         if ($this->filenameProtocol === null) {
             throw new \Exception('No filenameProtocol specified!');
         }
-        $app = App::get();
-        $hooks = $app->hooks;
-
-        $value = null;
-        $returnValue = null;
-        $preventDefault = false;
-        $hooks->execute('dataItemGetFilename', $key, $returnValue, $preventDefault);
-        if ($returnValue !== null) {
-            $value = $returnValue;
-        } else {
-            if (!$preventDefault) {
-                if (!$this->isValidKey($key)) {
-                    throw new \InvalidArgumentException('The key argument is not valid!');
-                }
-                $value = $this->filenameProtocol . '://' . $key;
-            }
+        if (!$this->isValidKey($key)) {
+            throw new \InvalidArgumentException('The key argument is not valid!');
         }
-        $hooks->execute('dataItemGetFilenameDone', $key, $value);
-        return $value;
+        return $this->filenameProtocol . '://' . $key;
     }
 
 }
