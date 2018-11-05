@@ -242,146 +242,173 @@ class DataTest extends BearFrameworkTestCase
      */
     public function testEvents()
     {
+
         $app = $this->getApp();
 
-        $changeCount = 0;
-        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEvent $event) use (&$changeCount) {
-            $changeCount++;
+        $eventsLogs = [];
+
+        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $event->key];
         });
 
-        $requestCount = 0;
-        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEvent $event) use (&$requestCount) {
-            $requestCount++;
+        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $event->key];
         });
 
-        $setDone = false;
-        $app->data->addEventListener('itemSet', function(\BearFramework\App\Data\ItemSetEvent $event) use (&$setDone) {
-            $this->assertEquals($event->item->key, 'key1');
-            $this->assertEquals($event->item->value, 'data1');
-            $setDone = true;
+        $app->data->addEventListener('itemSet', function(\BearFramework\App\Data\ItemSetEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['set', $event->item->key, $event->item->value];
         });
+
+        $app->data->addEventListener('itemSetMetadata', function(\BearFramework\App\Data\ItemSetMetadataEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['setMetadata', $event->key, $event->name, $event->value];
+        });
+
+        $app->data->addEventListener('itemGetMetadata', function(\BearFramework\App\Data\ItemGetMetadataEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getMetadata', $event->key, $event->name, $event->value];
+        });
+
+        $app->data->addEventListener('itemDeleteMetadata', function(\BearFramework\App\Data\ItemDeleteMetadataEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['deleteMetadata', $event->key, $event->name];
+        });
+
+        $app->data->addEventListener('itemGetMetadataList', function(\BearFramework\App\Data\ItemGetMetadataListEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getMetadataList', $event->key, get_class($event->list)];
+        });
+
+        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['setValue', $event->key, $event->value];
+        });
+
+        $app->data->addEventListener('itemGet', function(\BearFramework\App\Data\ItemGetEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['get', $event->item->key, $event->item->value];
+        });
+
+        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValue', $event->key, $event->value];
+        });
+
+        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['append', $event->key, $event->content];
+        });
+
+        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['exists', $event->key, $event->exists];
+        });
+
+        $app->data->addEventListener('itemDuplicate', function(\BearFramework\App\Data\ItemDuplicateEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['duplicate', $event->sourceKey, $event->destinationKey];
+        });
+
+        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['rename', $event->sourceKey, $event->destinationKey];
+        });
+
+        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['delete', $event->key];
+        });
+
+        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getList', get_class($event->list)];
+        });
+
+        $eventsLogs = [];
         $app->data->set($app->data->make('key1', 'data1'));
-        $this->assertTrue($setDone);
+        $this->assertEquals($eventsLogs, [
+            ['set', 'key1', 'data1'],
+            ['change', 'key1']
+        ]);
 
-        $setMetadataDone = false;
-        $app->data->addEventListener('itemSetMetadata', function(\BearFramework\App\Data\ItemSetMetadataEvent $event) use (&$setMetadataDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->name, 'name1');
-            $this->assertEquals($event->value, 'mdata1');
-            $setMetadataDone = true;
-        });
+        $eventsLogs = [];
         $app->data->setMetadata('key1', 'name1', 'mdata1');
-        $this->assertTrue($setMetadataDone);
+        $this->assertEquals($eventsLogs, [
+            ['setMetadata', 'key1', 'name1', 'mdata1'],
+            ['change', 'key1']
+        ]);
 
-        $getMetadataDone = false;
-        $app->data->addEventListener('itemGetMetadata', function(\BearFramework\App\Data\ItemGetMetadataEvent $event) use (&$getMetadataDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->name, 'name1');
-            $this->assertEquals($event->value, 'mdata1');
-            $getMetadataDone = true;
-        });
+        $eventsLogs = [];
         $app->data->getMetadata('key1', 'name1');
-        $this->assertTrue($getMetadataDone);
+        $this->assertEquals($eventsLogs, [
+            ['getMetadata', 'key1', 'name1', 'mdata1'],
+            ['request', 'key1']
+        ]);
 
-        $deleteMetadataDone = false;
-        $app->data->addEventListener('itemDeleteMetadata', function(\BearFramework\App\Data\ItemDeleteMetadataEvent $event) use (&$deleteMetadataDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->name, 'name1');
-            $deleteMetadataDone = true;
-        });
+        $eventsLogs = [];
         $app->data->deleteMetadata('key1', 'name1');
-        $this->assertTrue($deleteMetadataDone);
+        $this->assertEquals($eventsLogs, [
+            ['deleteMetadata', 'key1', 'name1'],
+            ['change', 'key1']
+        ]);
 
-        $getMetadataListDone = false;
-        $app->data->addEventListener('itemGetMetadataList', function(\BearFramework\App\Data\ItemGetMetadataListEvent $event) use (&$getMetadataListDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertTrue($event->list instanceof \BearFramework\DataList);
-            $getMetadataListDone = true;
-        });
+        $eventsLogs = [];
         $app->data->getMetadataList('key1');
-        $this->assertTrue($getMetadataListDone);
+        $this->assertEquals($eventsLogs, [
+            ['getMetadataList', 'key1', 'BearFramework\DataList'],
+            ['request', 'key1']
+        ]);
 
-        $setValueDone = false;
-        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$setValueDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->value, 'data2');
-            $setValueDone = true;
-        });
+        $eventsLogs = [];
         $app->data->setValue('key1', 'data2');
-        $this->assertTrue($setValueDone);
+        $this->assertEquals($eventsLogs, [
+            ['setValue', 'key1', 'data2'],
+            ['change', 'key1']
+        ]);
 
-        $getDone = false;
-        $app->data->addEventListener('itemGet', function(\BearFramework\App\Data\ItemGetEvent $event) use (&$getDone) {
-            $this->assertEquals($event->item->key, 'key1');
-            $this->assertEquals($event->item->value, 'data2');
-            $getDone = true;
-        });
+        $eventsLogs = [];
         $app->data->get('key1');
-        $this->assertTrue($getDone);
+        $this->assertEquals($eventsLogs, [
+            ['get', 'key1', 'data2'],
+            ['request', 'key1']
+        ]);
 
-        $getValueDone = false;
-        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEvent $event) use (&$getValueDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->value, 'data2');
-            $getValueDone = true;
-        });
+        $eventsLogs = [];
         $app->data->getValue('key1');
-        $this->assertTrue($getValueDone);
+        $this->assertEquals($eventsLogs, [
+            ['getValue', 'key1', 'data2'],
+            ['request', 'key1']
+        ]);
 
-        $appendDone = false;
-        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEvent $event) use (&$appendDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->content, 'data3');
-            $appendDone = true;
-        });
+        $eventsLogs = [];
         $app->data->append('key1', 'data3');
-        $this->assertTrue($appendDone);
+        $this->assertEquals($eventsLogs, [
+            ['append', 'key1', 'data3'],
+            ['change', 'key1']
+        ]);
 
-        $existsDone = false;
-        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEvent $event) use (&$existsDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->exists, true);
-            $existsDone = true;
-        });
+        $eventsLogs = [];
         $app->data->exists('key1');
-        $this->assertTrue($existsDone);
+        $this->assertEquals($eventsLogs, [
+            ['exists', 'key1', true],
+            ['request', 'key1']
+        ]);
 
-        $duplicateDone = false;
-        $app->data->addEventListener('itemDuplicate', function(\BearFramework\App\Data\ItemDuplicateEvent $event) use (&$duplicateDone) {
-            $this->assertEquals($event->sourceKey, 'key1');
-            $this->assertEquals($event->destinationKey, 'key2');
-            $duplicateDone = true;
-        });
+        $eventsLogs = [];
         $app->data->duplicate('key1', 'key2');
-        $this->assertTrue($duplicateDone);
+        $this->assertEquals($eventsLogs, [
+            ['duplicate', 'key1', 'key2'],
+            ['request', 'key1'],
+            ['change', 'key2'],
+        ]);
 
-        $renameDone = false;
-        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEvent $event) use (&$renameDone) {
-            $this->assertEquals($event->sourceKey, 'key2');
-            $this->assertEquals($event->destinationKey, 'key3');
-            $renameDone = true;
-        });
+        $eventsLogs = [];
         $app->data->rename('key2', 'key3');
-        $this->assertTrue($renameDone);
+        $this->assertEquals($eventsLogs, [
+            ['rename', 'key2', 'key3'],
+            ['change', 'key2'],
+            ['change', 'key3'],
+        ]);
 
-        $deleteDone = false;
-        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEvent $event) use (&$deleteDone) {
-            $this->assertEquals($event->key, 'key1');
-            $deleteDone = true;
-        });
+        $eventsLogs = [];
         $app->data->delete('key1');
-        $this->assertTrue($deleteDone);
+        $this->assertEquals($eventsLogs, [
+            ['delete', 'key1'],
+            ['change', 'key1'],
+        ]);
 
-        $getListDone = false;
-        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEvent $event) use (&$getListDone) {
-            $this->assertTrue($event->list instanceof \BearFramework\DataList);
-            $getListDone = true;
-        });
+        $eventsLogs = [];
         $app->data->getList();
-        $this->assertTrue($getListDone);
-
-        $this->assertEquals($changeCount, 9); // set + setMetadata + deleteMetadata + setValue + append + duplicate + rename*2 + delete
-        $this->assertEquals($requestCount, 6); // getMetadata + itemGetMetadataList + get + getValue + exists + duplicate
+        $this->assertEquals($eventsLogs, [
+            ['getList', 'BearFramework\DataList']
+        ]);
     }
 
     /**

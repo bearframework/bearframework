@@ -89,71 +89,80 @@ class CacheTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $changeCount = 0;
-        $app->cache->addEventListener('itemChange', function(\BearFramework\App\Cache\ItemChangeEvent $event) use (&$changeCount) {
-            $this->assertEquals($event->key, 'key1');
-            $changeCount++;
+        $eventsLogs = [];
+
+        $app->cache->addEventListener('itemChange', function(\BearFramework\App\Cache\ItemChangeEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $event->key];
         });
 
-        $requestCount = 0;
-        $app->cache->addEventListener('itemRequest', function(\BearFramework\App\Cache\ItemRequestEvent $event) use (&$requestCount) {
-            $this->assertEquals($event->key, 'key1');
-            $requestCount++;
+        $app->cache->addEventListener('itemRequest', function(\BearFramework\App\Cache\ItemRequestEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $event->key];
         });
 
-        $setDone = false;
-        $app->cache->addEventListener('itemSet', function(\BearFramework\App\Cache\ItemSetEvent $event) use (&$setDone) {
-            $this->assertEquals($event->item->key, 'key1');
-            $this->assertEquals($event->item->value, 'data1');
-            $setDone = true;
+        $app->cache->addEventListener('itemSet', function(\BearFramework\App\Cache\ItemSetEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['set', $event->item->key, $event->item->value];
         });
+
+        $app->cache->addEventListener('itemGet', function(\BearFramework\App\Cache\ItemGetEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['get', $event->item->key, $event->item->value];
+        });
+
+        $app->cache->addEventListener('itemGetValue', function(\BearFramework\App\Cache\ItemGetValueEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValue', $event->key, $event->value];
+        });
+
+        $app->cache->addEventListener('itemExists', function(\BearFramework\App\Cache\ItemExistsEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['exists', $event->key, $event->exists];
+        });
+
+        $app->cache->addEventListener('itemDelete', function(\BearFramework\App\Cache\ItemDeleteEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['delete', $event->key];
+        });
+
+        $app->cache->addEventListener('clear', function(\BearFramework\App\Cache\ClearEvent $event) use (&$eventsLogs) {
+            $eventsLogs[] = ['clear'];
+        });
+
+        $eventsLogs = [];
         $app->cache->set($app->cache->make('key1', 'data1'));
-        $this->assertTrue($setDone);
+        $this->assertEquals($eventsLogs, [
+            ['set', 'key1', 'data1'],
+            ['change', 'key1']
+        ]);
 
-        $getDone = false;
-        $app->cache->addEventListener('itemGet', function(\BearFramework\App\Cache\ItemGetEvent $event) use (&$getDone) {
-            $this->assertEquals($event->item->key, 'key1');
-            $this->assertEquals($event->item->value, 'data1');
-            $getDone = true;
-        });
+        $eventsLogs = [];
         $app->cache->get('key1');
-        $this->assertTrue($getDone);
+        $this->assertEquals($eventsLogs, [
+            ['get', 'key1', 'data1'],
+            ['request', 'key1']
+        ]);
 
-        $getValueDone = false;
-        $app->cache->addEventListener('itemGetValue', function(\BearFramework\App\Cache\ItemGetValueEvent $event) use (&$getValueDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->value, 'data1');
-            $getValueDone = true;
-        });
+        $eventsLogs = [];
         $app->cache->getValue('key1');
-        $this->assertTrue($getValueDone);
+        $this->assertEquals($eventsLogs, [
+            ['getValue', 'key1', 'data1'],
+            ['request', 'key1']
+        ]);
 
-        $existsDone = false;
-        $app->cache->addEventListener('itemExists', function(\BearFramework\App\Cache\ItemExistsEvent $event) use (&$existsDone) {
-            $this->assertEquals($event->key, 'key1');
-            $this->assertEquals($event->exists, true);
-            $existsDone = true;
-        });
+        $eventsLogs = [];
         $app->cache->exists('key1');
-        $this->assertTrue($existsDone);
+        $this->assertEquals($eventsLogs, [
+            ['exists', 'key1', true],
+            ['request', 'key1']
+        ]);
 
-        $deleteDone = false;
-        $app->cache->addEventListener('itemDelete', function(\BearFramework\App\Cache\ItemDeleteEvent $event) use (&$deleteDone) {
-            $this->assertEquals($event->key, 'key1');
-            $deleteDone = true;
-        });
+        $eventsLogs = [];
         $app->cache->delete('key1');
-        $this->assertTrue($deleteDone);
+        $this->assertEquals($eventsLogs, [
+            ['delete', 'key1'],
+            ['change', 'key1'],
+        ]);
 
-        $clearDone = false;
-        $app->cache->addEventListener('clear', function(\BearFramework\App\Cache\ClearEvent $event) use (&$clearDone) {
-            $clearDone = true;
-        });
+        $eventsLogs = [];
         $app->cache->clear();
-        $this->assertTrue($clearDone);
-
-        $this->assertEquals($changeCount, 2); // set + delete
-        $this->assertEquals($requestCount, 3); // get + getValue + exists
+        $this->assertEquals($eventsLogs, [
+            ['clear']
+        ]);
     }
 
 }
