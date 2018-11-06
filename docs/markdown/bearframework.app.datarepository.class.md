@@ -4,7 +4,7 @@ Data storage
 
 ## Methods
 
-##### public [__construct](bearframework.app.datarepository.__construct.method.md) ( [ array $options = [] ] )
+##### public [__construct](bearframework.app.datarepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app [, array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data repository.
 

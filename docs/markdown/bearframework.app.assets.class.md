@@ -4,7 +4,7 @@ Provides utility functions for assets.
 
 ## Methods
 
-##### public [__construct](bearframework.app.assets.__construct.method.md) ( void )
+##### public [__construct](bearframework.app.assets.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
 
 ##### public self [addDir](bearframework.app.assets.adddir.method.md) ( string $pathname )
 

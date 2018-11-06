@@ -4,6 +4,8 @@ Data cache
 
 ## Methods
 
+##### public [__construct](bearframework.app.cacherepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
+
 ##### public void [addEventListener](bearframework.app.cacherepository.addeventlistener.method.md) ( string $name , callable $listener )
 
 ##### public void [clear](bearframework.app.cacherepository.clear.method.md) ( void )

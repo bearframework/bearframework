@@ -1,10 +1,12 @@
 # BearFramework\App\ErrorHandler::handleFatalError
 
 ```php
-public static void handleFatalError ( array $errorData , array $options )
+public static void handleFatalError ( BearFramework\App $app , array $errorData , array $options )
 ```
 
 ## Parameters
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$errorData`
 

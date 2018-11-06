@@ -4,9 +4,9 @@ The default error handler.
 
 ## Methods
 
-##### public static void [handleException](bearframework.app.errorhandler.handleexception.method.md) ( [Throwable](http://php.net/manual/en/class.throwable.php) $exception , array $options )
+##### public static void [handleException](bearframework.app.errorhandler.handleexception.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , [Throwable](http://php.net/manual/en/class.throwable.php) $exception , array $options )
 
-##### public static void [handleFatalError](bearframework.app.errorhandler.handlefatalerror.method.md) ( array $errorData , array $options )
+##### public static void [handleFatalError](bearframework.app.errorhandler.handlefatalerror.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , array $errorData , array $options )
 
 ## Details
 

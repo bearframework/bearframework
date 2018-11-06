@@ -18,7 +18,7 @@ Provides information about addons and application location and utility functions
 
 ## Methods
 
-##### public [__construct](bearframework.app.context.__construct.method.md) ( string $dir )
+##### public [__construct](bearframework.app.context.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
 
 ##### public array [toArray](bearframework.app.context.toarray.method.md) ( void )
 

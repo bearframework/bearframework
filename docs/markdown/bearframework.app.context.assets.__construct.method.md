@@ -1,10 +1,12 @@
 # BearFramework\App\Context\Assets::__construct
 
 ```php
-public __construct ( string $dir )
+public __construct ( BearFramework\App $app , string $dir )
 ```
 
 ## Parameters
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
 

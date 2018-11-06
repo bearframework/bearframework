@@ -1,10 +1,12 @@
 # BearFramework\App\ErrorHandler::handleException
 
 ```php
-public static void handleException ( Throwable $exception , array $options )
+public static void handleException ( BearFramework\App $app , Throwable $exception , array $options )
 ```
 
 ## Parameters
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$exception`
 

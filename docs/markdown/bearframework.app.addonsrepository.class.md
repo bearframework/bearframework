@@ -4,6 +4,8 @@ Provides a way to enable addons.
 
 ## Methods
 
+##### public [__construct](bearframework.app.addonsrepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
+
 ##### public self [add](bearframework.app.addonsrepository.add.method.md) ( string $id )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables an addon.

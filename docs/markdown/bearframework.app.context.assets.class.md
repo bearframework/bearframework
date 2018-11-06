@@ -4,7 +4,7 @@ Provides utility functions for assets in the current context.
 
 ## Methods
 
-##### public [__construct](bearframework.app.context.assets.__construct.method.md) ( string $dir )
+##### public [__construct](bearframework.app.context.assets.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
 
 ##### public self [addDir](bearframework.app.context.assets.adddir.method.md) ( string $pathname )
 
@@ -17,6 +17,12 @@ Provides utility functions for assets in the current context.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the content of the file specified in the current context.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The content of the file or null if file does not exists.
+
+##### public array [getDetails](bearframework.app.context.assets.getdetails.method.md) ( string $filename , array $list )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of details for the filename specifie in the current context.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A list of tails for the filename specified.
 
 ##### public string [getUrl](bearframework.app.context.assets.geturl.method.md) ( string $filename [, array $options = [] ] )
 

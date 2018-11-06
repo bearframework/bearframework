@@ -4,7 +4,7 @@ Provides functionality for autoloading classes in the current context.
 
 ## Methods
 
-##### public [__construct](bearframework.app.context.classes.__construct.method.md) ( string $dir )
+##### public [__construct](bearframework.app.context.classes.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
 
 ##### public self [add](bearframework.app.context.classes.add.method.md) ( string $class , string $filename )
 

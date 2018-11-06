@@ -4,6 +4,8 @@ Provides information about your code context (the directory its located).
 
 ## Methods
 
+##### public [__construct](bearframework.app.contextsrepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
+
 ##### public self [add](bearframework.app.contextsrepository.add.method.md) ( string $dir )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new context dir.
