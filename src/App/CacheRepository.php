@@ -14,6 +14,14 @@ use BearFramework\App;
 
 /**
  * Data cache
+ * @event \BearFramework\App\Cache\ItemRequestEvent itemRequest An event dispatched after a cache item is requested.
+ * @event \BearFramework\App\Cache\ItemChangeEvent itemChange An event dispatched after a cache item is changed.
+ * @event \BearFramework\App\Cache\ItemSetEvent itemSet An event dispatched after a cache item is added or updated.
+ * @event \BearFramework\App\Cache\ItemGetEvent itemGet An event dispatched after a cache item is requested.
+ * @event \BearFramework\App\Cache\ItemGetValueEvent itemGetValue An event dispatched after the value of a cache item is requested.
+ * @event \BearFramework\App\Cache\ItemExistsEvent itemExists An event dispatched after a cache item is checked for existence.
+ * @event \BearFramework\App\Cache\ItemDeleteEvent itemDelete An event dispatched after a cache item is deleted.
+ * @event \BearFramework\App\Cache\ClearEvent clear An event dispatched after the cache is cleared.
  */
 class CacheRepository
 {

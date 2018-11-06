@@ -26,6 +26,8 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Urls $urls URLs utilities.
  * @property-read \BearFramework\App\ContextsRepository $context Provides information about your code context (the directory its located).
  * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
+ * @event \Bearframework\App\BeforeSendResponseEvent beforeSendResponse An event dispatched before the response is sent to the client.
+ * @event \BearFramework\App\SendResponseEvent sendResponse An event dispatched after the response is sent to the client.
  */
 class App
 {
@@ -165,7 +167,7 @@ class App
     /**
      * Returns the application instance.
      * 
-     * @return \BearFramework\App
+     * @return \BearFramework\App The application instance.
      * @throws \Exception
      */
     static function get(): \BearFramework\App

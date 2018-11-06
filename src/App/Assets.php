@@ -13,6 +13,12 @@ use BearFramework\App;
 
 /**
  * Provides utility functions for assets.
+ * @event \BearFramework\App\Assets\BeforeGetUrlEvent beforeGetUrl An event dispatched before the URL of the asset specified is created.
+ * @event \BearFramework\App\Assets\GetUrlEvent getUrl An event dispatched after the URL of the asset specified is created.
+ * @event \BearFramework\App\Assets\BeforePrepareEvent beforePrepare An event dispatched before the asset specified is prepared for returning (resized for example).
+ * @event \BearFramework\App\Assets\PrepareEvent prepare An event dispatched after the asset specified is prepared for returning (resized for example)
+ * @event \BearFramework\App\Assets\BeforeGetDetailsEvent beforeGetDetails An event dispatched before the details of the asset specified is created.
+ * @event \BearFramework\App\Assets\GetDetailsEvent getDetails An event dispatched after the details of the asset specified is created.
  */
 class Assets
 {
