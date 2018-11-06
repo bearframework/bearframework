@@ -44,6 +44,11 @@ class ContextTest extends BearFrameworkTestCase
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
 
+        $this->assertEquals($context->assets->getDetails('assets/logo.png', ['width', 'height']), [
+            'width' => 100,
+            'height' => 70
+        ]);
+
         $filename = 'assets/file.svg';
         $this->makeFile($context->dir . '/' . $filename, 'sample-svg-content');
         $content = $context->assets->getContent($filename);

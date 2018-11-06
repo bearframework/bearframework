@@ -76,4 +76,16 @@ class Assets
         return $this->appAssets->getContent($this->dir . '/' . $filename, $options);
     }
 
+    /**
+     * Returns a list of details for the filename specifie in the current context.
+     * 
+     * @param string $filename The filename of the asset.
+     * @param array $list A list of details to return. Available values: mimeType, size, width, height.
+     * @return array A list of tails for the filename specified.
+     */
+    public function getDetails(string $filename, array $list): array
+    {
+        return $this->appAssets->getDetails($this->dir . '/' . $filename, $list);
+    }
+
 }
