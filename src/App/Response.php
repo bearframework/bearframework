@@ -18,7 +18,7 @@ use BearFramework\App;
  * @property int|null $statusCode The response status code.
  * @property string $charset The response character set.
  * @property-read \BearFramework\App\Response\HeadersRepository $headers The response headers.
- * @property-read \BearFramework\App\Response\Cookies $cookies The response cookies.
+ * @property-read \BearFramework\App\Response\CookiesRepository $cookies The response cookies.
  */
 class Response
 {
