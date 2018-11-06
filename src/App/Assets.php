@@ -56,10 +56,18 @@ class Assets
     private $lastPathPrefix = null;
 
     /**
-     * 
+     *
+     * @var \BearFramework\App 
      */
-    public function __construct()
+    private $app = null;
+
+    /**
+     * 
+     * @param \BearFramework\App $app
+     */
+    public function __construct(\BearFramework\App $app)
     {
+        $this->app = $app;
         $this->setPathPrefix('/assets/');
     }
 
@@ -73,10 +81,9 @@ class Assets
         $this->lastPathPrefix = $pathPrefix;
         if (!isset($this->pathPrefixes[$pathPrefix])) {
             $this->pathPrefixes[$pathPrefix] = true;
-            $app = App::get();
-            $app->routes
-                    ->add($this->lastPathPrefix . '*', function() use ($app) {
-                        $response = $this->getResponse($app->request);
+            $this->app->routes
+                    ->add($this->lastPathPrefix . '*', function(\BearFramework\App\Request $request) {
+                        $response = $this->getResponse($request);
                         if ($response !== null) {
                             return $response;
                         }
@@ -126,8 +133,6 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        $app = App::get();
-
         $url = null;
         if ($this->hasEventListeners('beforeGetUrl')) {
             $event = new \BearFramework\App\Assets\BeforeGetUrlEvent($filename, $options);
@@ -198,7 +203,7 @@ class Assets
                     }
                 }
             }
-            $url = $this->cache[$fileDirCacheKey] === false ? null : $app->urls->get($this->lastPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
+            $url = $this->cache[$fileDirCacheKey] === false ? null : $this->app->urls->get($this->lastPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
         }
 
         if ($this->hasEventListeners('getUrl')) {
@@ -226,7 +231,6 @@ class Assets
         if (!empty($options)) {
             $this->validateOptions($options);
         }
-        $app = App::get();
         $urlOptions = [];
         if (isset($options['width'])) {
             $urlOptions['width'] = $options['width'];
@@ -238,7 +242,7 @@ class Assets
             $urlOptions['outputType'] = $options['outputType'];
         }
         $url = $this->getUrl($filename, $urlOptions);
-        $path = substr($url, strlen($app->request->base));
+        $path = substr($url, strlen($this->app->request->base));
 
         $request = new \BearFramework\App\Request();
         $request->path->set($path);
@@ -382,8 +386,6 @@ class Assets
      */
     private function prepare(string $filename, array $options = []): ?string
     {
-        $app = App::get();
-
         if (!empty($options)) {
             $this->validateOptions($options);
         }
@@ -408,7 +410,7 @@ class Assets
                 if (isset($options['outputType'])) {
                     $extension = $options['outputType'];
                 }
-                $tempFilename = $app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+                $tempFilename = $this->app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
                 if (!is_file($tempFilename)) {
                     $this->resize($filename, $tempFilename, [
                         'width' => (isset($options['width']) ? $options['width'] : null),

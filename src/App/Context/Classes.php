@@ -27,16 +27,17 @@ class Classes
      *
      * @var \BearFramework\App\ClassesRepository 
      */
-    private static $appClassesReference = null;
+    private $appClasses = null;
 
     /**
      * 
+     * @param \BearFramework\App $app
      * @param string $dir The directory where the current addon or application are located.
      */
-    public function __construct(string $dir)
+    public function __construct(\BearFramework\App $app, string $dir)
     {
         $this->dir = str_replace('\\', '/', $dir);
-        self::$appClassesReference = App::get()->classes;
+        $this->appClasses = $app->classes;
     }
 
     /**
@@ -48,7 +49,7 @@ class Classes
      */
     public function add(string $class, string $filename): self
     {
-        self::$appClassesReference->add($class, $this->dir . '/' . $filename);
+        $this->appClasses->add($class, $this->dir . '/' . $filename);
         return $this;
     }
 

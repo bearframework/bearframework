@@ -20,11 +20,12 @@ class ErrorHandler
 
     /**
      * 
+     * @param \BearFramework\App $app
      * @param \Throwable $exception
      * @param array $options
      * @return void No value is returned.
      */
-    static function handleException(\Throwable $exception, array $options): void
+    static function handleException(\BearFramework\App $app, \Throwable $exception, array $options): void
     {
         $errors = [];
         while ($exception instanceof \Exception) {
@@ -39,11 +40,12 @@ class ErrorHandler
 
     /**
      * 
+     * @param \BearFramework\App $app
      * @param array $errorData
      * @param array $options
      * @return void No value is returned.
      */
-    static function handleFatalError(array $errorData, array $options): void
+    static function handleFatalError(\BearFramework\App $app, array $errorData, array $options): void
     {
         if (ob_get_length() > 0) {
             ob_end_clean();
@@ -56,16 +58,16 @@ class ErrorHandler
 
     /**
      * 
+     * @param \BearFramework\App $app
      * @param array $errors
      * @param array $options
      * @return void No value is returned.
      */
-    static private function handleErrors(array $errors, $options): void
+    static private function handleErrors(\BearFramework\App $app, array $errors, $options): void
     {
         $logErrors = isset($options['logErrors']) && (bool) $options['logErrors'] === true;
         $displayErrors = isset($options['displayErrors']) && (bool) $options['displayErrors'] === true;
 
-        $app = App::get();
         $logKey = uniqid();
 
         $simpleLog = '';

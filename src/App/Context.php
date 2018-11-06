@@ -27,9 +27,10 @@ class Context
 
     /**
      * 
+     * @param \BearFramework\App $app
      * @param string $dir The directory where the current addon or application are located .
      */
-    public function __construct(string $dir)
+    public function __construct(\BearFramework\App $app, string $dir)
     {
         $this
                 ->defineProperty('dir', [
@@ -39,17 +40,17 @@ class Context
                     'readonly' => true
                 ])
                 ->defineProperty('assets', [
-                    'init' => function() use ($dir) {
-                        return new App\Context\Assets($dir);
+                    'init' => function() use ($app, $dir) {
+                        return new App\Context\Assets($app, $dir);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('classes', [
-                    'init' => function() use ($dir) {
-                        return new App\Context\Classes($dir);
+                    'init' => function() use ($app, $dir) {
+                        return new App\Context\Classes($app, $dir);
                     },
                     'readonly' => true
-                ]);
+        ]);
     }
 
 }

@@ -87,25 +87,25 @@ class App
                 ])
                 ->defineProperty('addons', [
                     'init' => function() {
-                        return new App\AddonsRepository();
+                        return new App\AddonsRepository($this);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('assets', [
                     'init' => function() {
-                        return new App\Assets();
+                        return new App\Assets($this);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('data', [
                     'init' => function() {
-                        return new App\DataRepository(['filenameProtocol' => 'appdata']);
+                        return new App\DataRepository($this, ['filenameProtocol' => 'appdata']);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('cache', [
                     'init' => function() {
-                        return new App\CacheRepository();
+                        return new App\CacheRepository($this);
                     },
                     'readonly' => true
                 ])
@@ -117,13 +117,13 @@ class App
                 ])
                 ->defineProperty('urls', [
                     'init' => function() {
-                        return new App\Urls();
+                        return new App\Urls($this);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('context', [
                     'init' => function() {
-                        return new App\ContextsRepository();
+                        return new App\ContextsRepository($this);
                     },
                     'readonly' => true
                 ])
@@ -191,12 +191,12 @@ class App
             throw new \Exception('The error handler is already enabled!');
         }
         set_exception_handler(function($exception) use ($options) {
-            \BearFramework\App\ErrorHandler::handleException($exception, $options);
+            \BearFramework\App\ErrorHandler::handleException($this, $exception, $options);
         });
         register_shutdown_function(function() use ($options) {
             $errorData = error_get_last();
             if (is_array($errorData)) {
-                \BearFramework\App\ErrorHandler::handleFatalError($errorData, $options);
+                \BearFramework\App\ErrorHandler::handleFatalError($this, $errorData, $options);
             }
         });
         set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {

@@ -23,7 +23,7 @@ class CookiesRepository
     /**
      *
      */
-    private static $newCookieCache = null;
+    private $newCookieCache = null;
 
     /**
      * Constructs a new cookie and returns it.
@@ -34,10 +34,10 @@ class CookiesRepository
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Response\Cookie
     {
-        if (self::$newCookieCache === null) {
-            self::$newCookieCache = new \BearFramework\App\Response\Cookie();
+        if ($this->newCookieCache === null) {
+            $this->newCookieCache = new \BearFramework\App\Response\Cookie();
         }
-        $object = clone(self::$newCookieCache);
+        $object = clone($this->newCookieCache);
         if ($name !== null) {
             $object->name = $name;
         }

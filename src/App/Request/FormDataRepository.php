@@ -26,7 +26,7 @@ class FormDataRepository
     /**
      *
      */
-    private static $newFormDataItemCache = null;
+    private $newFormDataItemCache = null;
 
     /**
      * Constructs a new form data item and returns it.
@@ -37,10 +37,10 @@ class FormDataRepository
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\FormDataItem
     {
-        if (self::$newFormDataItemCache === null) {
-            self::$newFormDataItemCache = new \BearFramework\App\Request\FormDataItem();
+        if ($this->newFormDataItemCache === null) {
+            $this->newFormDataItemCache = new \BearFramework\App\Request\FormDataItem();
         }
-        $object = clone(self::$newFormDataItemCache);
+        $object = clone($this->newFormDataItemCache);
         if ($name !== null) {
             $object->name = $name;
         }

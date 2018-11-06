@@ -40,7 +40,7 @@ class DataRepository
      *
      * @var ?\BearFramework\App\DataItem 
      */
-    private static $newDataItemCache = null;
+    private $newDataItemCache = null;
 
     /**
      *
@@ -55,13 +55,21 @@ class DataRepository
     private $filenameProtocol = null;
 
     /**
+     *
+     * @var \BearFramework\App 
+     */
+    private $app = null;
+
+    /**
      * Constructs a new data repository.
      * 
+     * @param \BearFramework\App $app
      * @param array $options Available options: filenameProtocol - a protocol used for working with data items as files.
      * @throws \Exception
      */
-    public function __construct(array $options = [])
+    public function __construct(\BearFramework\App $app, array $options = [])
     {
+        $this->app = $app;
         if (isset($options['filenameProtocol'])) {
             if (is_string($options['filenameProtocol'])) {
                 $this->filenameProtocol = $options['filenameProtocol'];
@@ -97,8 +105,7 @@ class DataRepository
         }
         $this->driver = $driver;
         if ($this->filenameProtocol !== null) {
-            $app = App::get();
-            \BearFramework\App\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$app, $this, $driver];
+            \BearFramework\App\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$this->app, $this, $driver];
         }
     }
 
@@ -125,10 +132,10 @@ class DataRepository
      */
     public function make(string $key = null, string $value = null): \BearFramework\App\DataItem
     {
-        if (self::$newDataItemCache === null) {
-            self::$newDataItemCache = new \BearFramework\App\DataItem();
+        if ($this->newDataItemCache === null) {
+            $this->newDataItemCache = new \BearFramework\App\DataItem();
         }
-        $object = clone(self::$newDataItemCache);
+        $object = clone($this->newDataItemCache);
         if ($key !== null) {
             $object->key = $key;
         }

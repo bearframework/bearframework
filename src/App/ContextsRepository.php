@@ -27,7 +27,22 @@ class ContextsRepository
      *
      * @var array 
      */
-    private static $objectsCache = [];
+    private $objectsCache = [];
+
+    /**
+     *
+     * @var \BearFramework\App 
+     */
+    private $app = null;
+
+    /**
+     * 
+     * @param \BearFramework\App $app
+     */
+    public function __construct(\BearFramework\App $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * Returns a context object for the filename specified.
@@ -46,8 +61,8 @@ class ContextsRepository
             $filename = $trace[0]['file'];
         }
         $filename = str_replace('\\', '/', $filename);
-        if (isset(self::$objectsCache[$filename])) {
-            return clone(self::$objectsCache[$filename]);
+        if (isset($this->objectsCache[$filename])) {
+            return clone($this->objectsCache[$filename]);
         }
         $matchedDir = null;
         foreach ($this->dirs as $dir => $length) {
@@ -57,12 +72,12 @@ class ContextsRepository
             }
         }
         if ($matchedDir !== null) {
-            if (isset(self::$objectsCache[$matchedDir])) {
-                return clone(self::$objectsCache[$matchedDir]);
+            if (isset($this->objectsCache[$matchedDir])) {
+                return clone($this->objectsCache[$matchedDir]);
             }
-            self::$objectsCache[$matchedDir] = new App\Context(substr($matchedDir, 0, -1));
-            self::$objectsCache[$filename] = clone(self::$objectsCache[$matchedDir]);
-            return clone(self::$objectsCache[$matchedDir]);
+            $this->objectsCache[$matchedDir] = new App\Context($this->app, substr($matchedDir, 0, -1));
+            $this->objectsCache[$filename] = clone($this->objectsCache[$matchedDir]);
+            return clone($this->objectsCache[$matchedDir]);
         }
         throw new \Exception('Connot find context for ' . $filename);
     }

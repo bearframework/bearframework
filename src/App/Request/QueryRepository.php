@@ -23,7 +23,7 @@ class QueryRepository
     /**
      *
      */
-    private static $newQueryItemCache = null;
+    private $newQueryItemCache = null;
 
     /**
      * Constructs a new query item and returns it.
@@ -34,10 +34,10 @@ class QueryRepository
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\QueryItem
     {
-        if (self::$newQueryItemCache === null) {
-            self::$newQueryItemCache = new \BearFramework\App\Request\QueryItem();
+        if ($this->newQueryItemCache === null) {
+            $this->newQueryItemCache = new \BearFramework\App\Request\QueryItem();
         }
-        $object = clone(self::$newQueryItemCache);
+        $object = clone($this->newQueryItemCache);
         if ($name !== null) {
             $object->name = $name;
         }

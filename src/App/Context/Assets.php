@@ -27,16 +27,17 @@ class Assets
      *
      * @var \BearFramework\App\Assets 
      */
-    private static $appAssetsReference = null;
+    private $appAssets = null;
 
     /**
      * 
+     * @param \BearFramework\App $app
      * @param string $dir The directory where the current addon or application are located.
      */
-    public function __construct(string $dir)
+    public function __construct(\BearFramework\App $app, string $dir)
     {
         $this->dir = str_replace('\\', '/', $dir);
-        self::$appAssetsReference = App::get()->assets;
+        $this->appAssets = $app->assets;
     }
 
     /**
@@ -47,7 +48,7 @@ class Assets
      */
     public function addDir(string $pathname): self
     {
-        self::$appAssetsReference->addDir($this->dir . '/' . $pathname);
+        $this->appAssets->addDir($this->dir . '/' . $pathname);
         return $this;
     }
 
@@ -60,7 +61,7 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
-        return self::$appAssetsReference->getUrl($this->dir . '/' . $filename, $options);
+        return $this->appAssets->getUrl($this->dir . '/' . $filename, $options);
     }
 
     /**
@@ -72,7 +73,7 @@ class Assets
      */
     public function getContent(string $filename, array $options = []): ?string
     {
-        return self::$appAssetsReference->getContent($this->dir . '/' . $filename, $options);
+        return $this->appAssets->getContent($this->dir . '/' . $filename, $options);
     }
 
 }

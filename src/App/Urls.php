@@ -18,6 +18,21 @@ class Urls
 {
 
     /**
+     *
+     * @var \BearFramework\App 
+     */
+    private $app = null;
+
+    /**
+     * 
+     * @param \BearFramework\App $app
+     */
+    public function __construct(\BearFramework\App $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
      * Constructs a url for the path specified.
      * 
      * @param string $path The path.
@@ -26,8 +41,7 @@ class Urls
      */
     public function get(string $path = '/', bool $encode = true)
     {
-        $app = App::get();
-        return $app->request->base . ($encode ? implode('/', array_map('urlencode', explode('/', $path))) : $path);
+        return $this->app->request->base . ($encode ? implode('/', array_map('urlencode', explode('/', $path))) : $path);
     }
 
 }

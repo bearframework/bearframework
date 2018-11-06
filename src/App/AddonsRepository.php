@@ -24,6 +24,21 @@ class AddonsRepository
     private $data = [];
 
     /**
+     *
+     * @var \BearFramework\App 
+     */
+    private $app = null;
+
+    /**
+     * 
+     * @param \BearFramework\App $app
+     */
+    public function __construct(\BearFramework\App $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
      * Enables an addon.
      * 
      * @param string $id The id of the addon.
@@ -37,7 +52,6 @@ class AddonsRepository
             if ($registeredAddon === null) {
                 throw new \Exception('The addon ' . $id . ' is not registered!');
             }
-            $app = App::get();
             $registeredAddonOptions = $registeredAddon->options;
             if (isset($registeredAddonOptions['require']) && is_array($registeredAddonOptions['require'])) {
                 foreach ($registeredAddonOptions['require'] as $requiredAddonID) {
@@ -49,7 +63,7 @@ class AddonsRepository
 
             $dir = $registeredAddon->dir;
             $this->data[$id] = new \BearFramework\App\Addon($id, $dir);
-            $app->context->add($dir);
+            $this->app->context->add($dir);
         }
         return $this;
     }

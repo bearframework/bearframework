@@ -31,7 +31,7 @@ class CacheRepository
     /**
      *
      */
-    private static $newCacheItemCache = null;
+    private $newCacheItemCache = null;
 
     /**
      *
@@ -40,14 +40,28 @@ class CacheRepository
     private $driver = null;
 
     /**
+     *
+     * @var \BearFramework\App 
+     */
+    private $app = null;
+
+    /**
+     * 
+     * @param \BearFramework\App $app
+     */
+    public function __construct(\BearFramework\App $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
      * Enables the app cache driver. The cached data will be stored in the app data repository.
      * 
      * @return void No value is returned.
      */
     public function useAppDataDriver(): void
     {
-        $app = App::get();
-        $this->setDriver(new \BearFramework\App\DataCacheDriver($app->data));
+        $this->setDriver(new \BearFramework\App\DataCacheDriver($this->app->data));
     }
 
     /**
@@ -88,10 +102,10 @@ class CacheRepository
      */
     public function make(string $key = null, $value = null): \BearFramework\App\CacheItem
     {
-        if (self::$newCacheItemCache === null) {
-            self::$newCacheItemCache = new CacheItem();
+        if ($this->newCacheItemCache === null) {
+            $this->newCacheItemCache = new CacheItem();
         }
-        $object = clone(self::$newCacheItemCache);
+        $object = clone($this->newCacheItemCache);
         if ($key !== null) {
             $object->key = $key;
         }

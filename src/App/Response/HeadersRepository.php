@@ -23,7 +23,7 @@ class HeadersRepository
     /**
      *
      */
-    private static $newHeaderCache = null;
+    private $newHeaderCache = null;
 
     /**
      * Constructs a new header and returns it.
@@ -34,10 +34,10 @@ class HeadersRepository
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Response\Header
     {
-        if (self::$newHeaderCache === null) {
-            self::$newHeaderCache = new \BearFramework\App\Response\Header();
+        if ($this->newHeaderCache === null) {
+            $this->newHeaderCache = new \BearFramework\App\Response\Header();
         }
-        $object = clone(self::$newHeaderCache);
+        $object = clone($this->newHeaderCache);
         if ($name !== null) {
             $object->name = $name;
         }

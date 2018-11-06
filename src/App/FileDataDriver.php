@@ -32,7 +32,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      *
      * @var ?\BearFramework\App\DataItem 
      */
-    private static $newDataItemCache = null;
+    private $newDataItemCache = null;
 
     /**
      * 
@@ -393,10 +393,10 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      */
     private function makeDataItemFromRawData(array $rawData): \BearFramework\App\DataItem
     {
-        if (self::$newDataItemCache === null) {
-            self::$newDataItemCache = new \BearFramework\App\DataItem();
+        if ($this->newDataItemCache === null) {
+            $this->newDataItemCache = new \BearFramework\App\DataItem();
         }
-        $dataItem = clone(self::$newDataItemCache);
+        $dataItem = clone($this->newDataItemCache);
         if (isset($rawData['key'])) {
             $dataItem->key = $rawData['key'];
         }
