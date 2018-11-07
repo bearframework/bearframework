@@ -417,7 +417,7 @@ class DataRepository
      */
     public function getList(): \BearFramework\DataList
     {
-        $list = new \BearFramework\DataList(function($context) {
+        $list = new \BearFramework\DataList(function(\IvoPetkov\DataListContext $context) {
             $driver = $this->getDriver();
             return $driver->getList($context);
         });
