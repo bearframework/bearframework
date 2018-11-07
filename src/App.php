@@ -129,36 +129,15 @@ class App
                 ])
                 ->defineProperty('shortcuts', [
                     'init' => function() {
-                        $initPropertyMethod = function($callback) { // needed to preserve the $this context
-                                    return $callback();
-                                };
-                        $addPropertyMethod = function($name, $callback) use (&$initPropertyMethod) {
+                        return new App\ShortcutsRepository(function(string $name, callable $callback) {
                                     if (isset($this->$name)) {
                                         throw new \Exception('A property/shortcut named "' . $name . '" already exists!');
                                     }
                                     $this->defineProperty($name, [
-                                        'init' => function() use (&$callback, &$initPropertyMethod) {
-                                            return $initPropertyMethod($callback);
-                                        },
+                                        'init' => $callback,
                                         'readonly' => true
                                     ]);
-                                };
-
-                        return new class($addPropertyMethod) {
-
-                            private $addPropertyMethod = null;
-
-                            public function __construct($addPropertyMethod)
-                            {
-                                $this->addPropertyMethod = $addPropertyMethod;
-                            }
-
-                            public function add(string $name, callable $callback)
-                            {
-                                call_user_func($this->addPropertyMethod, $name, $callback);
-                                return $this;
-                            }
-                        };
+                                });
                     },
                     'readonly' => true
         ]);
