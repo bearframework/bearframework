@@ -24,7 +24,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
  * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for registering and autoloading classes.
  * @property-read \BearFramework\App\Urls $urls URLs utilities.
- * @property-read \BearFramework\App\ContextsRepository $context Provides information about your code context (the directory its located).
+ * @property-read \BearFramework\App\ContextsRepository $contexts Provides information about your code context (the directory its located).
  * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
  * @event \Bearframework\App\BeforeSendResponseEvent beforeSendResponse An event dispatched before the response is sent to the client.
  * @event \BearFramework\App\SendResponseEvent sendResponse An event dispatched after the response is sent to the client.
@@ -121,7 +121,7 @@ class App
                     },
                     'readonly' => true
                 ])
-                ->defineProperty('context', [
+                ->defineProperty('contexts', [
                     'init' => function() {
                         return new App\ContextsRepository($this);
                     },

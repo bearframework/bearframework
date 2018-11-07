@@ -63,7 +63,7 @@ class AddonsRepository
 
             $dir = $registeredAddon->dir;
             $this->data[$id] = new \BearFramework\App\Addon($id, $dir);
-            $this->app->context->add($dir);
+            $this->app->contexts->add($dir);
         }
         return $this;
     }

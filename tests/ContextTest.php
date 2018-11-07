@@ -25,15 +25,15 @@ class ContextTest extends BearFrameworkTestCase
         $this->makeFile($app->config->appDir . '/index.php', '<?php ');
         $this->makeFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
 
-        $context = $app->context->get($app->config->appDir . '/index.php');
+        $context = $app->contexts->get($app->config->appDir . '/index.php');
         $this->assertTrue($context->dir === $app->config->appDir);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
-        $context = $app->context->get($app->config->appDir . '/index.php'); // test cache hit
+        $context = $app->contexts->get($app->config->appDir . '/index.php'); // test cache hit
         $this->assertTrue($context->dir === $app->config->appDir);
 
-        $context = $app->context->get($app->config->appDir . '/index2.php'); // test cache hit
+        $context = $app->contexts->get($app->config->appDir . '/index2.php'); // test cache hit
         $this->assertTrue($context->dir === $app->config->appDir);
 
         $context->classes->add('TempClass1', 'class1.php');
@@ -76,7 +76,7 @@ class ContextTest extends BearFrameworkTestCase
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon', ['option1' => 5]);
 
-        $context = $app->context->get($addonDir . '/index.php');
+        $context = $app->contexts->get($addonDir . '/index.php');
         $this->assertTrue($context->dir === $addonDir);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
@@ -101,7 +101,7 @@ class ContextTest extends BearFrameworkTestCase
         $this->makeFile($addonDir . '/index.php', '<?php
             
 $app = BearFramework\App::get();
-$context = $app->context->get();
+$context = $app->contexts->get();
 $app->config->valueToCheck = $context->dir;
 ');
 
@@ -127,10 +127,10 @@ $app->config->valueToCheck = $context->dir;
         BearFramework\Addons::register('addon2', $addon2Dir);
         $app->addons->add('addon2');
 
-        $context1 = $app->context->get($addon1Dir . '/index.php');
+        $context1 = $app->contexts->get($addon1Dir . '/index.php');
         $this->assertTrue($context1->dir === $addon1Dir);
 
-        $context2 = $app->context->get($addon2Dir . '/index.php');
+        $context2 = $app->contexts->get($addon2Dir . '/index.php');
         $this->assertTrue($context2->dir === $addon2Dir);
     }
 
@@ -147,10 +147,10 @@ $app->config->valueToCheck = $context->dir;
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon');
 
-        $context = $app->context->get($addonDir . '/index.php');
+        $context = $app->contexts->get($addonDir . '/index.php');
         $this->assertTrue($context->dir === $addonDir);
 
-        $context = $app->context->get($addonDir);
+        $context = $app->contexts->get($addonDir);
         $this->assertTrue($context->dir === $addonDir);
     }
 
@@ -164,7 +164,7 @@ $app->config->valueToCheck = $context->dir;
         $this->makeFile($addonDir . 'index.php', '<?php ');
         // Addon is not added
         $this->expectException('Exception');
-        $app->context->get($addonDir);
+        $app->contexts->get($addonDir);
     }
 
 }

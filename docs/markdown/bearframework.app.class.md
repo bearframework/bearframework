@@ -24,7 +24,7 @@ The is the class used to instantiate and configure you application.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The application configuration.
 
-##### public readonly [BearFramework\App\ContextsRepository](bearframework.app.contextsrepository.class.md) $context
+##### public readonly [BearFramework\App\ContextsRepository](bearframework.app.contextsrepository.class.md) $contexts
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides information about your code context (the directory its located).
 
