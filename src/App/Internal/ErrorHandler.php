@@ -7,13 +7,13 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework\App;
+namespace BearFramework\App\Internal;
 
 use BearFramework\App;
 
 /**
  * The default error handler.
- * @codeCoverageIgnore
+ * @internal
  */
 class ErrorHandler
 {

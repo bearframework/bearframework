@@ -191,12 +191,12 @@ class App
             throw new \Exception('The error handler is already enabled!');
         }
         set_exception_handler(function($exception) use ($options) {
-            \BearFramework\App\ErrorHandler::handleException($this, $exception, $options);
+            \BearFramework\App\Internal\ErrorHandler::handleException($this, $exception, $options);
         });
         register_shutdown_function(function() use ($options) {
             $errorData = error_get_last();
             if (is_array($errorData)) {
-                \BearFramework\App\ErrorHandler::handleFatalError($this, $errorData, $options);
+                \BearFramework\App\Internal\ErrorHandler::handleFatalError($this, $errorData, $options);
             }
         });
         set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {

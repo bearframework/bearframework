@@ -128,10 +128,6 @@
 
 ### [BearFramework\App\Data\ItemSetValueEvent](bearframework.app.data.itemsetvalueevent.class.md)
 
-### [BearFramework\App\ErrorHandler](bearframework.app.errorhandler.class.md)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The default error handler.
-
 ### [BearFramework\App\Event](bearframework.app.event.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A base event object.
