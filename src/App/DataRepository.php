@@ -72,7 +72,7 @@ class DataRepository
         if (isset($options['filenameProtocol'])) {
             if (is_string($options['filenameProtocol'])) {
                 $this->filenameProtocol = $options['filenameProtocol'];
-                if (stream_wrapper_register($this->filenameProtocol, "BearFramework\App\Internal\DataItemStreamWrapper") === false) {
+                if (stream_wrapper_register($this->filenameProtocol, "BearFramework\App\Internal\DataItemStreamWrapper", STREAM_IS_URL) === false) {
                     throw new \Exception('A filename protocol named ' . $this->filenameProtocol . ' is already defined!');
                 }
             }
