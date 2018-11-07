@@ -114,8 +114,6 @@
 
 ### [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md)
 
-### [BearFramework\App\Data\ItemGetMetadataListEvent](bearframework.app.data.itemgetmetadatalistevent.class.md)
-
 ### [BearFramework\App\Data\ItemGetValueEvent](bearframework.app.data.itemgetvalueevent.class.md)
 
 ### [BearFramework\App\Data\ItemRenameEvent](bearframework.app.data.itemrenameevent.class.md)

@@ -52,12 +52,6 @@ File based data driver
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of the data item metadata.
 
-##### public [BearFramework\DataList](bearframework.datalist.class.md) [getMetadataList](bearframework.app.filedatadriver.getmetadatalist.method.md) ( string $key )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all data item's metadata.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A list containing the metadata for the data item specified.
-
 ##### public string|null [getValue](bearframework.app.filedatadriver.getvalue.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of a stored data item or null if not found.

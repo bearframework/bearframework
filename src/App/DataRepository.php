@@ -28,7 +28,6 @@ use BearFramework\App\DataItem;
  * @event \BearFramework\App\Data\ItemSetMetadataEvent itemSetMetadata An event dispatched after a data item metadata is added or updated.
  * @event \BearFramework\App\Data\ItemGetMetadataEvent itemGetMetadata An event dispatched after a data item metadata is requested.
  * @event \BearFramework\App\Data\ItemDeleteMetadataEvent itemDeleteMetadata An event dispatched after a data item metadata is deleted.
- * @event \BearFramework\App\Data\ItemGetMetadataListEvent itemGetMetadataList An event dispatched after a data item metadata list is requested.
  * @event \BearFramework\App\Data\GetListEvent getList An event dispatched after a data items list is requested.
  */
 class DataRepository
@@ -407,27 +406,6 @@ class DataRepository
             $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
         }
         return $this;
-    }
-
-    /**
-     * Returns a list of all data item's metadata.
-     * 
-     * @param string $key The data item key.
-     * @return \BearFramework\DataList A list containing the metadata for the data item specified.
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     */
-    public function getMetadataList(string $key): \BearFramework\DataList
-    {
-        $driver = $this->getDriver();
-        $list = $driver->getMetadataList($key);
-        if ($this->hasEventListeners('itemGetMetadataList')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetMetadataListEvent($key, $list));
-        }
-        if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
-        }
-        return $list;
     }
 
     /**

@@ -121,14 +121,6 @@ interface IDataDriver
     public function deleteMetadata(string $key, string $name): void;
 
     /**
-     * Returns a list of all data item's metadata.
-     * 
-     * @param string $key The data item key.
-     * @return \BearFramework\DataList A list containing the metadata for the data item specified.
-     */
-    public function getMetadataList(string $key): \BearFramework\DataList;
-
-    /**
      * Returns a list of all items in the data storage.
      * 
      * @param \BearFramework\DataListContext $context

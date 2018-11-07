@@ -49,11 +49,6 @@ class DataTest extends BearFrameworkTestCase
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
 
-        $result = $app->data->getMetadataList('users/1');
-        $this->assertTrue($result->length === 1);
-        $this->assertTrue($result[0]->name === 'lastAccessTime');
-        $this->assertTrue($result[0]->value === '1234567890');
-
         $result = $app->data->getList()
                 ->filterBy('key', 'users/9');
         $this->assertTrue($result->length === 0);
@@ -271,10 +266,6 @@ class DataTest extends BearFrameworkTestCase
             $eventsLogs[] = ['deleteMetadata', $event->key, $event->name];
         });
 
-        $app->data->addEventListener('itemGetMetadataList', function(\BearFramework\App\Data\ItemGetMetadataListEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getMetadataList', $event->key, get_class($event->list)];
-        });
-
         $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$eventsLogs) {
             $eventsLogs[] = ['setValue', $event->key, $event->value];
         });
@@ -337,13 +328,6 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['deleteMetadata', 'key1', 'name1'],
             ['change', 'key1']
-        ]);
-
-        $eventsLogs = [];
-        $app->data->getMetadataList('key1');
-        $this->assertEquals($eventsLogs, [
-            ['getMetadataList', 'key1', 'BearFramework\DataList'],
-            ['request', 'key1']
         ]);
 
         $eventsLogs = [];

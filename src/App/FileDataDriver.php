@@ -297,34 +297,6 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     }
 
     /**
-     * Returns a list of all data item's metadata.
-     * 
-     * @param string $key The data item key.
-     * @return \BearFramework\DataList A list containing the metadata for the data item specified.
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
-     */
-    public function getMetadataList(string $key): \BearFramework\DataList
-    {
-        $result = $this->execute([
-            [
-                'command' => 'get',
-                'key' => $key,
-                'result' => ['metadata']
-            ]
-                ]
-        );
-        $objectMetadata = [];
-        foreach ($result[0] as $name => $value) {
-            if (strpos($name, 'metadata.') === 0) {
-                $name = substr($name, 9);
-                $objectMetadata[] = ['name' => $name, 'value' => $value];
-            }
-        }
-        return new \BearFramework\DataList($objectMetadata);
-    }
-
-    /**
      * Returns a list of all items in the data storage.
      * 
      * @param \BearFramework\DataListContext $context

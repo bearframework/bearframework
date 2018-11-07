@@ -66,12 +66,6 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of the data item metadata.
 
-##### public [BearFramework\DataList](bearframework.datalist.class.md) [getMetadataList](bearframework.app.datarepository.getmetadatalist.method.md) ( string $key )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all data item's metadata.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A list containing the metadata for the data item specified.
-
 ##### public string|null [getValue](bearframework.app.datarepository.getvalue.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of a stored data item or null if not found.
@@ -181,12 +175,6 @@ Data storage
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is requested.
-
-##### itemGetMetadataList
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemGetMetadataListEvent](bearframework.app.data.itemgetmetadatalistevent.class.md)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata list is requested.
 
 ##### itemGetValue
 

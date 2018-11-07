@@ -45,7 +45,6 @@ $classes = [
     'BearFramework\App\Data\ItemExistsEvent' => 'src/App/Data/ItemExistsEvent.php',
     'BearFramework\App\Data\ItemGetEvent' => 'src/App/Data/ItemGetEvent.php',
     'BearFramework\App\Data\ItemGetMetadataEvent' => 'src/App/Data/ItemGetMetadataEvent.php',
-    'BearFramework\App\Data\ItemGetMetadataListEvent' => 'src/App/Data/ItemGetMetadataListEvent.php',
     'BearFramework\App\Data\ItemGetValueEvent' => 'src/App/Data/ItemGetValueEvent.php',
     'BearFramework\App\Data\ItemRenameEvent' => 'src/App/Data/ItemRenameEvent.php',
     'BearFramework\App\Data\ItemRequestEvent' => 'src/App/Data/ItemRequestEvent.php',
