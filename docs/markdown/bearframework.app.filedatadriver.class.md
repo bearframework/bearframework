@@ -40,7 +40,7 @@ File based data driver
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataItemStreamWrapper for the key specified.
 
-##### public [BearFramework\DataList](bearframework.datalist.class.md) [getList](bearframework.app.filedatadriver.getlist.method.md) ( [BearFramework\DataListContext](bearframework.datalistcontext.class.md) $context )
+##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.filedatadriver.getlist.method.md) ( [BearFramework\DataListContext](bearframework.datalistcontext.class.md) $context )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all items in the data storage.
 

@@ -433,7 +433,7 @@ class DataRepository
     /**
      * Returns a list of all items in the data storage.
      * 
-     * @return \BearFramework\DataList A list of all items in the data storage.
+     * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */

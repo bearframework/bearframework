@@ -328,7 +328,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      * Returns a list of all items in the data storage.
      * 
      * @param \BearFramework\DataListContext $context
-     * @return \BearFramework\DataList A list of all items in the data storage.
+     * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */

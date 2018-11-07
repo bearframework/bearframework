@@ -3,7 +3,7 @@
 Returns a list of all items in the data storage.
 
 ```php
-public BearFramework\DataList getList ( void )
+public BearFramework\DataList|BearFramework\App\DataItem[] getList ( void )
 ```
 
 ## Returns

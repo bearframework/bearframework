@@ -54,7 +54,7 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The filename of the data item specified.
 
-##### public [BearFramework\DataList](bearframework.datalist.class.md) [getList](bearframework.app.datarepository.getlist.method.md) ( void )
+##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.datarepository.getlist.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all items in the data storage.
 

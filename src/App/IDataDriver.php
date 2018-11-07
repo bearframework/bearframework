@@ -132,7 +132,7 @@ interface IDataDriver
      * Returns a list of all items in the data storage.
      * 
      * @param \BearFramework\DataListContext $context
-     * @return \BearFramework\DataList A list of all items in the data storage.
+     * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      */
     public function getList(\IvoPetkov\DataListContext $context): \BearFramework\DataList;
 
