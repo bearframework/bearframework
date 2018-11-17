@@ -43,8 +43,8 @@ class Classes
     /**
      * Registers a class for autoloading in the current context.
      * 
-     * @param string $class The class name.
-     * @param string $filename The filename that contains the class.
+     * @param string $class The class name or class name pattern (format: Namespace\*).
+     * @param string $filename The filename that contains the class or path pattern (format: path/to/file/*.php).
      * @return self Returns a reference to itself.
      */
     public function add(string $class, string $filename): self

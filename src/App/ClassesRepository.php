@@ -23,6 +23,12 @@ class ClassesRepository
     private $data = [];
 
     /**
+     *
+     * @var ?array 
+     */
+    private $wildcardCache = null;
+
+    /**
      * 
      */
     public function __construct()
@@ -35,8 +41,8 @@ class ClassesRepository
     /**
      * Registers a class for autoloading.
      * 
-     * @param string $class The class name.
-     * @param string $filename The filename that contains the class.
+     * @param string $class The class name or class name pattern (format: Namespace\*).
+     * @param string $filename The filename that contains the class or path pattern (format: path/to/file/*.php).
      * @return self Returns a reference to itself.
      */
     public function add(string $class, string $filename): self
@@ -68,6 +74,24 @@ class ClassesRepository
             (static function($__filename) {
                 include_once $__filename;
             })($this->data[$class]);
+        } else {
+            if ($this->wildcardCache === null) {
+                $this->wildcardCache = [];
+                foreach ($this->data as $_class => $_filename) {
+                    if (substr($_class, -2) === '\*') { // Is class in a namespace. Example: Namespace\*
+                        $this->wildcardCache[substr($_class, 0, -1)] = $_filename;
+                    }
+                }
+            }
+            foreach ($this->wildcardCache as $prefix => $filename) {
+                if (strpos($class, $prefix) === 0) {
+                    $filename = str_replace('*', substr($class, strlen($prefix)), $filename);
+                    (static function($__filename) {
+                        include_once $__filename;
+                    })($filename);
+                    break;
+                }
+            }
         }
         return $this;
     }
