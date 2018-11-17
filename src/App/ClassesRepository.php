@@ -85,7 +85,7 @@ class ClassesRepository
             }
             foreach ($this->wildcardCache as $prefix => $filename) {
                 if (strpos($class, $prefix) === 0) {
-                    $filename = str_replace('*', substr($class, strlen($prefix)), $filename);
+                    $filename = str_replace('*', str_replace('\\', '/', substr($class, strlen($prefix))), $filename);
                     (static function($__filename) {
                         include_once $__filename;
                     })($filename);
