@@ -89,6 +89,16 @@ class DataRepository
     {
         $this->setDriver(new \BearFramework\App\FileDataDriver($dir));
     }
+    
+    /**
+     * Enables a null data driver. No data is stored and no errors are thrown.
+     * 
+     * @return void No value is returned.
+     */
+    public function useNullDriver(): void
+    {
+        $this->setDriver(new \BearFramework\App\NullDataDriver());
+    }
 
     /**
      * Sets a new data driver.

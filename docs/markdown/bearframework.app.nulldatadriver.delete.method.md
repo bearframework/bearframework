@@ -1,0 +1,28 @@
+# BearFramework\App\NullDataDriver::delete
+
+Deletes the data item specified and it's metadata.
+
+```php
+public void delete ( string $key )
+```
+
+## Parameters
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item to delete.
+
+## Returns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+
+## Details
+
+Class: [BearFramework\App\NullDataDriver](bearframework.app.nulldatadriver.class.md)
+
+File: /src/App/NullDataDriver.php
+
+---
+
+[back to index](index.md)
+

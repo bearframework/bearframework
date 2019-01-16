@@ -1178,4 +1178,18 @@ class DataTest extends BearFrameworkTestCase
         ]);
     }
 
+    /**
+     * 
+     */
+    public function testNullDriver()
+    {
+        $app = new \BearFramework\App();
+        $app->data->useNullDriver();
+        $app->data->setValue('key1', 'value1');
+        $filename = $app->data->getFilename('key2');
+        file_put_contents($filename, 'value2');
+        $this->assertFalse(is_file($filename));
+        $this->assertTrue(true);
+    }
+
 }

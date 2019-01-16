@@ -120,6 +120,10 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables the file data driver using the directory specified.
 
+##### public void [useNullDriver](bearframework.app.datarepository.usenulldriver.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a null data driver. No data is stored and no errors are thrown.
+
 ## Events
 
 ##### getList

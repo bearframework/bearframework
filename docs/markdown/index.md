@@ -144,6 +144,12 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs repository
 
+### [BearFramework\App\NullDataDriver](bearframework.app.nulldatadriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A null data driver. No data is stored and no errors are thrown.
+
+### [BearFramework\App\NullDataItemStreamWrapper](bearframework.app.nulldataitemstreamwrapper.class.md)
+
 ### [BearFramework\App\NullLogger](bearframework.app.nulllogger.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The null logger does not log any data and does not throw any errors.
