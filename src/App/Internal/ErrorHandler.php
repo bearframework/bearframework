@@ -35,7 +35,7 @@ class ErrorHandler
             $exception = $exception->getPrevious();
         }
         $errors = array_reverse($errors);
-        self::handleErrors($errors, $options);
+        self::handleErrors($app, $errors, $options);
     }
 
     /**
@@ -53,7 +53,7 @@ class ErrorHandler
         $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
         $message = 'Fatal error: ' . trim($messageParts[0]) . ' in ' . $errorData['file'] . ':' . (int) $errorData['line'];
         $trace = isset($messageParts[1]) ? [trim(str_replace('Stack trace:', '', $messageParts[1]))] : [];
-        self::handleErrors([['message' => $message, 'trace' => $trace]], $options);
+        self::handleErrors($app, [['message' => $message, 'trace' => $trace]], $options);
     }
 
     /**
