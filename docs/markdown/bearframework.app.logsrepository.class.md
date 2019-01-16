@@ -16,6 +16,10 @@ Logs repository
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a file logger for directory specified.
 
+##### public void [useNullLogger](bearframework.app.logsrepository.usenulllogger.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a null logger. The null logger does not log any data and does not throw any errors.
+
 ## Details
 
 File: /src/App/LogsRepository.php

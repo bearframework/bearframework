@@ -24,6 +24,7 @@ class LogsRepository
     /**
      * Enables a file logger for directory specified.
      * 
+     * @param string $dir The directory where the logs will be stored.
      * @return void No value is returned.
      */
     public function useFileLogger(string $dir): void

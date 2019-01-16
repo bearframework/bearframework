@@ -1,9 +1,5 @@
 # BearFramework
 
-## Constants
-
-##### const string VERSION
-
 ## Details
 
 File: /src/BearFramework.php

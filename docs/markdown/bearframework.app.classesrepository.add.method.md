@@ -10,11 +10,11 @@ public self add ( string $class , string $filename )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$class`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The class name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The class name or class name pattern (format: Namespace\*).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename that contains the class.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename that contains the class or path pattern (format: path/to/file/*.php).
 
 ## Returns
 

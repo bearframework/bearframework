@@ -10,19 +10,19 @@ Base class for lists.
 
 ### Inherited from IvoPetkov\DataObject:
 
-##### public __construct ( [ array $data = [] ] )
+##### public [__construct](ivopetkov.dataobject.__construct.method.md) ( [ array $data = [] ] )
 
-##### public static object fromArray ( array $data )
+##### public static object [fromArray](ivopetkov.dataobject.fromarray.method.md) ( array $data )
 
-##### public static object fromJSON ( string $data )
+##### public static object [fromJSON](ivopetkov.dataobject.fromjson.method.md) ( string $data )
 
-##### public array toArray ( void )
+##### public array [toArray](ivopetkov.dataobject.toarray.method.md) ( void )
 
-##### public string toJSON ( void )
+##### public string [toJSON](ivopetkov.dataobject.tojson.method.md) ( void )
 
-##### protected object defineProperty ( string $name [, array $options = [] ] )
+##### protected object [defineProperty](ivopetkov.dataobject.defineproperty.method.md) ( string $name [, array $options = [] ] )
 
-##### protected void initialize ( void )
+##### protected void [initialize](ivopetkov.dataobject.initialize.method.md) ( void )
 
 ## Details
 

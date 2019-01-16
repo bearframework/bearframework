@@ -138,11 +138,15 @@
 
 ### [BearFramework\App\FileLogger](bearframework.app.filelogger.class.md)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The default logger.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A logger that saves the logs in the directory specified.
 
 ### [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs repository
+
+### [BearFramework\App\NullLogger](bearframework.app.nulllogger.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The null logger does not log any data and does not throw any errors.
 
 ### [BearFramework\App\Request](bearframework.app.request.class.md)
 

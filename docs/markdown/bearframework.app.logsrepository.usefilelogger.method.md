@@ -10,6 +10,8 @@ public void useFileLogger ( string $dir )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the logs will be stored.
+
 ## Returns
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.

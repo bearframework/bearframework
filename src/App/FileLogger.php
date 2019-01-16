@@ -10,7 +10,7 @@
 namespace BearFramework\App;
 
 /**
- * The default logger.
+ * A logger that saves the logs in the directory specified.
  */
 class FileLogger implements ILogger
 {

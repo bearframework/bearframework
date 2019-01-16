@@ -2,7 +2,7 @@
 
 implements [BearFramework\App\ILogger](bearframework.app.ilogger.class.md)
 
-The default logger.
+A logger that saves the logs in the directory specified.
 
 ## Methods
 
