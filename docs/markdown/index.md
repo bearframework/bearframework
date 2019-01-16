@@ -144,6 +144,10 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs repository
 
+### [BearFramework\App\NullCacheDriver](bearframework.app.nullcachedriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A null cache driver. No data is stored and no errors are thrown.
+
 ### [BearFramework\App\NullDataDriver](bearframework.app.nulldatadriver.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A null data driver. No data is stored and no errors are thrown.

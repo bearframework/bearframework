@@ -10,7 +10,6 @@
 namespace BearFramework\App;
 
 use BearFramework\App\CacheItem;
-use BearFramework\App;
 
 /**
  * Data cache
@@ -62,6 +61,16 @@ class CacheRepository
     public function useAppDataDriver(): void
     {
         $this->setDriver(new \BearFramework\App\DataCacheDriver($this->app->data));
+    }
+
+    /**
+     * Enables the null cache driver. No data is stored and no errors are thrown.
+     * 
+     * @return void No value is returned.
+     */
+    public function useNullDriver(): void
+    {
+        $this->setDriver(new \BearFramework\App\NullCacheDriver());
     }
 
     /**

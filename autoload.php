@@ -66,6 +66,7 @@ $classes = [
     'BearFramework\App\IDataItemStreamWrapper' => 'src/App/IDataItemStreamWrapper.php',
     'BearFramework\App\ILogger' => 'src/App/ILogger.php',
     'BearFramework\App\LogsRepository' => 'src/App/LogsRepository.php',
+    'BearFramework\App\NullCacheDriver' => 'src/App/NullCacheDriver.php',
     'BearFramework\App\NullDataDriver' => 'src/App/NullDataDriver.php',
     'BearFramework\App\NullDataItemStreamWrapper' => 'src/App/NullDataItemStreamWrapper.php',
     'BearFramework\App\NullLogger' => 'src/App/NullLogger.php',

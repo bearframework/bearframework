@@ -62,6 +62,10 @@ Data cache
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables the app cache driver. The cached data will be stored in the app data repository.
 
+##### public void [useNullDriver](bearframework.app.cacherepository.usenulldriver.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables the null cache driver. No data is stored and no errors are thrown.
+
 ## Events
 
 ##### clear

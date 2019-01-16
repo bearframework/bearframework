@@ -165,4 +165,15 @@ class CacheTest extends BearFrameworkTestCase
         ]);
     }
 
+    /**
+     * 
+     */
+    public function testNullDriver()
+    {
+        $app = new \BearFramework\App();
+        $app->cache->useNullDriver();
+        $app->cache->set($app->cache->make('key1', 'value1'));
+        $this->assertTrue(true);
+    }
+
 }
