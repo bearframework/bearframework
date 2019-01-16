@@ -28,7 +28,7 @@ class ErrorHandler
     static function handleException(\BearFramework\App $app, \Throwable $exception, array $options): void
     {
         $errors = [];
-        while ($exception instanceof \Exception) {
+        while ($exception instanceof \Exception || $exception instanceof \Error) {
             $message = 'Exception: ' . $exception->getMessage() . ' in ' . $exception->getFile() . ':' . $exception->getLine();
             $trace = $exception->getTrace();
             $errors[] = ['message' => $message, 'trace' => $trace];
