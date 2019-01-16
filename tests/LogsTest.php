@@ -51,4 +51,15 @@ class LogsTest extends BearFrameworkTestCase
         $app->logs->log($name, 'message');
     }
 
+    /**
+     * 
+     */
+    public function testNullLogger()
+    {
+        $app = new \BearFramework\App();
+        $app->logs->useNullLogger();
+        $app->logs->log('asda', 'asd');
+        $this->assertTrue(true);
+    }
+
 }

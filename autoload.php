@@ -66,6 +66,7 @@ $classes = [
     'BearFramework\App\IDataItemStreamWrapper' => 'src/App/IDataItemStreamWrapper.php',
     'BearFramework\App\ILogger' => 'src/App/ILogger.php',
     'BearFramework\App\LogsRepository' => 'src/App/LogsRepository.php',
+    'BearFramework\App\NullLogger' => 'src/App/NullLogger.php',
     'BearFramework\App\Request' => 'src/App/Request.php',
     'BearFramework\App\Request\Cookie' => 'src/App/Request/Cookie.php',
     'BearFramework\App\Request\CookiesRepository' => 'src/App/Request/CookiesRepository.php',

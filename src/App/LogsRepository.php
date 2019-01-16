@@ -30,6 +30,16 @@ class LogsRepository
     {
         $this->setLogger(new \BearFramework\App\FileLogger($dir));
     }
+    
+     /**
+     * Enables a null logger. The null logger does not log any data and does not throw any errors.
+     * 
+     * @return void No value is returned.
+     */
+    public function useNullLogger(): void
+    {
+        $this->setLogger(new \BearFramework\App\NullLogger());
+    }
 
     /**
      * Sets a new logger.
