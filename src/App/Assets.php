@@ -13,6 +13,7 @@ use BearFramework\App;
 
 /**
  * Provides utility functions for assets.
+ * @property-read string $pathPrefix The prefix of the assets URLs.
  * @event \BearFramework\App\Assets\BeforeGetUrlEvent beforeGetUrl An event dispatched before the URL of the asset specified is created.
  * @event \BearFramework\App\Assets\GetUrlEvent getUrl An event dispatched after the URL of the asset specified is created.
  * @event \BearFramework\App\Assets\BeforePrepareEvent beforePrepare An event dispatched before the asset specified is prepared for returning (resized for example).
@@ -24,6 +25,7 @@ class Assets
 {
 
     use \BearFramework\App\EventsTrait;
+    use \IvoPetkov\DataObjectTrait;
 
     /**
      * Publicly accessible directories.
@@ -47,13 +49,7 @@ class Assets
      *
      * @var string 
      */
-    private $pathPrefixes = [];
-
-    /**
-     *
-     * @var string 
-     */
-    private $lastPathPrefix = null;
+    private $internalPathPrefix = '/assets/';
 
     /**
      *
@@ -68,28 +64,20 @@ class Assets
     public function __construct(\BearFramework\App $app)
     {
         $this->app = $app;
-        $this->setPathPrefix('/assets/');
-    }
+        $this->app->routes
+                ->add($this->internalPathPrefix . '*', function(\BearFramework\App\Request $request) {
+                    $response = $this->getResponse($request);
+                    if ($response !== null) {
+                        return $response;
+                    }
+                });
 
-    /**
-     * 
-     * @param string $pathPrefix
-     * @return self Returns a reference to itself.
-     */
-    public function setPathPrefix(string $pathPrefix): self
-    {
-        $this->lastPathPrefix = $pathPrefix;
-        if (!isset($this->pathPrefixes[$pathPrefix])) {
-            $this->pathPrefixes[$pathPrefix] = true;
-            $this->app->routes
-                    ->add($this->lastPathPrefix . '*', function(\BearFramework\App\Request $request) {
-                        $response = $this->getResponse($request);
-                        if ($response !== null) {
-                            return $response;
-                        }
-                    });
-        }
-        return $this;
+        $this->defineProperty('pathPrefix', [
+            'get' => function() {
+                return $this->internalPathPrefix;
+            },
+            'readonly' => true
+        ]);
     }
 
     /**
@@ -206,7 +194,7 @@ class Assets
                     }
                 }
             }
-            $url = $this->cache[$fileDirCacheKey] === false ? null : $this->app->urls->get($this->lastPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
+            $url = $this->cache[$fileDirCacheKey] === false ? null : $this->app->urls->get($this->internalPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
         }
 
         if ($this->hasEventListeners('getUrl')) {
@@ -279,17 +267,10 @@ class Assets
     public function getResponse(\BearFramework\App\Request $request): ?\BearFramework\App\Response
     {
         $parsePath = function($path) {
-            $foundPathPrefix = null;
-            foreach ($this->pathPrefixes as $pathPrefix => $true) {
-                if (strpos($path, $pathPrefix) === 0) {
-                    $foundPathPrefix = $pathPrefix;
-                    break;
-                }
-            }
-            if ($foundPathPrefix === null) {
+            if (strpos($path, $this->internalPathPrefix) !== 0) {
                 return null;
             }
-            $path = substr($path, strlen($foundPathPrefix));
+            $path = substr($path, strlen($this->internalPathPrefix));
             $partParts = explode('/', $path, 2);
             if (sizeof($partParts) !== 2) {
                 return null;
@@ -430,8 +411,6 @@ class Assets
         }
         return $result;
     }
-
-    
 
     /**
      * 

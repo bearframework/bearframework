@@ -154,22 +154,13 @@ class AssetsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
+        $this->assertEquals($app->assets->pathPrefix, '/assets/');
+        $this->assertTrue(isset($app->assets->pathPrefix));
+
         $this->makeDir($app->config->appDir . '/assets/');
         $app->assets->addDir($app->config->appDir . '/assets/');
         $filename = $app->config->appDir . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
-
-        $urls = [];
-
-        $url = $app->assets->getUrl($filename);
-        $this->assertTrue(strpos($url, 'http://example.com/www/assets/') === 0);
-        $urls[] = $url;
-
-        $app->assets->setPathPrefix('/yyy/zzz/');
-
-        $url = $app->assets->getUrl($filename);
-        $this->assertTrue(strpos($url, 'http://example.com/www/yyy/zzz/') === 0);
-        $urls[] = $url;
 
         $getAssetResponse = function($url) use ($app) {
             $request = clone($app->request);
@@ -177,10 +168,17 @@ class AssetsTest extends BearFrameworkTestCase
             return $app->assets->getResponse($request);
         };
 
-        foreach ($urls as $url) {
-            $response = $getAssetResponse($url);
-            $this->assertEquals($response->filename, $filename);
-        }
+        $url = $app->assets->getUrl($filename);
+        $this->assertTrue(strpos($url, 'http://example.com/www/assets/') === 0);
+        $response = $getAssetResponse($url);
+        $this->assertEquals($response->filename, $filename);
+
+        $url = str_replace('http://example.com/www/assets/', 'http://example.com/www/wrongprefix/', $url);
+        $response = $getAssetResponse($url);
+        $this->assertTrue($response === null);
+
+        $this->expectException('Exception'); // The pathPrefix is readonly
+        $app->assets->pathPrefix = '/new/';
     }
 
     /**
