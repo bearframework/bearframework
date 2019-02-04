@@ -131,7 +131,7 @@ class Request
         $this
                 ->defineProperty('path', [
                     'init' => function() use ($path) {
-                        return new App\Request\PathRepository(isset($path{0}) ? $path : '/');
+                        return new App\Request\PathRepository(isset($path{0}) ? rawurldecode($path) : '/');
                     },
                     'readonly' => true
                 ])

@@ -89,7 +89,7 @@ class AppTest extends BearFrameworkTestCase
         $this->assertTrue($app->request->scheme === 'https');
         $this->assertTrue($app->request->host === 'example.com');
         $this->assertTrue($app->request->base === 'https://example.com/www');
-        $this->assertTrue((string) $app->request->path === '/%D0%BF%D1%8A%D1%821/%D0%BF%D1%8A%D1%822/');
+        $this->assertTrue((string) $app->request->path === '/път1/път2/');
         $this->assertTrue((string) $app->request->path->getSegment(0) === 'път1');
         $this->assertTrue((string) $app->request->path->getSegment(1) === 'път2');
     }

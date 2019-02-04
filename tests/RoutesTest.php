@@ -381,13 +381,32 @@ class RoutesTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testUTFCharsInRoute()
+    {
+        $app = $this->getApp();
+
+        $app->routes->add('/път1/път2/', function() {
+            return new Response\HTML('home');
+        });
+        $request = new \BearFramework\App\Request();
+        $request->method = 'GET';
+        $request->base = 'https://example.com';
+        $request->path->set('/път1/път2/');
+        $response = $app->routes->getResponse($request);
+        $this->assertTrue($response instanceof Response\HTML);
+        $this->assertTrue($response->content === 'home');
+    }
+
+    /**
+     * 
+     */
     public function testRouteMethod()
     {
         $app = $this->getApp();
 
-        $app->routes->add('/', function() {
+        $app->routes->add('GET /', function() {
             return new Response\HTML('home');
-        }, ['GET', 'HTTPS']);
+        });
         $request = new \BearFramework\App\Request();
         $request->method = 'GET';
         $request->base = 'https://example.com';
@@ -400,13 +419,55 @@ class RoutesTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testRouteMethods()
+    {
+        $app = $this->getApp();
+
+        $app->routes->add('GET|POST|CUSTOM /', function() {
+            return new Response\HTML('home');
+        });
+        $request = new \BearFramework\App\Request();
+        $request->method = 'GET';
+        $request->base = 'https://example.com';
+        $request->path->set('/');
+        $response = $app->routes->getResponse($request);
+        $this->assertTrue($response instanceof Response\HTML);
+        $this->assertTrue($response->content === 'home');
+
+        $request = new \BearFramework\App\Request();
+        $request->method = 'POST';
+        $request->base = 'https://example.com';
+        $request->path->set('/');
+        $response = $app->routes->getResponse($request);
+        $this->assertTrue($response instanceof Response\HTML);
+        $this->assertTrue($response->content === 'home');
+
+        $request = new \BearFramework\App\Request();
+        $request->method = 'CUSTOM';
+        $request->base = 'https://example.com';
+        $request->path->set('/');
+        $response = $app->routes->getResponse($request);
+        $this->assertTrue($response instanceof Response\HTML);
+        $this->assertTrue($response->content === 'home');
+
+        $request = new \BearFramework\App\Request();
+        $request->method = 'FAKE';
+        $request->base = 'https://example.com';
+        $request->path->set('/');
+        $response = $app->routes->getResponse($request);
+        $this->assertTrue($response === null);
+    }
+
+    /**
+     * 
+     */
     public function testNotMatchingRouteMethod()
     {
         $app = $this->getApp();
 
-        $app->routes->add('/', function() {
+        $app->routes->add('POST /', function() {
             return new Response\HTML('home');
-        }, ['POST']);
+        });
         $request = new \BearFramework\App\Request();
         $request->method = 'GET';
         $request->scheme = 'https';

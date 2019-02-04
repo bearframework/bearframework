@@ -43,12 +43,11 @@ class PathRepository
      * Sets a new path.
      * 
      * @param string $path The new path.
-     * @param bool $encode Whether to encode the path.
      * @return self Returns a reference to itself.
      */
-    public function set(string $path, bool $encode = true): self
+    public function set(string $path): self
     {
-        $this->path = $encode ? implode('/', array_map('urlencode', explode('/', $path))) : $path;
+        $this->path = $path;
         return $this;
     }
 
@@ -66,16 +65,15 @@ class PathRepository
      * Returns the value of the path segment for the index specified or null if not found.
      * 
      * @param int $index the index of the path segment.
-     * @param bool $decode whether to apply urldecode.
      * @return string|null The value of the path segment for the index specified or null if not found.
      */
-    public function getSegment($index, $decode = true): ?string
+    public function getSegment($index): ?string
     {
         $path = trim($this->path, '/');
         if (isset($path{0})) {
             $parts = explode('/', $path);
             if (array_key_exists($index, $parts)) {
-                return $decode ? urldecode($parts[$index]) : $parts[$index];
+                return $parts[$index];
             }
         }
         return null;
@@ -92,7 +90,7 @@ class PathRepository
         $requestPath = $this->path;
         $patterns = is_array($pattern) ? $pattern : [$pattern];
         foreach ($patterns as $pattern) {
-            if (preg_match('/^' . str_replace(['%2F', '%3F', '%2A'], ['\/', '[^\/]+?', '.+?'], urlencode($pattern)) . '$/u', $requestPath) === 1) {
+            if (preg_match('/^' . str_replace(['/', '?', '*'], ['\/', '[^\/]+?', '.+?'], $pattern) . '$/u', $requestPath) === 1) {
                 return true;
             }
         }

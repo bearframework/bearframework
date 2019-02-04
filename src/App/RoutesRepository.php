@@ -91,7 +91,7 @@ class RoutesRepository
                     continue;
                 }
                 $patternPath = $matches[2];
-                if (preg_match('/^' . str_replace(['%2F', '%3F', '%2A'], ['\/', '[^\/]+?', '.+?'], urlencode($patternPath)) . '$/u', $requestPath) === 1) { // symbols: /, ?, *
+                if (preg_match('/^' . str_replace(['/', '?', '*'], ['\/', '[^\/]+?', '.+?'], $patternPath) . '$/u', $requestPath) === 1) {
                     foreach ($route[1] as $callable) {
                         ob_start();
                         try {
