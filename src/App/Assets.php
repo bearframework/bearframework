@@ -98,7 +98,7 @@ class Assets
      * @param string $pathname The directory name.
      * @return self Returns a reference to itself.
      * @see BearFramework\App
-     * @see BearFramework\App\DataRepository::isValidKey
+     * @see BearFramework\App\DataRepository::validate
      * @see BearFramework\App\DataRepository::set()
      * @example Routes.php description
      */

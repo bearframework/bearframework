@@ -443,7 +443,7 @@ class DataRepository
      * @param string $key The key of the data item to check.
      * @return bool TRUE if valid. FALSE otherwise.
      */
-    public function isValidKey(string $key): bool
+    public function validate(string $key): bool
     {
         if (strlen($key) === 0 || $key === '.' || $key === '..' || strpos($key, '/../') !== false || strpos($key, '/./') !== false || strpos($key, '/') === 0 || strpos($key, './') === 0 || strpos($key, '../') === 0 || substr($key, -2) === '/.' || substr($key, -3) === '/..' || substr($key, -1) === '/') {
             return false;
@@ -464,7 +464,7 @@ class DataRepository
         if ($this->filenameProtocol === null) {
             throw new \Exception('No filenameProtocol specified!');
         }
-        if (!$this->isValidKey($key)) {
+        if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key argument is not valid!');
         }
         return $this->filenameProtocol . '://' . $key;

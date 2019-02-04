@@ -530,7 +530,7 @@ class DataItemStreamWrapper
         }
         $dataRepository = $environment[1];
         $key = $pathParts[1];
-        if (!$dataRepository->isValidKey($key)) {
+        if (!$dataRepository->validate($key)) {
             return false;
         }
         if (!isset($environment[2]) || !($environment[2] instanceof \BearFramework\App\IDataDriver)) {
