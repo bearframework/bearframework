@@ -23,10 +23,6 @@ BearFramework\App\Response\JSON extends BearFramework\App\Response {
 
 ### Inherited from [BearFramework\App\Response](bearframework.app.response.class.md)
 
-##### protected self [defineProperty](bearframework.app.response.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
 ##### public array [toArray](bearframework.app.response.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.

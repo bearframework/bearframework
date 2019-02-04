@@ -21,7 +21,6 @@ BearFramework\App {
 	/* Methods */
 	public __construct ( void )
 	public self addEventListener ( string $name , callable $listener )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public self dispatchEvent ( BearFramework\App\Event $event )
 	public void enableErrorHandler ( [ array $options = [] ] )
 	public static BearFramework\App get ( void )
@@ -84,10 +83,6 @@ BearFramework\App {
 ##### public [__construct](bearframework.app.__construct.method.md) ( void )
 
 ##### public self [addEventListener](bearframework.app.addeventlistener.method.md) ( string $name , callable $listener )
-
-##### protected self [defineProperty](bearframework.app.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 

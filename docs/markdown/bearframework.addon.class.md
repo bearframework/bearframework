@@ -10,7 +10,6 @@ BearFramework\Addon {
 
 	/* Methods */
 	public __construct ( string $id , string $dir , array $options )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public array toArray ( void )
 	public string toJSON ( void )
 
@@ -35,10 +34,6 @@ BearFramework\Addon {
 ## Methods
 
 ##### public [__construct](bearframework.addon.__construct.method.md) ( string $id , string $dir , array $options )
-
-##### protected self [defineProperty](bearframework.addon.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.addon.toarray.method.md) ( void )
 

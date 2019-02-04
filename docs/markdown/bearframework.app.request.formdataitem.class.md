@@ -9,7 +9,6 @@ BearFramework\App\Request\FormDataItem {
 
 	/* Methods */
 	public __construct ( void )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public array toArray ( void )
 	public string toJSON ( void )
 
@@ -29,10 +28,6 @@ BearFramework\App\Request\FormDataItem {
 ## Methods
 
 ##### public [__construct](bearframework.app.request.formdataitem.__construct.method.md) ( void )
-
-##### protected self [defineProperty](bearframework.app.request.formdataitem.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.request.formdataitem.toarray.method.md) ( void )
 

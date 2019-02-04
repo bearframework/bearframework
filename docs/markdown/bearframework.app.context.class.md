@@ -12,7 +12,6 @@ BearFramework\App\Context {
 
 	/* Methods */
 	public __construct ( BearFramework\App $app , string $dir )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public array toArray ( void )
 	public string toJSON ( void )
 
@@ -36,10 +35,6 @@ BearFramework\App\Context {
 ## Methods
 
 ##### public [__construct](bearframework.app.context.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
-
-##### protected self [defineProperty](bearframework.app.context.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.context.toarray.method.md) ( void )
 

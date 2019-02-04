@@ -12,7 +12,6 @@ BearFramework\App\Assets {
 	public __construct ( BearFramework\App $app )
 	public self addDir ( string $pathname )
 	public self addEventListener ( string $name , callable $listener )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public self dispatchEvent ( BearFramework\App\Event $event )
 	public string|null getContent ( string $filename [, array $options = [] ] )
 	public array getDetails ( string $filename , array $list )
@@ -39,10 +38,6 @@ BearFramework\App\Assets {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a directory that will be publicly accessible.
 
 ##### public self [addEventListener](bearframework.app.assets.addeventlistener.method.md) ( string $name , callable $listener )
-
-##### protected self [defineProperty](bearframework.app.assets.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 

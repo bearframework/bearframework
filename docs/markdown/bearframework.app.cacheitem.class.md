@@ -10,7 +10,6 @@ BearFramework\App\CacheItem {
 
 	/* Methods */
 	public __construct ( void )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public array toArray ( void )
 	public string toJSON ( void )
 
@@ -34,10 +33,6 @@ BearFramework\App\CacheItem {
 ## Methods
 
 ##### public [__construct](bearframework.app.cacheitem.__construct.method.md) ( void )
-
-##### protected self [defineProperty](bearframework.app.cacheitem.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.cacheitem.toarray.method.md) ( void )
 

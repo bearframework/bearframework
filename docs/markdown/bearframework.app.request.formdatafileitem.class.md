@@ -38,10 +38,6 @@ BearFramework\App\Request\FormDataFileItem extends BearFramework\App\Request\For
 
 ### Inherited from [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md)
 
-##### protected self [defineProperty](bearframework.app.request.formdataitem.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
 ##### public array [toArray](bearframework.app.request.formdataitem.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.

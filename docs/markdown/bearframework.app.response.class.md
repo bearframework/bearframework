@@ -14,7 +14,6 @@ BearFramework\App\Response {
 
 	/* Methods */
 	public __construct ( [ string $content = '' ] )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public array toArray ( void )
 	public string toJSON ( void )
 
@@ -46,10 +45,6 @@ BearFramework\App\Response {
 ## Methods
 
 ##### public [__construct](bearframework.app.response.__construct.method.md) ( [ string $content = '' ] )
-
-##### protected self [defineProperty](bearframework.app.response.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.response.toarray.method.md) ( void )
 

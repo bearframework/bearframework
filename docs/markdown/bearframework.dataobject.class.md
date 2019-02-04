@@ -26,10 +26,6 @@ BearFramework\DataObject extends IvoPetkov\DataObject implements ArrayAccess {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data object.
 
-##### protected self defineProperty ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
 ##### public static object fromArray ( array $data )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the array specified.
@@ -37,8 +33,6 @@ BearFramework\DataObject extends IvoPetkov\DataObject implements ArrayAccess {
 ##### public static object fromJSON ( string $data )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the JSON specified.
-
-##### protected void initialize ( void )
 
 ##### public array toArray ( void )
 

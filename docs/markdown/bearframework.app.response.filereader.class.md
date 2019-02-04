@@ -10,7 +10,6 @@ BearFramework\App\Response\FileReader extends BearFramework\App\Response {
 
 	/* Methods */
 	public __construct ( string $filename )
-	protected self defineProperty ( string $name [, array $options = [] ] )
 	public array toArray ( void )
 	public string toJSON ( void )
 
@@ -32,10 +31,6 @@ BearFramework\App\Response\FileReader extends BearFramework\App\Response {
 ## Methods
 
 ##### public [__construct](bearframework.app.response.filereader.__construct.method.md) ( string $filename )
-
-##### protected self [defineProperty](bearframework.app.response.filereader.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.response.filereader.toarray.method.md) ( void )
 

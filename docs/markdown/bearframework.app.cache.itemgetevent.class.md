@@ -31,10 +31,6 @@ BearFramework\App\Cache\ItemGetEvent extends BearFramework\App\Event {
 
 ### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
 
-##### protected self [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
 ##### public string [getName](bearframework.app.event.getname.method.md) ( void )
 
 ## Details
