@@ -25,23 +25,24 @@ trait EventsTrait
      * 
      * @param string $name
      * @param callable $listener
-     * @return void
+     * @return self Returns a reference to itself.
      */
-    public function addEventListener(string $name, callable $listener): void
+    public function addEventListener(string $name, callable $listener): self
     {
         if (!isset($this->internalEventListenersData[$name])) {
             $this->internalEventListenersData[$name] = [];
         }
         $this->internalEventListenersData[$name][] = $listener;
+        return $this;
     }
 
     /**
      * 
      * @param string $name
      * @param callable $listener
-     * @return void
+     * @return self Returns a reference to itself.
      */
-    public function removeEventListener(string $name, callable $listener): void
+    public function removeEventListener(string $name, callable $listener): self
     {
         if (isset($this->internalEventListenersData[$name])) {
             foreach ($this->internalEventListenersData[$name] as $i => $value) {
@@ -54,14 +55,15 @@ trait EventsTrait
                 }
             }
         }
+        return $this;
     }
 
     /**
      * 
      * @param \BearFramework\App\Event $event
-     * @return void
+     * @return self Returns a reference to itself.
      */
-    public function dispatchEvent(\BearFramework\App\Event $event): void
+    public function dispatchEvent(\BearFramework\App\Event $event): self
     {
         $name = $event->getName();
         if (isset($this->internalEventListenersData[$name])) {
@@ -69,6 +71,7 @@ trait EventsTrait
                 call_user_func($listener, $event);
             }
         }
+        return $this;
     }
 
     /**
