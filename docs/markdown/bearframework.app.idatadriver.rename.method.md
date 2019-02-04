@@ -3,7 +3,7 @@
 Changes the key of the data item specified.
 
 ```php
-public abstract void rename ( string $sourceKey , string $destinationKey )
+abstract public void rename ( string $sourceKey , string $destinationKey )
 ```
 
 ## Parameters

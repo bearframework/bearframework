@@ -3,7 +3,7 @@
 Returns TRUE if the data item exists. FALSE otherwise.
 
 ```php
-public abstract bool exists ( string $key )
+abstract public bool exists ( string $key )
 ```
 
 ## Parameters

@@ -3,7 +3,7 @@
 Creates a copy of the data item specified.
 
 ```php
-public abstract void duplicate ( string $sourceKey , string $destinationKey )
+abstract public void duplicate ( string $sourceKey , string $destinationKey )
 ```
 
 ## Parameters

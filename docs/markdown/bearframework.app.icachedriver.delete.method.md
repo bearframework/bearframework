@@ -3,7 +3,7 @@
 Deletes a value from the cache.
 
 ```php
-public abstract void delete ( string $key )
+abstract public void delete ( string $key )
 ```
 
 ## Parameters

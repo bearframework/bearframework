@@ -3,7 +3,7 @@
 Sets a new value of the item specified or creates a new item with the key and value specified.
 
 ```php
-public abstract void setValue ( string $key , string $value )
+abstract public void setValue ( string $key , string $value )
 ```
 
 ## Parameters

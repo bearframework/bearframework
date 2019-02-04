@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::eof
 
 ```php
-public abstract bool eof ( void )
+abstract public bool eof ( void )
 ```
 
 ## Details

@@ -3,7 +3,7 @@
 Stores metadata for the data item specified.
 
 ```php
-public abstract void setMetadata ( string $key , string $name , string $value )
+abstract public void setMetadata ( string $key , string $name , string $value )
 ```
 
 ## Parameters

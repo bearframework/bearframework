@@ -3,7 +3,7 @@
 Returns the value of a stored data item or null if not found.
 
 ```php
-public abstract string|null getValue ( string $key )
+abstract public string|null getValue ( string $key )
 ```
 
 ## Parameters

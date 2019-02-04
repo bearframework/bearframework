@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::tell
 
 ```php
-public abstract int tell ( void )
+abstract public int tell ( void )
 ```
 
 ## Details

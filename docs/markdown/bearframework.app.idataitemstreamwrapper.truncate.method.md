@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::truncate
 
 ```php
-public abstract bool truncate ( int $newSize )
+abstract public bool truncate ( int $newSize )
 ```
 
 ## Parameters

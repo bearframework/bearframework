@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::exists
 
 ```php
-public abstract bool exists ( void )
+abstract public bool exists ( void )
 ```
 
 ## Details

@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::open
 
 ```php
-public abstract bool open ( string $mode )
+abstract public bool open ( string $mode )
 ```
 
 ## Parameters

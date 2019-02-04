@@ -3,7 +3,7 @@
 Deletes multiple values from the cache.
 
 ```php
-public abstract void deleteMultiple ( array $keys )
+abstract public void deleteMultiple ( array $keys )
 ```
 
 ## Parameters

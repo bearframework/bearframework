@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::close
 
 ```php
-public abstract void close ( void )
+abstract public void close ( void )
 ```
 
 ## Details

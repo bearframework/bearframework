@@ -3,7 +3,7 @@
 Appends data to the data item's value specified. If the data item does not exist, it will be created.
 
 ```php
-public abstract void append ( string $key , string $content )
+abstract public void append ( string $key , string $content )
 ```
 
 ## Parameters

@@ -6,14 +6,14 @@ A logger interface.
 BearFramework\App\ILogger {
 
 	/* Methods */
-	public abstract void log ( string $name , string $message [, array $data = [] ] )
+	abstract public void log ( string $name , string $message [, array $data = [] ] )
 
 }
 ```
 
 ## Methods
 
-##### public abstract void [log](bearframework.app.ilogger.log.method.md) ( string $name , string $message [, array $data = [] ] )
+##### abstract public void [log](bearframework.app.ilogger.log.method.md) ( string $name , string $message [, array $data = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs the data specified.
 

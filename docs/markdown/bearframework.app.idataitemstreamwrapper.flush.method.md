@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::flush
 
 ```php
-public abstract bool flush ( void )
+abstract public bool flush ( void )
 ```
 
 ## Details

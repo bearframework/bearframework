@@ -3,7 +3,7 @@
 Retrieves a value from the cache.
 
 ```php
-public abstract mixed|null get ( string $key )
+abstract public mixed|null get ( string $key )
 ```
 
 ## Parameters

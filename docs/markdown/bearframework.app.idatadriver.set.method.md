@@ -3,7 +3,7 @@
 Stores a data item.
 
 ```php
-public abstract void set ( BearFramework\App\DataItem $item )
+abstract public void set ( BearFramework\App\DataItem $item )
 ```
 
 ## Parameters

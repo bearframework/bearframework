@@ -3,7 +3,7 @@
 Deletes metadata for the data item key specified.
 
 ```php
-public abstract void deleteMetadata ( string $key , string $name )
+abstract public void deleteMetadata ( string $key , string $name )
 ```
 
 ## Parameters

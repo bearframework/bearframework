@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::seek
 
 ```php
-public abstract bool seek ( int $offset , int $whence )
+abstract public bool seek ( int $offset , int $whence )
 ```
 
 ## Parameters

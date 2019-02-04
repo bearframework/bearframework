@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::size
 
 ```php
-public abstract int size ( void )
+abstract public int size ( void )
 ```
 
 ## Details

@@ -3,7 +3,7 @@
 Returns a DataItemStreamWrapper for the key specified.
 
 ```php
-public abstract BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
+abstract public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
 ```
 
 ## Parameters

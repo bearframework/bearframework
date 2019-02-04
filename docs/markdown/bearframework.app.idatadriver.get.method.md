@@ -3,7 +3,7 @@
 Returns a stored data item or null if not found.
 
 ```php
-public abstract BearFramework\App\DataItem|null get ( string $key )
+abstract public BearFramework\App\DataItem|null get ( string $key )
 ```
 
 ## Parameters

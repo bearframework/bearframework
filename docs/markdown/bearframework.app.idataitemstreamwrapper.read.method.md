@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::read
 
 ```php
-public abstract string read ( int $count )
+abstract public string read ( int $count )
 ```
 
 ## Parameters

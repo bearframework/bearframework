@@ -3,7 +3,7 @@
 Logs the data specified.
 
 ```php
-public abstract void log ( string $name , string $message [, array $data = [] ] )
+abstract public void log ( string $name , string $message [, array $data = [] ] )
 ```
 
 ## Parameters

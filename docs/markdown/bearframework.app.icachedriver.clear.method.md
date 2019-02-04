@@ -3,7 +3,7 @@
 Deletes all values from the cache.
 
 ```php
-public abstract void clear ( void )
+abstract public void clear ( void )
 ```
 
 ## Details

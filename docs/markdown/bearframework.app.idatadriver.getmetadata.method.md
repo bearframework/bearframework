@@ -3,7 +3,7 @@
 Retrieves metadata for the data item specified.
 
 ```php
-public abstract string|null getMetadata ( string $key , string $name )
+abstract public string|null getMetadata ( string $key , string $name )
 ```
 
 ## Parameters

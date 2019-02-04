@@ -3,7 +3,7 @@
 Retrieves multiple values from the cache.
 
 ```php
-public abstract array getMultiple ( array $keys )
+abstract public array getMultiple ( array $keys )
 ```
 
 ## Parameters

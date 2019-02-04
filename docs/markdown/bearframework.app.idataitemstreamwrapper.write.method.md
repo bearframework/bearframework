@@ -1,7 +1,7 @@
 # BearFramework\App\IDataItemStreamWrapper::write
 
 ```php
-public abstract int write ( string $data )
+abstract public int write ( string $data )
 ```
 
 ## Parameters
