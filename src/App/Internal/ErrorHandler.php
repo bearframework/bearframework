@@ -95,7 +95,7 @@ class ErrorHandler
 
             $simpleTrace = [];
             foreach ($trace as $traceRow) {
-                $simpleTrace[] = (isset($traceRow['file']) ? $traceRow['file'] : '') . ':' . (isset($traceRow['line']) ? $traceRow['line'] : '');
+                $simpleTrace[] = (isset($traceRow['file']) ? $traceRow['file'] . ':' . (isset($traceRow['line']) ? $traceRow['line'] : '') : '...');
             }
             if ($errorsCount > 1) {
                 $addContent('Error ' . ($i + 1) . ' of ' . $errorsCount, '', true, true);
