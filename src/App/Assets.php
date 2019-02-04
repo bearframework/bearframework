@@ -97,6 +97,10 @@ class Assets
      * 
      * @param string $pathname The directory name.
      * @return self Returns a reference to itself.
+     * @see BearFramework\App
+     * @see BearFramework\App\DataRepository::isValidKey
+     * @see BearFramework\App\DataRepository::set()
+     * @example Routes.php description
      */
     public function addDir(string $pathname): self
     {
@@ -112,11 +116,10 @@ class Assets
     {
         $this->optimizedDirs = [];
         foreach ($this->dirs as $pathname) {
-            $pathname = $this->getAbsolutePath($pathname);
+            $pathname = \BearFramework\App\Internal\Utilities::normalizePath($pathname);
             if (substr($pathname, -3) !== '://') {
                 $pathname = rtrim($pathname, '/') . '/';
             }
-            $pathname = $this->getAbsolutePath($pathname);
             $this->optimizedDirs[$pathname] = strlen($pathname);
         }
         arsort($this->optimizedDirs);
@@ -145,7 +148,7 @@ class Assets
         }
 
         if ($url === null) {
-            $filename = $this->getAbsolutePath($filename);
+            $filename = \BearFramework\App\Internal\Utilities::normalizePath($filename);
 
             if (isset($options['version'])) {
                 $options['version'] = substr(md5(md5($filename) . $options['version']), 0, 10);
@@ -428,66 +431,7 @@ class Assets
         return $result;
     }
 
-    /**
-     * 
-     */
-    private function getAbsolutePath(string $path): string
-    {
-        $cacheKey = '0' . $path;
-        if (!isset($this->cache[$cacheKey])) {
-            for ($i = 0; $i < 2; $i++) {
-                if (strpos($path, '://') !== false) { // is url
-                    $temp = explode('://', $path, 2);
-                    $root = $temp[0] . '://';
-                    $path = $temp[1];
-                    break;
-                } elseif (substr($path, 0, 1) === '/') { // is absolute on linux
-                    $root = '/';
-                    $path = substr($path, 1);
-                    break;
-                } elseif (preg_match('/^[A-Za-z]:[\/\\\]/i', $path) === 1) { // is absolute on windows
-                    $root = substr($path, 0, 2) . '/';
-                    $path = substr($path, 3);
-                    break;
-                } else {
-                    if ($i === 0) {
-                        $path = getcwd() . '/' . $path;
-                    } else {
-                        throw new \Exception('Cannot find absolute path for "' . $path . '"!');
-                    }
-                }
-            }
-            $path = str_replace('\\', '/', $path);
-            for ($i = 0; $i < 100000; $i++) {
-                $newPath = str_replace(['/./', '//'], '/', $path);
-                if (substr($newPath, 0, 2) === './') {
-                    $newPath = substr($newPath, 2);
-                }
-                if (substr($newPath, -2) === '/.') {
-                    $newPath = substr($newPath, 0, -2);
-                }
-                if ($newPath !== $path) {
-                    $path = $newPath;
-                } else {
-                    break;
-                }
-            }
-            if (strpos($path, '..') !== false) {
-                $parts = explode('/', $path);
-                $temp = [];
-                foreach ($parts as $part) {
-                    if ($part === '..') {
-                        array_pop($temp);
-                    } else {
-                        $temp[] = $part;
-                    }
-                }
-                $path = implode('/', $temp);
-            }
-            $this->cache[$cacheKey] = $root . $path;
-        }
-        return $this->cache[$cacheKey];
-    }
+    
 
     /**
      * 

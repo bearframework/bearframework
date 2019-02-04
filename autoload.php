@@ -61,6 +61,7 @@ $classes = [
     'BearFramework\App\FileLogger' => 'src/App/FileLogger.php',
     'BearFramework\App\Internal\DataItemStreamWrapper' => 'src/App/Internal/DataItemStreamWrapper.php',
     'BearFramework\App\Internal\ErrorHandler' => 'src/App/Internal/ErrorHandler.php',
+    'BearFramework\App\Internal\Utilities' => 'src/App/Internal/Utilities.php',
     'BearFramework\App\ICacheDriver' => 'src/App/ICacheDriver.php',
     'BearFramework\App\IDataDriver' => 'src/App/IDataDriver.php',
     'BearFramework\App\IDataItemStreamWrapper' => 'src/App/IDataItemStreamWrapper.php',

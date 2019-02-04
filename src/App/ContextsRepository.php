@@ -56,7 +56,7 @@ class ContextsRepository
         if ($filename === null) {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             if (!isset($trace[0])) {
-                throw new \Exception('Connot detect context!');
+                throw new \Exception('Cannot detect context!');
             }
             $filename = $trace[0]['file'];
         }
@@ -91,7 +91,7 @@ class ContextsRepository
      */
     public function add(string $dir): self
     {
-        $dir = rtrim(str_replace('\\', '/', $dir), '\\/') . '/';
+        $dir = rtrim(\BearFramework\App\Internal\Utilities::normalizePath($dir), '\\/') . '/';
         if (!isset($this->dirs[$dir])) {
             $this->dirs[$dir] = strlen($dir);
             arsort($this->dirs);
