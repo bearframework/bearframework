@@ -27,13 +27,12 @@ class RoutesRepository
     /**
      * Registers a request handler.
      * 
-     * @param string|string[] $pattern Path pattern. Can contain "?" (path segment) and "*" (matches everything).
+     * @param string|string[] $pattern Path pattern or array of patterns. Can contain "?" (path segment) and "*" (matches everything). Can start with method name (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) or list of method names (GET|HEAD|POST).
      * @param callable|callable[] $callback Function that is expected to return object of type \BearFramework\App\Response.
-     * @param array $options Matching options for methods (GET, HEAD, POST, DELETE, PUT, PATCH, OPTIONS) and protocols (HTTP, HTTPS).
      * @throws \InvalidArgumentException
-     * @return self Returns Returns a reference to itself.
+     * @return self Returns a reference to itself.
      */
-    public function add($pattern, $callback, array $options = ['GET']): self
+    public function add($pattern, $callback): self
     {
         if (is_string($pattern)) {
             if (!isset($pattern{0})) {
@@ -69,7 +68,7 @@ class RoutesRepository
         } else {
             throw new \InvalidArgumentException('The callback argument must be a valid callable or array of valid callables');
         }
-        $this->data[] = [$pattern, $callback, $options];
+        $this->data[] = [$pattern, $callback];
         return $this;
     }
 
@@ -82,33 +81,17 @@ class RoutesRepository
     public function getResponse(\BearFramework\App\Request $request)
     {
         $requestPath = (string) $request->path;
+        $requestMethod = $request->method;
         foreach ($this->data as $route) {
             foreach ($route[0] as $pattern) {
-                $found = preg_match('/^' . str_replace(['%2F', '%3F', '%2A'], ['\/', '[^\/]+?', '.+?'], urlencode($pattern)) . '$/u', $requestPath) === 1; // symbols: /, ?, *
-                if ($found && !empty($route[2])) {
-                    $hasMethodOption = false;
-                    $isMethodValid = false;
-                    $hasSchemeOption = false;
-                    $isSchemeValid = false;
-                    foreach ($route[2] as $option) {
-                        $option = strtolower($option);
-                        if ($option === 'get' || $option === 'head' || $option === 'post' || $option === 'delete' || $option === 'put' || $option === 'patch' || $option === 'options') {
-                            $hasMethodOption = true;
-                            if ($option === strtolower($request->method)) {
-                                $isMethodValid = true;
-                            }
-                        } elseif ($option === 'http' || $option === 'https') {
-                            $hasSchemeOption = true;
-                            if ($option === strtolower($request->scheme)) {
-                                $isSchemeValid = true;
-                            }
-                        }
-                    }
-                    if (($hasMethodOption && !$isMethodValid) || ($hasSchemeOption && !$isSchemeValid)) {
-                        $found = false;
-                    }
+                $matches = null;
+                preg_match('/^(?:(?:((?:[A-Z]+\|){0,}[A-Z]+) )?)(.*+)/', $pattern, $matches);
+                $patternMethods = '|' . ($matches[1] === '' ? 'GET' : $matches[1]) . '|';
+                if (strpos($patternMethods, '|' . $requestMethod . '|') === false) {
+                    continue;
                 }
-                if ($found) {
+                $patternPath = $matches[2];
+                if (preg_match('/^' . str_replace(['%2F', '%3F', '%2A'], ['\/', '[^\/]+?', '.+?'], urlencode($patternPath)) . '$/u', $requestPath) === 1) { // symbols: /, ?, *
                     foreach ($route[1] as $callable) {
                         ob_start();
                         try {
