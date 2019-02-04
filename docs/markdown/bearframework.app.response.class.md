@@ -2,6 +2,25 @@
 
 Response object.
 
+```php
+BearFramework\App\Response {
+
+	/* Properties */
+	public string $charset
+	public string $content
+	public readonly BearFramework\App\Response\CookiesRepository $cookies
+	public readonly BearFramework\App\Response\HeadersRepository $headers
+	public int|null $statusCode
+
+	/* Methods */
+	public __construct ( [ string $content = '' ] )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+
+}
+```
+
 ## Properties
 
 ##### public string $charset
@@ -28,27 +47,21 @@ Response object.
 
 ##### public [__construct](bearframework.app.response.__construct.method.md) ( [ string $content = '' ] )
 
+##### protected self [defineProperty](bearframework.app.response.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public array [toArray](bearframework.app.response.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as an array.
 
 ##### public string [toJSON](bearframework.app.response.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as JSON.
-
-##### protected object [defineProperty](bearframework.app.response.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Details
 
-File: /src/App/Response/FileReader.php
+Location: ~/src/App/Response/FileReader.php
 
 ---
 

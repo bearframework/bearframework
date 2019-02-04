@@ -6,15 +6,15 @@ public __construct ( string $dir )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the data will be stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the data will be stored.
 
 ## Details
 
 Class: [BearFramework\App\FileDataDriver](bearframework.app.filedatadriver.class.md)
 
-File: /src/App/FileDataDriver.php
+Location: ~/src/App/FileDataDriver.php
 
 ---
 

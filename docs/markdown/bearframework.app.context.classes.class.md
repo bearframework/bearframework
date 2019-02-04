@@ -2,6 +2,16 @@
 
 Provides functionality for autoloading classes in the current context.
 
+```php
+BearFramework\App\Context\Classes {
+
+	/* Methods */
+	public __construct ( BearFramework\App $app , string $dir )
+	public self add ( string $class , string $filename )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.context.classes.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
@@ -10,11 +20,9 @@ Provides functionality for autoloading classes in the current context.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a class for autoloading in the current context.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ## Details
 
-File: /src/App/Context/Classes.php
+Location: ~/src/App/Context/Classes.php
 
 ---
 

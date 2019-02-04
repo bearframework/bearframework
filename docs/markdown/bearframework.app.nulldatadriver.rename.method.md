@@ -8,13 +8,13 @@ public void rename ( string $sourceKey , string $destinationKey )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$sourceKey`
+##### sourceKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The current key of the data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The current key of the data item.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$destinationKey`
+##### destinationKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The new key of the data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The new key of the data item.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public void rename ( string $sourceKey , string $destinationKey )
 
 Class: [BearFramework\App\NullDataDriver](bearframework.app.nulldatadriver.class.md)
 
-File: /src/App/NullDataDriver.php
+Location: ~/src/App/NullDataDriver.php
 
 ---
 

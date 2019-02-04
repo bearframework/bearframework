@@ -6,17 +6,17 @@ public __construct ( string $id , string $dir , array $options )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$id`
+##### id
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
 ## Details
 
 Class: [BearFramework\Addon](bearframework.addon.class.md)
 
-File: /src/Addon.php
+Location: ~/src/Addon.php
 
 ---
 

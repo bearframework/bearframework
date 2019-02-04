@@ -1,12 +1,25 @@
 # BearFramework\App\Data\DataLockedException
 
-extends [Exception](http://php.net/manual/en/class.exception.php)
+```php
+BearFramework\App\Data\DataLockedException extends Exception implements Throwable {
 
-implements [Throwable](http://php.net/manual/en/class.throwable.php)
+	/* Methods */
+	public __construct ( [ string $message = '' [, int $code = 0 [, Exception $previous ]]] )
+
+}
+```
+
+## Extends
+
+##### [Exception](http://php.net/manual/en/class.exception.php)
+
+## Implements
+
+##### [Throwable](http://php.net/manual/en/class.throwable.php)
 
 ## Properties
 
-### Inherited from [Exception](http://php.net/manual/en/class.exception.php):
+### Inherited from [Exception](http://php.net/manual/en/class.exception.php)
 
 ##### protected int $code
 
@@ -20,7 +33,7 @@ implements [Throwable](http://php.net/manual/en/class.throwable.php)
 
 ##### public [__construct](bearframework.app.data.datalockedexception.__construct.method.md) ( [ string $message = '' [, int $code = 0 [, [Exception](http://php.net/manual/en/class.exception.php) $previous ]]] )
 
-### Inherited from [Exception](http://php.net/manual/en/class.exception.php):
+### Inherited from [Exception](http://php.net/manual/en/class.exception.php)
 
 ##### public final void [getCode](http://php.net/manual/en/exception.getcode.php) ( void )
 
@@ -38,7 +51,7 @@ implements [Throwable](http://php.net/manual/en/class.throwable.php)
 
 ## Details
 
-File: /src/App/Data/DataLockedException.php
+Location: ~/src/App/Data/DataLockedException.php
 
 ---
 

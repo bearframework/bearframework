@@ -1,8 +1,22 @@
 # BearFramework\App\FileLogger
 
-implements [BearFramework\App\ILogger](bearframework.app.ilogger.class.md)
-
 A logger that saves the logs in the directory specified.
+
+```php
+BearFramework\App\FileLogger implements BearFramework\App\ILogger {
+
+	/* Methods */
+	public __construct ( string $dir )
+	public void log ( string $name , string $message [, array $data = [] ] )
+
+}
+```
+
+## Implements
+
+##### [BearFramework\App\ILogger](bearframework.app.ilogger.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A logger interface.
 
 ## Methods
 
@@ -14,7 +28,7 @@ A logger that saves the logs in the directory specified.
 
 ## Details
 
-File: /src/App/FileLogger.php
+Location: ~/src/App/FileLogger.php
 
 ---
 

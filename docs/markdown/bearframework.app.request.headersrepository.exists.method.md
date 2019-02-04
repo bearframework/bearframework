@@ -8,9 +8,9 @@ public bool exists ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public bool exists ( string $name )
 
 Class: [BearFramework\App\Request\HeadersRepository](bearframework.app.request.headersrepository.class.md)
 
-File: /src/App/Request/HeadersRepository.php
+Location: ~/src/App/Request/HeadersRepository.php
 
 ---
 

@@ -6,15 +6,15 @@ public __construct ( [ string $content = '' ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$content`
+##### content
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content of the response.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content of the response.
 
 ## Details
 
 Class: [BearFramework\App\Response\JSON](bearframework.app.response.json.class.md)
 
-File: /src/App/Response/JSON.php
+Location: ~/src/App/Response/JSON.php
 
 ---
 

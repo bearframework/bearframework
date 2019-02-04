@@ -14,7 +14,7 @@ public string toJSON ( void )
 
 Class: [BearFramework\App\Addon](bearframework.app.addon.class.md)
 
-File: /src/App/Addon.php
+Location: ~/src/App/Addon.php
 
 ---
 

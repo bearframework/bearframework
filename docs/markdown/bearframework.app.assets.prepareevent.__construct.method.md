@@ -6,17 +6,17 @@ public __construct ( string $filename , array $options ,  $returnValue )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$returnValue`
+##### returnValue
 
 ## Details
 
 Class: [BearFramework\App\Assets\PrepareEvent](bearframework.app.assets.prepareevent.class.md)
 
-File: /src/App/Assets/PrepareEvent.php
+Location: ~/src/App/Assets/PrepareEvent.php
 
 ---
 

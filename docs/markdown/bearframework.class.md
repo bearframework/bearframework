@@ -1,8 +1,23 @@
 # BearFramework
 
+```php
+BearFramework {
+
+	/* Constants */
+	const string VERSION
+
+}
+```
+
+## Constants
+
+##### const string VERSION
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The current Bear Framework version.
+
 ## Details
 
-File: /src/BearFramework.php
+Location: ~/src/BearFramework.php
 
 ---
 

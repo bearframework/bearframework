@@ -8,13 +8,13 @@ public self duplicate ( string $sourceKey , string $destinationKey )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$sourceKey`
+##### sourceKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the source data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the source data item.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$destinationKey`
+##### destinationKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the destination data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the destination data item.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public self duplicate ( string $sourceKey , string $destinationKey )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

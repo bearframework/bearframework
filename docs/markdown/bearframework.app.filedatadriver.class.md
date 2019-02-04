@@ -1,8 +1,35 @@
 # BearFramework\App\FileDataDriver
 
-implements [BearFramework\App\IDataDriver](bearframework.app.idatadriver.class.md)
-
 File based data driver
+
+```php
+BearFramework\App\FileDataDriver implements BearFramework\App\IDataDriver {
+
+	/* Methods */
+	public __construct ( string $dir )
+	public void append ( string $key , string $content )
+	public void delete ( string $key )
+	public void deleteMetadata ( string $key , string $name )
+	public void duplicate ( string $sourceKey , string $destinationKey )
+	public bool exists ( string $key )
+	public BearFramework\App\DataItem|null get ( string $key )
+	public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
+	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( BearFramework\DataListContext $context )
+	public string|null getMetadata ( string $key , string $name )
+	public string|null getValue ( string $key )
+	public void rename ( string $sourceKey , string $destinationKey )
+	public void set ( BearFramework\App\DataItem $item )
+	public void setMetadata ( string $key , string $name , string $value )
+	public void setValue ( string $key , string $value )
+
+}
+```
+
+## Implements
+
+##### [BearFramework\App\IDataDriver](bearframework.app.idatadriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A data driver interface.
 
 ## Methods
 
@@ -28,13 +55,9 @@ File based data driver
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if the data item exists. FALSE otherwise.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: TRUE if the data item exists. FALSE otherwise.
-
 ##### public [BearFramework\App\DataItem](bearframework.app.dataitem.class.md)|null [get](bearframework.app.filedatadriver.get.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a stored data item or null if not found.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A data item or null if not found.
 
 ##### public [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md) [getDataItemStreamWrapper](bearframework.app.filedatadriver.getdataitemstreamwrapper.method.md) ( string $key )
 
@@ -44,19 +67,13 @@ File based data driver
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all items in the data storage.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A list of all items in the data storage.
-
 ##### public string|null [getMetadata](bearframework.app.filedatadriver.getmetadata.method.md) ( string $key , string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves metadata for the data item specified.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of the data item metadata.
-
 ##### public string|null [getValue](bearframework.app.filedatadriver.getvalue.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of a stored data item or null if not found.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of a stored data item or null if not found.
 
 ##### public void [rename](bearframework.app.filedatadriver.rename.method.md) ( string $sourceKey , string $destinationKey )
 
@@ -76,7 +93,7 @@ File based data driver
 
 ## Details
 
-File: /src/App/FileDataDriver.php
+Location: ~/src/App/FileDataDriver.php
 
 ---
 

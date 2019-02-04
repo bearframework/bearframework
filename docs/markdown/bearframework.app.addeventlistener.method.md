@@ -6,15 +6,15 @@ public void addEventListener ( string $name , callable $listener )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$listener`
+##### listener
 
 ## Details
 
 Class: [BearFramework\App](bearframework.app.class.md)
 
-File: /src/App.php
+Location: ~/src/App.php
 
 ---
 

@@ -6,15 +6,15 @@ public __construct ( string $key , string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
 ## Details
 
 Class: [BearFramework\App\Data\ItemDeleteMetadataEvent](bearframework.app.data.itemdeletemetadataevent.class.md)
 
-File: /src/App/Data/ItemDeleteMetadataEvent.php
+Location: ~/src/App/Data/ItemDeleteMetadataEvent.php
 
 ---
 

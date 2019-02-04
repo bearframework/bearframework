@@ -8,9 +8,9 @@ public void setDriver ( BearFramework\App\ICacheDriver $driver )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$driver`
+##### driver
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The driver to use for cache storage.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The driver to use for cache storage.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void setDriver ( BearFramework\App\ICacheDriver $driver )
 
 Class: [BearFramework\App\CacheRepository](bearframework.app.cacherepository.class.md)
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

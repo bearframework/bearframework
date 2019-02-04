@@ -8,15 +8,15 @@ public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( strin
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
 
 ## Details
 
 Class: [BearFramework\App\FileDataDriver](bearframework.app.filedatadriver.class.md)
 
-File: /src/App/FileDataDriver.php
+Location: ~/src/App/FileDataDriver.php
 
 ---
 

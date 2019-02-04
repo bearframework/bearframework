@@ -14,7 +14,7 @@ public void useAppDataDriver ( void )
 
 Class: [BearFramework\App\CacheRepository](bearframework.app.cacherepository.class.md)
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

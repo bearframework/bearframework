@@ -14,7 +14,7 @@ public string toJSON ( void )
 
 Class: [BearFramework\App\Request\QueryItem](bearframework.app.request.queryitem.class.md)
 
-File: /src/App/Request/QueryItem.php
+Location: ~/src/App/Request/QueryItem.php
 
 ---
 

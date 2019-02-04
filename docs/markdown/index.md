@@ -10,7 +10,7 @@
 
 ### [BearFramework\App](bearframework.app.class.md)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The is the class used to instantiate and configure you application.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The is the class used to instantiate you application.
 
 ### [BearFramework\App\Addon](bearframework.app.addon.class.md)
 
@@ -61,10 +61,6 @@
 ### [BearFramework\App\ClassesRepository](bearframework.app.classesrepository.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides functionality for registering and autoloading classes.
-
-### [BearFramework\App\Config](bearframework.app.config.class.md)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The application configuration.
 
 ### [BearFramework\App\Context](bearframework.app.context.class.md)
 

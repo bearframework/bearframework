@@ -8,15 +8,15 @@ public __construct ( BearFramework\App\DataRepository $data )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$data`
+##### data
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data repository to use to store data.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data repository to use to store data.
 
 ## Details
 
 Class: [BearFramework\App\DataCacheDriver](bearframework.app.datacachedriver.class.md)
 
-File: /src/App/DataCacheDriver.php
+Location: ~/src/App/DataCacheDriver.php
 
 ---
 

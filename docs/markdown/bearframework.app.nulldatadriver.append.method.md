@@ -8,13 +8,13 @@ public void append ( string $key , string $content )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$content`
+##### content
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content to append.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content to append.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public void append ( string $key , string $content )
 
 Class: [BearFramework\App\NullDataDriver](bearframework.app.nulldatadriver.class.md)
 
-File: /src/App/NullDataDriver.php
+Location: ~/src/App/NullDataDriver.php
 
 ---
 

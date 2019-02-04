@@ -8,7 +8,7 @@ public __construct ( void )
 
 Class: [BearFramework\App\ClassesRepository](bearframework.app.classesrepository.class.md)
 
-File: /src/App/ClassesRepository.php
+Location: ~/src/App/ClassesRepository.php
 
 ---
 

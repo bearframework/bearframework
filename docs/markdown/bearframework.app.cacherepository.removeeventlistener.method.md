@@ -6,15 +6,15 @@ public void removeEventListener ( string $name , callable $listener )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$listener`
+##### listener
 
 ## Details
 
 Class: [BearFramework\App\CacheRepository](bearframework.app.cacherepository.class.md)
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

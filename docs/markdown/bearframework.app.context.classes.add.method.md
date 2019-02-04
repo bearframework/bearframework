@@ -8,13 +8,13 @@ public self add ( string $class , string $filename )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$class`
+##### class
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The class name or class name pattern (format: Namespace\*).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The class name or class name pattern (format: Namespace\*).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename that contains the class or path pattern (format: path/to/file/*.php).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename that contains the class or path pattern (format: path/to/file/*.php).
 
 ## Returns
 
@@ -24,7 +24,7 @@ public self add ( string $class , string $filename )
 
 Class: [BearFramework\App\Context\Classes](bearframework.app.context.classes.class.md)
 
-File: /src/App/Context/Classes.php
+Location: ~/src/App/Context/Classes.php
 
 ---
 

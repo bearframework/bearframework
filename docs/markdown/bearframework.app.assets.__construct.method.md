@@ -6,13 +6,13 @@ public __construct ( BearFramework\App $app )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
+##### app
 
 ## Details
 
 Class: [BearFramework\App\Assets](bearframework.app.assets.class.md)
 
-File: /src/App/Assets.php
+Location: ~/src/App/Assets.php
 
 ---
 

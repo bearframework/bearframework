@@ -6,13 +6,13 @@ public bool truncate ( int $newSize )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$newSize`
+##### newSize
 
 ## Details
 
 Class: [BearFramework\App\FileDataItemStreamWrapper](bearframework.app.filedataitemstreamwrapper.class.md)
 
-File: /src/App/FileDataItemStreamWrapper.php
+Location: ~/src/App/FileDataItemStreamWrapper.php
 
 ---
 

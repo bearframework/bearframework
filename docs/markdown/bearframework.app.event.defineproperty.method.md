@@ -3,18 +3,18 @@
 Defines a new property.
 
 ```php
-protected object defineProperty ( string $name [, array $options = [] ] )
+protected self defineProperty ( string $name [, array $options = [] ] )
 ```
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The property name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The property name.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The property options. Available values:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The property options. Available values:
 init (callable)
 get (callable)
 set (callable)
@@ -31,7 +31,7 @@ encodeInJSON (boolean) - Base64 encode the value of the property when it's json 
 
 Class: [BearFramework\App\Event](bearframework.app.event.class.md)
 
-File: /src/App/Assets/BeforeGetDetailsEvent.php
+Location: ~/src/App/Assets/BeforeGetDetailsEvent.php
 
 ---
 

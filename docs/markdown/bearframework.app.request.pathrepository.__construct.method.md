@@ -6,15 +6,15 @@ public __construct ( [ string $path = '' ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$path`
+##### path
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request path.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request path.
 
 ## Details
 
 Class: [BearFramework\App\Request\PathRepository](bearframework.app.request.pathrepository.class.md)
 
-File: /src/App/Request/PathRepository.php
+Location: ~/src/App/Request/PathRepository.php
 
 ---
 

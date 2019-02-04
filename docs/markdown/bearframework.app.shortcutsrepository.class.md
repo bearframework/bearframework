@@ -2,6 +2,16 @@
 
 Shortcuts container for the application object.
 
+```php
+BearFramework\App\ShortcutsRepository {
+
+	/* Methods */
+	public __construct ( callable $addCallback )
+	public self add ( string $name , callable $callback )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.shortcutsrepository.__construct.method.md) ( callable $addCallback )
@@ -10,11 +20,9 @@ Shortcuts container for the application object.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new shortcut.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ## Details
 
-File: /src/App/ShortcutsRepository.php
+Location: ~/src/App/ShortcutsRepository.php
 
 ---
 

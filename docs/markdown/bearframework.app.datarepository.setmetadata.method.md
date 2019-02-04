@@ -8,17 +8,17 @@ public self setMetadata ( string $key , string $name , string $value )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata name.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata value.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata value.
 
 ## Returns
 
@@ -28,7 +28,7 @@ public self setMetadata ( string $key , string $name , string $value )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

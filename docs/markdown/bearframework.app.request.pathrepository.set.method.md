@@ -3,18 +3,14 @@
 Sets a new path.
 
 ```php
-public self set ( string $path [, bool $encode = true ] )
+public self set ( string $path )
 ```
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$path`
+##### path
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The new path.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$encode`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to encode the path.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The new path.
 
 ## Returns
 
@@ -24,7 +20,7 @@ public self set ( string $path [, bool $encode = true ] )
 
 Class: [BearFramework\App\Request\PathRepository](bearframework.app.request.pathrepository.class.md)
 
-File: /src/App/Request/PathRepository.php
+Location: ~/src/App/Request/PathRepository.php
 
 ---
 

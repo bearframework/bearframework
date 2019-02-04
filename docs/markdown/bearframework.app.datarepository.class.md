@@ -2,6 +2,38 @@
 
 Data storage
 
+```php
+BearFramework\App\DataRepository {
+
+	/* Methods */
+	public __construct ( BearFramework\App $app [, array $options = [] ] )
+	public void addEventListener ( string $name , callable $listener )
+	public self append ( string $key , string $content )
+	public self delete ( string $key )
+	public self deleteMetadata ( string $key , string $name )
+	public void dispatchEvent ( BearFramework\App\Event $event )
+	public self duplicate ( string $sourceKey , string $destinationKey )
+	public bool exists ( string $key )
+	public BearFramework\App\DataItem|null get ( string $key )
+	public string getFilename ( string $key )
+	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( void )
+	public string|null getMetadata ( string $key , string $name )
+	public string|null getValue ( string $key )
+	public bool hasEventListeners ( string $name )
+	public BearFramework\App\DataItem make ( [ string|null $key [, string|null $value ]] )
+	public void removeEventListener ( string $name , callable $listener )
+	public self rename ( string $sourceKey , string $destinationKey )
+	public self set ( BearFramework\App\DataItem $item )
+	public void setDriver ( BearFramework\App\IDataDriver $driver )
+	public self setMetadata ( string $key , string $name , string $value )
+	public self setValue ( string $key , string $value )
+	public void useFileDriver ( string $dir )
+	public void useNullDriver ( void )
+	public bool validate ( string $key )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.datarepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app [, array $options = [] ] )
@@ -14,19 +46,13 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Appends data to the data item's value specified. If the data item does not exist, it will be created.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public self [delete](bearframework.app.datarepository.delete.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes the data item specified and it's metadata.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public self [deleteMetadata](bearframework.app.datarepository.deletemetadata.method.md) ( string $key , string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes metadata for the data item key specified.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
 
 ##### public void [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 
@@ -34,57 +60,35 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a copy of the data item specified.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public bool [exists](bearframework.app.datarepository.exists.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if the data item exists. FALSE otherwise.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: TRUE if the data item exists. FALSE otherwise.
 
 ##### public [BearFramework\App\DataItem](bearframework.app.dataitem.class.md)|null [get](bearframework.app.datarepository.get.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a stored data item or null if not found.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A data item or null if not found.
-
 ##### public string [getFilename](bearframework.app.datarepository.getfilename.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the filename of the data item specified.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The filename of the data item specified.
 
 ##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.datarepository.getlist.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all items in the data storage.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: A list of all items in the data storage.
-
 ##### public string|null [getMetadata](bearframework.app.datarepository.getmetadata.method.md) ( string $key , string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves metadata for the data item specified.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of the data item metadata.
 
 ##### public string|null [getValue](bearframework.app.datarepository.getvalue.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of a stored data item or null if not found.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of a stored data item or null if not found.
-
 ##### public bool [hasEventListeners](bearframework.app.datarepository.haseventlisteners.method.md) ( string $name )
-
-##### public bool [isValidKey](bearframework.app.datarepository.isvalidkey.method.md) ( string $key )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checks if a data item key is valid.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: TRUE if valid. FALSE otherwise.
 
 ##### public [BearFramework\App\DataItem](bearframework.app.dataitem.class.md) [make](bearframework.app.datarepository.make.method.md) ( [ string|null $key [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data item and returns it.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a new data item.
 
 ##### public void [removeEventListener](bearframework.app.datarepository.removeeventlistener.method.md) ( string $name , callable $listener )
 
@@ -92,13 +96,9 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Changes the key of the data item specified.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public self [set](bearframework.app.datarepository.set.method.md) ( [BearFramework\App\DataItem](bearframework.app.dataitem.class.md) $item )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores a data item.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
 
 ##### public void [setDriver](bearframework.app.datarepository.setdriver.method.md) ( [BearFramework\App\IDataDriver](bearframework.app.idatadriver.class.md) $driver )
 
@@ -108,13 +108,9 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores metadata for the data item specified.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public self [setValue](bearframework.app.datarepository.setvalue.method.md) ( string $key , string $value )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets a new value of the item specified or creates a new item with the key and value specified.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
 
 ##### public void [useFileDriver](bearframework.app.datarepository.usefiledriver.method.md) ( string $dir )
 
@@ -124,101 +120,75 @@ Data storage
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a null data driver. No data is stored and no errors are thrown.
 
+##### public bool [validate](bearframework.app.datarepository.validate.method.md) ( string $key )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checks if a data item key is valid.
+
 ## Events
 
-##### getList
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\GetListEvent](bearframework.app.data.getlistevent.class.md)
+##### [BearFramework\App\Data\GetListEvent](bearframework.app.data.getlistevent.class.md) getList
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data items list is requested.
 
-##### itemAppend
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemAppendEvent](bearframework.app.data.itemappendevent.class.md)
+##### [BearFramework\App\Data\ItemAppendEvent](bearframework.app.data.itemappendevent.class.md) itemAppend
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a content is appended to a data value.
 
-##### itemChange
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemChangeEvent](bearframework.app.data.itemchangeevent.class.md)
+##### [BearFramework\App\Data\ItemChangeEvent](bearframework.app.data.itemchangeevent.class.md) itemChange
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is changed.
 
-##### itemDelete
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemDeleteEvent](bearframework.app.data.itemdeleteevent.class.md)
+##### [BearFramework\App\Data\ItemDeleteEvent](bearframework.app.data.itemdeleteevent.class.md) itemDelete
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is deleted.
 
-##### itemDeleteMetadata
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemDeleteMetadataEvent](bearframework.app.data.itemdeletemetadataevent.class.md)
+##### [BearFramework\App\Data\ItemDeleteMetadataEvent](bearframework.app.data.itemdeletemetadataevent.class.md) itemDeleteMetadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is deleted.
 
-##### itemDuplicate
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemDuplicateEvent](bearframework.app.data.itemduplicateevent.class.md)
+##### [BearFramework\App\Data\ItemDuplicateEvent](bearframework.app.data.itemduplicateevent.class.md) itemDuplicate
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is duplicated.
 
-##### itemExists
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemExistsEvent](bearframework.app.data.itemexistsevent.class.md)
+##### [BearFramework\App\Data\ItemExistsEvent](bearframework.app.data.itemexistsevent.class.md) itemExists
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is checked for existence.
 
-##### itemGet
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemGetEvent](bearframework.app.data.itemgetevent.class.md)
+##### [BearFramework\App\Data\ItemGetEvent](bearframework.app.data.itemgetevent.class.md) itemGet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is requested.
 
-##### itemGetMetadata
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md)
+##### [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md) itemGetMetadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is requested.
 
-##### itemGetValue
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemGetValueEvent](bearframework.app.data.itemgetvalueevent.class.md)
+##### [BearFramework\App\Data\ItemGetValueEvent](bearframework.app.data.itemgetvalueevent.class.md) itemGetValue
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the value of a data item is requested.
 
-##### itemRename
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemRenameEvent](bearframework.app.data.itemrenameevent.class.md)
+##### [BearFramework\App\Data\ItemRenameEvent](bearframework.app.data.itemrenameevent.class.md) itemRename
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is renamed.
 
-##### itemRequest
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemRequestEvent](bearframework.app.data.itemrequestevent.class.md)
+##### [BearFramework\App\Data\ItemRequestEvent](bearframework.app.data.itemrequestevent.class.md) itemRequest
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is requested.
 
-##### itemSet
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemSetEvent](bearframework.app.data.itemsetevent.class.md)
+##### [BearFramework\App\Data\ItemSetEvent](bearframework.app.data.itemsetevent.class.md) itemSet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is added or updated.
 
-##### itemSetMetadata
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemSetMetadataEvent](bearframework.app.data.itemsetmetadataevent.class.md)
+##### [BearFramework\App\Data\ItemSetMetadataEvent](bearframework.app.data.itemsetmetadataevent.class.md) itemSetMetadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is added or updated.
 
-##### itemSetValue
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Data\ItemSetValueEvent](bearframework.app.data.itemsetvalueevent.class.md)
+##### [BearFramework\App\Data\ItemSetValueEvent](bearframework.app.data.itemsetvalueevent.class.md) itemSetValue
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the value of a data item is added or updated.
 
 ## Details
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

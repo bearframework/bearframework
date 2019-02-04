@@ -2,6 +2,29 @@
 
 Data cache
 
+```php
+BearFramework\App\CacheRepository {
+
+	/* Methods */
+	public __construct ( BearFramework\App $app )
+	public void addEventListener ( string $name , callable $listener )
+	public void clear ( void )
+	public self delete ( string $key )
+	public void dispatchEvent ( BearFramework\App\Event $event )
+	public bool exists ( string $key )
+	public BearFramework\App\CacheItem|null get ( string $key )
+	public mixed getValue ( string $key )
+	public bool hasEventListeners ( string $name )
+	public BearFramework\App\CacheItem make ( [ string $key [,  $value ]] )
+	public void removeEventListener ( string $name , callable $listener )
+	public self set ( BearFramework\App\CacheItem $item )
+	public void setDriver ( BearFramework\App\ICacheDriver $driver )
+	public void useAppDataDriver ( void )
+	public void useNullDriver ( void )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.cacherepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
@@ -16,27 +39,19 @@ Data cache
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a cache from the cache.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public void [dispatchEvent](bearframework.app.cacherepository.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 
 ##### public bool [exists](bearframework.app.cacherepository.exists.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns information whether a key exists in the cache.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: TRUE if the cache item exists in the cache, FALSE otherwise.
-
 ##### public [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md)|null [get](bearframework.app.cacherepository.get.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the cache item stored or null if not found.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The cache item stored or null if not found.
-
 ##### public mixed [getValue](bearframework.app.cacherepository.getvalue.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of the cache item specified.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The value of the cache item or null if not found.
 
 ##### public bool [hasEventListeners](bearframework.app.cacherepository.haseventlisteners.method.md) ( string $name )
 
@@ -44,15 +59,11 @@ Data cache
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new cache item and returns it.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a new cache item.
-
 ##### public void [removeEventListener](bearframework.app.cacherepository.removeeventlistener.method.md) ( string $name , callable $listener )
 
 ##### public self [set](bearframework.app.cacherepository.set.method.md) ( [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md) $item )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores a cache item.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
 
 ##### public void [setDriver](bearframework.app.cacherepository.setdriver.method.md) ( [BearFramework\App\ICacheDriver](bearframework.app.icachedriver.class.md) $driver )
 
@@ -68,57 +79,41 @@ Data cache
 
 ## Events
 
-##### clear
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ClearEvent](bearframework.app.cache.clearevent.class.md)
+##### [BearFramework\App\Cache\ClearEvent](bearframework.app.cache.clearevent.class.md) clear
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the cache is cleared.
 
-##### itemChange
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemChangeEvent](bearframework.app.cache.itemchangeevent.class.md)
+##### [BearFramework\App\Cache\ItemChangeEvent](bearframework.app.cache.itemchangeevent.class.md) itemChange
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is changed.
 
-##### itemDelete
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemDeleteEvent](bearframework.app.cache.itemdeleteevent.class.md)
+##### [BearFramework\App\Cache\ItemDeleteEvent](bearframework.app.cache.itemdeleteevent.class.md) itemDelete
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is deleted.
 
-##### itemExists
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemExistsEvent](bearframework.app.cache.itemexistsevent.class.md)
+##### [BearFramework\App\Cache\ItemExistsEvent](bearframework.app.cache.itemexistsevent.class.md) itemExists
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is checked for existence.
 
-##### itemGet
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemGetEvent](bearframework.app.cache.itemgetevent.class.md)
+##### [BearFramework\App\Cache\ItemGetEvent](bearframework.app.cache.itemgetevent.class.md) itemGet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is requested.
 
-##### itemGetValue
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemGetValueEvent](bearframework.app.cache.itemgetvalueevent.class.md)
+##### [BearFramework\App\Cache\ItemGetValueEvent](bearframework.app.cache.itemgetvalueevent.class.md) itemGetValue
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the value of a cache item is requested.
 
-##### itemRequest
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemRequestEvent](bearframework.app.cache.itemrequestevent.class.md)
+##### [BearFramework\App\Cache\ItemRequestEvent](bearframework.app.cache.itemrequestevent.class.md) itemRequest
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is requested.
 
-##### itemSet
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\Cache\ItemSetEvent](bearframework.app.cache.itemsetevent.class.md)
+##### [BearFramework\App\Cache\ItemSetEvent](bearframework.app.cache.itemsetevent.class.md) itemSet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is added or updated.
 
 ## Details
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

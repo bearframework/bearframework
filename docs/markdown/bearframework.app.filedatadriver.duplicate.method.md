@@ -8,13 +8,13 @@ public void duplicate ( string $sourceKey , string $destinationKey )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$sourceKey`
+##### sourceKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the source data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the source data item.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$destinationKey`
+##### destinationKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the destination data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the destination data item.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public void duplicate ( string $sourceKey , string $destinationKey )
 
 Class: [BearFramework\App\FileDataDriver](bearframework.app.filedatadriver.class.md)
 
-File: /src/App/FileDataDriver.php
+Location: ~/src/App/FileDataDriver.php
 
 ---
 

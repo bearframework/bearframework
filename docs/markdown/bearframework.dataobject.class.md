@@ -1,32 +1,56 @@
 # BearFramework\DataObject
 
-extends IvoPetkov\DataObject
-
-implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
-
 Base class for lists.
+
+```php
+BearFramework\DataObject extends IvoPetkov\DataObject implements ArrayAccess {
+
+}
+```
+
+## Extends
+
+##### IvoPetkov\DataObject
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A data object that supports registering properties and importing/exporting from array and JSON.
+
+## Implements
+
+##### [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 
 ## Methods
 
-### Inherited from IvoPetkov\DataObject:
+### Inherited from IvoPetkov\DataObject
 
-##### public [__construct](ivopetkov.dataobject.__construct.method.md) ( [ array $data = [] ] )
+##### public __construct ( [ array $data = [] ] )
 
-##### public static object [fromArray](ivopetkov.dataobject.fromarray.method.md) ( array $data )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data object.
 
-##### public static object [fromJSON](ivopetkov.dataobject.fromjson.method.md) ( string $data )
+##### protected self defineProperty ( string $name [, array $options = [] ] )
 
-##### public array [toArray](ivopetkov.dataobject.toarray.method.md) ( void )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
-##### public string [toJSON](ivopetkov.dataobject.tojson.method.md) ( void )
+##### public static object fromArray ( array $data )
 
-##### protected object [defineProperty](ivopetkov.dataobject.defineproperty.method.md) ( string $name [, array $options = [] ] )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the array specified.
 
-##### protected void [initialize](ivopetkov.dataobject.initialize.method.md) ( void )
+##### public static object fromJSON ( string $data )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the JSON specified.
+
+##### protected void initialize ( void )
+
+##### public array toArray ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
+
+##### public string toJSON ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
 ## Details
 
-File: /src/DataObject.php
+Location: ~/src/DataObject.php
 
 ---
 

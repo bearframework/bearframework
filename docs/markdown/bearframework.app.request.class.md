@@ -2,6 +2,30 @@
 
 Provides information about the current request.
 
+```php
+BearFramework\App\Request {
+
+	/* Properties */
+	public string|null $base
+	public readonly BearFramework\App\Request\CookiesRepository $cookies
+	public readonly BearFramework\App\Request\FormDataRepository $formData
+	public readonly BearFramework\App\Request\HeadersRepository $headers
+	public string|null $host
+	public string|null $method
+	public readonly BearFramework\App\Request\PathRepository $path
+	public int|null $port
+	public readonly BearFramework\App\Request\QueryRepository $query
+	public string|null $scheme
+
+	/* Methods */
+	public __construct ( [ bool $initializeFromEnvironment = false ] )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+
+}
+```
+
 ## Properties
 
 ##### public string|null $base
@@ -48,27 +72,21 @@ Provides information about the current request.
 
 ##### public [__construct](bearframework.app.request.__construct.method.md) ( [ bool $initializeFromEnvironment = false ] )
 
+##### protected self [defineProperty](bearframework.app.request.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public array [toArray](bearframework.app.request.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as an array.
 
 ##### public string [toJSON](bearframework.app.request.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as JSON.
-
-##### protected object [defineProperty](bearframework.app.request.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Details
 
-File: /src/App/Request.php
+Location: ~/src/App/Request.php
 
 ---
 

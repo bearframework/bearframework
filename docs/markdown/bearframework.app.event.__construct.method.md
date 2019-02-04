@@ -6,15 +6,15 @@ public __construct ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the event.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the event.
 
 ## Details
 
 Class: [BearFramework\App\Event](bearframework.app.event.class.md)
 
-File: /src/App/Assets/BeforeGetDetailsEvent.php
+Location: ~/src/App/Assets/BeforeGetDetailsEvent.php
 
 ---
 

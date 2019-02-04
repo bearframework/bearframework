@@ -8,13 +8,13 @@ public array getDetails ( string $filename , array $list )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename of the asset.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename of the asset.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$list`
+##### list
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A list of details to return. Available values: mimeType, size, width, height.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A list of details to return. Available values: mimeType, size, width, height.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public array getDetails ( string $filename , array $list )
 
 Class: [BearFramework\App\Assets](bearframework.app.assets.class.md)
 
-File: /src/App/Assets.php
+Location: ~/src/App/Assets.php
 
 ---
 

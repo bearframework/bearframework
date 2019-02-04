@@ -8,9 +8,9 @@ public void delete ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key under which the value is stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key under which the value is stored.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void delete ( string $key )
 
 Class: [BearFramework\App\DataCacheDriver](bearframework.app.datacachedriver.class.md)
 
-File: /src/App/DataCacheDriver.php
+Location: ~/src/App/DataCacheDriver.php
 
 ---
 

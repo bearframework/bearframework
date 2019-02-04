@@ -1,5 +1,22 @@
 # BearFramework\Addon
 
+```php
+BearFramework\Addon {
+
+	/* Properties */
+	public readonly string $dir
+	public readonly string $id
+	public readonly array $options
+
+	/* Methods */
+	public __construct ( string $id , string $dir , array $options )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+
+}
+```
+
 ## Properties
 
 ##### public readonly string $dir
@@ -19,27 +36,21 @@
 
 ##### public [__construct](bearframework.addon.__construct.method.md) ( string $id , string $dir , array $options )
 
+##### protected self [defineProperty](bearframework.addon.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public array [toArray](bearframework.addon.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as an array.
 
 ##### public string [toJSON](bearframework.addon.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as JSON.
-
-##### protected object [defineProperty](bearframework.addon.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Details
 
-File: /src/Addon.php
+Location: ~/src/Addon.php
 
 ---
 

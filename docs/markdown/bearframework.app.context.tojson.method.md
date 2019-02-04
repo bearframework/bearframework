@@ -14,7 +14,7 @@ public string toJSON ( void )
 
 Class: [BearFramework\App\Context](bearframework.app.context.class.md)
 
-File: /src/App/Context.php
+Location: ~/src/App/Context.php
 
 ---
 

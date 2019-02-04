@@ -1,12 +1,22 @@
 # BearFramework\DataListContext
 
-extends IvoPetkov\DataListContext
-
 Base class for lists context.
+
+```php
+BearFramework\DataListContext extends IvoPetkov\DataListContext {
+
+}
+```
+
+## Extends
+
+##### IvoPetkov\DataListContext
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Information about the operations applied on the data list.
 
 ## Properties
 
-### Inherited from IvoPetkov\DataListContext:
+### Inherited from IvoPetkov\DataListContext
 
 ##### public array $filterByProperties
 
@@ -16,7 +26,7 @@ Base class for lists context.
 
 ## Details
 
-File: /src/DataListContext.php
+Location: ~/src/DataListContext.php
 
 ---
 

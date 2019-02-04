@@ -8,9 +8,9 @@ public BearFramework\App\Request\QueryItem make ( [ string $name [, string $valu
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Request\QueryItem make ( [ string $name [, string $valu
 
 Class: [BearFramework\App\Request\QueryRepository](bearframework.app.request.queryrepository.class.md)
 
-File: /src/App/Request/QueryRepository.php
+Location: ~/src/App/Request/QueryRepository.php
 
 ---
 

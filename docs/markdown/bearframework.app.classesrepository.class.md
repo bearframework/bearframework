@@ -2,6 +2,18 @@
 
 Provides functionality for registering and autoloading classes.
 
+```php
+BearFramework\App\ClassesRepository {
+
+	/* Methods */
+	public __construct ( void )
+	public self add ( string $class , string $filename )
+	public boolen exists ( string $class )
+	public self load ( string $class )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.classesrepository.__construct.method.md) ( void )
@@ -10,23 +22,17 @@ Provides functionality for registering and autoloading classes.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a class for autoloading.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public boolen [exists](bearframework.app.classesrepository.exists.method.md) ( string $class )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns information about whether a class is registered for autoloading.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: TRUE if the class is registered for autoloading. FALSE otherwise.
 
 ##### public self [load](bearframework.app.classesrepository.load.method.md) ( string $class )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loads a class if registered.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ## Details
 
-File: /src/App/ClassesRepository.php
+Location: ~/src/App/ClassesRepository.php
 
 ---
 

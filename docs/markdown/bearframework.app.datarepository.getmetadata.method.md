@@ -8,13 +8,13 @@ public string|null getMetadata ( string $key , string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata name.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public string|null getMetadata ( string $key , string $name )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

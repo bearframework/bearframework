@@ -8,9 +8,9 @@ public array getMultiple ( array $keys )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$keys`
+##### keys
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The keys under which the values are stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The keys under which the values are stored.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public array getMultiple ( array $keys )
 
 Class: [BearFramework\App\NullCacheDriver](bearframework.app.nullcachedriver.class.md)
 
-File: /src/App/NullCacheDriver.php
+Location: ~/src/App/NullCacheDriver.php
 
 ---
 

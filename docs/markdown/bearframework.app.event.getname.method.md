@@ -8,7 +8,7 @@ public string getName ( void )
 
 Class: [BearFramework\App\Event](bearframework.app.event.class.md)
 
-File: /src/App/Assets/BeforeGetDetailsEvent.php
+Location: ~/src/App/Assets/BeforeGetDetailsEvent.php
 
 ---
 

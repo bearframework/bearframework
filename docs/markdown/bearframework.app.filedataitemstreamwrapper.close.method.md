@@ -8,7 +8,7 @@ public void close ( void )
 
 Class: [BearFramework\App\FileDataItemStreamWrapper](bearframework.app.filedataitemstreamwrapper.class.md)
 
-File: /src/App/FileDataItemStreamWrapper.php
+Location: ~/src/App/FileDataItemStreamWrapper.php
 
 ---
 

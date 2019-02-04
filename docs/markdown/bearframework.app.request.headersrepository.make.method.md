@@ -8,9 +8,9 @@ public BearFramework\App\Request\Header make ( [ string $name [, string $value ]
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Request\Header make ( [ string $name [, string $value ]
 
 Class: [BearFramework\App\Request\HeadersRepository](bearframework.app.request.headersrepository.class.md)
 
-File: /src/App/Request/HeadersRepository.php
+Location: ~/src/App/Request/HeadersRepository.php
 
 ---
 

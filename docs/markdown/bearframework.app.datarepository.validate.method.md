@@ -1,16 +1,16 @@
-# BearFramework\App\DataRepository::isValidKey
+# BearFramework\App\DataRepository::validate
 
 Checks if a data item key is valid.
 
 ```php
-public bool isValidKey ( string $key )
+public bool validate ( string $key )
 ```
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item to check.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item to check.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public bool isValidKey ( string $key )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

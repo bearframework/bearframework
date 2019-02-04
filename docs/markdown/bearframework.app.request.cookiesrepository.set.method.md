@@ -8,9 +8,9 @@ public self set ( BearFramework\App\Request\Cookie $cookie )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$cookie`
+##### cookie
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The cookie to set.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The cookie to set.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self set ( BearFramework\App\Request\Cookie $cookie )
 
 Class: [BearFramework\App\Request\CookiesRepository](bearframework.app.request.cookiesrepository.class.md)
 
-File: /src/App/Request/CookiesRepository.php
+Location: ~/src/App/Request/CookiesRepository.php
 
 ---
 

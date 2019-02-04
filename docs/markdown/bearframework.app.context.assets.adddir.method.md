@@ -8,9 +8,9 @@ public self addDir ( string $pathname )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$pathname`
+##### pathname
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory name.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self addDir ( string $pathname )
 
 Class: [BearFramework\App\Context\Assets](bearframework.app.context.assets.class.md)
 
-File: /src/App/Context/Assets.php
+Location: ~/src/App/Context/Assets.php
 
 ---
 

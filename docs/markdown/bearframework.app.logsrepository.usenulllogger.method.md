@@ -14,7 +14,7 @@ public void useNullLogger ( void )
 
 Class: [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md)
 
-File: /src/App/LogsRepository.php
+Location: ~/src/App/LogsRepository.php
 
 ---
 

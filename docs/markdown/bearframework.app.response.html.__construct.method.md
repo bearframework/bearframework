@@ -6,15 +6,15 @@ public __construct ( [ string $content = '' ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$content`
+##### content
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content of the response.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content of the response.
 
 ## Details
 
 Class: [BearFramework\App\Response\HTML](bearframework.app.response.html.class.md)
 
-File: /src/App/Response/HTML.php
+Location: ~/src/App/Response/HTML.php
 
 ---
 

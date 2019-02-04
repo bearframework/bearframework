@@ -6,13 +6,13 @@ public bool hasEventListeners ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
 ## Details
 
 Class: [BearFramework\App\CacheRepository](bearframework.app.cacherepository.class.md)
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

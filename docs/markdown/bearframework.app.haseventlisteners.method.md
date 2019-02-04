@@ -6,13 +6,13 @@ public bool hasEventListeners ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
 ## Details
 
 Class: [BearFramework\App](bearframework.app.class.md)
 
-File: /src/App.php
+Location: ~/src/App.php
 
 ---
 

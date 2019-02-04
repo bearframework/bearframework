@@ -8,9 +8,9 @@ public BearFramework\App\Request\FormDataItem make ( [ string $name [, string $v
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Request\FormDataItem make ( [ string $name [, string $v
 
 Class: [BearFramework\App\Request\FormDataRepository](bearframework.app.request.formdatarepository.class.md)
 
-File: /src/App/Request/FormDataRepository.php
+Location: ~/src/App/Request/FormDataRepository.php
 
 ---
 

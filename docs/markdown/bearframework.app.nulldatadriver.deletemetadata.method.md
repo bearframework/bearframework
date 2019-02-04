@@ -8,13 +8,13 @@ public void deleteMetadata ( string $key , string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata name.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public void deleteMetadata ( string $key , string $name )
 
 Class: [BearFramework\App\NullDataDriver](bearframework.app.nulldatadriver.class.md)
 
-File: /src/App/NullDataDriver.php
+Location: ~/src/App/NullDataDriver.php
 
 ---
 

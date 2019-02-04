@@ -6,13 +6,13 @@ public bool open ( string $mode )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$mode`
+##### mode
 
 ## Details
 
 Class: [BearFramework\App\NullDataItemStreamWrapper](bearframework.app.nulldataitemstreamwrapper.class.md)
 
-File: /src/App/NullDataItemStreamWrapper.php
+Location: ~/src/App/NullDataItemStreamWrapper.php
 
 ---
 

@@ -3,18 +3,14 @@
 Returns the value of the path segment for the index specified or null if not found.
 
 ```php
-public string|null getSegment ( int $index [, bool $decode = true ] )
+public string|null getSegment ( int $index )
 ```
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$index`
+##### index
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the path segment.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$decode`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whether to apply urldecode.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the path segment.
 
 ## Returns
 
@@ -24,7 +20,7 @@ public string|null getSegment ( int $index [, bool $decode = true ] )
 
 Class: [BearFramework\App\Request\PathRepository](bearframework.app.request.pathrepository.class.md)
 
-File: /src/App/Request/PathRepository.php
+Location: ~/src/App/Request/PathRepository.php
 
 ---
 

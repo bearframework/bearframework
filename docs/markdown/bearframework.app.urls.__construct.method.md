@@ -6,13 +6,13 @@ public __construct ( BearFramework\App $app )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
+##### app
 
 ## Details
 
 Class: [BearFramework\App\Urls](bearframework.app.urls.class.md)
 
-File: /src/App/Urls.php
+Location: ~/src/App/Urls.php
 
 ---
 

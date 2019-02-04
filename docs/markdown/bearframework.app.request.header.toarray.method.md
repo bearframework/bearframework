@@ -14,7 +14,7 @@ public array toArray ( void )
 
 Class: [BearFramework\App\Request\Header](bearframework.app.request.header.class.md)
 
-File: /src/App/Request/Header.php
+Location: ~/src/App/Request/Header.php
 
 ---
 

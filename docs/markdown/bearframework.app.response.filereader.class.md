@@ -1,8 +1,27 @@
 # BearFramework\App\Response\FileReader
 
-extends [BearFramework\App\Response](bearframework.app.response.class.md)
-
 Response type that reads file and outputs it.
+
+```php
+BearFramework\App\Response\FileReader extends BearFramework\App\Response {
+
+	/* Properties */
+	public string $filename
+
+	/* Methods */
+	public __construct ( string $filename )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+
+}
+```
+
+## Extends
+
+##### [BearFramework\App\Response](bearframework.app.response.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Response object.
 
 ## Properties
 
@@ -14,27 +33,21 @@ Response type that reads file and outputs it.
 
 ##### public [__construct](bearframework.app.response.filereader.__construct.method.md) ( string $filename )
 
+##### protected self [defineProperty](bearframework.app.response.filereader.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public array [toArray](bearframework.app.response.filereader.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as an array.
 
 ##### public string [toJSON](bearframework.app.response.filereader.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as JSON.
-
-##### protected object [defineProperty](bearframework.app.response.filereader.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Details
 
-File: /src/App/Response/FileReader.php
+Location: ~/src/App/Response/FileReader.php
 
 ---
 

@@ -6,13 +6,13 @@ public __construct ( BearFramework\App $app )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
+##### app
 
 ## Details
 
 Class: [BearFramework\App\AddonsRepository](bearframework.app.addonsrepository.class.md)
 
-File: /src/App/AddonsRepository.php
+Location: ~/src/App/AddonsRepository.php
 
 ---
 

@@ -6,15 +6,15 @@ public __construct ( string $key , string $dir )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
 ## Details
 
 Class: [BearFramework\App\FileDataItemStreamWrapper](bearframework.app.filedataitemstreamwrapper.class.md)
 
-File: /src/App/FileDataItemStreamWrapper.php
+Location: ~/src/App/FileDataItemStreamWrapper.php
 
 ---
 

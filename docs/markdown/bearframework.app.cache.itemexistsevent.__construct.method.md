@@ -6,15 +6,15 @@ public __construct ( string $key , bool $exists )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$exists`
+##### exists
 
 ## Details
 
 Class: [BearFramework\App\Cache\ItemExistsEvent](bearframework.app.cache.itemexistsevent.class.md)
 
-File: /src/App/Cache/ItemExistsEvent.php
+Location: ~/src/App/Cache/ItemExistsEvent.php
 
 ---
 

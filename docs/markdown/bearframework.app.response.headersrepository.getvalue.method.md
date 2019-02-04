@@ -8,9 +8,9 @@ public string|null getValue ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public string|null getValue ( string $name )
 
 Class: [BearFramework\App\Response\HeadersRepository](bearframework.app.response.headersrepository.class.md)
 
-File: /src/App/Response/HeadersRepository.php
+Location: ~/src/App/Response/HeadersRepository.php
 
 ---
 

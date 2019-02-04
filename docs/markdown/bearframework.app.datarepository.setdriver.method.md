@@ -8,9 +8,9 @@ public void setDriver ( BearFramework\App\IDataDriver $driver )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$driver`
+##### driver
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data driver to use for data storage.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data driver to use for data storage.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void setDriver ( BearFramework\App\IDataDriver $driver )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

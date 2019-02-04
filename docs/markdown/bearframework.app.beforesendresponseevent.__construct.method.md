@@ -6,13 +6,13 @@ public __construct ( BearFramework\App\Response $response )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$response`
+##### response
 
 ## Details
 
 Class: [BearFramework\App\BeforeSendResponseEvent](bearframework.app.beforesendresponseevent.class.md)
 
-File: /src/App/BeforeSendResponseEvent.php
+Location: ~/src/App/BeforeSendResponseEvent.php
 
 ---
 

@@ -8,17 +8,17 @@ public void log ( string $name , string $message [, array $data = [] ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the log context.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the log context.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$message`
+##### message
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The message that will be logged.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The message that will be logged.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$data`
+##### data
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional information to log.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional information to log.
 
 ## Returns
 
@@ -28,7 +28,7 @@ public void log ( string $name , string $message [, array $data = [] ] )
 
 Class: [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md)
 
-File: /src/App/LogsRepository.php
+Location: ~/src/App/LogsRepository.php
 
 ---
 

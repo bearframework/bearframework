@@ -1,6 +1,28 @@
 # BearFramework\App\FileDataItemStreamWrapper
 
-implements [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md)
+```php
+BearFramework\App\FileDataItemStreamWrapper implements BearFramework\App\IDataItemStreamWrapper {
+
+	/* Methods */
+	public __construct ( string $key , string $dir )
+	public void close ( void )
+	public bool eof ( void )
+	public bool exists ( void )
+	public bool flush ( void )
+	public bool open ( string $mode )
+	public string read ( int $count )
+	public bool seek ( int $offset , int $whence )
+	public int size ( void )
+	public int tell ( void )
+	public bool truncate ( int $newSize )
+	public int write ( string $data )
+
+}
+```
+
+## Implements
+
+##### [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md)
 
 ## Methods
 
@@ -30,7 +52,7 @@ implements [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataite
 
 ## Details
 
-File: /src/App/FileDataItemStreamWrapper.php
+Location: ~/src/App/FileDataItemStreamWrapper.php
 
 ---
 

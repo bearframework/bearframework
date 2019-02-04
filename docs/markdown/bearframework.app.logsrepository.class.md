@@ -2,6 +2,18 @@
 
 Logs repository
 
+```php
+BearFramework\App\LogsRepository {
+
+	/* Methods */
+	public void log ( string $name , string $message [, array $data = [] ] )
+	public void setLogger ( BearFramework\App\ILogger $logger )
+	public void useFileLogger ( string $dir )
+	public void useNullLogger ( void )
+
+}
+```
+
 ## Methods
 
 ##### public void [log](bearframework.app.logsrepository.log.method.md) ( string $name , string $message [, array $data = [] ] )
@@ -22,7 +34,7 @@ Logs repository
 
 ## Details
 
-File: /src/App/LogsRepository.php
+Location: ~/src/App/LogsRepository.php
 
 ---
 

@@ -8,9 +8,9 @@ public void useFileLogger ( string $dir )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the logs will be stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the logs will be stored.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void useFileLogger ( string $dir )
 
 Class: [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md)
 
-File: /src/App/LogsRepository.php
+Location: ~/src/App/LogsRepository.php
 
 ---
 

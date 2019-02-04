@@ -8,9 +8,9 @@ public boolen exists ( string $class )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$class`
+##### class
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The class name.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The class name.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public boolen exists ( string $class )
 
 Class: [BearFramework\App\ClassesRepository](bearframework.app.classesrepository.class.md)
 
-File: /src/App/ClassesRepository.php
+Location: ~/src/App/ClassesRepository.php
 
 ---
 

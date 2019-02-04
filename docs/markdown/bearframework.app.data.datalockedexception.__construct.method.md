@@ -6,23 +6,23 @@ public __construct ( [ string $message = '' [, int $code = 0 [, Exception $previ
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$message`
+##### message
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional] The Exception message to throw.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional] The Exception message to throw.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$code`
+##### code
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional] The Exception code.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional] The Exception code.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$previous`
+##### previous
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional] The previous exception used for the exception chaining.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional] The previous exception used for the exception chaining.
 
 ## Details
 
 Class: [BearFramework\App\Data\DataLockedException](bearframework.app.data.datalockedexception.class.md)
 
-File: /src/App/Data/DataLockedException.php
+Location: ~/src/App/Data/DataLockedException.php
 
 ---
 

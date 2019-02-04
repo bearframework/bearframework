@@ -6,15 +6,15 @@ public __construct ( string $filename , array $options )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
 ## Details
 
 Class: [BearFramework\App\Assets\BeforePrepareEvent](bearframework.app.assets.beforeprepareevent.class.md)
 
-File: /src/App/Assets/BeforePrepareEvent.php
+Location: ~/src/App/Assets/BeforePrepareEvent.php
 
 ---
 

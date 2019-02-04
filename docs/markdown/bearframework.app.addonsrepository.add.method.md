@@ -8,9 +8,9 @@ public self add ( string $id )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$id`
+##### id
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The id of the addon.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The id of the addon.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self add ( string $id )
 
 Class: [BearFramework\App\AddonsRepository](bearframework.app.addonsrepository.class.md)
 
-File: /src/App/AddonsRepository.php
+Location: ~/src/App/AddonsRepository.php
 
 ---
 

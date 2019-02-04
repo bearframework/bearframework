@@ -8,7 +8,7 @@ public self set ( BearFramework\App\Request\QueryItem $queryItem )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$queryItem`
+##### queryItem
 
 ## Returns
 
@@ -18,7 +18,7 @@ public self set ( BearFramework\App\Request\QueryItem $queryItem )
 
 Class: [BearFramework\App\Request\QueryRepository](bearframework.app.request.queryrepository.class.md)
 
-File: /src/App/Request/QueryRepository.php
+Location: ~/src/App/Request/QueryRepository.php
 
 ---
 

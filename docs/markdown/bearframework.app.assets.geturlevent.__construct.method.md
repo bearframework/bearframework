@@ -6,17 +6,17 @@ public __construct ( string $filename , array $options , string $url )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$url`
+##### url
 
 ## Details
 
 Class: [BearFramework\App\Assets\GetUrlEvent](bearframework.app.assets.geturlevent.class.md)
 
-File: /src/App/Assets/GetUrlEvent.php
+Location: ~/src/App/Assets/GetUrlEvent.php
 
 ---
 

@@ -8,13 +8,13 @@ public string|null getContent ( string $filename [, array $options = [] ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64, data-uri, data-uri-base64).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64, data-uri, data-uri-base64).
 
 ## Returns
 
@@ -24,7 +24,7 @@ public string|null getContent ( string $filename [, array $options = [] ] )
 
 Class: [BearFramework\App\Assets](bearframework.app.assets.class.md)
 
-File: /src/App/Assets.php
+Location: ~/src/App/Assets.php
 
 ---
 

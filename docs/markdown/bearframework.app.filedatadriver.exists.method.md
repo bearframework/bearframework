@@ -8,9 +8,9 @@ public bool exists ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the stored data item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the stored data item.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public bool exists ( string $key )
 
 Class: [BearFramework\App\FileDataDriver](bearframework.app.filedatadriver.class.md)
 
-File: /src/App/FileDataDriver.php
+Location: ~/src/App/FileDataDriver.php
 
 ---
 

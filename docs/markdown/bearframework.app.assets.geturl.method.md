@@ -8,13 +8,13 @@ public string getUrl ( string $filename [, array $options = [] ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL options. You can resize the file by providing "width", "height" or both.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL options. You can resize the file by providing "width", "height" or both.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public string getUrl ( string $filename [, array $options = [] ] )
 
 Class: [BearFramework\App\Assets](bearframework.app.assets.class.md)
 
-File: /src/App/Assets.php
+Location: ~/src/App/Assets.php
 
 ---
 

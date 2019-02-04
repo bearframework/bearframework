@@ -8,9 +8,9 @@ public void setLogger ( BearFramework\App\ILogger $logger )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$logger`
+##### logger
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The logger to use.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The logger to use.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void setLogger ( BearFramework\App\ILogger $logger )
 
 Class: [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md)
 
-File: /src/App/LogsRepository.php
+Location: ~/src/App/LogsRepository.php
 
 ---
 

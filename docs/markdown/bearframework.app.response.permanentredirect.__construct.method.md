@@ -6,15 +6,15 @@ public __construct ( string $url )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$url`
+##### url
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The redirect URL.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The redirect URL.
 
 ## Details
 
 Class: [BearFramework\App\Response\PermanentRedirect](bearframework.app.response.permanentredirect.class.md)
 
-File: /src/App/Response/PermanentRedirect.php
+Location: ~/src/App/Response/PermanentRedirect.php
 
 ---
 

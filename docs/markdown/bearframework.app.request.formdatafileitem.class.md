@@ -1,6 +1,22 @@
 # BearFramework\App\Request\FormDataFileItem
 
-extends [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md)
+```php
+BearFramework\App\Request\FormDataFileItem extends BearFramework\App\Request\FormDataItem {
+
+	/* Properties */
+	public string $filename
+	public int|null $size
+	public string|null $type
+
+	/* Methods */
+	public __construct ( void )
+
+}
+```
+
+## Extends
+
+##### [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md)
 
 ## Properties
 
@@ -20,17 +36,23 @@ extends [BearFramework\App\Request\FormDataItem](bearframework.app.request.formd
 
 ##### public [__construct](bearframework.app.request.formdatafileitem.__construct.method.md) ( void )
 
-### Inherited from [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md):
+### Inherited from [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md)
+
+##### protected self [defineProperty](bearframework.app.request.formdataitem.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.request.formdataitem.toarray.method.md) ( void )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
+
 ##### public string [toJSON](bearframework.app.request.formdataitem.tojson.method.md) ( void )
 
-##### protected object [defineProperty](bearframework.app.request.formdataitem.defineproperty.method.md) ( string $name [, array $options = [] ] )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
 ## Details
 
-File: /src/App/Request/FormDataFileItem.php
+Location: ~/src/App/Request/FormDataFileItem.php
 
 ---
 

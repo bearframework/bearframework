@@ -8,9 +8,9 @@ public self delete ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the cookie to delete.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the cookie to delete.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self delete ( string $name )
 
 Class: [BearFramework\App\Request\CookiesRepository](bearframework.app.request.cookiesrepository.class.md)
 
-File: /src/App/Request/CookiesRepository.php
+Location: ~/src/App/Request/CookiesRepository.php
 
 ---
 

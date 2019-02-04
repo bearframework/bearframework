@@ -8,13 +8,13 @@ public void setMultiple ( array $items [, int $ttl ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$items`
+##### items
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An array of key/value pairs to store in the cache.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An array of key/value pairs to store in the cache.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$ttl`
+##### ttl
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of seconds to store values in the cache.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of seconds to store values in the cache.
 
 ## Returns
 
@@ -24,7 +24,7 @@ public void setMultiple ( array $items [, int $ttl ] )
 
 Class: [BearFramework\App\DataCacheDriver](bearframework.app.datacachedriver.class.md)
 
-File: /src/App/DataCacheDriver.php
+Location: ~/src/App/DataCacheDriver.php
 
 ---
 

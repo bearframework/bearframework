@@ -8,9 +8,9 @@ public self delete ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the query item to delete.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the query item to delete.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self delete ( string $name )
 
 Class: [BearFramework\App\Request\QueryRepository](bearframework.app.request.queryrepository.class.md)
 
-File: /src/App/Request/QueryRepository.php
+Location: ~/src/App/Request/QueryRepository.php
 
 ---
 

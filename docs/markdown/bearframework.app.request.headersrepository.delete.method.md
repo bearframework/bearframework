@@ -8,9 +8,9 @@ public self delete ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header to delete.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header to delete.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self delete ( string $name )
 
 Class: [BearFramework\App\Request\HeadersRepository](bearframework.app.request.headersrepository.class.md)
 
-File: /src/App/Request/HeadersRepository.php
+Location: ~/src/App/Request/HeadersRepository.php
 
 ---
 

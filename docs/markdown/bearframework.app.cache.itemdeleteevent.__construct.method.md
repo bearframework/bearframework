@@ -6,13 +6,13 @@ public __construct ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
 ## Details
 
 Class: [BearFramework\App\Cache\ItemDeleteEvent](bearframework.app.cache.itemdeleteevent.class.md)
 
-File: /src/App/Cache/ItemDeleteEvent.php
+Location: ~/src/App/Cache/ItemDeleteEvent.php
 
 ---
 

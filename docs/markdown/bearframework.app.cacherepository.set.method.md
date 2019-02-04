@@ -8,9 +8,9 @@ public self set ( BearFramework\App\CacheItem $item )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$item`
+##### item
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The cache item to store.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The cache item to store.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self set ( BearFramework\App\CacheItem $item )
 
 Class: [BearFramework\App\CacheRepository](bearframework.app.cacherepository.class.md)
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

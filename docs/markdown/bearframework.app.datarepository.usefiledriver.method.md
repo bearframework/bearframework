@@ -8,9 +8,9 @@ public void useFileDriver ( string $dir )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory used for file storage.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory used for file storage.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void useFileDriver ( string $dir )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

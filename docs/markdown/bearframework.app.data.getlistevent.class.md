@@ -1,6 +1,22 @@
 # BearFramework\App\Data\GetListEvent
 
-extends [BearFramework\App\Event](bearframework.app.event.class.md)
+```php
+BearFramework\App\Data\GetListEvent extends BearFramework\App\Event {
+
+	/* Properties */
+	public BearFramework\DataList $list
+
+	/* Methods */
+	public __construct ( BearFramework\DataList $list )
+
+}
+```
+
+## Extends
+
+##### [BearFramework\App\Event](bearframework.app.event.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A base event object.
 
 ## Properties
 
@@ -10,15 +26,17 @@ extends [BearFramework\App\Event](bearframework.app.event.class.md)
 
 ##### public [__construct](bearframework.app.data.getlistevent.__construct.method.md) ( [BearFramework\DataList](bearframework.datalist.class.md) $list )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md):
+### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
+
+##### protected self [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public string [getName](bearframework.app.event.getname.method.md) ( void )
 
-##### protected object [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
 ## Details
 
-File: /src/App/Data/GetListEvent.php
+Location: ~/src/App/Data/GetListEvent.php
 
 ---
 

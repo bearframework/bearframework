@@ -8,9 +8,9 @@ public BearFramework\App\Response|null getResponse ( BearFramework\App\Request $
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$request`
+##### request
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request object to match against.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request object to match against.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Response|null getResponse ( BearFramework\App\Request $
 
 Class: [BearFramework\App\Assets](bearframework.app.assets.class.md)
 
-File: /src/App/Assets.php
+Location: ~/src/App/Assets.php
 
 ---
 

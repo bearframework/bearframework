@@ -6,15 +6,15 @@ public __construct ( [ bool $initializeFromEnvironment = false ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$initializeFromEnvironment`
+##### initializeFromEnvironment
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Populate the object with information from the PHP environment.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Populate the object with information from the PHP environment.
 
 ## Details
 
 Class: [BearFramework\App\Request](bearframework.app.request.class.md)
 
-File: /src/App/Request.php
+Location: ~/src/App/Request.php
 
 ---
 

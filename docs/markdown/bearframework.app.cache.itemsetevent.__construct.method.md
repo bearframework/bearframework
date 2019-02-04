@@ -6,13 +6,13 @@ public __construct ( BearFramework\App\CacheItem $item )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$item`
+##### item
 
 ## Details
 
 Class: [BearFramework\App\Cache\ItemSetEvent](bearframework.app.cache.itemsetevent.class.md)
 
-File: /src/App/Cache/ItemSetEvent.php
+Location: ~/src/App/Cache/ItemSetEvent.php
 
 ---
 

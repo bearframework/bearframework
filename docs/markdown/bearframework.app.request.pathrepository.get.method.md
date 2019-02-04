@@ -14,7 +14,7 @@ public string get ( void )
 
 Class: [BearFramework\App\Request\PathRepository](bearframework.app.request.pathrepository.class.md)
 
-File: /src/App/Request/PathRepository.php
+Location: ~/src/App/Request/PathRepository.php
 
 ---
 

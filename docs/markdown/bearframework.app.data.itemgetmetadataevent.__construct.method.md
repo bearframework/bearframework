@@ -6,17 +6,17 @@ public __construct ( string $key , string $name , string $value )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
 ## Details
 
 Class: [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md)
 
-File: /src/App/Data/ItemGetMetadataEvent.php
+Location: ~/src/App/Data/ItemGetMetadataEvent.php
 
 ---
 

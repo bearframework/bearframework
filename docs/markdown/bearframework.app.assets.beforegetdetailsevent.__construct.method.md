@@ -6,15 +6,15 @@ public __construct ( string $filename , array $list )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$list`
+##### list
 
 ## Details
 
 Class: [BearFramework\App\Assets\BeforeGetDetailsEvent](bearframework.app.assets.beforegetdetailsevent.class.md)
 
-File: /src/App/Assets/BeforeGetDetailsEvent.php
+Location: ~/src/App/Assets/BeforeGetDetailsEvent.php
 
 ---
 

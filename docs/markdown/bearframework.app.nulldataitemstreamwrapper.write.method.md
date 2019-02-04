@@ -6,13 +6,13 @@ public int write ( string $data )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$data`
+##### data
 
 ## Details
 
 Class: [BearFramework\App\NullDataItemStreamWrapper](bearframework.app.nulldataitemstreamwrapper.class.md)
 
-File: /src/App/NullDataItemStreamWrapper.php
+Location: ~/src/App/NullDataItemStreamWrapper.php
 
 ---
 

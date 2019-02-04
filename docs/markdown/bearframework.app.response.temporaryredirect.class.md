@@ -1,24 +1,43 @@
 # BearFramework\App\Response\TemporaryRedirect
 
-extends [BearFramework\App\Response](bearframework.app.response.class.md)
-
 Response type that makes temporary redirect.
+
+```php
+BearFramework\App\Response\TemporaryRedirect extends BearFramework\App\Response {
+
+	/* Methods */
+	public __construct ( string $url )
+
+}
+```
+
+## Extends
+
+##### [BearFramework\App\Response](bearframework.app.response.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Response object.
 
 ## Methods
 
 ##### public [__construct](bearframework.app.response.temporaryredirect.__construct.method.md) ( string $url )
 
-### Inherited from [BearFramework\App\Response](bearframework.app.response.class.md):
+### Inherited from [BearFramework\App\Response](bearframework.app.response.class.md)
+
+##### protected self [defineProperty](bearframework.app.response.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public array [toArray](bearframework.app.response.toarray.method.md) ( void )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
+
 ##### public string [toJSON](bearframework.app.response.tojson.method.md) ( void )
 
-##### protected object [defineProperty](bearframework.app.response.defineproperty.method.md) ( string $name [, array $options = [] ] )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
 ## Details
 
-File: /src/App/Response/TemporaryRedirect.php
+Location: ~/src/App/Response/TemporaryRedirect.php
 
 ---
 

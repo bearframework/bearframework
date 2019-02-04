@@ -6,13 +6,13 @@ public __construct ( callable $addCallback )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$addCallback`
+##### addCallback
 
 ## Details
 
 Class: [BearFramework\App\ShortcutsRepository](bearframework.app.shortcutsrepository.class.md)
 
-File: /src/App/ShortcutsRepository.php
+Location: ~/src/App/ShortcutsRepository.php
 
 ---
 

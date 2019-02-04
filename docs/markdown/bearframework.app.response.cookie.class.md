@@ -1,5 +1,26 @@
 # BearFramework\App\Response\Cookie
 
+```php
+BearFramework\App\Response\Cookie {
+
+	/* Properties */
+	public string|null $domain
+	public int|null $expire
+	public bool|null $httpOnly
+	public string|null $name
+	public string|null $path
+	public bool|null $secure
+	public string|null $value
+
+	/* Methods */
+	public __construct ( void )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+
+}
+```
+
 ## Properties
 
 ##### public string|null $domain
@@ -34,27 +55,21 @@
 
 ##### public [__construct](bearframework.app.response.cookie.__construct.method.md) ( void )
 
+##### protected self [defineProperty](bearframework.app.response.cookie.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public array [toArray](bearframework.app.response.cookie.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as an array.
 
 ##### public string [toJSON](bearframework.app.response.cookie.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as JSON.
-
-##### protected object [defineProperty](bearframework.app.response.cookie.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Details
 
-File: /src/App/Response/Cookie.php
+Location: ~/src/App/Response/Cookie.php
 
 ---
 

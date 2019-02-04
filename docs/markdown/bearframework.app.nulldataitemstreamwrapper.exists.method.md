@@ -8,7 +8,7 @@ public bool exists ( void )
 
 Class: [BearFramework\App\NullDataItemStreamWrapper](bearframework.app.nulldataitemstreamwrapper.class.md)
 
-File: /src/App/NullDataItemStreamWrapper.php
+Location: ~/src/App/NullDataItemStreamWrapper.php
 
 ---
 

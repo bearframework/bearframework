@@ -8,17 +8,17 @@ public __construct ( BearFramework\App $app [, array $options = [] ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$app`
+##### app
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$options`
+##### options
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available options: filenameProtocol - a protocol used for working with data items as files.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available options: filenameProtocol - a protocol used for working with data items as files.
 
 ## Details
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

@@ -6,13 +6,13 @@ public string read ( int $count )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$count`
+##### count
 
 ## Details
 
 Class: [BearFramework\App\NullDataItemStreamWrapper](bearframework.app.nulldataitemstreamwrapper.class.md)
 
-File: /src/App/NullDataItemStreamWrapper.php
+Location: ~/src/App/NullDataItemStreamWrapper.php
 
 ---
 

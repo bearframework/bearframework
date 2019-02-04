@@ -8,9 +8,9 @@ public self set ( BearFramework\App\DataItem $item )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$item`
+##### item
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item to store.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item to store.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self set ( BearFramework\App\DataItem $item )
 
 Class: [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md)
 
-File: /src/App/DataRepository.php
+Location: ~/src/App/DataRepository.php
 
 ---
 

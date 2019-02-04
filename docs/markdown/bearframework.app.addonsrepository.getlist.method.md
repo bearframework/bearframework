@@ -14,7 +14,7 @@ public BearFramework\DataList|BearFramework\App\Addon[] getList ( void )
 
 Class: [BearFramework\App\AddonsRepository](bearframework.app.addonsrepository.class.md)
 
-File: /src/App/AddonsRepository.php
+Location: ~/src/App/AddonsRepository.php
 
 ---
 

@@ -8,17 +8,17 @@ public void set ( string $key , type $value [, int $ttl ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key under which to store the value.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key under which to store the value.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value to store.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value to store.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$ttl`
+##### ttl
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of seconds to store value in the cache.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of seconds to store value in the cache.
 
 ## Returns
 
@@ -28,7 +28,7 @@ public void set ( string $key , type $value [, int $ttl ] )
 
 Class: [BearFramework\App\NullCacheDriver](bearframework.app.nullcachedriver.class.md)
 
-File: /src/App/NullCacheDriver.php
+Location: ~/src/App/NullCacheDriver.php
 
 ---
 

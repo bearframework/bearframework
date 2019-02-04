@@ -8,9 +8,9 @@ public void send ( BearFramework\App\Response $response )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$response`
+##### response
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The response object to output.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The response object to output.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void send ( BearFramework\App\Response $response )
 
 Class: [BearFramework\App](bearframework.app.class.md)
 
-File: /src/App.php
+Location: ~/src/App.php
 
 ---
 

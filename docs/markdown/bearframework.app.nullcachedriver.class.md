@@ -1,8 +1,27 @@
 # BearFramework\App\NullCacheDriver
 
-implements [BearFramework\App\ICacheDriver](bearframework.app.icachedriver.class.md)
-
 A null cache driver. No data is stored and no errors are thrown.
+
+```php
+BearFramework\App\NullCacheDriver implements BearFramework\App\ICacheDriver {
+
+	/* Methods */
+	public void clear ( void )
+	public void delete ( string $key )
+	public void deleteMultiple ( array $keys )
+	public mixed|null get ( string $key )
+	public array getMultiple ( array $keys )
+	public void set ( string $key , type $value [, int $ttl ] )
+	public void setMultiple ( array $items [, int $ttl ] )
+
+}
+```
+
+## Implements
+
+##### [BearFramework\App\ICacheDriver](bearframework.app.icachedriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A cache driver interface.
 
 ## Methods
 
@@ -22,13 +41,9 @@ A null cache driver. No data is stored and no errors are thrown.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves a value from the cache.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns the stored value or null if not found or expired.
-
 ##### public array [getMultiple](bearframework.app.nullcachedriver.getmultiple.method.md) ( array $keys )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves multiple values from the cache.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: An array (key/value) of found items.
 
 ##### public void [set](bearframework.app.nullcachedriver.set.method.md) ( string $key , type $value [, int $ttl ] )
 
@@ -40,7 +55,7 @@ A null cache driver. No data is stored and no errors are thrown.
 
 ## Details
 
-File: /src/App/NullCacheDriver.php
+Location: ~/src/App/NullCacheDriver.php
 
 ---
 

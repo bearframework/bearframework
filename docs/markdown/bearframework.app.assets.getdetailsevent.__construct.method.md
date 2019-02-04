@@ -6,17 +6,17 @@ public __construct ( string $filename , array $list , array $returnValue )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$list`
+##### list
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$returnValue`
+##### returnValue
 
 ## Details
 
 Class: [BearFramework\App\Assets\GetDetailsEvent](bearframework.app.assets.getdetailsevent.class.md)
 
-File: /src/App/Assets/GetDetailsEvent.php
+Location: ~/src/App/Assets/GetDetailsEvent.php
 
 ---
 

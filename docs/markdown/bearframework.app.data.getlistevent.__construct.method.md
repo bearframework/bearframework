@@ -6,13 +6,13 @@ public __construct ( BearFramework\DataList $list )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$list`
+##### list
 
 ## Details
 
 Class: [BearFramework\App\Data\GetListEvent](bearframework.app.data.getlistevent.class.md)
 
-File: /src/App/Data/GetListEvent.php
+Location: ~/src/App/Data/GetListEvent.php
 
 ---
 

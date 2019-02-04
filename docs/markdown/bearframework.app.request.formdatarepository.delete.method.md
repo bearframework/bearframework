@@ -8,9 +8,9 @@ public self delete ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the form data item to delete.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the form data item to delete.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self delete ( string $name )
 
 Class: [BearFramework\App\Request\FormDataRepository](bearframework.app.request.formdatarepository.class.md)
 
-File: /src/App/Request/FormDataRepository.php
+Location: ~/src/App/Request/FormDataRepository.php
 
 ---
 

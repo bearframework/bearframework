@@ -8,9 +8,9 @@ public self delete ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the cache item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the cache item.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self delete ( string $key )
 
 Class: [BearFramework\App\CacheRepository](bearframework.app.cacherepository.class.md)
 
-File: /src/App/CacheRepository.php
+Location: ~/src/App/CacheRepository.php
 
 ---
 

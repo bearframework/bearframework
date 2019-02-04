@@ -6,15 +6,15 @@ public __construct ( string $sourceKey , string $destinationKey )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$sourceKey`
+##### sourceKey
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$destinationKey`
+##### destinationKey
 
 ## Details
 
 Class: [BearFramework\App\Data\ItemRenameEvent](bearframework.app.data.itemrenameevent.class.md)
 
-File: /src/App/Data/ItemRenameEvent.php
+Location: ~/src/App/Data/ItemRenameEvent.php
 
 ---
 

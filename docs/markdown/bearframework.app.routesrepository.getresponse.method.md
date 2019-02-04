@@ -8,9 +8,9 @@ public mixed getResponse ( BearFramework\App\Request $request )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$request`
+##### request
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request object to match against.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request object to match against.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public mixed getResponse ( BearFramework\App\Request $request )
 
 Class: [BearFramework\App\RoutesRepository](bearframework.app.routesrepository.class.md)
 
-File: /src/App/RoutesRepository.php
+Location: ~/src/App/RoutesRepository.php
 
 ---
 

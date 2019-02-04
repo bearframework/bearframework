@@ -8,9 +8,9 @@ public void delete ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key under which the value is stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key under which the value is stored.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void delete ( string $key )
 
 Class: [BearFramework\App\NullCacheDriver](bearframework.app.nullcachedriver.class.md)
 
-File: /src/App/NullCacheDriver.php
+Location: ~/src/App/NullCacheDriver.php
 
 ---
 

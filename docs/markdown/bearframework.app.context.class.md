@@ -2,6 +2,23 @@
 
 Provides information about addons and application location and utility functions.
 
+```php
+BearFramework\App\Context {
+
+	/* Properties */
+	public readonly BearFramework\App\Context\Assets $assets
+	public readonly BearFramework\App\Context\Classes $classes
+	public readonly string $dir
+
+	/* Methods */
+	public __construct ( BearFramework\App $app , string $dir )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+
+}
+```
+
 ## Properties
 
 ##### public readonly [BearFramework\App\Context\Assets](bearframework.app.context.assets.class.md) $assets
@@ -20,27 +37,21 @@ Provides information about addons and application location and utility functions
 
 ##### public [__construct](bearframework.app.context.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
 
+##### protected self [defineProperty](bearframework.app.context.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public array [toArray](bearframework.app.context.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as an array.
 
 ##### public string [toJSON](bearframework.app.context.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The object data converted as JSON.
-
-##### protected object [defineProperty](bearframework.app.context.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Details
 
-File: /src/App/Context.php
+Location: ~/src/App/Context.php
 
 ---
 

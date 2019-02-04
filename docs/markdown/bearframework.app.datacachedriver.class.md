@@ -1,8 +1,28 @@
 # BearFramework\App\DataCacheDriver
 
-implements [BearFramework\App\ICacheDriver](bearframework.app.icachedriver.class.md)
-
 A data cache driver. It uses the data repository provided to store the values.
+
+```php
+BearFramework\App\DataCacheDriver implements BearFramework\App\ICacheDriver {
+
+	/* Methods */
+	public __construct ( BearFramework\App\DataRepository $data )
+	public void clear ( void )
+	public void delete ( string $key )
+	public void deleteMultiple ( array $keys )
+	public mixed|null get ( string $key )
+	public array getMultiple ( array $keys )
+	public void set ( string $key , type $value [, int $ttl ] )
+	public void setMultiple ( array $items [, int $ttl ] )
+
+}
+```
+
+## Implements
+
+##### [BearFramework\App\ICacheDriver](bearframework.app.icachedriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A cache driver interface.
 
 ## Methods
 
@@ -26,13 +46,9 @@ A data cache driver. It uses the data repository provided to store the values.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves a value from the cache.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns the stored value or null if not found or expired.
-
 ##### public array [getMultiple](bearframework.app.datacachedriver.getmultiple.method.md) ( array $keys )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves multiple values from the cache.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: An array (key/value) of found items.
 
 ##### public void [set](bearframework.app.datacachedriver.set.method.md) ( string $key , type $value [, int $ttl ] )
 
@@ -44,7 +60,7 @@ A data cache driver. It uses the data repository provided to store the values.
 
 ## Details
 
-File: /src/App/DataCacheDriver.php
+Location: ~/src/App/DataCacheDriver.php
 
 ---
 

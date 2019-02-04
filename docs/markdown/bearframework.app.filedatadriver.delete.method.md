@@ -8,9 +8,9 @@ public void delete ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item to delete.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item to delete.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public void delete ( string $key )
 
 Class: [BearFramework\App\FileDataDriver](bearframework.app.filedatadriver.class.md)
 
-File: /src/App/FileDataDriver.php
+Location: ~/src/App/FileDataDriver.php
 
 ---
 

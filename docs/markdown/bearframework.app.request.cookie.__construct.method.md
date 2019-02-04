@@ -8,7 +8,7 @@ public __construct ( void )
 
 Class: [BearFramework\App\Request\Cookie](bearframework.app.request.cookie.class.md)
 
-File: /src/App/Request/Cookie.php
+Location: ~/src/App/Request/Cookie.php
 
 ---
 

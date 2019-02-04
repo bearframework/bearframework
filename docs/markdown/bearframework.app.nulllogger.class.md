@@ -1,8 +1,21 @@
 # BearFramework\App\NullLogger
 
-implements [BearFramework\App\ILogger](bearframework.app.ilogger.class.md)
-
 The null logger does not log any data and does not throw any errors.
+
+```php
+BearFramework\App\NullLogger implements BearFramework\App\ILogger {
+
+	/* Methods */
+	public void log ( string $name , string $message [, array $data = [] ] )
+
+}
+```
+
+## Implements
+
+##### [BearFramework\App\ILogger](bearframework.app.ilogger.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A logger interface.
 
 ## Methods
 
@@ -12,7 +25,7 @@ The null logger does not log any data and does not throw any errors.
 
 ## Details
 
-File: /src/App/NullLogger.php
+Location: ~/src/App/NullLogger.php
 
 ---
 

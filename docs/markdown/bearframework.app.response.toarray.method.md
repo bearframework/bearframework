@@ -14,7 +14,7 @@ public array toArray ( void )
 
 Class: [BearFramework\App\Response](bearframework.app.response.class.md)
 
-File: /src/App/Response/FileReader.php
+Location: ~/src/App/Response/FileReader.php
 
 ---
 

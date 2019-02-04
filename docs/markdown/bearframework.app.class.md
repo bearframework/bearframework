@@ -1,6 +1,37 @@
 # BearFramework\App
 
-The is the class used to instantiate and configure you application.
+The is the class used to instantiate you application.
+
+```php
+BearFramework\App {
+
+	/* Properties */
+	public readonly BearFramework\App\AddonsRepository $addons
+	public readonly BearFramework\App\Assets $assets
+	public readonly BearFramework\App\CacheRepository $cache
+	public readonly BearFramework\App\ClassesRepository $classes
+	public readonly BearFramework\App\ContextsRepository $contexts
+	public readonly BearFramework\App\DataRepository $data
+	public readonly BearFramework\App\LogsRepository $logs
+	public readonly BearFramework\App\Request $request
+	public readonly BearFramework\App\RoutesRepository $routes
+	public readonly BearFramework\App\ShortcutsRepository $shortcuts
+	public readonly BearFramework\App\Urls $urls
+
+	/* Methods */
+	public __construct ( void )
+	public void addEventListener ( string $name , callable $listener )
+	protected self defineProperty ( string $name [, array $options = [] ] )
+	public void dispatchEvent ( BearFramework\App\Event $event )
+	public void enableErrorHandler ( [ array $options = [] ] )
+	public static BearFramework\App get ( void )
+	public bool hasEventListeners ( string $name )
+	public void removeEventListener ( string $name , callable $listener )
+	public void run ( void )
+	public void send ( BearFramework\App\Response $response )
+
+}
+```
 
 ## Properties
 
@@ -19,10 +50,6 @@ The is the class used to instantiate and configure you application.
 ##### public readonly [BearFramework\App\ClassesRepository](bearframework.app.classesrepository.class.md) $classes
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides functionality for registering and autoloading classes.
-
-##### public readonly [BearFramework\App\Config](bearframework.app.config.class.md) $config
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The application configuration.
 
 ##### public readonly [BearFramework\App\ContextsRepository](bearframework.app.contextsrepository.class.md) $contexts
 
@@ -58,17 +85,19 @@ The is the class used to instantiate and configure you application.
 
 ##### public void [addEventListener](bearframework.app.addeventlistener.method.md) ( string $name , callable $listener )
 
+##### protected self [defineProperty](bearframework.app.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
+
 ##### public void [dispatchEvent](bearframework.app.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 
-##### public void [enableErrorHandler](bearframework.app.enableerrorhandler.method.md) ( array $options )
+##### public void [enableErrorHandler](bearframework.app.enableerrorhandler.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables an error handler.
 
 ##### public static [BearFramework\App](bearframework.app.class.md) [get](bearframework.app.get.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the application instance.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The application instance.
 
 ##### public bool [hasEventListeners](bearframework.app.haseventlisteners.method.md) ( string $name )
 
@@ -82,29 +111,19 @@ The is the class used to instantiate and configure you application.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Outputs a response.
 
-##### protected object [defineProperty](bearframework.app.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to the object.
-
 ## Events
 
-##### beforeSendResponse
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [Bearframework\App\BeforeSendResponseEvent](bearframework.app.beforesendresponseevent.class.md)
+##### [Bearframework\App\BeforeSendResponseEvent](bearframework.app.beforesendresponseevent.class.md) beforeSendResponse
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the response is sent to the client.
 
-##### sendResponse
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: [BearFramework\App\SendResponseEvent](bearframework.app.sendresponseevent.class.md)
+##### [BearFramework\App\SendResponseEvent](bearframework.app.sendresponseevent.class.md) sendResponse
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the response is sent to the client.
 
 ## Details
 
-File: /src/App.php
+Location: ~/src/App.php
 
 ---
 

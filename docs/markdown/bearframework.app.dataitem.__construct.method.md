@@ -8,7 +8,7 @@ public __construct ( void )
 
 Class: [BearFramework\App\DataItem](bearframework.app.dataitem.class.md)
 
-File: /src/App/DataItem.php
+Location: ~/src/App/DataItem.php
 
 ---
 

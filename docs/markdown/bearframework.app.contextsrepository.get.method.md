@@ -8,9 +8,9 @@ public BearFramework\App\Context get ( [ string|null $filename ] )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$filename`
+##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename used to find the context. Will be automatically detected if not provided.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename used to find the context. Will be automatically detected if not provided.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Context get ( [ string|null $filename ] )
 
 Class: [BearFramework\App\ContextsRepository](bearframework.app.contextsrepository.class.md)
 
-File: /src/App/ContextsRepository.php
+Location: ~/src/App/ContextsRepository.php
 
 ---
 

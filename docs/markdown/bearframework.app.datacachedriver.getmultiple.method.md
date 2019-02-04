@@ -8,9 +8,9 @@ public array getMultiple ( array $keys )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$keys`
+##### keys
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The keys under which the values are stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The keys under which the values are stored.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public array getMultiple ( array $keys )
 
 Class: [BearFramework\App\DataCacheDriver](bearframework.app.datacachedriver.class.md)
 
-File: /src/App/DataCacheDriver.php
+Location: ~/src/App/DataCacheDriver.php
 
 ---
 

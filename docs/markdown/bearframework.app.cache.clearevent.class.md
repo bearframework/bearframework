@@ -1,20 +1,35 @@
 # BearFramework\App\Cache\ClearEvent
 
-extends [BearFramework\App\Event](bearframework.app.event.class.md)
+```php
+BearFramework\App\Cache\ClearEvent extends BearFramework\App\Event {
+
+	/* Methods */
+	public __construct ( void )
+
+}
+```
+
+## Extends
+
+##### [BearFramework\App\Event](bearframework.app.event.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A base event object.
 
 ## Methods
 
 ##### public [__construct](bearframework.app.cache.clearevent.__construct.method.md) ( void )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md):
+### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
+
+##### protected self [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public string [getName](bearframework.app.event.getname.method.md) ( void )
 
-##### protected object [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
 ## Details
 
-File: /src/App/Cache/ClearEvent.php
+Location: ~/src/App/Cache/ClearEvent.php
 
 ---
 

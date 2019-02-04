@@ -6,15 +6,15 @@ public __construct ( string $key , string $value )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
 ## Details
 
 Class: [BearFramework\App\Data\ItemSetValueEvent](bearframework.app.data.itemsetvalueevent.class.md)
 
-File: /src/App/Data/ItemSetValueEvent.php
+Location: ~/src/App/Data/ItemSetValueEvent.php
 
 ---
 

@@ -14,7 +14,7 @@ public string toString ( void )
 
 Class: [BearFramework\App\Request\QueryRepository](bearframework.app.request.queryrepository.class.md)
 
-File: /src/App/Request/QueryRepository.php
+Location: ~/src/App/Request/QueryRepository.php
 
 ---
 

@@ -8,7 +8,7 @@ public __construct ( void )
 
 Class: [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md)
 
-File: /src/App/Request/FormDataFileItem.php
+Location: ~/src/App/Request/FormDataFileItem.php
 
 ---
 

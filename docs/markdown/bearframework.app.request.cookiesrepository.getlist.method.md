@@ -14,7 +14,7 @@ public BearFramework\DataList|BearFramework\App\Request\Cookie[] getList ( void 
 
 Class: [BearFramework\App\Request\CookiesRepository](bearframework.app.request.cookiesrepository.class.md)
 
-File: /src/App/Request/CookiesRepository.php
+Location: ~/src/App/Request/CookiesRepository.php
 
 ---
 

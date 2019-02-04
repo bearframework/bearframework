@@ -14,7 +14,7 @@ public static BearFramework\App get ( void )
 
 Class: [BearFramework\App](bearframework.app.class.md)
 
-File: /src/App.php
+Location: ~/src/App.php
 
 ---
 

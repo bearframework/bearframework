@@ -8,7 +8,7 @@ public self set ( BearFramework\App\Request\FormDataItem $dataItem )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dataItem`
+##### dataItem
 
 ## Returns
 
@@ -18,7 +18,7 @@ public self set ( BearFramework\App\Request\FormDataItem $dataItem )
 
 Class: [BearFramework\App\Request\FormDataRepository](bearframework.app.request.formdatarepository.class.md)
 
-File: /src/App/Request/FormDataRepository.php
+Location: ~/src/App/Request/FormDataRepository.php
 
 ---
 

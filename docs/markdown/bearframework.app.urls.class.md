@@ -2,19 +2,27 @@
 
 URLs utilities.
 
+```php
+BearFramework\App\Urls {
+
+	/* Methods */
+	public __construct ( BearFramework\App $app )
+	public string get ( [ string $path = '/' ] )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.urls.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
 
-##### public string [get](bearframework.app.urls.get.method.md) ( [ string $path = '/' [, bool $encode = true ]] )
+##### public string [get](bearframework.app.urls.get.method.md) ( [ string $path = '/' ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a url for the path specified.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Absolute URL containing the base URL plus the path given.
-
 ## Details
 
-File: /src/App/Urls.php
+Location: ~/src/App/Urls.php
 
 ---
 

@@ -8,9 +8,9 @@ public self add ( string $dir )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The context dir.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The context dir.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self add ( string $dir )
 
 Class: [BearFramework\App\ContextsRepository](bearframework.app.contextsrepository.class.md)
 
-File: /src/App/ContextsRepository.php
+Location: ~/src/App/ContextsRepository.php
 
 ---
 

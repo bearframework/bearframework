@@ -1,26 +1,45 @@
 # BearFramework\App\Data\ItemGetEvent
 
-extends [BearFramework\App\Event](bearframework.app.event.class.md)
+```php
+BearFramework\App\Data\ItemGetEvent extends BearFramework\App\Event {
+
+	/* Properties */
+	public BearFramework\App\DataItem|null $item
+	public string $key
+
+	/* Methods */
+	public __construct ( string $key , BearFramework\App\DataItem|null $item )
+
+}
+```
+
+## Extends
+
+##### [BearFramework\App\Event](bearframework.app.event.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A base event object.
 
 ## Properties
 
-##### public ?\BearFramework\App\DataItem $item
+##### public [BearFramework\App\DataItem](bearframework.app.dataitem.class.md)|null $item
 
 ##### public string $key
 
 ## Methods
 
-##### public [__construct](bearframework.app.data.itemgetevent.__construct.method.md) ( string $key , ?\BearFramework\App\DataItem $item )
+##### public [__construct](bearframework.app.data.itemgetevent.__construct.method.md) ( string $key , [BearFramework\App\DataItem](bearframework.app.dataitem.class.md)|null $item )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md):
+### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
+
+##### protected self [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
 ##### public string [getName](bearframework.app.event.getname.method.md) ( void )
 
-##### protected object [defineProperty](bearframework.app.event.defineproperty.method.md) ( string $name [, array $options = [] ] )
-
 ## Details
 
-File: /src/App/Data/ItemGetEvent.php
+Location: ~/src/App/Data/ItemGetEvent.php
 
 ---
 

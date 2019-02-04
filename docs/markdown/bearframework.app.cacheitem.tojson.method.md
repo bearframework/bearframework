@@ -14,7 +14,7 @@ public string toJSON ( void )
 
 Class: [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md)
 
-File: /src/App/CacheItem.php
+Location: ~/src/App/CacheItem.php
 
 ---
 

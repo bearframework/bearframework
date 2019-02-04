@@ -6,15 +6,15 @@ public __construct ( string $dir )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$dir`
+##### dir
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the logs will be stored.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The directory where the logs will be stored.
 
 ## Details
 
 Class: [BearFramework\App\FileLogger](bearframework.app.filelogger.class.md)
 
-File: /src/App/FileLogger.php
+Location: ~/src/App/FileLogger.php
 
 ---
 

@@ -1,4 +1,4 @@
-# BearFramework\Addon::defineProperty
+# BearFramework\App\Assets::defineProperty
 
 Defines a new property.
 
@@ -29,9 +29,9 @@ encodeInJSON (boolean) - Base64 encode the value of the property when it's json 
 
 ## Details
 
-Class: [BearFramework\Addon](bearframework.addon.class.md)
+Class: [BearFramework\App\Assets](bearframework.app.assets.class.md)
 
-Location: ~/src/Addon.php
+Location: ~/src/App/Assets.php
 
 ---
 

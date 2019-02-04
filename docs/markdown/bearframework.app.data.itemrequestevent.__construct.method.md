@@ -6,13 +6,13 @@ public __construct ( string $key )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
 ## Details
 
 Class: [BearFramework\App\Data\ItemRequestEvent](bearframework.app.data.itemrequestevent.class.md)
 
-File: /src/App/Data/ItemRequestEvent.php
+Location: ~/src/App/Data/ItemRequestEvent.php
 
 ---
 

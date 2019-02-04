@@ -3,18 +3,14 @@
 Constructs a url for the path specified.
 
 ```php
-public string get ( [ string $path = '/' [, bool $encode = true ]] )
+public string get ( [ string $path = '/' ] )
 ```
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$path`
+##### path
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The path.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$encode`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to encode the path.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The path.
 
 ## Returns
 
@@ -24,7 +20,7 @@ public string get ( [ string $path = '/' [, bool $encode = true ]] )
 
 Class: [BearFramework\App\Urls](bearframework.app.urls.class.md)
 
-File: /src/App/Urls.php
+Location: ~/src/App/Urls.php
 
 ---
 

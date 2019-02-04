@@ -8,7 +8,7 @@ public __construct ( void )
 
 Class: [BearFramework\App\Cache\ClearEvent](bearframework.app.cache.clearevent.class.md)
 
-File: /src/App/Cache/ClearEvent.php
+Location: ~/src/App/Cache/ClearEvent.php
 
 ---
 

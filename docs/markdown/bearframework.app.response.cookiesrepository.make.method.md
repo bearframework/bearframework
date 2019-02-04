@@ -8,9 +8,9 @@ public BearFramework\App\Response\Cookie make ( [ string $name [, string $value 
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$value`
+##### value
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Response\Cookie make ( [ string $name [, string $value 
 
 Class: [BearFramework\App\Response\CookiesRepository](bearframework.app.response.cookiesrepository.class.md)
 
-File: /src/App/Response/CookiesRepository.php
+Location: ~/src/App/Response/CookiesRepository.php
 
 ---
 

@@ -6,15 +6,15 @@ public bool seek ( int $offset , int $whence )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$offset`
+##### offset
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$whence`
+##### whence
 
 ## Details
 
 Class: [BearFramework\App\NullDataItemStreamWrapper](bearframework.app.nulldataitemstreamwrapper.class.md)
 
-File: /src/App/NullDataItemStreamWrapper.php
+Location: ~/src/App/NullDataItemStreamWrapper.php
 
 ---
 

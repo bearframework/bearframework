@@ -6,15 +6,15 @@ public __construct ( string $key , string $content )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$key`
+##### key
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$content`
+##### content
 
 ## Details
 
 Class: [BearFramework\App\Data\ItemAppendEvent](bearframework.app.data.itemappendevent.class.md)
 
-File: /src/App/Data/ItemAppendEvent.php
+Location: ~/src/App/Data/ItemAppendEvent.php
 
 ---
 

@@ -8,9 +8,9 @@ public self set ( BearFramework\App\Request\Header $header )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$header`
+##### header
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header to set.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header to set.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public self set ( BearFramework\App\Request\Header $header )
 
 Class: [BearFramework\App\Request\HeadersRepository](bearframework.app.request.headersrepository.class.md)
 
-File: /src/App/Request/HeadersRepository.php
+Location: ~/src/App/Request/HeadersRepository.php
 
 ---
 

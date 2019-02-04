@@ -2,6 +2,17 @@
 
 Provides information about your code context (the directory its located).
 
+```php
+BearFramework\App\ContextsRepository {
+
+	/* Methods */
+	public __construct ( BearFramework\App $app )
+	public self add ( string $dir )
+	public BearFramework\App\Context get ( [ string|null $filename ] )
+
+}
+```
+
 ## Methods
 
 ##### public [__construct](bearframework.app.contextsrepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
@@ -10,17 +21,13 @@ Provides information about your code context (the directory its located).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new context dir.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: Returns a reference to itself.
-
 ##### public [BearFramework\App\Context](bearframework.app.context.class.md) [get](bearframework.app.contextsrepository.get.method.md) ( [ string|null $filename ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a context object for the filename specified.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns: The context object for the filename specified.
-
 ## Details
 
-File: /src/App/ContextsRepository.php
+Location: ~/src/App/ContextsRepository.php
 
 ---
 

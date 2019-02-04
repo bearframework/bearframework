@@ -14,7 +14,7 @@ public BearFramework\DataList|BearFramework\App\Request\Header[] getList ( void 
 
 Class: [BearFramework\App\Request\HeadersRepository](bearframework.app.request.headersrepository.class.md)
 
-File: /src/App/Request/HeadersRepository.php
+Location: ~/src/App/Request/HeadersRepository.php
 
 ---
 

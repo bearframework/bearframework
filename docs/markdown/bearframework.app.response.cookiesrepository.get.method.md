@@ -8,9 +8,9 @@ public BearFramework\App\Response\Cookie|null get ( string $name )
 
 ## Parameters
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$name`
+##### name
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the cookie.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the cookie.
 
 ## Returns
 
@@ -20,7 +20,7 @@ public BearFramework\App\Response\Cookie|null get ( string $name )
 
 Class: [BearFramework\App\Response\CookiesRepository](bearframework.app.response.cookiesrepository.class.md)
 
-File: /src/App/Response/CookiesRepository.php
+Location: ~/src/App/Response/CookiesRepository.php
 
 ---
 

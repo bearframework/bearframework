@@ -14,7 +14,7 @@ public string toJSON ( void )
 
 Class: [BearFramework\App\Response\FileReader](bearframework.app.response.filereader.class.md)
 
-File: /src/App/Response/FileReader.php
+Location: ~/src/App/Response/FileReader.php
 
 ---
 

@@ -10,7 +10,7 @@ public void clear ( void )
 
 Class: [BearFramework\App\DataCacheDriver](bearframework.app.datacachedriver.class.md)
 
-File: /src/App/DataCacheDriver.php
+Location: ~/src/App/DataCacheDriver.php
 
 ---
 
