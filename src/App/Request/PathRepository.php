@@ -81,4 +81,22 @@ class PathRepository
         return null;
     }
 
+    /**
+     * Checks if the current path matches the pattern/patterns specified.
+     * 
+     * @param string|string[] $pattern Path pattern or array of patterns. Can contain "?" (path segment) and "*" (matches everything).
+     * @return bool Returns TRUE if the current path matches the pattern provided/
+     */
+    public function match($pattern): bool
+    {
+        $requestPath = $this->path;
+        $patterns = is_array($pattern) ? $pattern : [$pattern];
+        foreach ($patterns as $pattern) {
+            if (preg_match('/^' . str_replace(['%2F', '%3F', '%2A'], ['\/', '[^\/]+?', '.+?'], urlencode($pattern)) . '$/u', $requestPath) === 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
