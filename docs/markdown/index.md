@@ -136,6 +136,20 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A logger that saves the logs in the directory specified.
 
+### [BearFramework\App\ICacheDriver](bearframework.app.icachedriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A cache driver interface.
+
+### [BearFramework\App\IDataDriver](bearframework.app.idatadriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A data driver interface.
+
+### [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md)
+
+### [BearFramework\App\ILogger](bearframework.app.ilogger.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A logger interface.
+
 ### [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs repository
