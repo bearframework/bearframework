@@ -164,7 +164,7 @@ class App
      * @return void No value is returned.
      * @throws \Exception
      */
-    public function enableErrorHandler(array $options): void
+    public function enableErrorHandler(array $options = []): void
     {
         if ($this->errorHandlerEnabled) {
             throw new \Exception('The error handler is already enabled!');
