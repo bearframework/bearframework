@@ -22,24 +22,24 @@ class ContextTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $app->request->base = 'http://example.com/www';
 
-        $this->makeFile($app->config->appDir . '/index.php', '<?php ');
-        $this->makeFile($app->config->appDir . '/class1.php', '<?php class TempClass1{}');
+        $this->makeFile($app->config['appDir'] . '/index.php', '<?php ');
+        $this->makeFile($app->config['appDir'] . '/class1.php', '<?php class TempClass1{}');
 
-        $context = $app->contexts->get($app->config->appDir . '/index.php');
-        $this->assertTrue($context->dir === $app->config->appDir);
+        $context = $app->contexts->get($app->config['appDir'] . '/index.php');
+        $this->assertTrue($context->dir === $app->config['appDir']);
         $this->assertTrue(isset($context->assets));
         $this->assertTrue(isset($context->classes));
 
-        $context = $app->contexts->get($app->config->appDir . '/index.php'); // test cache hit
-        $this->assertTrue($context->dir === $app->config->appDir);
+        $context = $app->contexts->get($app->config['appDir'] . '/index.php'); // test cache hit
+        $this->assertTrue($context->dir === $app->config['appDir']);
 
-        $context = $app->contexts->get($app->config->appDir . '/index2.php'); // test cache hit
-        $this->assertTrue($context->dir === $app->config->appDir);
+        $context = $app->contexts->get($app->config['appDir'] . '/index2.php'); // test cache hit
+        $this->assertTrue($context->dir === $app->config['appDir']);
 
         $context->classes->add('TempClass1', 'class1.php');
         $this->assertTrue(class_exists('TempClass1'));
 
-        $this->makeSampleFile($app->config->appDir . '/assets/logo.png', 'png');
+        $this->makeSampleFile($app->config['appDir'] . '/assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
         $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
@@ -67,7 +67,7 @@ class ContextTest extends BearFrameworkTestCase
     public function testAddonContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid();
+        $addonDir = $app->config['addonsDir'] . '/tempaddon' . uniqid();
         $app->request->base = 'http://example.com/www';
 
         $this->makeFile($addonDir . '/index.php', '<?php ');
@@ -96,18 +96,18 @@ class ContextTest extends BearFrameworkTestCase
     public function testAutoDetectContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid();
+        $addonDir = $app->config['addonsDir'] . '/tempaddon' . uniqid();
 
         $this->makeFile($addonDir . '/index.php', '<?php
             
 $app = BearFramework\App::get();
 $context = $app->contexts->get();
-$app->config->valueToCheck = $context->dir;
+$app->valueToCheck = $context->dir;
 ');
 
         BearFramework\Addons::register('tempaddon', $addonDir);
         $app->addons->add('tempaddon');
-        $this->assertTrue($app->config->valueToCheck === $addonDir);
+        $this->assertTrue($app->valueToCheck === $addonDir);
     }
 
     /**
@@ -117,7 +117,7 @@ $app->config->valueToCheck = $context->dir;
     {
         $app = $this->getApp();
 
-        $addon1Dir = $app->config->addonsDir . '/addon1';
+        $addon1Dir = $app->config['addonsDir'] . '/addon1';
         $this->makeFile($addon1Dir . '/index.php', '<?php ');
         BearFramework\Addons::register('addon1', $addon1Dir);
         $app->addons->add('addon1');
@@ -140,7 +140,7 @@ $app->config->valueToCheck = $context->dir;
     public function testAddonContextWithNoAppContext()
     {
         $app = $this->getApp(['appIndexContent' => null]);
-        $addonDir = $app->config->addonsDir . '/tempaddon' . uniqid();
+        $addonDir = $app->config['addonsDir'] . '/tempaddon' . uniqid();
 
         $this->makeFile($addonDir . '/index.php', '<?php ');
 
@@ -160,7 +160,7 @@ $app->config->valueToCheck = $context->dir;
     public function testUnknownContext()
     {
         $app = $this->getApp();
-        $addonDir = $app->config->addonsDir . '/tempaddong' . uniqid() . '/';
+        $addonDir = $app->config['addonsDir'] . '/tempaddong' . uniqid() . '/';
         $this->makeFile($addonDir . 'index.php', '<?php ');
         // Addon is not added
         $this->expectException('Exception');

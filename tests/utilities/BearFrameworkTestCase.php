@@ -65,10 +65,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
             'logsDir' => $logsDir,
             'addonsDir' => $addonsDir
         ];
-        $config = array_merge($initialConfig, $config);
-        foreach ($config as $key => $value) {
-            $app->config->$key = $value;
-        }
+        $app->config = array_merge($initialConfig, $config);
         $app->request->base = 'http://example.com/www';
         $app->request->method = 'GET';
 

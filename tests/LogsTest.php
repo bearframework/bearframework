@@ -22,7 +22,7 @@ class LogsTest extends BearFrameworkTestCase
 
         $uniqueMessage = md5(uniqid());
         $name = 'warning';
-        $filename = $app->config->logsDir . '/' . $name . '-' . date('Y-m-d') . '.log';
+        $filename = $app->config['logsDir'] . '/' . $name . '-' . date('Y-m-d') . '.log';
         $app->logs->log($name, $uniqueMessage);
         $this->assertTrue(is_file($filename) && strpos(file_get_contents($filename), $uniqueMessage) !== false);
     }
@@ -45,7 +45,7 @@ class LogsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $name = 'warning';
-        $filename = $app->config->logsDir . '/' . $name . '-' . date('Y-m-d') . '.log';
+        $filename = $app->config['logsDir'] . '/' . $name . '-' . date('Y-m-d') . '.log';
         mkdir($filename, 0777, true);
         $this->expectException('\Exception');
         $app->logs->log($name, 'message');

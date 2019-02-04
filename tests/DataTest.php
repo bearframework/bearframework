@@ -100,7 +100,7 @@ class DataTest extends BearFrameworkTestCase
 //        $app = $this->getApp([
 //            'dataDir' => null
 //        ]);
-//        $filename = $app->config->appDir . '/file.png';
+//        $filename = $app->config['appDir'] . '/file.png';
 //        $this->makeFile($filename, '123');
 //        $this->expectException('\BearFramework\App\Config\InvalidOptionException');
 //        $app->data->getKeyFromFilename($filename);
@@ -112,7 +112,7 @@ class DataTest extends BearFrameworkTestCase
 //    public function testGetKeyFromFilenameInvalidArguments4()
 //    {
 //        $app = $this->getApp();
-//        $filename = $app->config->appDir . '/file.png';
+//        $filename = $app->config['appDir'] . '/file.png';
 //        $this->makeFile($filename, '123');
 //        $this->expectException('InvalidArgumentException');
 //        $app->data->getKeyFromFilename($filename);
@@ -124,7 +124,7 @@ class DataTest extends BearFrameworkTestCase
 //    public function testGetExceptions1()
 //    {
 //        $app = $this->getApp();
-//        $this->makeFile($app->config->dataDir . '/objects', 'data');
+//        $this->makeFile($app->config['dataDir'] . '/objects', 'data');
 //        $this->expectException('\Exception');
 //        $app->data->get('data1');
 //    }
@@ -135,7 +135,7 @@ class DataTest extends BearFrameworkTestCase
     public function testSetExceptions1()
     {
         $app = $this->getApp();
-        $this->makeDir($app->config->dataDir . '/objects/data1');
+        $this->makeDir($app->config['dataDir'] . '/objects/data1');
         $this->expectException('\Exception');
         $app->data->setValue('data1', 'data');
     }
@@ -146,7 +146,7 @@ class DataTest extends BearFrameworkTestCase
     public function testSetExceptions2()
     {
         $app = $this->getApp();
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->lockFile($app->config['dataDir'] . '/objects/lockeddata1');
         $this->expectException('\BearFramework\App\Data\DataLockedException');
         $app->data->setValue('lockeddata1', 'data');
     }
@@ -157,7 +157,7 @@ class DataTest extends BearFrameworkTestCase
     public function testAppendExceptions1()
     {
         $app = $this->getApp();
-        $this->makeDir($app->config->dataDir . '/objects/data1');
+        $this->makeDir($app->config['dataDir'] . '/objects/data1');
         $this->expectException('\Exception');
         $app->data->append('data1', 'data');
     }
@@ -168,7 +168,7 @@ class DataTest extends BearFrameworkTestCase
     public function testAppendExceptions2()
     {
         $app = $this->getApp();
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->lockFile($app->config['dataDir'] . '/objects/lockeddata1');
         $this->expectException('\BearFramework\App\Data\DataLockedException');
         $app->data->append('lockeddata1', 'data');
     }
@@ -180,7 +180,7 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->data->setValue('data1', 'data');
-        $this->makeDir($app->config->dataDir . '/objects/data2');
+        $this->makeDir($app->config['dataDir'] . '/objects/data2');
         $this->expectException('\Exception');
         $app->data->duplicate('data1', 'data2');
     }
@@ -192,7 +192,7 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->data->setValue('data1', 'data');
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata2');
+        $this->lockFile($app->config['dataDir'] . '/objects/lockeddata2');
         $this->expectException('\BearFramework\App\Data\DataLockedException');
         $app->data->duplicate('data1', 'lockeddata2');
     }
@@ -204,7 +204,7 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->data->setValue('data1', 'data');
-        $this->makeDir($app->config->dataDir . '/objects/data2');
+        $this->makeDir($app->config['dataDir'] . '/objects/data2');
         $this->expectException('\Exception');
         $app->data->rename('data1', 'data2');
     }
@@ -215,7 +215,7 @@ class DataTest extends BearFrameworkTestCase
     public function testRenameExceptions2()
     {
         $app = $this->getApp();
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->lockFile($app->config['dataDir'] . '/objects/lockeddata1');
         $this->expectException('\BearFramework\App\Data\DataLockedException');
         $app->data->rename('lockeddata1', 'data2');
     }
@@ -227,7 +227,7 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
         $app->data->setValue('lockeddata1', 'data');
-        $this->lockFile($app->config->dataDir . '/objects/lockeddata1');
+        $this->lockFile($app->config['dataDir'] . '/objects/lockeddata1');
         $this->expectException('\BearFramework\App\Data\DataLockedException');
         $app->data->delete('lockeddata1');
     }

@@ -20,15 +20,15 @@ class AddonsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $this->makeFile($app->config->addonsDir . '/addon1/index.php', '<?php ?>');
-        $this->makeFile($app->config->addonsDir . '/addon2/index.php', '<?php ?>');
+        $this->makeFile($app->config['addonsDir'] . '/addon1/index.php', '<?php ?>');
+        $this->makeFile($app->config['addonsDir'] . '/addon2/index.php', '<?php ?>');
 
-        BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
-        BearFramework\Addons::register('addon2', $app->config->addonsDir . '/addon2/', ['require' => ['addon1']]);
+        BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
+        BearFramework\Addons::register('addon2', $app->config['addonsDir'] . '/addon2/', ['require' => ['addon1']]);
         $this->assertTrue(BearFramework\Addons::getList()->length === 2);
 
         $this->assertTrue(BearFramework\Addons::exists('addon1'));
-        $this->assertTrue(BearFramework\Addons::get('addon1')->dir === $app->config->addonsDir . '/addon1');
+        $this->assertTrue(BearFramework\Addons::get('addon1')->dir === $app->config['addonsDir'] . '/addon1');
         $this->assertTrue(BearFramework\Addons::exists('addon3') === false);
         $this->assertTrue(BearFramework\Addons::get('addon2')->options['require'][0] === 'addon1');
 
@@ -47,7 +47,7 @@ class AddonsTest extends BearFrameworkTestCase
         $this->assertTrue($addon2->id === 'addon2');
 
         $this->expectException('Exception');
-        $app->contexts->get($app->config->addonsDir . '/addon3/');
+        $app->contexts->get($app->config['addonsDir'] . '/addon3/');
     }
 
     /**
@@ -57,9 +57,9 @@ class AddonsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $this->makeFile($app->config->addonsDir . '/addon1/index.php', '<?php ?>');
+        $this->makeFile($app->config['addonsDir'] . '/addon1/index.php', '<?php ?>');
 
-        BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
+        BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
 
         $app->addons
                 ->add('addon1')
@@ -74,9 +74,9 @@ class AddonsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $this->makeDir($app->config->addonsDir . '/addon1/');
+        $this->makeDir($app->config['addonsDir'] . '/addon1/');
 
-        BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
+        BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
 
         $this->expectException('Exception');
         $app->addons->add('addon1');
@@ -89,20 +89,20 @@ class AddonsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $this->makeFile($app->config->addonsDir . '/addon1/index.php', '<?php ?>');
-        $this->makeFile($app->config->addonsDir . '/addon2/index.php', '<?php ?>');
+        $this->makeFile($app->config['addonsDir'] . '/addon1/index.php', '<?php ?>');
+        $this->makeFile($app->config['addonsDir'] . '/addon2/index.php', '<?php ?>');
 
-        BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
-        BearFramework\Addons::register('addon2', $app->config->addonsDir . '/addon2/');
+        BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
+        BearFramework\Addons::register('addon2', $app->config['addonsDir'] . '/addon2/');
 
-        BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
-        BearFramework\Addons::register('addon2', $app->config->addonsDir . '/addon2/');
+        BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
+        BearFramework\Addons::register('addon2', $app->config['addonsDir'] . '/addon2/');
 
         $list = BearFramework\Addons::getList();
         $this->assertTrue($list[0]->id === 'addon1');
-        $this->assertTrue($list[0]->dir === $app->config->addonsDir . '/addon1');
+        $this->assertTrue($list[0]->dir === $app->config['addonsDir'] . '/addon1');
         $this->assertTrue($list[1]->id === 'addon2');
-        $this->assertTrue($list[1]->dir === $app->config->addonsDir . '/addon2');
+        $this->assertTrue($list[1]->dir === $app->config['addonsDir'] . '/addon2');
     }
 
     /**
@@ -111,10 +111,10 @@ class AddonsTest extends BearFrameworkTestCase
     public function testRequire()
     {
         $app = $this->getApp();
-        $this->makeFile($app->config->addonsDir . '/addon1/index.php', '<?php class Addon1{}?>');
-        $this->makeFile($app->config->addonsDir . '/addon2/index.php', '<?php class Addon2{}?>');
-        BearFramework\Addons::register('addon1', $app->config->addonsDir . '/addon1/');
-        BearFramework\Addons::register('addon2', $app->config->addonsDir . '/addon2/', ['require' => ['addon1']]);
+        $this->makeFile($app->config['addonsDir'] . '/addon1/index.php', '<?php class Addon1{}?>');
+        $this->makeFile($app->config['addonsDir'] . '/addon2/index.php', '<?php class Addon2{}?>');
+        BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
+        BearFramework\Addons::register('addon2', $app->config['addonsDir'] . '/addon2/', ['require' => ['addon1']]);
         $app->addons->add('addon2');
         $this->assertTrue(class_exists('Addon1'));
         $this->assertTrue(class_exists('Addon2'));
