@@ -56,36 +56,39 @@ class CacheRepository
     /**
      * Enables the app cache driver. The cached data will be stored in the app data repository.
      * 
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function useAppDataDriver(): void
+    public function useAppDataDriver(): self
     {
         $this->setDriver(new \BearFramework\App\DataCacheDriver($this->app->data));
+        return $this;
     }
 
     /**
      * Enables the null cache driver. No data is stored and no errors are thrown.
      * 
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function useNullDriver(): void
+    public function useNullDriver(): self
     {
         $this->setDriver(new \BearFramework\App\NullCacheDriver());
+        return $this;
     }
 
     /**
      * Sets a new cache driver.
      * 
      * @param \BearFramework\App\ICacheDriver $driver The driver to use for cache storage.
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      */
-    public function setDriver(\BearFramework\App\ICacheDriver $driver): void
+    public function setDriver(\BearFramework\App\ICacheDriver $driver): self
     {
         if ($this->driver !== null) {
             throw new \Exception('A cache driver is already set!');
         }
         $this->driver = $driver;
+        return $this;
     }
 
     /**
@@ -225,8 +228,10 @@ class CacheRepository
 
     /**
      * Deletes all values from the cache.
+     * 
+     * @return self Returns a reference to itself.
      */
-    public function clear(): \BearFramework\App\CacheRepository
+    public function clear(): self
     {
         $driver = $this->getDriver();
         $driver->clear();

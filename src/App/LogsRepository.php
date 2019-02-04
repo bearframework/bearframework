@@ -25,36 +25,39 @@ class LogsRepository
      * Enables a file logger for directory specified.
      * 
      * @param string $dir The directory where the logs will be stored.
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function useFileLogger(string $dir): void
+    public function useFileLogger(string $dir): self
     {
         $this->setLogger(new \BearFramework\App\FileLogger($dir));
+        return $this;
     }
-    
-     /**
+
+    /**
      * Enables a null logger. The null logger does not log any data and does not throw any errors.
      * 
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function useNullLogger(): void
+    public function useNullLogger(): self
     {
         $this->setLogger(new \BearFramework\App\NullLogger());
+        return $this;
     }
 
     /**
      * Sets a new logger.
      * 
      * @param \BearFramework\App\ILogger $logger The logger to use.
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      */
-    public function setLogger(\BearFramework\App\ILogger $logger): void
+    public function setLogger(\BearFramework\App\ILogger $logger): self
     {
         if ($this->logger !== null) {
             throw new \Exception('A logger is already set!');
         }
         $this->logger = $logger;
+        return $this;
     }
 
     /**
@@ -78,9 +81,9 @@ class LogsRepository
      * @param string $message The message that will be logged.
      * @param array $data Additional information to log.
      * @throws \InvalidArgumentException
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function log(string $name, string $message, array $data = []): void
+    public function log(string $name, string $message, array $data = []): self
     {
         $name = trim((string) $name);
         if (strlen($name) === 0) {
@@ -89,6 +92,7 @@ class LogsRepository
 
         $logger = $this->getLogger();
         $logger->log($name, $message, $data);
+        return $this;
     }
 
 }

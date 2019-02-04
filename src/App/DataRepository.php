@@ -83,31 +83,33 @@ class DataRepository
      * Enables the file data driver using the directory specified.
      * 
      * @param string $dir The directory used for file storage.
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function useFileDriver(string $dir): void
+    public function useFileDriver(string $dir): self
     {
         $this->setDriver(new \BearFramework\App\FileDataDriver($dir));
+        return $this;
     }
-    
+
     /**
      * Enables a null data driver. No data is stored and no errors are thrown.
      * 
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      */
-    public function useNullDriver(): void
+    public function useNullDriver(): self
     {
         $this->setDriver(new \BearFramework\App\NullDataDriver());
+        return $this;
     }
 
     /**
      * Sets a new data driver.
      * 
      * @param \BearFramework\App\IDataDriver $driver The data driver to use for data storage.
-     * @return void No value is returned.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      */
-    public function setDriver(\BearFramework\App\IDataDriver $driver): void
+    public function setDriver(\BearFramework\App\IDataDriver $driver): self
     {
         if ($this->driver !== null) {
             throw new \Exception('A data driver is already set!');
@@ -116,6 +118,7 @@ class DataRepository
         if ($this->filenameProtocol !== null) {
             \BearFramework\App\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$this->app, $this, $driver];
         }
+        return $this;
     }
 
     /**
