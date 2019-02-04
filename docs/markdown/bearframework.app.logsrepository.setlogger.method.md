@@ -3,7 +3,7 @@
 Sets a new logger.
 
 ```php
-public void setLogger ( BearFramework\App\ILogger $logger )
+public self setLogger ( BearFramework\App\ILogger $logger )
 ```
 
 ## Parameters
@@ -14,7 +14,7 @@ public void setLogger ( BearFramework\App\ILogger $logger )
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

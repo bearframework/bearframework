@@ -1,7 +1,7 @@
 # BearFramework\App\Assets::removeEventListener
 
 ```php
-public void removeEventListener ( string $name , callable $listener )
+public self removeEventListener ( string $name , callable $listener )
 ```
 
 ## Parameters
@@ -9,6 +9,10 @@ public void removeEventListener ( string $name , callable $listener )
 ##### name
 
 ##### listener
+
+## Returns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

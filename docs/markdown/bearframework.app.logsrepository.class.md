@@ -6,29 +6,29 @@ Logs repository
 BearFramework\App\LogsRepository {
 
 	/* Methods */
-	public void log ( string $name , string $message [, array $data = [] ] )
-	public void setLogger ( BearFramework\App\ILogger $logger )
-	public void useFileLogger ( string $dir )
-	public void useNullLogger ( void )
+	public self log ( string $name , string $message [, array $data = [] ] )
+	public self setLogger ( BearFramework\App\ILogger $logger )
+	public self useFileLogger ( string $dir )
+	public self useNullLogger ( void )
 
 }
 ```
 
 ## Methods
 
-##### public void [log](bearframework.app.logsrepository.log.method.md) ( string $name , string $message [, array $data = [] ] )
+##### public self [log](bearframework.app.logsrepository.log.method.md) ( string $name , string $message [, array $data = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs the data specified.
 
-##### public void [setLogger](bearframework.app.logsrepository.setlogger.method.md) ( [BearFramework\App\ILogger](bearframework.app.ilogger.class.md) $logger )
+##### public self [setLogger](bearframework.app.logsrepository.setlogger.method.md) ( [BearFramework\App\ILogger](bearframework.app.ilogger.class.md) $logger )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets a new logger.
 
-##### public void [useFileLogger](bearframework.app.logsrepository.usefilelogger.method.md) ( string $dir )
+##### public self [useFileLogger](bearframework.app.logsrepository.usefilelogger.method.md) ( string $dir )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a file logger for directory specified.
 
-##### public void [useNullLogger](bearframework.app.logsrepository.usenulllogger.method.md) ( void )
+##### public self [useNullLogger](bearframework.app.logsrepository.usenulllogger.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a null logger. The null logger does not log any data and does not throw any errors.
 

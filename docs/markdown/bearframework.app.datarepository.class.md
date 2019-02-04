@@ -7,11 +7,11 @@ BearFramework\App\DataRepository {
 
 	/* Methods */
 	public __construct ( BearFramework\App $app [, array $options = [] ] )
-	public void addEventListener ( string $name , callable $listener )
+	public self addEventListener ( string $name , callable $listener )
 	public self append ( string $key , string $content )
 	public self delete ( string $key )
 	public self deleteMetadata ( string $key , string $name )
-	public void dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( BearFramework\App\Event $event )
 	public self duplicate ( string $sourceKey , string $destinationKey )
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
@@ -21,14 +21,14 @@ BearFramework\App\DataRepository {
 	public string|null getValue ( string $key )
 	public bool hasEventListeners ( string $name )
 	public BearFramework\App\DataItem make ( [ string|null $key [, string|null $value ]] )
-	public void removeEventListener ( string $name , callable $listener )
+	public self removeEventListener ( string $name , callable $listener )
 	public self rename ( string $sourceKey , string $destinationKey )
 	public self set ( BearFramework\App\DataItem $item )
-	public void setDriver ( BearFramework\App\IDataDriver $driver )
+	public self setDriver ( BearFramework\App\IDataDriver $driver )
 	public self setMetadata ( string $key , string $name , string $value )
 	public self setValue ( string $key , string $value )
-	public void useFileDriver ( string $dir )
-	public void useNullDriver ( void )
+	public self useFileDriver ( string $dir )
+	public self useNullDriver ( void )
 	public bool validate ( string $key )
 
 }
@@ -40,7 +40,7 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data repository.
 
-##### public void [addEventListener](bearframework.app.datarepository.addeventlistener.method.md) ( string $name , callable $listener )
+##### public self [addEventListener](bearframework.app.datarepository.addeventlistener.method.md) ( string $name , callable $listener )
 
 ##### public self [append](bearframework.app.datarepository.append.method.md) ( string $key , string $content )
 
@@ -54,7 +54,7 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes metadata for the data item key specified.
 
-##### public void [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 
 ##### public self [duplicate](bearframework.app.datarepository.duplicate.method.md) ( string $sourceKey , string $destinationKey )
 
@@ -90,7 +90,7 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data item and returns it.
 
-##### public void [removeEventListener](bearframework.app.datarepository.removeeventlistener.method.md) ( string $name , callable $listener )
+##### public self [removeEventListener](bearframework.app.datarepository.removeeventlistener.method.md) ( string $name , callable $listener )
 
 ##### public self [rename](bearframework.app.datarepository.rename.method.md) ( string $sourceKey , string $destinationKey )
 
@@ -100,7 +100,7 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores a data item.
 
-##### public void [setDriver](bearframework.app.datarepository.setdriver.method.md) ( [BearFramework\App\IDataDriver](bearframework.app.idatadriver.class.md) $driver )
+##### public self [setDriver](bearframework.app.datarepository.setdriver.method.md) ( [BearFramework\App\IDataDriver](bearframework.app.idatadriver.class.md) $driver )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets a new data driver.
 
@@ -112,11 +112,11 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets a new value of the item specified or creates a new item with the key and value specified.
 
-##### public void [useFileDriver](bearframework.app.datarepository.usefiledriver.method.md) ( string $dir )
+##### public self [useFileDriver](bearframework.app.datarepository.usefiledriver.method.md) ( string $dir )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables the file data driver using the directory specified.
 
-##### public void [useNullDriver](bearframework.app.datarepository.usenulldriver.method.md) ( void )
+##### public self [useNullDriver](bearframework.app.datarepository.usenulldriver.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables a null data driver. No data is stored and no errors are thrown.
 

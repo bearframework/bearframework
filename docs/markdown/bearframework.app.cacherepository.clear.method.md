@@ -3,8 +3,12 @@
 Deletes all values from the cache.
 
 ```php
-public void clear ( void )
+public self clear ( void )
 ```
+
+## Returns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

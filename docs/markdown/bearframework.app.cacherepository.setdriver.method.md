@@ -3,7 +3,7 @@
 Sets a new cache driver.
 
 ```php
-public void setDriver ( BearFramework\App\ICacheDriver $driver )
+public self setDriver ( BearFramework\App\ICacheDriver $driver )
 ```
 
 ## Parameters
@@ -14,7 +14,7 @@ public void setDriver ( BearFramework\App\ICacheDriver $driver )
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

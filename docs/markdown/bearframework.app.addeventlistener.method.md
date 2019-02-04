@@ -1,7 +1,7 @@
 # BearFramework\App::addEventListener
 
 ```php
-public void addEventListener ( string $name , callable $listener )
+public self addEventListener ( string $name , callable $listener )
 ```
 
 ## Parameters
@@ -9,6 +9,10 @@ public void addEventListener ( string $name , callable $listener )
 ##### name
 
 ##### listener
+
+## Returns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

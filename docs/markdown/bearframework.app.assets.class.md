@@ -11,15 +11,15 @@ BearFramework\App\Assets {
 	/* Methods */
 	public __construct ( BearFramework\App $app )
 	public self addDir ( string $pathname )
-	public void addEventListener ( string $name , callable $listener )
+	public self addEventListener ( string $name , callable $listener )
 	protected self defineProperty ( string $name [, array $options = [] ] )
-	public void dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( BearFramework\App\Event $event )
 	public string|null getContent ( string $filename [, array $options = [] ] )
 	public array getDetails ( string $filename , array $list )
 	public BearFramework\App\Response|null getResponse ( BearFramework\App\Request $request )
 	public string getUrl ( string $filename [, array $options = [] ] )
 	public bool hasEventListeners ( string $name )
-	public void removeEventListener ( string $name , callable $listener )
+	public self removeEventListener ( string $name , callable $listener )
 
 }
 ```
@@ -38,13 +38,13 @@ BearFramework\App\Assets {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a directory that will be publicly accessible.
 
-##### public void [addEventListener](bearframework.app.assets.addeventlistener.method.md) ( string $name , callable $listener )
+##### public self [addEventListener](bearframework.app.assets.addeventlistener.method.md) ( string $name , callable $listener )
 
 ##### protected self [defineProperty](bearframework.app.assets.defineproperty.method.md) ( string $name [, array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
-##### public void [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 
 ##### public string|null [getContent](bearframework.app.assets.getcontent.method.md) ( string $filename [, array $options = [] ] )
 
@@ -64,7 +64,7 @@ BearFramework\App\Assets {
 
 ##### public bool [hasEventListeners](bearframework.app.assets.haseventlisteners.method.md) ( string $name )
 
-##### public void [removeEventListener](bearframework.app.assets.removeeventlistener.method.md) ( string $name , callable $listener )
+##### public self [removeEventListener](bearframework.app.assets.removeeventlistener.method.md) ( string $name , callable $listener )
 
 ## Events
 

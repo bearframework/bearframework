@@ -20,13 +20,13 @@ BearFramework\App {
 
 	/* Methods */
 	public __construct ( void )
-	public void addEventListener ( string $name , callable $listener )
+	public self addEventListener ( string $name , callable $listener )
 	protected self defineProperty ( string $name [, array $options = [] ] )
-	public void dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( BearFramework\App\Event $event )
 	public void enableErrorHandler ( [ array $options = [] ] )
 	public static BearFramework\App get ( void )
 	public bool hasEventListeners ( string $name )
-	public void removeEventListener ( string $name , callable $listener )
+	public self removeEventListener ( string $name , callable $listener )
 	public void run ( void )
 	public void send ( BearFramework\App\Response $response )
 
@@ -83,13 +83,13 @@ BearFramework\App {
 
 ##### public [__construct](bearframework.app.__construct.method.md) ( void )
 
-##### public void [addEventListener](bearframework.app.addeventlistener.method.md) ( string $name , callable $listener )
+##### public self [addEventListener](bearframework.app.addeventlistener.method.md) ( string $name , callable $listener )
 
 ##### protected self [defineProperty](bearframework.app.defineproperty.method.md) ( string $name [, array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defines a new property.
 
-##### public void [dispatchEvent](bearframework.app.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
 
 ##### public void [enableErrorHandler](bearframework.app.enableerrorhandler.method.md) ( [ array $options = [] ] )
 
@@ -101,7 +101,7 @@ BearFramework\App {
 
 ##### public bool [hasEventListeners](bearframework.app.haseventlisteners.method.md) ( string $name )
 
-##### public void [removeEventListener](bearframework.app.removeeventlistener.method.md) ( string $name , callable $listener )
+##### public self [removeEventListener](bearframework.app.removeeventlistener.method.md) ( string $name , callable $listener )
 
 ##### public void [run](bearframework.app.run.method.md) ( void )
 

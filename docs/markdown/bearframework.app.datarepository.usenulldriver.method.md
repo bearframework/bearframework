@@ -3,12 +3,12 @@
 Enables a null data driver. No data is stored and no errors are thrown.
 
 ```php
-public void useNullDriver ( void )
+public self useNullDriver ( void )
 ```
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

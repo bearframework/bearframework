@@ -1,12 +1,16 @@
 # BearFramework\App\CacheRepository::dispatchEvent
 
 ```php
-public void dispatchEvent ( BearFramework\App\Event $event )
+public self dispatchEvent ( BearFramework\App\Event $event )
 ```
 
 ## Parameters
 
 ##### event
+
+## Returns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

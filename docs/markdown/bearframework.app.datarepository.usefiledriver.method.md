@@ -3,7 +3,7 @@
 Enables the file data driver using the directory specified.
 
 ```php
-public void useFileDriver ( string $dir )
+public self useFileDriver ( string $dir )
 ```
 
 ## Parameters
@@ -14,7 +14,7 @@ public void useFileDriver ( string $dir )
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

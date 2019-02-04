@@ -3,12 +3,12 @@
 Enables a null logger. The null logger does not log any data and does not throw any errors.
 
 ```php
-public void useNullLogger ( void )
+public self useNullLogger ( void )
 ```
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

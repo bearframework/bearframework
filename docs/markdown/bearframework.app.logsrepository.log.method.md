@@ -3,7 +3,7 @@
 Logs the data specified.
 
 ```php
-public void log ( string $name , string $message [, array $data = [] ] )
+public self log ( string $name , string $message [, array $data = [] ] )
 ```
 
 ## Parameters
@@ -22,7 +22,7 @@ public void log ( string $name , string $message [, array $data = [] ] )
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

@@ -3,12 +3,12 @@
 Enables the app cache driver. The cached data will be stored in the app data repository.
 
 ```php
-public void useAppDataDriver ( void )
+public self useAppDataDriver ( void )
 ```
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 

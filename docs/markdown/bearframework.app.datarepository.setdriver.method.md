@@ -3,7 +3,7 @@
 Sets a new data driver.
 
 ```php
-public void setDriver ( BearFramework\App\IDataDriver $driver )
+public self setDriver ( BearFramework\App\IDataDriver $driver )
 ```
 
 ## Parameters
@@ -14,7 +14,7 @@ public void setDriver ( BearFramework\App\IDataDriver $driver )
 
 ## Returns
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No value is returned.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a reference to itself.
 
 ## Details
 
