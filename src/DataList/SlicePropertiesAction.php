@@ -7,13 +7,12 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework;
+namespace BearFramework\DataList;
 
 /**
- * Base class for lists context.
- * @codeCoverageIgnore
+ * 
  */
-class DataListContext extends \IvoPetkov\DataListContext
+class SlicePropertiesAction extends \IvoPetkov\DataListSlicePropertiesAction
 {
     
 }

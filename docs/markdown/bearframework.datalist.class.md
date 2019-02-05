@@ -3,110 +3,132 @@
 Base class for lists.
 
 ```php
-BearFramework\DataList extends IvoPetkov\DataList implements Traversable, Iterator, ArrayAccess {
+BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable {
+
+	/* Methods */
+	public __construct ( [ array|iterable|callback $dataSource ] )
+	public self concat ( IvoPetkov\DataList $list )
+	public int count ( void )
+	public self filter ( callable $callback )
+	public self filterBy ( string $property , mixed $value [, string $operator = 'equal' ] )
+	public object|null get ( int $index )
+	public object|null getFirst ( void )
+	public object|null getLast ( void )
+	public object|null getRandom ( void )
+	public self map ( callable $callback )
+	public object|null pop ( void )
+	public self push ( object|array $object )
+	public self reverse ( void )
+	public object|null shift ( void )
+	public self shuffle ( void )
+	public IvoPetkov\DataList slice ( int $offset [, int $length ] )
+	public IvoPetkov\DataList sliceProperties ( array $properties )
+	public self sort ( callable $callback )
+	public self sortBy ( string $property [, string $order = 'asc' ] )
+	public array toArray ( void )
+	public string toJSON ( void )
+	public self unshift ( object|array $object )
 
 }
 ```
 
-## Extends
-
-##### IvoPetkov\DataList
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A list of data objects that can be easily filtered, sorted, etc. The objects can be lazy loaded using a callback in the constructor.
-
 ## Implements
-
-##### [Traversable](http://php.net/manual/en/class.traversable.php)
-
-##### [Iterator](http://php.net/manual/en/class.iterator.php)
 
 ##### [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 
+##### [Iterator](http://php.net/manual/en/class.iterator.php)
+
+##### [Traversable](http://php.net/manual/en/class.traversable.php)
+
+##### [Countable](http://php.net/manual/en/class.countable.php)
+
 ## Methods
 
-### Inherited from IvoPetkov\DataList
+##### public [__construct](bearframework.datalist.__construct.method.md) ( [ array|iterable|callback $dataSource ] )
 
-##### public __construct ( [ array|iterable|callback $dataSource ] )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data list.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data objects list.
-
-##### public IvoPetkov\DataList concat ( IvoPetkov\DataList $list )
+##### public self [concat](bearframework.datalist.concat.method.md) ( IvoPetkov\DataList $list )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Appends the items of the list provided to the current list.
 
-##### public IvoPetkov\DataList filter ( callable $callback )
+##### public int [count](bearframework.datalist.count.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the number of items in the list.
+
+##### public self [filter](bearframework.datalist.filter.method.md) ( callable $callback )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filters the elements of the list using a callback function.
 
-##### public IvoPetkov\DataList filterBy ( string $property , mixed $value [, string $operator = 'equal' ] )
+##### public self [filterBy](bearframework.datalist.filterby.method.md) ( string $property , mixed $value [, string $operator = 'equal' ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filters the elements of the list by specific property value.
 
-##### public IvoPetkov\DataObject|null get ( int $index )
+##### public object|null [get](bearframework.datalist.get.method.md) ( int $index )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object at the index specified or null if not found.
 
-##### public IvoPetkov\DataObject|null getFirst ( void )
+##### public object|null [getFirst](bearframework.datalist.getfirst.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the first object or null if not found.
 
-##### public IvoPetkov\DataObject|null getLast ( void )
+##### public object|null [getLast](bearframework.datalist.getlast.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the last object or null if not found.
 
-##### public IvoPetkov\DataObject|null getRandom ( void )
+##### public object|null [getRandom](bearframework.datalist.getrandom.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a random object from the list or null if the list is empty.
 
-##### public IvoPetkov\DataList map ( callable $callback )
+##### public self [map](bearframework.datalist.map.method.md) ( callable $callback )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Applies the callback to the objects of the list.
 
-##### public IvoPetkov\DataObject|null pop ( void )
+##### public object|null [pop](bearframework.datalist.pop.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pops an object off the end of the list.
 
-##### public IvoPetkov\DataList push ( IvoPetkov\DataObject|array $object )
+##### public self [push](bearframework.datalist.push.method.md) ( object|array $object )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pushes an object onto the end of the list.
 
-##### public IvoPetkov\DataList reverse ( void )
+##### public self [reverse](bearframework.datalist.reverse.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reverses the order of the objects in the list.
 
-##### public IvoPetkov\DataObject|null shift ( void )
+##### public object|null [shift](bearframework.datalist.shift.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shift an object off the beginning of the list.
 
-##### public IvoPetkov\DataList shuffle ( void )
+##### public self [shuffle](bearframework.datalist.shuffle.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Randomly reorders the objects in the list.
 
-##### public IvoPetkov\DataList slice ( int $offset [, int $length ] )
+##### public IvoPetkov\DataList [slice](bearframework.datalist.slice.method.md) ( int $offset [, int $length ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract a slice of the list.
 
-##### public IvoPetkov\DataList sliceProperties ( array $properties )
+##### public IvoPetkov\DataList [sliceProperties](bearframework.datalist.sliceproperties.method.md) ( array $properties )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a new list of object that contain only the specified properties of the objects in the current list.
 
-##### public IvoPetkov\DataList sort ( callable $callback )
+##### public self [sort](bearframework.datalist.sort.method.md) ( callable $callback )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sorts the elements of the list using a callback function.
 
-##### public IvoPetkov\DataList sortBy ( string $property [, string $order = 'asc' ] )
+##### public self [sortBy](bearframework.datalist.sortby.method.md) ( string $property [, string $order = 'asc' ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sorts the elements of the list by specific property.
 
-##### public array toArray ( void )
+##### public array [toArray](bearframework.datalist.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the list data converted as an array.
 
-##### public string toJSON ( void )
+##### public string [toJSON](bearframework.datalist.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the list data converted as JSON.
 
-##### public IvoPetkov\DataList unshift ( IvoPetkov\DataObject|array $object )
+##### public self [unshift](bearframework.datalist.unshift.method.md) ( object|array $object )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prepends an object to the beginning of the list.
 

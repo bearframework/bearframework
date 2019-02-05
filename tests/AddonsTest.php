@@ -25,7 +25,7 @@ class AddonsTest extends BearFrameworkTestCase
 
         BearFramework\Addons::register('addon1', $app->config['addonsDir'] . '/addon1/');
         BearFramework\Addons::register('addon2', $app->config['addonsDir'] . '/addon2/', ['require' => ['addon1']]);
-        $this->assertTrue(BearFramework\Addons::getList()->length === 2);
+        $this->assertTrue(BearFramework\Addons::getList()->count() === 2);
 
         $this->assertTrue(BearFramework\Addons::exists('addon1'));
         $this->assertTrue(BearFramework\Addons::get('addon1')->dir === $app->config['addonsDir'] . '/addon1');

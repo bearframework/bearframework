@@ -38,7 +38,7 @@ class RequestFilesTest extends BearFrameworkTestCase
         $this->assertTrue($formData->exists('missing') === false);
         $this->assertTrue($formData->exists('name1') === true);
         $list = $formData->getList();
-        $this->assertTrue($list->length === 2);
+        $this->assertTrue($list->count() === 2);
         $this->assertTrue($list[0]->name === 'name1');
         $this->assertTrue($list[0]->value === 'file1.jpg');
         $this->assertTrue($list[0]->filename === '/tmp/file1.jpg');
@@ -47,7 +47,7 @@ class RequestFilesTest extends BearFrameworkTestCase
         $this->assertTrue($list[1]->filename === '/tmp/file2.jpg');
         $formData->delete('name1');
         $list = $formData->getList();
-        $this->assertTrue($list->length === 1);
+        $this->assertTrue($list->count() === 1);
         $this->assertTrue($formData->exists('name1') === false);
     }
 

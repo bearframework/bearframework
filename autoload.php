@@ -103,7 +103,11 @@ $classes = [
     'BearFramework\Addons' => 'src/Addons.php',
     'BearFramework\App' => 'src/App.php',
     'BearFramework\DataList' => 'src/DataList.php',
-    'BearFramework\DataListContext' => 'src/DataListContext.php',
+    'BearFramework\DataList\Action' => 'src/DataList/Action.php',
+    'BearFramework\DataList\Context' => 'src/DataList/Context.php',
+    'BearFramework\DataList\FilterByAction' => 'src/DataList/FilterByAction.php',
+    'BearFramework\DataList\SlicePropertiesAction' => 'src/DataList/SlicePropertiesAction.php',
+    'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php',
     'BearFramework\DataObject' => 'src/DataObject.php',
 ];
 

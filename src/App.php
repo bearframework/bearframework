@@ -202,9 +202,9 @@ class App
         if ($this->hasEventListeners('beforeSendResponse')) {
             $this->dispatchEvent(new \BearFramework\App\BeforeSendResponseEvent($response));
         }
-        if (!$response->headers->exists('Content-Length')) {
-            $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
-        }
+//        if (!$response->headers->exists('Content-Length')) {
+//            $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
+//        }
         http_response_code($response->statusCode);
         if (!headers_sent()) {
             $headers = $response->headers->getList();
@@ -215,7 +215,7 @@ class App
                 header($header->name . ': ' . $header->value);
             }
             $cookies = $response->cookies->getList();
-            if ($cookies->length > 0) {
+            if ($cookies->count() > 0) {
                 $baseUrlParts = parse_url($this->request->base);
                 foreach ($cookies as $cookie) {
                     setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : $cookie->secure, $cookie->httpOnly);

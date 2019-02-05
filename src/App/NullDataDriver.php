@@ -182,12 +182,12 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
     /**
      * Returns a list of all items in the data storage.
      * 
-     * @param \BearFramework\DataListContext $context
+     * @param \BearFramework\DataList\Context $context
      * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function getList(\IvoPetkov\DataListContext $context): \BearFramework\DataList
+    public function getList(\BearFramework\DataList\Context $context): \BearFramework\DataList
     {
         return new \BearFramework\DataList();
     }

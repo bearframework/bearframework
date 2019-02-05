@@ -44,18 +44,18 @@ class DataTest extends BearFrameworkTestCase
 
         $result = $app->data->getList()
                 ->filterBy('key', 'users/1');
-        $this->assertTrue($result->length === 1);
+        $this->assertTrue($result->count() === 1);
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
 
         $result = $app->data->getList()
                 ->filterBy('key', 'users/9');
-        $this->assertTrue($result->length === 0);
+        $this->assertTrue($result->count() === 0);
 
         $result = $app->data->getList()
                 ->filterBy('key', '^users\/', 'regExp');
-        $this->assertTrue($result->length === 1);
+        $this->assertTrue($result->count() === 1);
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');

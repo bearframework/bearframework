@@ -299,30 +299,30 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     /**
      * Returns a list of all items in the data storage.
      * 
-     * @param \BearFramework\DataListContext $context
+     * @param \BearFramework\DataList\Context $context
      * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function getList(\IvoPetkov\DataListContext $context): \BearFramework\DataList
+    public function getList(\BearFramework\DataList\Context $context): \BearFramework\DataList
     {
         $whereOptions = [];
-        foreach ($context->filterByProperties as $filter) {
-            $whereOptions[] = [$filter->property, $filter->value, $filter->operator];
-        }
-        $resultKeys = ['key', 'body', 'metadata'];
-        if (isset($context->requestedProperties) && !empty($context->requestedProperties)) {
-            $resultKeys = ['key'];
-            foreach ($context->requestedProperties as $requestedProperty) {
-                if ($requestedProperty === 'value') {
-                    $resultKeys[] = 'body';
-                } elseif ($requestedProperty === 'metadata') {
-                    $resultKeys[] = 'metadata';
+        $resultKeys = [];
+        $actions = $context->getActions();
+        foreach ($actions as $action) {
+            if ($action instanceof \BearFramework\DataList\FilterByAction) {
+                $whereOptions[] = [$action->property, $action->value, $action->operator];
+            } elseif ($action instanceof \BearFramework\DataList\SlicePropertiesAction) {
+                foreach ($action->properties as $requestedProperty) {
+                    if ($requestedProperty === 'value') {
+                        $resultKeys[] = 'body';
+                    } elseif ($requestedProperty === 'metadata') {
+                        $resultKeys[] = 'metadata';
+                    }
                 }
             }
-            $resultKeys = array_unique($resultKeys);
         }
-
+        $resultKeys = empty($resultKeys) ? ['key', 'body', 'metadata'] : array_unique(array_merge(['key'], $resultKeys));
         $result = $this->execute([
             [
                 'command' => 'search',

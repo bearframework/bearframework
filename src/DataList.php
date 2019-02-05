@@ -13,7 +13,31 @@ namespace BearFramework;
  * Base class for lists.
  * @codeCoverageIgnore
  */
-class DataList extends \IvoPetkov\DataList
+class DataList implements \ArrayAccess, \Iterator, \Countable
 {
-    
+
+    use \IvoPetkov\DataListTrait;
+    use \IvoPetkov\DataListArrayAccessTrait;
+    use \IvoPetkov\DataListIteratorTrait;
+    use \IvoPetkov\DataListToArrayTrait;
+    use \IvoPetkov\DataListToJSONTrait;
+
+    /**
+     * Constructs a new data list.
+     * 
+     * @param array|iterable|callback $dataSource
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($dataSource = null)
+    {
+        $this->registerDataListClass('IvoPetkov\DataListContext', 'BearFramework\DataList\Context');
+        $this->registerDataListClass('IvoPetkov\DataListFilterByAction', 'BearFramework\DataList\FilterByAction');
+        $this->registerDataListClass('IvoPetkov\DataListSortByAction', 'BearFramework\DataList\SortByAction');
+        $this->registerDataListClass('IvoPetkov\DataListAction', 'BearFramework\DataList\Action');
+        $this->registerDataListClass('IvoPetkov\DataListSlicePropertiesAction', 'BearFramework\DataList\SlicePropertiesAction');
+        if ($dataSource !== null) {
+            $this->setDataSource($dataSource);
+        }
+    }
+
 }

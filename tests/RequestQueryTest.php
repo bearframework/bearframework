@@ -31,7 +31,7 @@ class RequestQueryTest extends BearFrameworkTestCase
         $this->assertFalse($query->exists('missing'));
         $this->assertTrue($query->exists('name1'));
         $list = $query->getList();
-        $this->assertEquals($list->length, 2);
+        $this->assertEquals($list->count(), 2);
         $this->assertEquals($list[0]->name, 'name1');
         $this->assertEquals($list[0]->value, 'value1');
         $this->assertEquals($list[1]->name, 'name2');
@@ -39,7 +39,7 @@ class RequestQueryTest extends BearFrameworkTestCase
         $query->delete('name1');
         $this->assertFalse($query->exists('name1'));
         $list = $query->getList();
-        $this->assertEquals($list->length, 1);
+        $this->assertEquals($list->count(), 1);
     }
 
 }

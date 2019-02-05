@@ -31,7 +31,7 @@ class ResponseHeadersTest extends BearFrameworkTestCase
         $this->assertFalse($headers->exists('missing'));
         $this->assertTrue($headers->exists('Content-Type'));
         $list = $headers->getList();
-        $this->assertEquals($list->length, 2);
+        $this->assertEquals($list->count(), 2);
         $this->assertEquals($list[0]->name, 'Content-Type');
         $this->assertEquals($list[0]->value, 'application/x-www-form-urlencoded');
         $this->assertEquals($list[1]->name, 'Content-Length');
@@ -39,7 +39,7 @@ class ResponseHeadersTest extends BearFrameworkTestCase
         $headers->delete('Content-Type');
         $this->assertFalse($headers->exists('Content-Type'));
         $list = $headers->getList();
-        $this->assertEquals($list->length, 1);
+        $this->assertEquals($list->count(), 1);
     }
 
 }

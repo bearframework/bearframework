@@ -31,7 +31,7 @@ class RequestDataTest extends BearFrameworkTestCase
         $this->assertFalse($formData->exists('missing'));
         $this->assertTrue($formData->exists('name1'));
         $list = $formData->getList();
-        $this->assertEquals($list->length, 2);
+        $this->assertEquals($list->count(), 2);
         $this->assertEquals($list[0]->name, 'name1');
         $this->assertEquals($list[0]->value, 'value1');
         $this->assertEquals($list[1]->name, 'name2');
@@ -39,7 +39,7 @@ class RequestDataTest extends BearFrameworkTestCase
         $formData->delete('name1');
         $this->assertFalse($formData->exists('name1'));
         $list = $formData->getList();
-        $this->assertEquals($list->length, 1);
+        $this->assertEquals($list->count(), 1);
     }
 
 }

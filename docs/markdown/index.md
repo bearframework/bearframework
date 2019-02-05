@@ -268,11 +268,17 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base class for lists.
 
-### [BearFramework\DataListContext](bearframework.datalistcontext.class.md)
+### [BearFramework\DataList\Action](bearframework.datalist.action.class.md)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base class for lists context.
+### [BearFramework\DataList\Context](bearframework.datalist.context.class.md)
+
+### [BearFramework\DataList\FilterByAction](bearframework.datalist.filterbyaction.class.md)
+
+### [BearFramework\DataList\SlicePropertiesAction](bearframework.datalist.slicepropertiesaction.class.md)
+
+### [BearFramework\DataList\SortByAction](bearframework.datalist.sortbyaction.class.md)
 
 ### [BearFramework\DataObject](bearframework.dataobject.class.md)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base class for lists.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base class for objects.
 

@@ -10,10 +10,30 @@
 namespace BearFramework;
 
 /**
- * Base class for lists.
+ * Base class for objects.
+ * 
  * @codeCoverageIgnore
  */
-class DataObject extends \IvoPetkov\DataObject
+class DataObject implements \ArrayAccess
 {
-    
+
+    use \IvoPetkov\DataObjectTrait;
+    use \IvoPetkov\DataObjectArrayAccessTrait;
+    use \IvoPetkov\DataObjectToArrayTrait;
+    use \IvoPetkov\DataObjectFromArrayTrait;
+    use \IvoPetkov\DataObjectToJSONTrait;
+    use \IvoPetkov\DataObjectFromJSONTrait;
+
+    /**
+     * Constructs a new data object.
+     * 
+     * @param array $data The data to use for the properties values.
+     */
+    public function __construct(array $data = [])
+    {
+        foreach ($data as $name => $value) {
+            $this->$name = $value;
+        }
+    }
+
 }

@@ -1,18 +1,19 @@
 # BearFramework\DataObject
 
-Base class for lists.
+Base class for objects.
 
 ```php
-BearFramework\DataObject extends IvoPetkov\DataObject implements ArrayAccess {
+BearFramework\DataObject implements ArrayAccess {
+
+	/* Methods */
+	public __construct ( [ array $data = [] ] )
+	public static object fromArray ( array $data )
+	public static object fromJSON ( string $data )
+	public array toArray ( void )
+	public string toJSON ( void )
 
 }
 ```
-
-## Extends
-
-##### IvoPetkov\DataObject
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A data object that supports registering properties and importing/exporting from array and JSON.
 
 ## Implements
 
@@ -20,25 +21,23 @@ BearFramework\DataObject extends IvoPetkov\DataObject implements ArrayAccess {
 
 ## Methods
 
-### Inherited from IvoPetkov\DataObject
-
-##### public __construct ( [ array $data = [] ] )
+##### public [__construct](bearframework.dataobject.__construct.method.md) ( [ array $data = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data object.
 
-##### public static object fromArray ( array $data )
+##### public static object [fromArray](bearframework.dataobject.fromarray.method.md) ( array $data )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the array specified.
 
-##### public static object fromJSON ( string $data )
+##### public static object [fromJSON](bearframework.dataobject.fromjson.method.md) ( string $data )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the JSON specified.
 
-##### public array toArray ( void )
+##### public array [toArray](bearframework.dataobject.toarray.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string toJSON ( void )
+##### public string [toJSON](bearframework.dataobject.tojson.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

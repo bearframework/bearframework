@@ -314,7 +314,7 @@ class DataItemStreamWrapper
                 $result = $dataRepository->getList()
                         ->filterBy('key', $key, 'startWith')
                         ->sliceProperties(['key']);
-                if ($result->length > 0) {
+                if ($result->count() > 0) {
                     $mode = 0040666; //dir
                     $size = 0;
                 } else {

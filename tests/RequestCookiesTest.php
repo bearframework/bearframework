@@ -31,7 +31,7 @@ class RequestCookiesTest extends BearFrameworkTestCase
         $this->assertFalse($cookies->exists('missing'));
         $this->assertTrue($cookies->exists('name1'));
         $list = $cookies->getList();
-        $this->assertEquals($list->length, 2);
+        $this->assertEquals($list->count(), 2);
         $this->assertEquals($list[0]->name, 'name1');
         $this->assertEquals($list[0]->value, 'value1');
         $this->assertEquals($list[1]->name, 'name2');
@@ -39,7 +39,7 @@ class RequestCookiesTest extends BearFrameworkTestCase
         $cookies->delete('name1');
         $this->assertFalse($cookies->exists('name1'));
         $list = $cookies->getList();
-        $this->assertEquals($list->length, 1);
+        $this->assertEquals($list->count(), 1);
     }
 
 }

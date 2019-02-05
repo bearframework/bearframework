@@ -12,17 +12,19 @@ BearFramework\DataListContext extends IvoPetkov\DataListContext {
 
 ##### IvoPetkov\DataListContext
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Information about the operations applied on the data list.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Information about the actions applied on a data list.
 
-## Properties
+## Methods
 
 ### Inherited from IvoPetkov\DataListContext
 
-##### public array $filterByProperties
+##### public __construct ( array $actions )
 
-##### public array $requestedProperties
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array containing the data list actions.
 
-##### public array $sortByProperties
+##### public IvoPetkov\DataList|IvoPetkov\DataListAction[]|IvoPetkov\DataListFilterByAction[]|IvoPetkov\DataListSlicePropertiesAction[]|IvoPetkov\DataListSortByAction[] getActions ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataList containing all the actions.
 
 ## Details
 

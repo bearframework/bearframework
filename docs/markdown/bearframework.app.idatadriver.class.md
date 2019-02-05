@@ -13,7 +13,7 @@ BearFramework\App\IDataDriver {
 	abstract public bool exists ( string $key )
 	abstract public BearFramework\App\DataItem|null get ( string $key )
 	abstract public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
-	abstract public BearFramework\DataList|BearFramework\App\DataItem[] getList ( BearFramework\DataListContext $context )
+	abstract public BearFramework\DataList|BearFramework\App\DataItem[] getList ( BearFramework\DataList\Context $context )
 	abstract public string|null getMetadata ( string $key , string $name )
 	abstract public string|null getValue ( string $key )
 	abstract public void rename ( string $sourceKey , string $destinationKey )
@@ -54,7 +54,7 @@ BearFramework\App\IDataDriver {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataItemStreamWrapper for the key specified.
 
-##### abstract public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.idatadriver.getlist.method.md) ( [BearFramework\DataListContext](bearframework.datalistcontext.class.md) $context )
+##### abstract public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.idatadriver.getlist.method.md) ( [BearFramework\DataList\Context](bearframework.datalist.context.class.md) $context )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all items in the data storage.
 
