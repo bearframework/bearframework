@@ -202,9 +202,9 @@ class App
         if ($this->hasEventListeners('beforeSendResponse')) {
             $this->dispatchEvent(new \BearFramework\App\BeforeSendResponseEvent($response));
         }
-//        if (!$response->headers->exists('Content-Length')) {
-//            $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
-//        }
+        if (!$response->headers->exists('Content-Length')) {
+            $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
+        }
         http_response_code($response->statusCode);
         if (!headers_sent()) {
             $headers = $response->headers->getList();
