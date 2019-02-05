@@ -17,6 +17,8 @@ namespace BearFramework\App\Assets;
 class GetUrlEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $filename
@@ -25,7 +27,6 @@ class GetUrlEvent extends \BearFramework\App\Event
      */
     public function __construct(string $filename, array $options, string $url)
     {
-        parent::__construct('getUrl');
         $this
                 ->defineProperty('filename', [
                     'type' => 'string'

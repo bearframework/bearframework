@@ -16,6 +16,8 @@ namespace BearFramework\App\Data;
 class ItemAppendEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $key
@@ -23,7 +25,6 @@ class ItemAppendEvent extends \BearFramework\App\Event
      */
     public function __construct(string $key, string $content)
     {
-        parent::__construct('itemAppend');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

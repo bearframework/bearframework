@@ -15,13 +15,14 @@ namespace BearFramework\App\Cache;
 class ItemSetEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param \BearFramework\App\CacheItem $item
      */
     public function __construct(\BearFramework\App\CacheItem $item)
     {
-        parent::__construct('itemSet');
         $this
                 ->defineProperty('item', [
                     'type' => \BearFramework\App\CacheItem::class

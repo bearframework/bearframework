@@ -15,13 +15,14 @@ namespace BearFramework\App\Cache;
 class ItemDeleteEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $key
      */
     public function __construct(string $key)
     {
-        parent::__construct('itemDelete');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

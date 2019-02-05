@@ -15,13 +15,14 @@ namespace BearFramework\App\Data;
 class ItemSetEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param \BearFramework\App\DataItem $item
      */
     public function __construct(\BearFramework\App\DataItem $item)
     {
-        parent::__construct('itemSet');
         $this
                 ->defineProperty('item', [
                     'type' => \BearFramework\App\DataItem::class

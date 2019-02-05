@@ -16,13 +16,14 @@ namespace BearFramework\App\Cache;
 class ItemExistsEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * @param string $key
      * @param bool $exists
      */
     public function __construct(string $key, bool $exists)
     {
-        parent::__construct('itemExists');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

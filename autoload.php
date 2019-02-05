@@ -21,7 +21,6 @@ $classes = [
     'BearFramework\App\BeforeSendResponseEvent' => 'src/App/BeforeSendResponseEvent.php',
     'BearFramework\App\CacheItem' => 'src/App/CacheItem.php',
     'BearFramework\App\CacheRepository' => 'src/App/CacheRepository.php',
-    'BearFramework\App\Cache\ClearEvent' => 'src/App/Cache/ClearEvent.php',
     'BearFramework\App\Cache\ItemChangeEvent' => 'src/App/Cache/ItemChangeEvent.php',
     'BearFramework\App\Cache\ItemDeleteEvent' => 'src/App/Cache/ItemDeleteEvent.php',
     'BearFramework\App\Cache\ItemExistsEvent' => 'src/App/Cache/ItemExistsEvent.php',
@@ -107,8 +106,7 @@ $classes = [
     'BearFramework\DataList\Context' => 'src/DataList/Context.php',
     'BearFramework\DataList\FilterByAction' => 'src/DataList/FilterByAction.php',
     'BearFramework\DataList\SlicePropertiesAction' => 'src/DataList/SlicePropertiesAction.php',
-    'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php',
-    'BearFramework\DataObject' => 'src/DataObject.php',
+    'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php'
 ];
 
 spl_autoload_register(function ($class) use ($classes) {

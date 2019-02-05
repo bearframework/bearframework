@@ -16,6 +16,8 @@ namespace BearFramework\App\Data;
 class ItemDeleteMetadataEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $key
@@ -23,7 +25,6 @@ class ItemDeleteMetadataEvent extends \BearFramework\App\Event
      */
     public function __construct(string $key, string $name)
     {
-        parent::__construct('itemDeleteMetadata');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

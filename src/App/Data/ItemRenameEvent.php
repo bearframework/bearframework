@@ -16,6 +16,8 @@ namespace BearFramework\App\Data;
 class ItemRenameEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $sourceKey
@@ -23,7 +25,6 @@ class ItemRenameEvent extends \BearFramework\App\Event
      */
     public function __construct(string $sourceKey, string $destinationKey)
     {
-        parent::__construct('itemRename');
         $this
                 ->defineProperty('sourceKey', [
                     'type' => 'string'

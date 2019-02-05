@@ -15,13 +15,14 @@ namespace BearFramework\App\Data;
 class ItemRequestEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $key
      */
     public function __construct(string $key)
     {
-        parent::__construct('itemRequest');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

@@ -170,10 +170,10 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->set($item);
         if ($this->hasEventListeners('itemSet')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemSetEvent(clone($item)));
+            $this->dispatchEvent('itemSet', new \BearFramework\App\Data\ItemSetEvent(clone($item)));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($item->key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($item->key));
         }
         return $this;
     }
@@ -192,10 +192,10 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->setValue($key, $value);
         if ($this->hasEventListeners('itemSetValue')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemSetValueEvent($key, $value));
+            $this->dispatchEvent('itemSetValue', new \BearFramework\App\Data\ItemSetValueEvent($key, $value));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($key));
         }
         return $this;
     }
@@ -213,10 +213,10 @@ class DataRepository
         $driver = $this->getDriver();
         $item = $driver->get($key);
         if ($this->hasEventListeners('itemGet')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetEvent($key, $item === null ? null : clone($item)));
+            $this->dispatchEvent('itemGet', new \BearFramework\App\Data\ItemGetEvent($key, $item === null ? null : clone($item)));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($key));
         }
         return $item;
     }
@@ -234,10 +234,10 @@ class DataRepository
         $driver = $this->getDriver();
         $value = $driver->getValue($key);
         if ($this->hasEventListeners('itemGetValue')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetValueEvent($key, $value));
+            $this->dispatchEvent('itemGetValue', new \BearFramework\App\Data\ItemGetValueEvent($key, $value));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($key));
         }
         return $value;
     }
@@ -255,10 +255,10 @@ class DataRepository
         $driver = $this->getDriver();
         $exists = $driver->exists($key);
         if ($this->hasEventListeners('itemExists')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemExistsEvent($key, $exists));
+            $this->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEvent($key, $exists));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($key));
         }
         return $exists;
     }
@@ -277,10 +277,10 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->append($key, $content);
         if ($this->hasEventListeners('itemAppend')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemAppendEvent($key, $content));
+            $this->dispatchEvent('itemAppend', new \BearFramework\App\Data\ItemAppendEvent($key, $content));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($key));
         }
         return $this;
     }
@@ -299,13 +299,13 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->duplicate($sourceKey, $destinationKey);
         if ($this->hasEventListeners('itemDuplicate')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemDuplicateEvent($sourceKey, $destinationKey));
+            $this->dispatchEvent('itemDuplicate', new \BearFramework\App\Data\ItemDuplicateEvent($sourceKey, $destinationKey));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($sourceKey));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($sourceKey));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($destinationKey));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($destinationKey));
         }
         return $this;
     }
@@ -324,11 +324,11 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->rename($sourceKey, $destinationKey);
         if ($this->hasEventListeners('itemRename')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRenameEvent($sourceKey, $destinationKey));
+            $this->dispatchEvent('itemRename', new \BearFramework\App\Data\ItemRenameEvent($sourceKey, $destinationKey));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($sourceKey));
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($destinationKey));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($sourceKey));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($destinationKey));
         }
         return $this;
     }
@@ -346,10 +346,10 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->delete($key);
         if ($this->hasEventListeners('itemDelete')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemDeleteEvent($key));
+            $this->dispatchEvent('itemDelete', new \BearFramework\App\Data\ItemDeleteEvent($key));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($key));
         }
         return $this;
     }
@@ -369,10 +369,10 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->setMetadata($key, $name, $value);
         if ($this->hasEventListeners('itemSetMetadata')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemSetMetadataEvent($key, $name, $value));
+            $this->dispatchEvent('itemSetMetadata', new \BearFramework\App\Data\ItemSetMetadataEvent($key, $name, $value));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($key));
         }
         return $this;
     }
@@ -391,10 +391,10 @@ class DataRepository
         $driver = $this->getDriver();
         $value = $driver->getMetadata($key, $name);
         if ($this->hasEventListeners('itemGetMetadata')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemGetMetadataEvent($key, $name, $value));
+            $this->dispatchEvent('itemGetMetadata', new \BearFramework\App\Data\ItemGetMetadataEvent($key, $name, $value));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($key));
         }
         return $value;
     }
@@ -413,10 +413,10 @@ class DataRepository
         $driver = $this->getDriver();
         $driver->deleteMetadata($key, $name);
         if ($this->hasEventListeners('itemDeleteMetadata')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemDeleteMetadataEvent($key, $name));
+            $this->dispatchEvent('itemDeleteMetadata', new \BearFramework\App\Data\ItemDeleteMetadataEvent($key, $name));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($key));
         }
         return $this;
     }
@@ -435,7 +435,7 @@ class DataRepository
             return $driver->getList($context);
         });
         if ($this->hasEventListeners('getList')) {
-            $this->dispatchEvent(new \BearFramework\App\Data\GetListEvent($list));
+            $this->dispatchEvent('getList', new \BearFramework\App\Data\GetListEvent($list));
         }
         return $list;
     }

@@ -16,13 +16,14 @@ namespace BearFramework\App\Data;
 class ItemGetValueEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * @param string $key
      * @param mixed $value
      */
     public function __construct(string $key, string $value)
     {
-        parent::__construct('itemGetValue');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

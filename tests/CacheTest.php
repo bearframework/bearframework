@@ -119,7 +119,7 @@ class CacheTest extends BearFrameworkTestCase
             $eventsLogs[] = ['delete', $event->key];
         });
 
-        $app->cache->addEventListener('clear', function(\BearFramework\App\Cache\ClearEvent $event) use (&$eventsLogs) {
+        $app->cache->addEventListener('clear', function() use (&$eventsLogs) {
             $eventsLogs[] = ['clear'];
         });
 

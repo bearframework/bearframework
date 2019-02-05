@@ -17,6 +17,8 @@ namespace BearFramework\App\Data;
 class ItemSetMetadataEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $key
@@ -25,7 +27,6 @@ class ItemSetMetadataEvent extends \BearFramework\App\Event
      */
     public function __construct(string $key, string $name, string $value)
     {
-        parent::__construct('itemSetMetadata');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

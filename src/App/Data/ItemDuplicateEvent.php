@@ -16,6 +16,8 @@ namespace BearFramework\App\Data;
 class ItemDuplicateEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $sourceKey
@@ -23,7 +25,6 @@ class ItemDuplicateEvent extends \BearFramework\App\Event
      */
     public function __construct(string $sourceKey, string $destinationKey)
     {
-        parent::__construct('itemDuplicate');
         $this
                 ->defineProperty('sourceKey', [
                     'type' => 'string'

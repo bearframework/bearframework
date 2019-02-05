@@ -17,6 +17,8 @@ namespace BearFramework\App\Assets;
 class BeforeGetDetailsEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param string $filename
@@ -24,7 +26,6 @@ class BeforeGetDetailsEvent extends \BearFramework\App\Event
      */
     public function __construct(string $filename, array $list)
     {
-        parent::__construct('beforeGetDetails');
         $this
                 ->defineProperty('filename', [
                     'type' => 'string'

@@ -127,7 +127,7 @@ class Assets
         $url = null;
         if ($this->hasEventListeners('beforeGetUrl')) {
             $event = new \BearFramework\App\Assets\BeforeGetUrlEvent($filename, $options);
-            $this->dispatchEvent($event);
+            $this->dispatchEvent('beforeGetUrl', $event);
             $filename = $event->filename;
             $options = $event->options;
             if ($event->returnValue !== null) {
@@ -199,7 +199,7 @@ class Assets
 
         if ($this->hasEventListeners('getUrl')) {
             $event = new \BearFramework\App\Assets\GetUrlEvent($filename, $options, $url);
-            $this->dispatchEvent($event);
+            $this->dispatchEvent('getUrl', $event);
             $url = $event->url;
         }
 
@@ -378,7 +378,7 @@ class Assets
 
         if ($this->hasEventListeners('beforePrepare')) {
             $event = new \BearFramework\App\Assets\BeforePrepareEvent($filename, $options);
-            $this->dispatchEvent($event);
+            $this->dispatchEvent('beforePrepare', $event);
             $filename = $event->filename;
             $options = $event->options;
         }
@@ -406,7 +406,7 @@ class Assets
         }
         if ($this->hasEventListeners('prepare')) {
             $event = new \BearFramework\App\Assets\PrepareEvent($filename, $options, $result);
-            $this->dispatchEvent($event);
+            $this->dispatchEvent('prepare', $event);
             $result = $event->returnValue;
         }
         return $result;
@@ -468,7 +468,7 @@ class Assets
         $result = null;
         if ($this->hasEventListeners('beforeGetDetails')) {
             $event = new \BearFramework\App\Assets\BeforeGetDetailsEvent($filename, $list);
-            $this->dispatchEvent($event);
+            $this->dispatchEvent('beforeGetDetails', $event);
             $filename = $event->filename;
             $list = $event->list;
             if ($event->returnValue !== null) {
@@ -502,7 +502,7 @@ class Assets
         }
         if ($this->hasEventListeners('getDetails')) {
             $event = new \BearFramework\App\Assets\GetDetailsEvent($filename, $list, $result);
-            $this->dispatchEvent($event);
+            $this->dispatchEvent('getDetails', $event);
             $result = $event->returnValue;
         }
         return $result;

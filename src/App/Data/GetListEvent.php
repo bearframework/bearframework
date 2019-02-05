@@ -15,13 +15,14 @@ namespace BearFramework\App\Data;
 class GetListEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * 
      * @param \BearFramework\DataList $list
      */
     public function __construct(\BearFramework\DataList $list)
     {
-        parent::__construct('getList');
         $this
                 ->defineProperty('list', [
                     'type' => '\BearFramework\DataList'

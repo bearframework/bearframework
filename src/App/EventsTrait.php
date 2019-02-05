@@ -60,13 +60,16 @@ trait EventsTrait
 
     /**
      * 
-     * @param \BearFramework\App\Event $event
+     * @param string $name
+     * @param \BearFramework\App\Event|null $event
      * @return self Returns a reference to itself.
      */
-    public function dispatchEvent(\BearFramework\App\Event $event): self
+    public function dispatchEvent(string $name, \BearFramework\App\Event $event = null): self
     {
-        $name = $event->getName();
         if (isset($this->internalEventListenersData[$name])) {
+            if ($event === null) {
+                $event = new \BearFramework\App\Event();
+            }
             foreach ($this->internalEventListenersData[$name] as $listener) {
                 call_user_func($listener, $event);
             }

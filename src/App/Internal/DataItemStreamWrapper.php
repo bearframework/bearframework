@@ -142,19 +142,19 @@ class DataItemStreamWrapper
         }
         $this->dataItemWrapper->close();
         if ($hasItemSetValueListeners) {
-            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemSetValueEvent($this->key, $value));
+            $dataRepository->dispatchEvent('itemSetValue', new \BearFramework\App\Data\ItemSetValueEvent($this->key, $value));
         }
         if ($hasItemAppendListeners) {
-            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemAppendEvent($this->key, $this->writtenData));
+            $dataRepository->dispatchEvent('itemAppend', new \BearFramework\App\Data\ItemAppendEvent($this->key, $this->writtenData));
         }
         if ($hasItemGetValueListeners) {
-            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemGetValueEvent($this->key, $value));
+            $dataRepository->dispatchEvent('itemGetValue', new \BearFramework\App\Data\ItemGetValueEvent($this->key, $value));
         }
         if (($hasItemSetValueListeners || $hasItemAppendListeners) && $dataRepository->hasEventListeners('itemChange')) {
-            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemChangeEvent($this->key));
+            $dataRepository->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEvent($this->key));
         }
         if ($hasItemGetValueListeners && $dataRepository->hasEventListeners('itemRequest')) {
-            $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($this->key));
+            $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($this->key));
         }
     }
 
@@ -332,10 +332,10 @@ class DataItemStreamWrapper
                     $exists = false;
                 }
                 if ($dataRepository->hasEventListeners('itemExists')) {
-                    $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemExistsEvent($key, $exists));
+                    $dataRepository->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEvent($key, $exists));
                 }
                 if ($dataRepository->hasEventListeners('itemRequest')) {
-                    $dataRepository->dispatchEvent(new \BearFramework\App\Data\ItemRequestEvent($key));
+                    $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEvent($key));
                 }
                 if (!$exists) {
                     return false;

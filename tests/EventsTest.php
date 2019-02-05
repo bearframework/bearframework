@@ -37,25 +37,25 @@ class EventsTest extends BearFrameworkTestCase
 
         $this->assertTrue($result === '');
 
-        $object->dispatchEvent(new \BearFramework\App\Event('other'));
+        $object->dispatchEvent('other');
         $this->assertTrue($result === '');
 
-        $object->dispatchEvent(new \BearFramework\App\Event('done'));
+        $object->dispatchEvent('done');
         $this->assertTrue($result === '12');
 
         $object->removeEventListener('done', $listener1);
         $this->assertTrue($result === '12');
-        $object->dispatchEvent(new \BearFramework\App\Event('done'));
+        $object->dispatchEvent('done');
         $this->assertTrue($result === '122');
 
         $object->removeEventListener('done', $listener1);
         $this->assertTrue($result === '122');
-        $object->dispatchEvent(new \BearFramework\App\Event('done'));
+        $object->dispatchEvent('done');
         $this->assertTrue($result === '1222');
 
         $object->removeEventListener('done', $listener2);
         $this->assertTrue($result === '1222');
-        $object->dispatchEvent(new \BearFramework\App\Event('done'));
+        $object->dispatchEvent('done');
         $this->assertTrue($result === '1222');
     }
 
@@ -72,11 +72,11 @@ class EventsTest extends BearFrameworkTestCase
         $result = '';
 
         $object->addEventListener('done', function(\BearFramework\App\Event $event) use (&$result) {
-            $result .= $event->getName();
+            $result .= '1';
         });
-        $object->dispatchEvent(new \BearFramework\App\Event('done'));
+        $object->dispatchEvent('done');
 
-        $this->assertTrue($result === 'done');
+        $this->assertTrue($result === '1');
     }
 
     /**
@@ -100,11 +100,11 @@ class EventsTest extends BearFrameworkTestCase
         });
         if ($object->hasEventListeners('event1')) {
             $result['event1Dispached'] = 1;
-            $object->dispatchEvent(new \BearFramework\App\Event('event1'));
+            $object->dispatchEvent('event1');
         }
         if ($object->hasEventListeners('event2')) {
             $result['event2Dispached'] = 1;
-            $object->dispatchEvent(new \BearFramework\App\Event('event2'));
+            $object->dispatchEvent('event2');
         }
 
         $this->assertEquals($result['event1Dispached'], 1);
@@ -125,21 +125,16 @@ class EventsTest extends BearFrameworkTestCase
         $event = new class extends \BearFramework\App\Event {
 
             public $value = '1';
-
-            public function __construct()
-            {
-                parent::__construct('done');
-            }
         };
 
         $result = '';
 
         $object->addEventListener('done', function(\BearFramework\App\Event $event) use (&$result) {
-            $result .= $event->getName() . '-' . $event->value;
+            $result .= $event->value;
         });
-        $object->dispatchEvent($event);
+        $object->dispatchEvent('done', $event);
 
-        $this->assertTrue($result === 'done-1');
+        $this->assertTrue($result === '1');
     }
 
 }

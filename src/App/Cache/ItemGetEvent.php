@@ -16,13 +16,14 @@ namespace BearFramework\App\Cache;
 class ItemGetEvent extends \BearFramework\App\Event
 {
 
+    use \IvoPetkov\DataObjectTrait;
+
     /**
      * @param string $key
      * @param ?\BearFramework\App\CacheItem $item
      */
     public function __construct(string $key, $item)
     {
-        parent::__construct('itemGet');
         $this
                 ->defineProperty('key', [
                     'type' => 'string'

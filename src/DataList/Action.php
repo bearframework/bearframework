@@ -12,7 +12,8 @@ namespace BearFramework\DataList;
 /**
  * 
  */
-class Action extends \IvoPetkov\DataListAction
+class Action
 {
-    
+
+    use \IvoPetkov\DataListActionTrait;
 }

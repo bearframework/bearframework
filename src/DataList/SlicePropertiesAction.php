@@ -12,7 +12,8 @@ namespace BearFramework\DataList;
 /**
  * 
  */
-class SlicePropertiesAction extends \IvoPetkov\DataListSlicePropertiesAction
+class SlicePropertiesAction
 {
-    
+
+    use \IvoPetkov\DataListSlicePropertiesActionTrait;
 }
