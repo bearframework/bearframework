@@ -62,8 +62,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
             'body' => $item->value,
             'metadata.*' => ''
         ];
-        $metadata = $item->metadata->toArray();
-        foreach ($metadata as $name => $value) {
+        foreach ($item->metadata as $name => $value) {
             $command['metadata.' . $name] = $value;
         }
         $this->execute([$command]);
@@ -378,7 +377,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
         foreach ($rawData as $name => $value) {
             if (strpos($name, 'metadata.') === 0) {
                 $name = substr($name, 9);
-                $dataItem->metadata->$name = $value;
+                $dataItem->metadata[$name] = $value;
             }
         }
         return $dataItem;

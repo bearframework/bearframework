@@ -24,7 +24,7 @@ class DataTest extends BearFrameworkTestCase
 
         //$dataItem = $app->data->make('users/1', '{"name":"John Smith","email":"john@example.com"}');
         $dataItem = $app->data->make('users/1', '{"name":"John Smith","email":"john@example.com"}');
-        $dataItem->metadata->lastAccessTime = '1234567890';
+        $dataItem->metadata['lastAccessTime'] = '1234567890';
         $app->data->set($dataItem);
 
         $this->assertTrue($app->data->getValue('users/1') === '{"name":"John Smith","email":"john@example.com"}');
@@ -47,7 +47,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertTrue($result->count() === 1);
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
-        $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
+        $this->assertTrue($result[0]->metadata['lastAccessTime'] === '1234567890');
 
         $result = $app->data->getList()
                 ->filterBy('key', 'users/9');
@@ -58,7 +58,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertTrue($result->count() === 1);
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
-        $this->assertTrue($result[0]->metadata->lastAccessTime === '1234567890');
+        $this->assertTrue($result[0]->metadata['lastAccessTime'] === '1234567890');
     }
 
     /**

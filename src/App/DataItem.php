@@ -14,7 +14,7 @@ namespace BearFramework\App;
  * 
  * @property string|null $key The key of the data item.
  * @property string|null $value The value of the data item.
- * @property \BearFramework\DataObject $metadata The metadata of the data item.
+ * @property array $metadata The metadata of the data item.
  */
 class DataItem
 {
@@ -33,11 +33,9 @@ class DataItem
                     'type' => '?string'
                 ])
                 ->defineProperty('metadata', [
-                    'init' => function() {
-                        return new \BearFramework\DataObject();
-                    },
-                    'readonly' => true
-                ]);
+                    'type' => 'array'
+                ])
+        ;
     }
 
 }
