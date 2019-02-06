@@ -307,8 +307,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     {
         $whereOptions = [];
         $resultKeys = [];
-        $actions = $context->getActions();
-        foreach ($actions as $action) {
+        foreach ($context->actions as $action) {
             if ($action instanceof \BearFramework\DataList\FilterByAction) {
                 $whereOptions[] = [$action->property, $action->value, $action->operator];
             } elseif ($action instanceof \BearFramework\DataList\SlicePropertiesAction) {
