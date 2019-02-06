@@ -12,8 +12,6 @@ BearFramework\App\Context {
 
 	/* Methods */
 	public __construct ( BearFramework\App $app , string $dir )
-	public array toArray ( void )
-	public string toJSON ( void )
 
 }
 ```
@@ -35,14 +33,6 @@ BearFramework\App\Context {
 ## Methods
 
 ##### public [__construct](bearframework.app.context.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app , string $dir )
-
-##### public array [toArray](bearframework.app.context.toarray.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-##### public string [toJSON](bearframework.app.context.tojson.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
 ## Details
 

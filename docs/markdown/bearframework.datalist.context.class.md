@@ -3,22 +3,17 @@
 ```php
 BearFramework\DataList\Context {
 
-	/* Methods */
-	public array getActions ( void )
-	public void setActions ( array $actions )
+	/* Properties */
+	public array $actions
 
 }
 ```
 
-## Methods
+## Properties
 
-##### public array [getActions](bearframework.datalist.context.getactions.method.md) ( void )
+##### public array $actions
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns an array containing all the actions.
-
-##### public void [setActions](bearframework.datalist.context.setactions.method.md) ( array $actions )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array containing the data list actions.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An array containing all the actions.
 
 ## Details
 

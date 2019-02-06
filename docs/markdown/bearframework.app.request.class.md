@@ -19,8 +19,6 @@ BearFramework\App\Request {
 
 	/* Methods */
 	public __construct ( [ bool $initializeFromEnvironment = false ] )
-	public array toArray ( void )
-	public string toJSON ( void )
 
 }
 ```
@@ -70,14 +68,6 @@ BearFramework\App\Request {
 ## Methods
 
 ##### public [__construct](bearframework.app.request.__construct.method.md) ( [ bool $initializeFromEnvironment = false ] )
-
-##### public array [toArray](bearframework.app.request.toarray.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-##### public string [toJSON](bearframework.app.request.tojson.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
 ## Details
 

@@ -14,8 +14,6 @@ BearFramework\App\Response {
 
 	/* Methods */
 	public __construct ( [ string $content = '' ] )
-	public array toArray ( void )
-	public string toJSON ( void )
 
 }
 ```
@@ -45,14 +43,6 @@ BearFramework\App\Response {
 ## Methods
 
 ##### public [__construct](bearframework.app.response.__construct.method.md) ( [ string $content = '' ] )
-
-##### public array [toArray](bearframework.app.response.toarray.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-##### public string [toJSON](bearframework.app.response.tojson.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
 ## Details
 

@@ -21,16 +21,6 @@ BearFramework\App\Response\JSON extends BearFramework\App\Response {
 
 ##### public [__construct](bearframework.app.response.json.__construct.method.md) ( [ string $content = '' ] )
 
-### Inherited from [BearFramework\App\Response](bearframework.app.response.class.md)
-
-##### public array [toArray](bearframework.app.response.toarray.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-##### public string [toJSON](bearframework.app.response.tojson.method.md) ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
-
 ## Details
 
 Location: ~/src/App/Response/JSON.php
