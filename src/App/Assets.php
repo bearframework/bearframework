@@ -72,12 +72,14 @@ class Assets
                     }
                 });
 
-        $this->defineProperty('pathPrefix', [
-            'get' => function() {
-                return $this->internalPathPrefix;
-            },
-            'readonly' => true
-        ]);
+        $this
+                ->defineProperty('pathPrefix', [
+                    'get' => function() {
+                        return $this->internalPathPrefix;
+                    },
+                    'readonly' => true
+                ])
+        ;
     }
 
     /**

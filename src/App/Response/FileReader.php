@@ -18,8 +18,6 @@ class FileReader extends \BearFramework\App\Response
 {
 
     use \IvoPetkov\DataObjectTrait;
-    use \IvoPetkov\DataObjectToArrayTrait;
-    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * 
@@ -44,8 +42,9 @@ class FileReader extends \BearFramework\App\Response
                     },
                     'unset' => function() {
                         return '';
-                    },
-        ]);
+                    }
+                ])
+        ;
 
         if (isset($filename{0})) {
             $this->filename = $filename;

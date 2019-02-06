@@ -41,7 +41,8 @@ class Addon
                         return $dir;
                     },
                     'readonly' => true
-        ]);
+                ])
+        ;
     }
 
 }

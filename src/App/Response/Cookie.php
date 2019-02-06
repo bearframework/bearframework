@@ -48,7 +48,8 @@ class Cookie
                 ])
                 ->defineProperty('httpOnly', [
                     'type' => '?bool'
-                ]);
+                ])
+        ;
     }
 
 }

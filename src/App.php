@@ -133,7 +133,8 @@ class App
                                 });
                     },
                     'readonly' => true
-        ]);
+                ])
+        ;
     }
 
     /**

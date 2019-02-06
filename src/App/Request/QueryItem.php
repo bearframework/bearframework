@@ -28,7 +28,8 @@ class QueryItem
                 ])
                 ->defineProperty('value', [
                     'type' => '?string'
-                ]);
+                ])
+        ;
     }
 
 }

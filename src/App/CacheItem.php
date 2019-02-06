@@ -30,7 +30,8 @@ class CacheItem
                 ->defineProperty('value')
                 ->defineProperty('ttl', [
                     'type' => '?int'
-                ]);
+                ])
+        ;
     }
 
 }

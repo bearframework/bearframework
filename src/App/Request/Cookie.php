@@ -28,7 +28,8 @@ class Cookie
                 ])
                 ->defineProperty('value', [
                     'type' => '?string'
-                ]);
+                ])
+        ;
     }
 
 }

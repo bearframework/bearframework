@@ -30,7 +30,8 @@ class FormDataFileItem extends FormDataItem
                 ])
                 ->defineProperty('type', [
                     'type' => '?string'
-                ]);
+                ])
+        ;
     }
 
 }

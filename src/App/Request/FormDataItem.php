@@ -28,7 +28,8 @@ class FormDataItem
                 ])
                 ->defineProperty('value', [
                     'type' => '?string'
-                ]);
+                ])
+        ;
     }
 
 }

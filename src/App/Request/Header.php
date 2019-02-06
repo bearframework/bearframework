@@ -28,7 +28,8 @@ class Header
                 ])
                 ->defineProperty('value', [
                     'type' => '?string'
-                ]);
+                ])
+        ;
     }
 
 }

@@ -51,7 +51,8 @@ class Addon
                         return $options;
                     },
                     'readonly' => true
-                ]);
+                ])
+        ;
     }
 
 }
