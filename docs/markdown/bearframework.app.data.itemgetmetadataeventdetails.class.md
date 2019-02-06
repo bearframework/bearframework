@@ -1,0 +1,36 @@
+# BearFramework\App\Data\ItemGetMetadataEventDetails
+
+```php
+BearFramework\App\Data\ItemGetMetadataEventDetails {
+
+	/* Properties */
+	public string $key
+	public string $name
+	public string $value
+
+	/* Methods */
+	public __construct ( string $key , string $name , string $value )
+
+}
+```
+
+## Properties
+
+##### public string $key
+
+##### public string $name
+
+##### public string $value
+
+## Methods
+
+##### public [__construct](bearframework.app.data.itemgetmetadataeventdetails.__construct.method.md) ( string $key , string $name , string $value )
+
+## Details
+
+Location: ~/src/App/Data/ItemGetMetadataEventDetails.php
+
+---
+
+[back to index](index.md)
+

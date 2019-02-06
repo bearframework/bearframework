@@ -11,7 +11,7 @@ BearFramework\App\DataRepository {
 	public self append ( string $key , string $content )
 	public self delete ( string $key )
 	public self deleteMetadata ( string $key , string $name )
-	public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
+	public self dispatchEvent ( string $name [, mixed $details ] )
 	public self duplicate ( string $sourceKey , string $destinationKey )
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
@@ -54,7 +54,7 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes metadata for the data item key specified.
 
-##### public self [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( string $name [, [BearFramework\App\Event](bearframework.app.event.class.md)|null $event ] )
+##### public self [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( string $name [, mixed $details ] )
 
 ##### public self [duplicate](bearframework.app.datarepository.duplicate.method.md) ( string $sourceKey , string $destinationKey )
 
@@ -126,63 +126,63 @@ BearFramework\App\DataRepository {
 
 ## Events
 
-##### [BearFramework\App\Data\GetListEvent](bearframework.app.data.getlistevent.class.md) getList
+##### BearFramework\App\Data\GetListEvent getList
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data items list is requested.
 
-##### [BearFramework\App\Data\ItemAppendEvent](bearframework.app.data.itemappendevent.class.md) itemAppend
+##### BearFramework\App\Data\ItemAppendEvent itemAppend
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a content is appended to a data value.
 
-##### [BearFramework\App\Data\ItemChangeEvent](bearframework.app.data.itemchangeevent.class.md) itemChange
+##### BearFramework\App\Data\ItemChangeEvent itemChange
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is changed.
 
-##### [BearFramework\App\Data\ItemDeleteEvent](bearframework.app.data.itemdeleteevent.class.md) itemDelete
+##### BearFramework\App\Data\ItemDeleteEvent itemDelete
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is deleted.
 
-##### [BearFramework\App\Data\ItemDeleteMetadataEvent](bearframework.app.data.itemdeletemetadataevent.class.md) itemDeleteMetadata
+##### BearFramework\App\Data\ItemDeleteMetadataEvent itemDeleteMetadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is deleted.
 
-##### [BearFramework\App\Data\ItemDuplicateEvent](bearframework.app.data.itemduplicateevent.class.md) itemDuplicate
+##### BearFramework\App\Data\ItemDuplicateEvent itemDuplicate
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is duplicated.
 
-##### [BearFramework\App\Data\ItemExistsEvent](bearframework.app.data.itemexistsevent.class.md) itemExists
+##### BearFramework\App\Data\ItemExistsEvent itemExists
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is checked for existence.
 
-##### [BearFramework\App\Data\ItemGetEvent](bearframework.app.data.itemgetevent.class.md) itemGet
+##### BearFramework\App\Data\ItemGetEvent itemGet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is requested.
 
-##### [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md) itemGetMetadata
+##### BearFramework\App\Data\ItemGetMetadataEvent itemGetMetadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is requested.
 
-##### [BearFramework\App\Data\ItemGetValueEvent](bearframework.app.data.itemgetvalueevent.class.md) itemGetValue
+##### BearFramework\App\Data\ItemGetValueEvent itemGetValue
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the value of a data item is requested.
 
-##### [BearFramework\App\Data\ItemRenameEvent](bearframework.app.data.itemrenameevent.class.md) itemRename
+##### BearFramework\App\Data\ItemRenameEvent itemRename
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is renamed.
 
-##### [BearFramework\App\Data\ItemRequestEvent](bearframework.app.data.itemrequestevent.class.md) itemRequest
+##### BearFramework\App\Data\ItemRequestEvent itemRequest
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is requested.
 
-##### [BearFramework\App\Data\ItemSetEvent](bearframework.app.data.itemsetevent.class.md) itemSet
+##### BearFramework\App\Data\ItemSetEvent itemSet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item is added or updated.
 
-##### [BearFramework\App\Data\ItemSetMetadataEvent](bearframework.app.data.itemsetmetadataevent.class.md) itemSetMetadata
+##### BearFramework\App\Data\ItemSetMetadataEvent itemSetMetadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a data item metadata is added or updated.
 
-##### [BearFramework\App\Data\ItemSetValueEvent](bearframework.app.data.itemsetvalueevent.class.md) itemSetValue
+##### BearFramework\App\Data\ItemSetValueEvent itemSetValue
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the value of a data item is added or updated.
 

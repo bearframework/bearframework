@@ -22,19 +22,19 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides utility functions for assets.
 
-### [BearFramework\App\Assets\BeforeGetDetailsEvent](bearframework.app.assets.beforegetdetailsevent.class.md)
+### [BearFramework\App\Assets\BeforeGetDetailsEventDetails](bearframework.app.assets.beforegetdetailseventdetails.class.md)
 
-### [BearFramework\App\Assets\BeforeGetUrlEvent](bearframework.app.assets.beforegeturlevent.class.md)
+### [BearFramework\App\Assets\BeforeGetUrlEventDetails](bearframework.app.assets.beforegeturleventdetails.class.md)
 
-### [BearFramework\App\Assets\BeforePrepareEvent](bearframework.app.assets.beforeprepareevent.class.md)
+### [BearFramework\App\Assets\BeforePrepareEventDetails](bearframework.app.assets.beforeprepareeventdetails.class.md)
 
-### [BearFramework\App\Assets\GetDetailsEvent](bearframework.app.assets.getdetailsevent.class.md)
+### [BearFramework\App\Assets\GetDetailsEventDetails](bearframework.app.assets.getdetailseventdetails.class.md)
 
-### [BearFramework\App\Assets\GetUrlEvent](bearframework.app.assets.geturlevent.class.md)
+### [BearFramework\App\Assets\GetUrlEventDetails](bearframework.app.assets.geturleventdetails.class.md)
 
-### [BearFramework\App\Assets\PrepareEvent](bearframework.app.assets.prepareevent.class.md)
+### [BearFramework\App\Assets\PrepareEventDetails](bearframework.app.assets.prepareeventdetails.class.md)
 
-### [BearFramework\App\BeforeSendResponseEvent](bearframework.app.beforesendresponseevent.class.md)
+### [BearFramework\App\BeforeSendResponseEventDetails](bearframework.app.beforesendresponseeventdetails.class.md)
 
 ### [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md)
 
@@ -42,19 +42,19 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data cache
 
-### [BearFramework\App\Cache\ItemChangeEvent](bearframework.app.cache.itemchangeevent.class.md)
+### [BearFramework\App\Cache\ItemChangeEventDetails](bearframework.app.cache.itemchangeeventdetails.class.md)
 
-### [BearFramework\App\Cache\ItemDeleteEvent](bearframework.app.cache.itemdeleteevent.class.md)
+### [BearFramework\App\Cache\ItemDeleteEventDetails](bearframework.app.cache.itemdeleteeventdetails.class.md)
 
-### [BearFramework\App\Cache\ItemExistsEvent](bearframework.app.cache.itemexistsevent.class.md)
+### [BearFramework\App\Cache\ItemExistsEventDetails](bearframework.app.cache.itemexistseventdetails.class.md)
 
-### [BearFramework\App\Cache\ItemGetEvent](bearframework.app.cache.itemgetevent.class.md)
+### [BearFramework\App\Cache\ItemGetEventDetails](bearframework.app.cache.itemgeteventdetails.class.md)
 
-### [BearFramework\App\Cache\ItemGetValueEvent](bearframework.app.cache.itemgetvalueevent.class.md)
+### [BearFramework\App\Cache\ItemGetValueEventDetails](bearframework.app.cache.itemgetvalueeventdetails.class.md)
 
-### [BearFramework\App\Cache\ItemRequestEvent](bearframework.app.cache.itemrequestevent.class.md)
+### [BearFramework\App\Cache\ItemRequestEventDetails](bearframework.app.cache.itemrequesteventdetails.class.md)
 
-### [BearFramework\App\Cache\ItemSetEvent](bearframework.app.cache.itemsetevent.class.md)
+### [BearFramework\App\Cache\ItemSetEventDetails](bearframework.app.cache.itemseteventdetails.class.md)
 
 ### [BearFramework\App\ClassesRepository](bearframework.app.classesrepository.class.md)
 
@@ -90,39 +90,35 @@
 
 ### [BearFramework\App\Data\DataLockedException](bearframework.app.data.datalockedexception.class.md)
 
-### [BearFramework\App\Data\GetListEvent](bearframework.app.data.getlistevent.class.md)
+### [BearFramework\App\Data\GetListEventDetails](bearframework.app.data.getlisteventdetails.class.md)
 
-### [BearFramework\App\Data\ItemAppendEvent](bearframework.app.data.itemappendevent.class.md)
+### [BearFramework\App\Data\ItemAppendEventDetails](bearframework.app.data.itemappendeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemChangeEvent](bearframework.app.data.itemchangeevent.class.md)
+### [BearFramework\App\Data\ItemChangeEventDetails](bearframework.app.data.itemchangeeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemDeleteEvent](bearframework.app.data.itemdeleteevent.class.md)
+### [BearFramework\App\Data\ItemDeleteEventDetails](bearframework.app.data.itemdeleteeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemDeleteMetadataEvent](bearframework.app.data.itemdeletemetadataevent.class.md)
+### [BearFramework\App\Data\ItemDeleteMetadataEventDetails](bearframework.app.data.itemdeletemetadataeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemDuplicateEvent](bearframework.app.data.itemduplicateevent.class.md)
+### [BearFramework\App\Data\ItemDuplicateEventDetails](bearframework.app.data.itemduplicateeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemExistsEvent](bearframework.app.data.itemexistsevent.class.md)
+### [BearFramework\App\Data\ItemExistsEventDetails](bearframework.app.data.itemexistseventdetails.class.md)
 
-### [BearFramework\App\Data\ItemGetEvent](bearframework.app.data.itemgetevent.class.md)
+### [BearFramework\App\Data\ItemGetEventDetails](bearframework.app.data.itemgeteventdetails.class.md)
 
-### [BearFramework\App\Data\ItemGetMetadataEvent](bearframework.app.data.itemgetmetadataevent.class.md)
+### [BearFramework\App\Data\ItemGetMetadataEventDetails](bearframework.app.data.itemgetmetadataeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemGetValueEvent](bearframework.app.data.itemgetvalueevent.class.md)
+### [BearFramework\App\Data\ItemGetValueEventDetails](bearframework.app.data.itemgetvalueeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemRenameEvent](bearframework.app.data.itemrenameevent.class.md)
+### [BearFramework\App\Data\ItemRenameEventDetails](bearframework.app.data.itemrenameeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemRequestEvent](bearframework.app.data.itemrequestevent.class.md)
+### [BearFramework\App\Data\ItemRequestEventDetails](bearframework.app.data.itemrequesteventdetails.class.md)
 
-### [BearFramework\App\Data\ItemSetEvent](bearframework.app.data.itemsetevent.class.md)
+### [BearFramework\App\Data\ItemSetEventDetails](bearframework.app.data.itemseteventdetails.class.md)
 
-### [BearFramework\App\Data\ItemSetMetadataEvent](bearframework.app.data.itemsetmetadataevent.class.md)
+### [BearFramework\App\Data\ItemSetMetadataEventDetails](bearframework.app.data.itemsetmetadataeventdetails.class.md)
 
-### [BearFramework\App\Data\ItemSetValueEvent](bearframework.app.data.itemsetvalueevent.class.md)
-
-### [BearFramework\App\Event](bearframework.app.event.class.md)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A base event object.
+### [BearFramework\App\Data\ItemSetValueEventDetails](bearframework.app.data.itemsetvalueeventdetails.class.md)
 
 ### [BearFramework\App\FileDataDriver](bearframework.app.filedatadriver.class.md)
 
@@ -252,7 +248,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides functionality for registering callbacks for specific requests and executing them.
 
-### [BearFramework\App\SendResponseEvent](bearframework.app.sendresponseevent.class.md)
+### [BearFramework\App\SendResponseEventDetails](bearframework.app.sendresponseeventdetails.class.md)
 
 ### [BearFramework\App\ShortcutsRepository](bearframework.app.shortcutsrepository.class.md)
 

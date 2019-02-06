@@ -1,14 +1,14 @@
 # BearFramework\App::dispatchEvent
 
 ```php
-public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
+public self dispatchEvent ( string $name [, mixed $details ] )
 ```
 
 ## Parameters
 
 ##### name
 
-##### event
+##### details
 
 ## Returns
 

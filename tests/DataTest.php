@@ -242,64 +242,64 @@ class DataTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['change', $event->key];
+        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $details->key];
         });
 
-        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['request', $event->key];
+        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $details->key];
         });
 
-        $app->data->addEventListener('itemSet', function(\BearFramework\App\Data\ItemSetEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['set', $event->item->key, $event->item->value];
+        $app->data->addEventListener('itemSet', function(\BearFramework\App\Data\ItemSetEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['set', $details->item->key, $details->item->value];
         });
 
-        $app->data->addEventListener('itemSetMetadata', function(\BearFramework\App\Data\ItemSetMetadataEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['setMetadata', $event->key, $event->name, $event->value];
+        $app->data->addEventListener('itemSetMetadata', function(\BearFramework\App\Data\ItemSetMetadataEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['setMetadata', $details->key, $details->name, $details->value];
         });
 
-        $app->data->addEventListener('itemGetMetadata', function(\BearFramework\App\Data\ItemGetMetadataEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getMetadata', $event->key, $event->name, $event->value];
+        $app->data->addEventListener('itemGetMetadata', function(\BearFramework\App\Data\ItemGetMetadataEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getMetadata', $details->key, $details->name, $details->value];
         });
 
-        $app->data->addEventListener('itemDeleteMetadata', function(\BearFramework\App\Data\ItemDeleteMetadataEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['deleteMetadata', $event->key, $event->name];
+        $app->data->addEventListener('itemDeleteMetadata', function(\BearFramework\App\Data\ItemDeleteMetadataEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['deleteMetadata', $details->key, $details->name];
         });
 
-        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['setValue', $event->key, $event->value];
+        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['setValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemGet', function(\BearFramework\App\Data\ItemGetEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['get', $event->item->key, $event->item->value];
+        $app->data->addEventListener('itemGet', function(\BearFramework\App\Data\ItemGetEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['get', $details->item->key, $details->item->value];
         });
 
-        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getValue', $event->key, $event->value];
+        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['append', $event->key, $event->content];
+        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['append', $details->key, $details->content];
         });
 
-        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['exists', $event->key, $event->exists];
+        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->data->addEventListener('itemDuplicate', function(\BearFramework\App\Data\ItemDuplicateEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['duplicate', $event->sourceKey, $event->destinationKey];
+        $app->data->addEventListener('itemDuplicate', function(\BearFramework\App\Data\ItemDuplicateEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['duplicate', $details->sourceKey, $details->destinationKey];
         });
 
-        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['rename', $event->sourceKey, $event->destinationKey];
+        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['rename', $details->sourceKey, $details->destinationKey];
         });
 
-        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['delete', $event->key];
+        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['delete', $details->key];
         });
 
-        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getList', get_class($event->list)];
+        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getList', get_class($details->list)];
         });
 
         $eventsLogs = [];
@@ -1064,40 +1064,40 @@ class DataTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['change', $event->key];
+        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $details->key];
         });
 
-        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['request', $event->key];
+        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $details->key];
         });
 
-        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['setValue', $event->key, $event->value];
+        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['setValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getValue', $event->key, $event->value];
+        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['append', $event->key, $event->content];
+        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['append', $details->key, $details->content];
         });
 
-        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['exists', $event->key, $event->exists];
+        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['rename', $event->sourceKey, $event->destinationKey];
+        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['rename', $details->sourceKey, $details->destinationKey];
         });
 
-        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['delete', $event->key];
+        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['delete', $details->key];
         });
 
-        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getList', get_class($event->list)];
+        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getList', get_class($details->list)];
         });
 
         $eventsLogs = [];

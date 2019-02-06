@@ -20,7 +20,7 @@ use BearFramework\App\CacheItem;
  * @event \BearFramework\App\Cache\ItemGetValueEvent itemGetValue An event dispatched after the value of a cache item is requested.
  * @event \BearFramework\App\Cache\ItemExistsEvent itemExists An event dispatched after a cache item is checked for existence.
  * @event \BearFramework\App\Cache\ItemDeleteEvent itemDelete An event dispatched after a cache item is deleted.
- * @event \BearFramework\App\Event clear An event dispatched after the cache is cleared.
+ * @event null clear An event dispatched after the cache is cleared.
  */
 class CacheRepository
 {
@@ -138,10 +138,10 @@ class CacheRepository
         $driver = $this->getDriver();
         $driver->set($item->key, $item->value, $item->ttl);
         if ($this->hasEventListeners('itemSet')) {
-            $this->dispatchEvent('itemSet', new \BearFramework\App\Cache\ItemSetEvent(clone($item)));
+            $this->dispatchEvent('itemSet', new \BearFramework\App\Cache\ItemSetEventDetails(clone($item)));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEvent($item->key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEventDetails($item->key));
         }
         return $this;
     }
@@ -161,10 +161,10 @@ class CacheRepository
             $item = $this->make($key, $value);
         }
         if ($this->hasEventListeners('itemGet')) {
-            $this->dispatchEvent('itemGet', new \BearFramework\App\Cache\ItemGetEvent($key, $item === null ? null : clone($item)));
+            $this->dispatchEvent('itemGet', new \BearFramework\App\Cache\ItemGetEventDetails($key, $item === null ? null : clone($item)));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key));
         }
         return $item;
     }
@@ -180,10 +180,10 @@ class CacheRepository
         $driver = $this->getDriver();
         $value = $driver->get($key);
         if ($this->hasEventListeners('itemGetValue')) {
-            $this->dispatchEvent('itemGetValue', new \BearFramework\App\Cache\ItemGetValueEvent($key, $value));
+            $this->dispatchEvent('itemGetValue', new \BearFramework\App\Cache\ItemGetValueEventDetails($key, $value));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key));
         }
         return $value;
     }
@@ -199,10 +199,10 @@ class CacheRepository
         $driver = $this->getDriver();
         $exists = $driver->get($key) !== null;
         if ($this->hasEventListeners('itemExists')) {
-            $this->dispatchEvent('itemExists', new \BearFramework\App\Cache\ItemExistsEvent($key, $exists));
+            $this->dispatchEvent('itemExists', new \BearFramework\App\Cache\ItemExistsEventDetails($key, $exists));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEvent($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key));
         }
         return $exists;
     }
@@ -218,10 +218,10 @@ class CacheRepository
         $driver = $this->getDriver();
         $driver->delete($key);
         if ($this->hasEventListeners('itemDelete')) {
-            $this->dispatchEvent('itemDelete', new \BearFramework\App\Cache\ItemDeleteEvent($key));
+            $this->dispatchEvent('itemDelete', new \BearFramework\App\Cache\ItemDeleteEventDetails($key));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEvent($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEventDetails($key));
         }
         return $this;
     }

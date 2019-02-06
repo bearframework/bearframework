@@ -201,7 +201,7 @@ class App
     public function send(\BearFramework\App\Response $response): void
     {
         if ($this->hasEventListeners('beforeSendResponse')) {
-            $this->dispatchEvent('beforeSendResponse', new \BearFramework\App\BeforeSendResponseEvent($response));
+            $this->dispatchEvent('beforeSendResponse', new \BearFramework\App\BeforeSendResponseEventDetails($response));
         }
         if (!$response->headers->exists('Content-Length')) {
             $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
@@ -229,7 +229,7 @@ class App
             echo $response->content;
         }
         if ($this->hasEventListeners('sendResponse')) {
-            $this->dispatchEvent('sendResponse', new \BearFramework\App\SendResponseEvent($response));
+            $this->dispatchEvent('sendResponse', new \BearFramework\App\SendResponseEventDetails($response));
         }
     }
 

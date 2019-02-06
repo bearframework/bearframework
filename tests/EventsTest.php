@@ -71,7 +71,7 @@ class EventsTest extends BearFrameworkTestCase
 
         $result = '';
 
-        $object->addEventListener('done', function(\BearFramework\App\Event $event) use (&$result) {
+        $object->addEventListener('done', function() use (&$result) {
             $result .= '1';
         });
         $object->dispatchEvent('done');
@@ -95,7 +95,7 @@ class EventsTest extends BearFrameworkTestCase
             'event2Dispached' => 0,
         ];
 
-        $object->addEventListener('event1', function(\BearFramework\App\Event $event) use (&$result) {
+        $object->addEventListener('event1', function() use (&$result) {
             $result['event1Handled'] = 1;
         });
         if ($object->hasEventListeners('event1')) {
@@ -122,17 +122,17 @@ class EventsTest extends BearFrameworkTestCase
             use \BearFramework\App\EventsTrait;
         };
 
-        $event = new class extends \BearFramework\App\Event {
+        $details = new class {
 
             public $value = '1';
         };
 
         $result = '';
 
-        $object->addEventListener('done', function(\BearFramework\App\Event $event) use (&$result) {
-            $result .= $event->value;
+        $object->addEventListener('done', function($details) use (&$result) {
+            $result .= $details->value;
         });
-        $object->dispatchEvent('done', $event);
+        $object->dispatchEvent('done', $details);
 
         $this->assertTrue($result === '1');
     }

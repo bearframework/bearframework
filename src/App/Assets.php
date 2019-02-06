@@ -128,12 +128,12 @@ class Assets
     {
         $url = null;
         if ($this->hasEventListeners('beforeGetUrl')) {
-            $event = new \BearFramework\App\Assets\BeforeGetUrlEvent($filename, $options);
-            $this->dispatchEvent('beforeGetUrl', $event);
-            $filename = $event->filename;
-            $options = $event->options;
-            if ($event->returnValue !== null) {
-                $url = $event->returnValue;
+            $eventDetails = new \BearFramework\App\Assets\BeforeGetUrlEventDetails($filename, $options);
+            $this->dispatchEvent('beforeGetUrl', $eventDetails);
+            $filename = $eventDetails->filename;
+            $options = $eventDetails->options;
+            if ($eventDetails->returnValue !== null) {
+                $url = $eventDetails->returnValue;
             }
         }
 
@@ -200,9 +200,9 @@ class Assets
         }
 
         if ($this->hasEventListeners('getUrl')) {
-            $event = new \BearFramework\App\Assets\GetUrlEvent($filename, $options, $url);
-            $this->dispatchEvent('getUrl', $event);
-            $url = $event->url;
+            $eventDetails = new \BearFramework\App\Assets\GetUrlEventDetails($filename, $options, $url);
+            $this->dispatchEvent('getUrl', $eventDetails);
+            $url = $eventDetails->url;
         }
 
         if ($url !== null) {
@@ -379,10 +379,10 @@ class Assets
         $result = null;
 
         if ($this->hasEventListeners('beforePrepare')) {
-            $event = new \BearFramework\App\Assets\BeforePrepareEvent($filename, $options);
-            $this->dispatchEvent('beforePrepare', $event);
-            $filename = $event->filename;
-            $options = $event->options;
+            $eventDetails = new \BearFramework\App\Assets\BeforePrepareEventDetails($filename, $options);
+            $this->dispatchEvent('beforePrepare', $eventDetails);
+            $filename = $eventDetails->filename;
+            $options = $eventDetails->options;
         }
 
         if (strlen($filename) > 0 && is_file($filename)) {
@@ -407,9 +407,9 @@ class Assets
             }
         }
         if ($this->hasEventListeners('prepare')) {
-            $event = new \BearFramework\App\Assets\PrepareEvent($filename, $options, $result);
-            $this->dispatchEvent('prepare', $event);
-            $result = $event->returnValue;
+            $eventDetails = new \BearFramework\App\Assets\PrepareEventDetails($filename, $options, $result);
+            $this->dispatchEvent('prepare', $eventDetails);
+            $result = $eventDetails->returnValue;
         }
         return $result;
     }
@@ -469,12 +469,12 @@ class Assets
     {
         $result = null;
         if ($this->hasEventListeners('beforeGetDetails')) {
-            $event = new \BearFramework\App\Assets\BeforeGetDetailsEvent($filename, $list);
-            $this->dispatchEvent('beforeGetDetails', $event);
-            $filename = $event->filename;
-            $list = $event->list;
-            if ($event->returnValue !== null) {
-                $result = $event->returnValue;
+            $eventDetails = new \BearFramework\App\Assets\BeforeGetDetailsEventDetails($filename, $list);
+            $this->dispatchEvent('beforeGetDetails', $eventDetails);
+            $filename = $eventDetails->filename;
+            $list = $eventDetails->list;
+            if ($eventDetails->returnValue !== null) {
+                $result = $eventDetails->returnValue;
             }
         }
 
@@ -503,9 +503,9 @@ class Assets
             }
         }
         if ($this->hasEventListeners('getDetails')) {
-            $event = new \BearFramework\App\Assets\GetDetailsEvent($filename, $list, $result);
-            $this->dispatchEvent('getDetails', $event);
-            $result = $event->returnValue;
+            $eventDetails = new \BearFramework\App\Assets\GetDetailsEventDetails($filename, $list, $result);
+            $this->dispatchEvent('getDetails', $eventDetails);
+            $result = $eventDetails->returnValue;
         }
         return $result;
     }

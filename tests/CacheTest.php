@@ -91,32 +91,32 @@ class CacheTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->cache->addEventListener('itemChange', function(\BearFramework\App\Cache\ItemChangeEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['change', $event->key];
+        $app->cache->addEventListener('itemChange', function(\BearFramework\App\Cache\ItemChangeEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $details->key];
         });
 
-        $app->cache->addEventListener('itemRequest', function(\BearFramework\App\Cache\ItemRequestEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['request', $event->key];
+        $app->cache->addEventListener('itemRequest', function(\BearFramework\App\Cache\ItemRequestEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $details->key];
         });
 
-        $app->cache->addEventListener('itemSet', function(\BearFramework\App\Cache\ItemSetEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['set', $event->item->key, $event->item->value];
+        $app->cache->addEventListener('itemSet', function(\BearFramework\App\Cache\ItemSetEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['set', $details->item->key, $details->item->value];
         });
 
-        $app->cache->addEventListener('itemGet', function(\BearFramework\App\Cache\ItemGetEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['get', $event->item->key, $event->item->value];
+        $app->cache->addEventListener('itemGet', function(\BearFramework\App\Cache\ItemGetEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['get', $details->item->key, $details->item->value];
         });
 
-        $app->cache->addEventListener('itemGetValue', function(\BearFramework\App\Cache\ItemGetValueEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['getValue', $event->key, $event->value];
+        $app->cache->addEventListener('itemGetValue', function(\BearFramework\App\Cache\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->cache->addEventListener('itemExists', function(\BearFramework\App\Cache\ItemExistsEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['exists', $event->key, $event->exists];
+        $app->cache->addEventListener('itemExists', function(\BearFramework\App\Cache\ItemExistsEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->cache->addEventListener('itemDelete', function(\BearFramework\App\Cache\ItemDeleteEvent $event) use (&$eventsLogs) {
-            $eventsLogs[] = ['delete', $event->key];
+        $app->cache->addEventListener('itemDelete', function(\BearFramework\App\Cache\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['delete', $details->key];
         });
 
         $app->cache->addEventListener('clear', function() use (&$eventsLogs) {

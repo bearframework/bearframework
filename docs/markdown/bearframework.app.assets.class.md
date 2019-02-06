@@ -12,7 +12,7 @@ BearFramework\App\Assets {
 	public __construct ( BearFramework\App $app )
 	public self addDir ( string $pathname )
 	public self addEventListener ( string $name , callable $listener )
-	public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
+	public self dispatchEvent ( string $name [, mixed $details ] )
 	public string|null getContent ( string $filename [, array $options = [] ] )
 	public array getDetails ( string $filename , array $list )
 	public BearFramework\App\Response|null getResponse ( BearFramework\App\Request $request )
@@ -39,7 +39,7 @@ BearFramework\App\Assets {
 
 ##### public self [addEventListener](bearframework.app.assets.addeventlistener.method.md) ( string $name , callable $listener )
 
-##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( string $name [, [BearFramework\App\Event](bearframework.app.event.class.md)|null $event ] )
+##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( string $name [, mixed $details ] )
 
 ##### public string|null [getContent](bearframework.app.assets.getcontent.method.md) ( string $filename [, array $options = [] ] )
 
@@ -63,27 +63,27 @@ BearFramework\App\Assets {
 
 ## Events
 
-##### [BearFramework\App\Assets\BeforeGetDetailsEvent](bearframework.app.assets.beforegetdetailsevent.class.md) beforeGetDetails
+##### BearFramework\App\Assets\BeforeGetDetailsEvent beforeGetDetails
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the details of the asset specified is created.
 
-##### [BearFramework\App\Assets\BeforeGetUrlEvent](bearframework.app.assets.beforegeturlevent.class.md) beforeGetUrl
+##### BearFramework\App\Assets\BeforeGetUrlEvent beforeGetUrl
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the URL of the asset specified is created.
 
-##### [BearFramework\App\Assets\BeforePrepareEvent](bearframework.app.assets.beforeprepareevent.class.md) beforePrepare
+##### BearFramework\App\Assets\BeforePrepareEvent beforePrepare
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the asset specified is prepared for returning (resized for example).
 
-##### [BearFramework\App\Assets\GetDetailsEvent](bearframework.app.assets.getdetailsevent.class.md) getDetails
+##### BearFramework\App\Assets\GetDetailsEvent getDetails
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the details of the asset specified is created.
 
-##### [BearFramework\App\Assets\GetUrlEvent](bearframework.app.assets.geturlevent.class.md) getUrl
+##### BearFramework\App\Assets\GetUrlEvent getUrl
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the URL of the asset specified is created.
 
-##### [BearFramework\App\Assets\PrepareEvent](bearframework.app.assets.prepareevent.class.md) prepare
+##### BearFramework\App\Assets\PrepareEvent prepare
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the asset specified is prepared for returning (resized for example)
 
