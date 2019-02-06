@@ -32,10 +32,6 @@ BearFramework\App\Assets\BeforeGetUrlEvent extends BearFramework\App\Event {
 
 ##### public [__construct](bearframework.app.assets.beforegeturlevent.__construct.method.md) ( string $filename , array $options )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
-
-##### public string [getName](bearframework.app.event.getname.method.md) ( void )
-
 ## Details
 
 Location: ~/src/App/Assets/BeforeGetUrlEvent.php

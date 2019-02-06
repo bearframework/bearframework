@@ -1,10 +1,12 @@
 # BearFramework\App\CacheRepository::dispatchEvent
 
 ```php
-public self dispatchEvent ( BearFramework\App\Event $event )
+public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
 ```
 
 ## Parameters
+
+##### name
 
 ##### event
 

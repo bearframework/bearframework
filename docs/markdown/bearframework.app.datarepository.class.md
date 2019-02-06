@@ -11,7 +11,7 @@ BearFramework\App\DataRepository {
 	public self append ( string $key , string $content )
 	public self delete ( string $key )
 	public self deleteMetadata ( string $key , string $name )
-	public self dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
 	public self duplicate ( string $sourceKey , string $destinationKey )
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
@@ -54,7 +54,7 @@ BearFramework\App\DataRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes metadata for the data item key specified.
 
-##### public self [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( string $name [, [BearFramework\App\Event](bearframework.app.event.class.md)|null $event ] )
 
 ##### public self [duplicate](bearframework.app.datarepository.duplicate.method.md) ( string $sourceKey , string $destinationKey )
 

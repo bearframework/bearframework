@@ -1,28 +1,24 @@
 # BearFramework\DataList\Context
 
 ```php
-BearFramework\DataList\Context extends IvoPetkov\DataListContext {
+BearFramework\DataList\Context {
+
+	/* Methods */
+	public array getActions ( void )
+	public void setActions ( array $actions )
 
 }
 ```
 
-## Extends
-
-##### IvoPetkov\DataListContext
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Information about the actions applied on a data list.
-
 ## Methods
 
-### Inherited from IvoPetkov\DataListContext
+##### public array [getActions](bearframework.datalist.context.getactions.method.md) ( void )
 
-##### public __construct ( array $actions )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns an array containing all the actions.
+
+##### public void [setActions](bearframework.datalist.context.setactions.method.md) ( array $actions )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array containing the data list actions.
-
-##### public IvoPetkov\DataList|IvoPetkov\DataListAction[]|IvoPetkov\DataListFilterByAction[]|IvoPetkov\DataListSlicePropertiesAction[]|IvoPetkov\DataListSortByAction[] getActions ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataList containing all the actions.
 
 ## Details
 

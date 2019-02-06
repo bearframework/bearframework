@@ -29,10 +29,6 @@ BearFramework\App\Data\ItemAppendEvent extends BearFramework\App\Event {
 
 ##### public [__construct](bearframework.app.data.itemappendevent.__construct.method.md) ( string $key , string $content )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
-
-##### public string [getName](bearframework.app.event.getname.method.md) ( void )
-
 ## Details
 
 Location: ~/src/App/Data/ItemAppendEvent.php

@@ -3,7 +3,7 @@
 Extract a slice of the list.
 
 ```php
-public IvoPetkov\DataList slice ( int $offset [, int $length ] )
+public mixed slice ( int $offset [, int $length ] )
 ```
 
 ## Parameters

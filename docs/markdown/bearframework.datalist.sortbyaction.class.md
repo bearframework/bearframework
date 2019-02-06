@@ -1,36 +1,24 @@
 # BearFramework\DataList\SortByAction
 
 ```php
-BearFramework\DataList\SortByAction extends IvoPetkov\DataListSortByAction implements ArrayAccess {
+BearFramework\DataList\SortByAction {
+
+	/* Properties */
+	public string $order
+	public string $property
 
 }
 ```
 
-## Extends
+## Properties
 
-##### IvoPetkov\DataListSortByAction
+##### public string $order
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Information about a sortBy action applied on a data list.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The sort order. Available values: asc and desc.
 
-## Implements
+##### public string $property
 
-##### [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
-
-## Methods
-
-### Inherited from IvoPetkov\DataListAction
-
-##### public array toArray ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-##### public string toJSON ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
-
-### Inherited from IvoPetkov\DataListSortByAction
-
-##### public __construct ( string $property , string $order )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The property name used for the sort.
 
 ## Details
 

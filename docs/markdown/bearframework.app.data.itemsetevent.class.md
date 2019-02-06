@@ -26,10 +26,6 @@ BearFramework\App\Data\ItemSetEvent extends BearFramework\App\Event {
 
 ##### public [__construct](bearframework.app.data.itemsetevent.__construct.method.md) ( [BearFramework\App\DataItem](bearframework.app.dataitem.class.md) $item )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
-
-##### public string [getName](bearframework.app.event.getname.method.md) ( void )
-
 ## Details
 
 Location: ~/src/App/Data/ItemSetEvent.php

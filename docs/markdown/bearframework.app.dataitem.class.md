@@ -7,7 +7,7 @@ BearFramework\App\DataItem {
 
 	/* Properties */
 	public string|null $key
-	public BearFramework\DataObject $metadata
+	public array $metadata
 	public string|null $value
 
 	/* Methods */
@@ -24,7 +24,7 @@ BearFramework\App\DataItem {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the data item.
 
-##### public [BearFramework\DataObject](bearframework.dataobject.class.md) $metadata
+##### public array $metadata
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The metadata of the data item.
 

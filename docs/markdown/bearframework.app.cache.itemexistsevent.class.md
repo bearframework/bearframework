@@ -29,10 +29,6 @@ BearFramework\App\Cache\ItemExistsEvent extends BearFramework\App\Event {
 
 ##### public [__construct](bearframework.app.cache.itemexistsevent.__construct.method.md) ( string $key , bool $exists )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
-
-##### public string [getName](bearframework.app.event.getname.method.md) ( void )
-
 ## Details
 
 Location: ~/src/App/Cache/ItemExistsEvent.php

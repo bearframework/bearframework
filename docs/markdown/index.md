@@ -42,8 +42,6 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data cache
 
-### [BearFramework\App\Cache\ClearEvent](bearframework.app.cache.clearevent.class.md)
-
 ### [BearFramework\App\Cache\ItemChangeEvent](bearframework.app.cache.itemchangeevent.class.md)
 
 ### [BearFramework\App\Cache\ItemDeleteEvent](bearframework.app.cache.itemdeleteevent.class.md)
@@ -277,8 +275,4 @@
 ### [BearFramework\DataList\SlicePropertiesAction](bearframework.datalist.slicepropertiesaction.class.md)
 
 ### [BearFramework\DataList\SortByAction](bearframework.datalist.sortbyaction.class.md)
-
-### [BearFramework\DataObject](bearframework.dataobject.class.md)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base class for objects.
 

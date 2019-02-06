@@ -21,7 +21,7 @@ BearFramework\App {
 	/* Methods */
 	public __construct ( void )
 	public self addEventListener ( string $name , callable $listener )
-	public self dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
 	public void enableErrorHandler ( [ array $options = [] ] )
 	public static BearFramework\App get ( void )
 	public bool hasEventListeners ( string $name )
@@ -84,7 +84,7 @@ BearFramework\App {
 
 ##### public self [addEventListener](bearframework.app.addeventlistener.method.md) ( string $name , callable $listener )
 
-##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( string $name [, [BearFramework\App\Event](bearframework.app.event.class.md)|null $event ] )
 
 ##### public void [enableErrorHandler](bearframework.app.enableerrorhandler.method.md) ( [ array $options = [] ] )
 

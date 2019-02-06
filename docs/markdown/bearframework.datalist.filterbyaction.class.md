@@ -1,36 +1,29 @@
 # BearFramework\DataList\FilterByAction
 
 ```php
-BearFramework\DataList\FilterByAction extends IvoPetkov\DataListFilterByAction implements ArrayAccess {
+BearFramework\DataList\FilterByAction {
+
+	/* Properties */
+	public string $operator
+	public string $property
+	public string $value
 
 }
 ```
 
-## Extends
+## Properties
 
-##### IvoPetkov\DataListFilterByAction
+##### public string $operator
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Information about a filterBy action applied on a data list.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The operator used for the filter. Available values: equal, notEqual, regExp, notRegExp, startWith, notStartWith, endWith, notEndWith, inArray, notInArray.
 
-## Implements
+##### public string $property
 
-##### [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The property name used for the filter.
 
-## Methods
+##### public string $value
 
-### Inherited from IvoPetkov\DataListAction
-
-##### public array toArray ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
-
-##### public string toJSON ( void )
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
-
-### Inherited from IvoPetkov\DataListFilterByAction
-
-##### public __construct ( string $property , string $value , string $operator )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value to filter on.
 
 ## Details
 

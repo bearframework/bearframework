@@ -7,7 +7,7 @@ BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable 
 
 	/* Methods */
 	public __construct ( [ array|iterable|callback $dataSource ] )
-	public self concat ( IvoPetkov\DataList $list )
+	public self concat ( array|iterable $list )
 	public int count ( void )
 	public self filter ( callable $callback )
 	public self filterBy ( string $property , mixed $value [, string $operator = 'equal' ] )
@@ -21,8 +21,8 @@ BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable 
 	public self reverse ( void )
 	public object|null shift ( void )
 	public self shuffle ( void )
-	public IvoPetkov\DataList slice ( int $offset [, int $length ] )
-	public IvoPetkov\DataList sliceProperties ( array $properties )
+	public mixed slice ( int $offset [, int $length ] )
+	public mixed sliceProperties ( array $properties )
 	public self sort ( callable $callback )
 	public self sortBy ( string $property [, string $order = 'asc' ] )
 	public array toArray ( void )
@@ -48,7 +48,7 @@ BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data list.
 
-##### public self [concat](bearframework.datalist.concat.method.md) ( IvoPetkov\DataList $list )
+##### public self [concat](bearframework.datalist.concat.method.md) ( array|iterable $list )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Appends the items of the list provided to the current list.
 
@@ -104,11 +104,11 @@ BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Randomly reorders the objects in the list.
 
-##### public IvoPetkov\DataList [slice](bearframework.datalist.slice.method.md) ( int $offset [, int $length ] )
+##### public mixed [slice](bearframework.datalist.slice.method.md) ( int $offset [, int $length ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extract a slice of the list.
 
-##### public IvoPetkov\DataList [sliceProperties](bearframework.datalist.sliceproperties.method.md) ( array $properties )
+##### public mixed [sliceProperties](bearframework.datalist.sliceproperties.method.md) ( array $properties )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a new list of object that contain only the specified properties of the objects in the current list.
 

@@ -32,10 +32,6 @@ BearFramework\App\Data\ItemGetMetadataEvent extends BearFramework\App\Event {
 
 ##### public [__construct](bearframework.app.data.itemgetmetadataevent.__construct.method.md) ( string $key , string $name , string $value )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
-
-##### public string [getName](bearframework.app.event.getname.method.md) ( void )
-
 ## Details
 
 Location: ~/src/App/Data/ItemGetMetadataEvent.php

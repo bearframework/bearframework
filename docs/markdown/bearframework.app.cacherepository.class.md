@@ -10,7 +10,7 @@ BearFramework\App\CacheRepository {
 	public self addEventListener ( string $name , callable $listener )
 	public self clear ( void )
 	public self delete ( string $key )
-	public self dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
 	public bool exists ( string $key )
 	public BearFramework\App\CacheItem|null get ( string $key )
 	public mixed getValue ( string $key )
@@ -39,7 +39,7 @@ BearFramework\App\CacheRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a cache from the cache.
 
-##### public self [dispatchEvent](bearframework.app.cacherepository.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.cacherepository.dispatchevent.method.md) ( string $name [, [BearFramework\App\Event](bearframework.app.event.class.md)|null $event ] )
 
 ##### public bool [exists](bearframework.app.cacherepository.exists.method.md) ( string $key )
 
@@ -79,7 +79,7 @@ BearFramework\App\CacheRepository {
 
 ## Events
 
-##### [BearFramework\App\Cache\ClearEvent](bearframework.app.cache.clearevent.class.md) clear
+##### [BearFramework\App\Event](bearframework.app.event.class.md) clear
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the cache is cleared.
 

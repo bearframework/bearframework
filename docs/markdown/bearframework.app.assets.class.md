@@ -12,7 +12,7 @@ BearFramework\App\Assets {
 	public __construct ( BearFramework\App $app )
 	public self addDir ( string $pathname )
 	public self addEventListener ( string $name , callable $listener )
-	public self dispatchEvent ( BearFramework\App\Event $event )
+	public self dispatchEvent ( string $name [, BearFramework\App\Event|null $event ] )
 	public string|null getContent ( string $filename [, array $options = [] ] )
 	public array getDetails ( string $filename , array $list )
 	public BearFramework\App\Response|null getResponse ( BearFramework\App\Request $request )
@@ -39,7 +39,7 @@ BearFramework\App\Assets {
 
 ##### public self [addEventListener](bearframework.app.assets.addeventlistener.method.md) ( string $name , callable $listener )
 
-##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( [BearFramework\App\Event](bearframework.app.event.class.md) $event )
+##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( string $name [, [BearFramework\App\Event](bearframework.app.event.class.md)|null $event ] )
 
 ##### public string|null [getContent](bearframework.app.assets.getcontent.method.md) ( string $filename [, array $options = [] ] )
 

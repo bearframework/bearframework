@@ -3,7 +3,7 @@
 Returns a new list of object that contain only the specified properties of the objects in the current list.
 
 ```php
-public IvoPetkov\DataList sliceProperties ( array $properties )
+public mixed sliceProperties ( array $properties )
 ```
 
 ## Parameters

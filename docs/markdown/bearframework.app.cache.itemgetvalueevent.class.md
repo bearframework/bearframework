@@ -29,10 +29,6 @@ BearFramework\App\Cache\ItemGetValueEvent extends BearFramework\App\Event {
 
 ##### public [__construct](bearframework.app.cache.itemgetvalueevent.__construct.method.md) ( string $key , mixed $value )
 
-### Inherited from [BearFramework\App\Event](bearframework.app.event.class.md)
-
-##### public string [getName](bearframework.app.event.getname.method.md) ( void )
-
 ## Details
 
 Location: ~/src/App/Cache/ItemGetValueEvent.php
