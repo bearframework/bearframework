@@ -29,8 +29,6 @@ class Request
 {
 
     use \IvoPetkov\DataObjectTrait;
-    use \IvoPetkov\DataObjectToArrayTrait;
-    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * 
@@ -89,7 +87,8 @@ class Request
                     'unset' => function() use (&$updateBase) {
                         $updateBase('port', '');
                     }
-        ]);
+                ])
+        ;
 
         $path = '';
         if ($initializeFromEnvironment && isset($_SERVER)) {
@@ -228,7 +227,8 @@ class Request
                         return $data;
                     },
                     'readonly' => true
-        ]);
+                ])
+        ;
     }
 
 }

@@ -24,8 +24,6 @@ class Response
 {
 
     use \IvoPetkov\DataObjectTrait;
-    use \IvoPetkov\DataObjectToArrayTrait;
-    use \IvoPetkov\DataObjectToJSONTrait;
 
     /**
      * 
@@ -62,7 +60,8 @@ class Response
                         return new App\Response\CookiesRepository();
                     },
                     'readonly' => true
-                ]);
+                ])
+        ;
     }
 
 }
