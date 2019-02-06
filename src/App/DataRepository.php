@@ -141,6 +141,7 @@ class DataRepository
      * @param string|null $key The key of the data item.
      * @param string|null $value The value of the data item.
      * @return \BearFramework\App\DataItem Returns a new data item.
+     * @throws \InvalidArgumentException
      */
     public function make(string $key = null, string $value = null): \BearFramework\App\DataItem
     {
@@ -149,6 +150,9 @@ class DataRepository
         }
         $object = clone($this->newDataItemCache);
         if ($key !== null) {
+            if (!$this->validate($key)) {
+                throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+            }
             $object->key = $key;
         }
         if ($value !== null) {
@@ -164,9 +168,18 @@ class DataRepository
      * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
      */
     public function set(DataItem $item): self
     {
+        if ($item->key === null || !$this->validate($item->key)) {
+            throw new \InvalidArgumentException('The key provided (' . ($item->key === null ? 'null' : $item->key) . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        foreach ($item->metadata as $name => $value) {
+            if (!$this->validateMetadataName($name)) {
+                throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
+            }
+        }
         $driver = $this->getDriver();
         $driver->set($item);
         if ($this->hasEventListeners('itemSet')) {
@@ -186,9 +199,13 @@ class DataRepository
      * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
      */
     public function setValue(string $key, string $value): self
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->setValue($key, $value);
         if ($this->hasEventListeners('itemSetValue')) {
@@ -207,9 +224,13 @@ class DataRepository
      * @return \BearFramework\App\DataItem|null A data item or null if not found.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
      */
     public function get(string $key): ?\BearFramework\App\DataItem
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $item = $driver->get($key);
         if ($this->hasEventListeners('itemGet')) {
@@ -228,9 +249,13 @@ class DataRepository
      * @return string|null The value of a stored data item or null if not found.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
      */
     public function getValue(string $key): ?string
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $value = $driver->getValue($key);
         if ($this->hasEventListeners('itemGetValue')) {
@@ -249,9 +274,13 @@ class DataRepository
      * @return bool TRUE if the data item exists. FALSE otherwise.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
      */
     public function exists(string $key): bool
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $exists = $driver->exists($key);
         if ($this->hasEventListeners('itemExists')) {
@@ -268,12 +297,16 @@ class DataRepository
      * 
      * @param string $key The key of the data item.
      * @param string $content The content to append.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return self Returns a reference to itself.
+     * @throws \InvalidArgumentException
      */
     public function append(string $key, string $content): self
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->append($key, $content);
         if ($this->hasEventListeners('itemAppend')) {
@@ -290,12 +323,19 @@ class DataRepository
      * 
      * @param string $sourceKey The key of the source data item.
      * @param string $destinationKey The key of the destination data item.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return self Returns a reference to itself.
+     * @throws \InvalidArgumentException
      */
     public function duplicate(string $sourceKey, string $destinationKey): self
     {
+        if (!$this->validate($sourceKey)) {
+            throw new \InvalidArgumentException('The key provided (' . $sourceKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        if (!$this->validate($destinationKey)) {
+            throw new \InvalidArgumentException('The key provided (' . $destinationKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->duplicate($sourceKey, $destinationKey);
         if ($this->hasEventListeners('itemDuplicate')) {
@@ -315,12 +355,19 @@ class DataRepository
      * 
      * @param string $sourceKey The current key of the data item.
      * @param string $destinationKey The new key of the data item.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return self Returns a reference to itself.
+     * @throws \InvalidArgumentException
      */
     public function rename(string $sourceKey, string $destinationKey): self
     {
+        if (!$this->validate($sourceKey)) {
+            throw new \InvalidArgumentException('The key provided (' . $sourceKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        if (!$this->validate($destinationKey)) {
+            throw new \InvalidArgumentException('The key provided (' . $destinationKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->rename($sourceKey, $destinationKey);
         if ($this->hasEventListeners('itemRename')) {
@@ -337,12 +384,16 @@ class DataRepository
      * Deletes the data item specified and it's metadata.
      * 
      * @param string $key The key of the data item to delete.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return self Returns a reference to itself.
+     * @throws \InvalidArgumentException
      */
     public function delete(string $key): self
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->delete($key);
         if ($this->hasEventListeners('itemDelete')) {
@@ -360,12 +411,19 @@ class DataRepository
      * @param string $key The key of the data item.
      * @param string $name The metadata name.
      * @param string $value The metadata value.
-     * @throws \Exception
-     * @throws \BearFramework\App\Data\DataLockedException
      * @return self Returns a reference to itself.
+     * @throws \Exception
+     * @throws \InvalidArgumentException
+     * @throws \BearFramework\App\Data\DataLockedException
      */
     public function setMetadata(string $key, string $name, string $value): self
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        if (!$this->validateMetadataName($name)) {
+            throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->setMetadata($key, $name, $value);
         if ($this->hasEventListeners('itemSetMetadata')) {
@@ -385,9 +443,16 @@ class DataRepository
      * @return string|null The value of the data item metadata.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
      */
     public function getMetadata(string $key, string $name): ?string
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        if (!$this->validateMetadataName($name)) {
+            throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $value = $driver->getMetadata($key, $name);
         if ($this->hasEventListeners('itemGetMetadata')) {
@@ -404,12 +469,19 @@ class DataRepository
      * 
      * @param string $key The data item key.
      * @param string $name The metadata name.
+     * @return self Returns a reference to itself.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
-     * @return self Returns a reference to itself.
+     * @throws \InvalidArgumentException
      */
     public function deleteMetadata(string $key, string $name): self
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        if (!$this->validateMetadataName($name)) {
+            throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
+        }
         $driver = $this->getDriver();
         $driver->deleteMetadata($key, $name);
         if ($this->hasEventListeners('itemDeleteMetadata')) {
@@ -458,19 +530,30 @@ class DataRepository
      * Returns the filename of the data item specified.
      * 
      * @param string $key The key of the data item.
+     * @return string The filename of the data item specified.
      * @throws \Exception
      * @throws \InvalidArgumentException
-     * @return string The filename of the data item specified.
      */
     public function getFilename(string $key): string
     {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
         if ($this->filenameProtocol === null) {
             throw new \Exception('No filenameProtocol specified!');
         }
-        if (!$this->validate($key)) {
-            throw new \InvalidArgumentException('The key argument is not valid!');
-        }
         return $this->filenameProtocol . '://' . $key;
+    }
+
+    /**
+     * Checks if a data item metadata key is valid.
+     * 
+     * @param string $key The key of the metadata to check.
+     * @return bool TRUE if valid. FALSE otherwise.
+     */
+    private function validateMetadataName(string $key): bool
+    {
+        return preg_match("/^[a-zA-Z0-9\.\-\_]*$/", $key) === 1;
     }
 
 }
