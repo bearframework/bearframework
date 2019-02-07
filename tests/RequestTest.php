@@ -177,4 +177,15 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($request->formData->getFile('file1')->size === 123);
     }
 
+    /**
+     * 
+     */
+    function testSetNewRequest()
+    {
+        $app = new \BearFramework\App();
+        $app->request = new \BearFramework\App\Request();
+        $app->request->base = 'https://example.com/';
+        $this->assertEquals($app->request->host, 'example.com');
+    }
+
 }
