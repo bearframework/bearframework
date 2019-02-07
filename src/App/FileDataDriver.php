@@ -346,7 +346,10 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     {
         try {
             if ($this->objectStorageInstance === null) {
-                $this->objectStorageInstance = new \IvoPetkov\ObjectStorage($this->dir);
+                $this->objectStorageInstance = new \IvoPetkov\ObjectStorage($this->dir . '/objects', $this->dir . '/metadata', [
+                    'lockRetriesCount' => 40,
+                    'lockRetryDelay' => 500000
+                ]);
             }
             return $this->objectStorageInstance->execute($commands);
         } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
