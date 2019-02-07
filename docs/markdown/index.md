@@ -24,13 +24,13 @@
 
 ### [BearFramework\App\Assets\BeforeGetDetailsEventDetails](bearframework.app.assets.beforegetdetailseventdetails.class.md)
 
-### [BearFramework\App\Assets\BeforeGetUrlEventDetails](bearframework.app.assets.beforegeturleventdetails.class.md)
+### [BearFramework\App\Assets\BeforeGetURLEventDetails](bearframework.app.assets.beforegeturleventdetails.class.md)
 
 ### [BearFramework\App\Assets\BeforePrepareEventDetails](bearframework.app.assets.beforeprepareeventdetails.class.md)
 
 ### [BearFramework\App\Assets\GetDetailsEventDetails](bearframework.app.assets.getdetailseventdetails.class.md)
 
-### [BearFramework\App\Assets\GetUrlEventDetails](bearframework.app.assets.geturleventdetails.class.md)
+### [BearFramework\App\Assets\GetURLEventDetails](bearframework.app.assets.geturleventdetails.class.md)
 
 ### [BearFramework\App\Assets\PrepareEventDetails](bearframework.app.assets.prepareeventdetails.class.md)
 
@@ -254,7 +254,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shortcuts container for the application object.
 
-### [BearFramework\App\Urls](bearframework.app.urls.class.md)
+### [BearFramework\App\URLs](bearframework.app.urls.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URLs utilities.
 

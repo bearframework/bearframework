@@ -16,7 +16,7 @@ BearFramework\App {
 	public readonly BearFramework\App\Request $request
 	public readonly BearFramework\App\RoutesRepository $routes
 	public readonly BearFramework\App\ShortcutsRepository $shortcuts
-	public readonly BearFramework\App\Urls $urls
+	public readonly BearFramework\App\URLs $urls
 
 	/* Methods */
 	public __construct ( void )
@@ -74,7 +74,7 @@ BearFramework\App {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Allow registration of $app object properties (shortcuts).
 
-##### public readonly [BearFramework\App\Urls](bearframework.app.urls.class.md) $urls
+##### public readonly [BearFramework\App\URLs](bearframework.app.urls.class.md) $urls
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URLs utilities.
 

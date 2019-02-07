@@ -14,7 +14,7 @@ use BearFramework\App;
 /**
  * URLs utilities.
  */
-class Urls
+class URLs
 {
 
     /**

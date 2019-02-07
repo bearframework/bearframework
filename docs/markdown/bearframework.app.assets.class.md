@@ -16,7 +16,7 @@ BearFramework\App\Assets {
 	public string|null getContent ( string $filename [, array $options = [] ] )
 	public array getDetails ( string $filename , array $list )
 	public BearFramework\App\Response|null getResponse ( BearFramework\App\Request $request )
-	public string getUrl ( string $filename [, array $options = [] ] )
+	public string getURL ( string $filename [, array $options = [] ] )
 	public bool hasEventListeners ( string $name )
 	public self removeEventListener ( string $name , callable $listener )
 
@@ -53,7 +53,7 @@ BearFramework\App\Assets {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a response object for the asset request.
 
-##### public string [getUrl](bearframework.app.assets.geturl.method.md) ( string $filename [, array $options = [] ] )
+##### public string [getURL](bearframework.app.assets.geturl.method.md) ( string $filename [, array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a public URL for the specified filename.
 
@@ -67,7 +67,7 @@ BearFramework\App\Assets {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the details of the asset specified is created.
 
-##### BearFramework\App\Assets\BeforeGetUrlEvent beforeGetUrl
+##### BearFramework\App\Assets\BeforeGetURLEvent beforeGetURL
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the URL of the asset specified is created.
 
@@ -79,7 +79,7 @@ BearFramework\App\Assets {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the details of the asset specified is created.
 
-##### BearFramework\App\Assets\GetUrlEvent getUrl
+##### BearFramework\App\Assets\GetURLEvent getURL
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the URL of the asset specified is created.
 

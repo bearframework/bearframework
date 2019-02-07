@@ -1,4 +1,4 @@
-# BearFramework\App\Urls::__construct
+# BearFramework\App\URLs::__construct
 
 ```php
 public __construct ( BearFramework\App $app )
@@ -10,9 +10,9 @@ public __construct ( BearFramework\App $app )
 
 ## Details
 
-Class: [BearFramework\App\Urls](bearframework.app.urls.class.md)
+Class: [BearFramework\App\URLs](bearframework.app.urls.class.md)
 
-Location: ~/src/App/Urls.php
+Location: ~/src/App/URLs.php
 
 ---
 

@@ -1,9 +1,9 @@
-# BearFramework\App\Context\Assets::getUrl
+# BearFramework\App\Context\Assets::getURL
 
 Returns a public URL for the specified filename in the current context.
 
 ```php
-public string getUrl ( string $filename [, array $options = [] ] )
+public string getURL ( string $filename [, array $options = [] ] )
 ```
 
 ## Parameters

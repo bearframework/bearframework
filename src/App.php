@@ -22,7 +22,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\DataRepository $data A file-based data storage.
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
  * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for registering and autoloading classes.
- * @property-read \BearFramework\App\Urls $urls URLs utilities.
+ * @property-read \BearFramework\App\URLs $urls URLs utilities.
  * @property-read \BearFramework\App\ContextsRepository $contexts Provides information about your code context (the directory its located).
  * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
  * @event \Bearframework\App\BeforeSendResponseEvent beforeSendResponse An event dispatched before the response is sent to the client.
@@ -110,7 +110,7 @@ class App
                 ])
                 ->defineProperty('urls', [
                     'init' => function() {
-                        return new App\Urls($this);
+                        return new App\URLs($this);
                     },
                     'readonly' => true
                 ])
@@ -217,9 +217,9 @@ class App
             }
             $cookies = $response->cookies->getList();
             if ($cookies->count() > 0) {
-                $baseUrlParts = parse_url($this->request->base);
+                $baseURLParts = parse_url($this->request->base);
                 foreach ($cookies as $cookie) {
-                    setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path === null ? (isset($baseUrlParts['path']) ? $baseUrlParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseUrlParts['host']) ? $baseUrlParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : $cookie->secure, $cookie->httpOnly);
+                    setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path === null ? (isset($baseURLParts['path']) ? $baseURLParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseURLParts['host']) ? $baseURLParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : $cookie->secure, $cookie->httpOnly);
                 }
             }
         }

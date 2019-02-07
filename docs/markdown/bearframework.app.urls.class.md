@@ -1,9 +1,9 @@
-# BearFramework\App\Urls
+# BearFramework\App\URLs
 
 URLs utilities.
 
 ```php
-BearFramework\App\Urls {
+BearFramework\App\URLs {
 
 	/* Methods */
 	public __construct ( BearFramework\App $app )
@@ -22,7 +22,7 @@ BearFramework\App\Urls {
 
 ## Details
 
-Location: ~/src/App/Urls.php
+Location: ~/src/App/URLs.php
 
 ---
 

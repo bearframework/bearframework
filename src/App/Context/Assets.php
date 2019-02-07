@@ -59,9 +59,9 @@ class Assets
      * @param array $options URL options. You can resize the file by providing "width", "height" or both.
      * @return string The URL for the specified filename and options.
      */
-    public function getUrl(string $filename, array $options = []): string
+    public function getURL(string $filename, array $options = []): string
     {
-        return $this->appAssets->getUrl($this->dir . '/' . $filename, $options);
+        return $this->appAssets->getURL($this->dir . '/' . $filename, $options);
     }
 
     /**

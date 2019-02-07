@@ -1,4 +1,4 @@
-# BearFramework\App\Assets\BeforeGetUrlEventDetails::__construct
+# BearFramework\App\Assets\BeforeGetURLEventDetails::__construct
 
 ```php
 public __construct ( string $filename , array $options )
@@ -12,9 +12,9 @@ public __construct ( string $filename , array $options )
 
 ## Details
 
-Class: [BearFramework\App\Assets\BeforeGetUrlEventDetails](bearframework.app.assets.beforegeturleventdetails.class.md)
+Class: [BearFramework\App\Assets\BeforeGetURLEventDetails](bearframework.app.assets.beforegeturleventdetails.class.md)
 
-Location: ~/src/App/Assets/BeforeGetUrlEventDetails.php
+Location: ~/src/App/Assets/BeforeGetURLEventDetails.php
 
 ---
 

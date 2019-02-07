@@ -1,4 +1,4 @@
-# BearFramework\App\Assets\GetUrlEventDetails::__construct
+# BearFramework\App\Assets\GetURLEventDetails::__construct
 
 ```php
 public __construct ( string $filename , array $options , string $url )
@@ -14,9 +14,9 @@ public __construct ( string $filename , array $options , string $url )
 
 ## Details
 
-Class: [BearFramework\App\Assets\GetUrlEventDetails](bearframework.app.assets.geturleventdetails.class.md)
+Class: [BearFramework\App\Assets\GetURLEventDetails](bearframework.app.assets.geturleventdetails.class.md)
 
-Location: ~/src/App/Assets/GetUrlEventDetails.php
+Location: ~/src/App/Assets/GetURLEventDetails.php
 
 ---
 

@@ -1,7 +1,7 @@
-# BearFramework\App\Assets\GetUrlEventDetails
+# BearFramework\App\Assets\GetURLEventDetails
 
 ```php
-BearFramework\App\Assets\GetUrlEventDetails {
+BearFramework\App\Assets\GetURLEventDetails {
 
 	/* Properties */
 	public string $filename
@@ -28,7 +28,7 @@ BearFramework\App\Assets\GetUrlEventDetails {
 
 ## Details
 
-Location: ~/src/App/Assets/GetUrlEventDetails.php
+Location: ~/src/App/Assets/GetURLEventDetails.php
 
 ---
 

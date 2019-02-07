@@ -1,4 +1,4 @@
-# BearFramework\App\Urls::get
+# BearFramework\App\URLs::get
 
 Constructs a url for the path specified.
 
@@ -18,9 +18,9 @@ public string get ( [ string $path = '/' ] )
 
 ## Details
 
-Class: [BearFramework\App\Urls](bearframework.app.urls.class.md)
+Class: [BearFramework\App\URLs](bearframework.app.urls.class.md)
 
-Location: ~/src/App/Urls.php
+Location: ~/src/App/URLs.php
 
 ---
 

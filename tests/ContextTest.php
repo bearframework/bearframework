@@ -42,7 +42,7 @@ class ContextTest extends BearFrameworkTestCase
         $this->makeSampleFile($app->config['appDir'] . '/assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
-        $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
+        $this->assertTrue(strpos($context->assets->getURL('assets/logo.png'), $app->request->base) === 0);
 
         $this->assertEquals($context->assets->getDetails('assets/logo.png', ['width', 'height']), [
             'width' => 100,
@@ -87,7 +87,7 @@ class ContextTest extends BearFrameworkTestCase
         $this->makeSampleFile($addonDir . '/assets/logo.png', 'png');
         $context->assets->addDir('assets/');
 
-        $this->assertTrue(strpos($context->assets->getUrl('assets/logo.png'), $app->request->base) === 0);
+        $this->assertTrue(strpos($context->assets->getURL('assets/logo.png'), $app->request->base) === 0);
     }
 
     /**

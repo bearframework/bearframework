@@ -14,7 +14,7 @@ namespace BearFramework\App\Assets;
  * @property array $options
  * @property string $url
  */
-class GetUrlEventDetails
+class GetURLEventDetails
 {
 
     use \IvoPetkov\DataObjectTrait;

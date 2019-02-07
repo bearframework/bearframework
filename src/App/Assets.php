@@ -14,8 +14,8 @@ use BearFramework\App;
 /**
  * Provides utility functions for assets.
  * @property-read string $pathPrefix The prefix of the assets URLs.
- * @event \BearFramework\App\Assets\BeforeGetUrlEvent beforeGetUrl An event dispatched before the URL of the asset specified is created.
- * @event \BearFramework\App\Assets\GetUrlEvent getUrl An event dispatched after the URL of the asset specified is created.
+ * @event \BearFramework\App\Assets\BeforeGetURLEvent beforeGetURL An event dispatched before the URL of the asset specified is created.
+ * @event \BearFramework\App\Assets\GetURLEvent getURL An event dispatched after the URL of the asset specified is created.
  * @event \BearFramework\App\Assets\BeforePrepareEvent beforePrepare An event dispatched before the asset specified is prepared for returning (resized for example).
  * @event \BearFramework\App\Assets\PrepareEvent prepare An event dispatched after the asset specified is prepared for returning (resized for example)
  * @event \BearFramework\App\Assets\BeforeGetDetailsEvent beforeGetDetails An event dispatched before the details of the asset specified is created.
@@ -124,13 +124,13 @@ class Assets
      * @throws \InvalidArgumentException
      * @return string The URL for the specified filename and options.
      */
-    public function getUrl(string $filename, array $options = []): string
+    public function getURL(string $filename, array $options = []): string
     {
         $filename = \BearFramework\App\Internal\Utilities::normalizePath($filename);
         $url = null;
-        if ($this->hasEventListeners('beforeGetUrl')) {
-            $eventDetails = new \BearFramework\App\Assets\BeforeGetUrlEventDetails($filename, $options);
-            $this->dispatchEvent('beforeGetUrl', $eventDetails);
+        if ($this->hasEventListeners('beforeGetURL')) {
+            $eventDetails = new \BearFramework\App\Assets\BeforeGetURLEventDetails($filename, $options);
+            $this->dispatchEvent('beforeGetURL', $eventDetails);
             $filename = $eventDetails->filename;
             $options = $eventDetails->options;
             if ($eventDetails->returnValue !== null) {
@@ -198,9 +198,9 @@ class Assets
             $url = $this->cache[$fileDirCacheKey] === false ? null : $this->app->urls->get($this->internalPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
         }
 
-        if ($this->hasEventListeners('getUrl')) {
-            $eventDetails = new \BearFramework\App\Assets\GetUrlEventDetails($filename, $options, $url);
-            $this->dispatchEvent('getUrl', $eventDetails);
+        if ($this->hasEventListeners('getURL')) {
+            $eventDetails = new \BearFramework\App\Assets\GetURLEventDetails($filename, $options, $url);
+            $this->dispatchEvent('getURL', $eventDetails);
             $url = $eventDetails->url;
         }
 
@@ -233,7 +233,7 @@ class Assets
         if (isset($options['outputType'])) {
             $urlOptions['outputType'] = $options['outputType'];
         }
-        $url = $this->getUrl($filename, $urlOptions);
+        $url = $this->getURL($filename, $urlOptions);
         $path = substr($url, strlen($this->app->request->base));
 
         $request = new \BearFramework\App\Request();

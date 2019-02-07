@@ -10,7 +10,7 @@ BearFramework\App\Context\Assets {
 	public self addDir ( string $pathname )
 	public string|null getContent ( string $filename [, array $options = [] ] )
 	public array getDetails ( string $filename , array $list )
-	public string getUrl ( string $filename [, array $options = [] ] )
+	public string getURL ( string $filename [, array $options = [] ] )
 
 }
 ```
@@ -31,7 +31,7 @@ BearFramework\App\Context\Assets {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of details for the filename specifie in the current context.
 
-##### public string [getUrl](bearframework.app.context.assets.geturl.method.md) ( string $filename [, array $options = [] ] )
+##### public string [getURL](bearframework.app.context.assets.geturl.method.md) ( string $filename [, array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a public URL for the specified filename in the current context.
 

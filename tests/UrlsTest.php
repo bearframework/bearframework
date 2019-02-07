@@ -10,7 +10,7 @@
 /**
  * @runTestsInSeparateProcesses
  */
-class UrlsTest extends BearFrameworkTestCase
+class URLsTest extends BearFrameworkTestCase
 {
 
     /**
