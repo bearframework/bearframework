@@ -37,11 +37,11 @@ class Addons
         if (!isset($id{0})) {
             throw new \InvalidArgumentException('The value of the id argument cannot be empty.');
         }
-        $dir = realpath($dir);
-        if ($dir === false) {
+        $dir = rtrim(\BearFramework\App\Internal\Utilities::normalizePath($dir), '/');
+        if (!is_dir($dir)) {
             throw new \InvalidArgumentException('The value of the dir argument is not a valid directory.');
         }
-        self::$data[$id] = new \BearFramework\Addon($id, str_replace('\\', '/', $dir), $options);
+        self::$data[$id] = new \BearFramework\Addon($id, $dir, $options);
         return true;
     }
 

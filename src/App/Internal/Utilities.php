@@ -79,6 +79,7 @@ class Utilities
                 $path = implode('/', $temp);
             }
             self::$cache[$cacheKey] = $root . $path;
+            self::$cache['0' . $root . $path] = $root . $path; // cache to optimize normalizing normalized paths
         }
         return self::$cache[$cacheKey];
     }

@@ -126,6 +126,7 @@ class Assets
      */
     public function getUrl(string $filename, array $options = []): string
     {
+        $filename = \BearFramework\App\Internal\Utilities::normalizePath($filename);
         $url = null;
         if ($this->hasEventListeners('beforeGetUrl')) {
             $eventDetails = new \BearFramework\App\Assets\BeforeGetUrlEventDetails($filename, $options);
@@ -138,8 +139,6 @@ class Assets
         }
 
         if ($url === null) {
-            $filename = \BearFramework\App\Internal\Utilities::normalizePath($filename);
-
             if (isset($options['version'])) {
                 $options['version'] = substr(md5(md5($filename) . $options['version']), 0, 10);
             }

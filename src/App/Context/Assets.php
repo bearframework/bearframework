@@ -36,7 +36,7 @@ class Assets
      */
     public function __construct(\BearFramework\App $app, string $dir)
     {
-        $this->dir = str_replace('\\', '/', $dir);
+        $this->dir = \BearFramework\App\Internal\Utilities::normalizePath($dir);
         $this->appAssets = $app->assets;
     }
 
