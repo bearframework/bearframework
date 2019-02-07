@@ -47,9 +47,6 @@ class ErrorHandler
      */
     static function handleFatalError(\BearFramework\App $app, array $errorData, array $options): void
     {
-        if (ob_get_length() > 0) {
-            ob_end_clean();
-        }
         $messageParts = explode(' in ' . $errorData['file'] . ':' . $errorData['line'], $errorData['message'], 2);
         $message = 'Fatal error: ' . trim($messageParts[0]) . ' in ' . $errorData['file'] . ':' . (int) $errorData['line'];
         $trace = isset($messageParts[1]) ? [trim(str_replace('Stack trace:', '', $messageParts[1]))] : [];
