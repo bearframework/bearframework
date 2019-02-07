@@ -231,4 +231,22 @@ class Request
         ;
     }
 
+    /**
+     * Returns the request URL or null if the base is empty.
+     * 
+     * @return string|null Returns the request URL or null if the base is empty.
+     */
+    public function getURL(): ?string
+    {
+        if ($this->base !== null) {
+            $list = [];
+            $queryList = $this->query->getList();
+            foreach ($queryList as $queryItem) {
+                $list[$queryItem->name] = $queryItem->value;
+            }
+            return $this->base . implode('/', array_map('urlencode', explode('/', (string) $this->path))) . (empty($list) ? '' : '?' . http_build_query($list));
+        }
+        return null;
+    }
+
 }

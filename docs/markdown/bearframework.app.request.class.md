@@ -19,6 +19,7 @@ BearFramework\App\Request {
 
 	/* Methods */
 	public __construct ( [ bool $initializeFromEnvironment = false ] )
+	public string|null getURL ( void )
 
 }
 ```
@@ -68,6 +69,10 @@ BearFramework\App\Request {
 ## Methods
 
 ##### public [__construct](bearframework.app.request.__construct.method.md) ( [ bool $initializeFromEnvironment = false ] )
+
+##### public string|null [getURL](bearframework.app.request.geturl.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the request URL or null if the base is empty.
 
 ## Details
 

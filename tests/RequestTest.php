@@ -188,4 +188,20 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertEquals($app->request->host, 'example.com');
     }
 
+    /**
+     * 
+     */
+    function testGetURL()
+    {
+        $request = new \BearFramework\App\Request();
+        $this->assertEquals($request->getURL(), null);
+
+        $request->base = 'https://example.com';
+        $request->path->set('/път1/path2/');
+        $request->query->set($request->query->make('key1', 'value1'));
+        $request->query->set($request->query->make('k[ey2]', 'v[alue1]'));
+        $request->query->set($request->query->make('име3', 'стойност3'));
+        $this->assertEquals($request->getURL(), 'https://example.com/%D0%BF%D1%8A%D1%821/path2/?key1=value1&k%5Bey2%5D=v%5Balue1%5D&%D0%B8%D0%BC%D0%B53=%D1%81%D1%82%D0%BE%D0%B9%D0%BD%D0%BE%D1%81%D1%823');
+    }
+
 }
