@@ -64,7 +64,7 @@ class App
                     'init' => function() {
                         return new App\Request(true);
                     },
-                    'readonly' => true
+                    'type' => 'BearFramework\App\Request'
                 ])
                 ->defineProperty('routes', [
                     'init' => function() {
