@@ -352,10 +352,10 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
                 ]);
             }
             return $this->objectStorageInstance->execute($commands);
-        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
-            throw new \Exception($e->getMessage());
         } catch (\IvoPetkov\ObjectStorage\ObjectLockedException $e) {
             throw new \BearFramework\App\Data\DataLockedException($e->getMessage());
+        } catch (\IvoPetkov\ObjectStorage\ErrorException $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 
