@@ -60,7 +60,7 @@ class ContextsRepository
             }
             $filename = $trace[0]['file'];
         }
-        $filename = \BearFramework\App\Internal\Utilities::normalizePath($filename);
+        $filename = \BearFramework\Internal\Utilities::normalizePath($filename);
         if (isset($this->objectsCache[$filename])) {
             return clone($this->objectsCache[$filename]);
         }
@@ -91,7 +91,7 @@ class ContextsRepository
      */
     public function add(string $dir): self
     {
-        $dir = rtrim(\BearFramework\App\Internal\Utilities::normalizePath($dir), '/') . '/';
+        $dir = rtrim(\BearFramework\Internal\Utilities::normalizePath($dir), '/') . '/';
         if (!isset($this->dirs[$dir])) {
             $this->dirs[$dir] = strlen($dir);
             arsort($this->dirs);

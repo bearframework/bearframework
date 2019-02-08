@@ -57,9 +57,6 @@ $classes = [
     'BearFramework\App\FileDataDriver' => 'src/App/FileDataDriver.php',
     'BearFramework\App\FileDataItemStreamWrapper' => 'src/App/FileDataItemStreamWrapper.php',
     'BearFramework\App\FileLogger' => 'src/App/FileLogger.php',
-    'BearFramework\App\Internal\DataItemStreamWrapper' => 'src/App/Internal/DataItemStreamWrapper.php',
-    'BearFramework\App\Internal\ErrorHandler' => 'src/App/Internal/ErrorHandler.php',
-    'BearFramework\App\Internal\Utilities' => 'src/App/Internal/Utilities.php',
     'BearFramework\App\ICacheDriver' => 'src/App/ICacheDriver.php',
     'BearFramework\App\IDataDriver' => 'src/App/IDataDriver.php',
     'BearFramework\App\IDataItemStreamWrapper' => 'src/App/IDataItemStreamWrapper.php',
@@ -105,7 +102,10 @@ $classes = [
     'BearFramework\DataList\Context' => 'src/DataList/Context.php',
     'BearFramework\DataList\FilterByAction' => 'src/DataList/FilterByAction.php',
     'BearFramework\DataList\SlicePropertiesAction' => 'src/DataList/SlicePropertiesAction.php',
-    'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php'
+    'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php',
+    'BearFramework\Internal\DataItemStreamWrapper' => 'src/Internal/DataItemStreamWrapper.php',
+    'BearFramework\Internal\ErrorHandler' => 'src/Internal/ErrorHandler.php',
+    'BearFramework\Internal\Utilities' => 'src/Internal/Utilities.php',
 ];
 
 spl_autoload_register(function ($class) use ($classes) {

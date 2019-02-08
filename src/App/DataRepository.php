@@ -72,7 +72,7 @@ class DataRepository
         if (isset($options['filenameProtocol'])) {
             if (is_string($options['filenameProtocol'])) {
                 $this->filenameProtocol = $options['filenameProtocol'];
-                if (stream_wrapper_register($this->filenameProtocol, "BearFramework\App\Internal\DataItemStreamWrapper", STREAM_IS_URL) === false) {
+                if (stream_wrapper_register($this->filenameProtocol, "BearFramework\Internal\DataItemStreamWrapper", STREAM_IS_URL) === false) {
                     throw new \Exception('A filename protocol named ' . $this->filenameProtocol . ' is already defined!');
                 }
             }
@@ -116,7 +116,7 @@ class DataRepository
         }
         $this->driver = $driver;
         if ($this->filenameProtocol !== null) {
-            \BearFramework\App\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$this->app, $this, $driver];
+            \BearFramework\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$this->app, $this, $driver];
         }
         return $this;
     }

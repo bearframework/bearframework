@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework\App\Internal;
+namespace BearFramework\Internal;
 
 /**
  * 

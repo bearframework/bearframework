@@ -106,7 +106,7 @@ class Assets
     {
         $this->optimizedDirs = [];
         foreach ($this->dirs as $pathname) {
-            $pathname = \BearFramework\App\Internal\Utilities::normalizePath($pathname);
+            $pathname = \BearFramework\Internal\Utilities::normalizePath($pathname);
             if (substr($pathname, -3) !== '://') {
                 $pathname = rtrim($pathname, '/') . '/';
             }
@@ -126,7 +126,7 @@ class Assets
      */
     public function getURL(string $filename, array $options = []): string
     {
-        $filename = \BearFramework\App\Internal\Utilities::normalizePath($filename);
+        $filename = \BearFramework\Internal\Utilities::normalizePath($filename);
         $url = null;
         if ($this->hasEventListeners('beforeGetURL')) {
             $eventDetails = new \BearFramework\App\Assets\BeforeGetURLEventDetails($filename, $options);

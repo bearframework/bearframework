@@ -36,7 +36,7 @@ class Classes
      */
     public function __construct(\BearFramework\App $app, string $dir)
     {
-        $this->dir = \BearFramework\App\Internal\Utilities::normalizePath($dir);
+        $this->dir = \BearFramework\Internal\Utilities::normalizePath($dir);
         $this->appClasses = $app->classes;
     }
 

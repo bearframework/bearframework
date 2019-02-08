@@ -37,7 +37,7 @@ class Addons
         if (!isset($id{0})) {
             throw new \InvalidArgumentException('The value of the id argument cannot be empty.');
         }
-        $dir = rtrim(\BearFramework\App\Internal\Utilities::normalizePath($dir), '/');
+        $dir = rtrim(\BearFramework\Internal\Utilities::normalizePath($dir), '/');
         if (!is_dir($dir)) {
             throw new \InvalidArgumentException('The value of the dir argument is not a valid directory.');
         }
