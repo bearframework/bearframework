@@ -20,13 +20,14 @@ class ClassesRepository
      * 
      * @var array 
      */
-    private $data = [];
+    private $classes = [];
 
     /**
-     *
-     * @var ?array 
+     * The registered patterns.
+     * 
+     * @var array 
      */
-    private $wildcardCache = null;
+    private $patterns = [];
 
     /**
      * 
@@ -47,7 +48,11 @@ class ClassesRepository
      */
     public function add(string $class, string $filename): self
     {
-        $this->data[$class] = $filename;
+        if (substr($class, -2) === '\*') { // Is class in a namespace. Example: Namespace\*
+            $this->patterns[] = [substr($class, 0, -1), $filename];
+        } else {
+            $this->classes[$class] = $filename;
+        }
         return $this;
     }
 
@@ -59,7 +64,7 @@ class ClassesRepository
      */
     public function exists(string $class)
     {
-        return isset($this->data[$class]);
+        return $this->getFilename($class) !== null;
     }
 
     /**
@@ -70,30 +75,36 @@ class ClassesRepository
      */
     public function load(string $class): self
     {
-        if (isset($this->data[$class])) {
+        $filename = $this->getFilename($class);
+        if ($filename !== null) {
             (static function($__filename) {
                 include_once $__filename;
-            })($this->data[$class]);
+            })($filename);
+        }
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $class
+     * @return string|nulls
+     */
+    private function getFilename(string $class): ?string
+    {
+        if (isset($this->classes[$class])) {
+            return $this->classes[$class];
         } else {
-            if ($this->wildcardCache === null) {
-                $this->wildcardCache = [];
-                foreach ($this->data as $_class => $_filename) {
-                    if (substr($_class, -2) === '\*') { // Is class in a namespace. Example: Namespace\*
-                        $this->wildcardCache[substr($_class, 0, -1)] = $_filename;
+            foreach ($this->patterns as $pattern) {
+                list($prefix, $filename) = $pattern;
+                if (strpos($class, $prefix) === 0) {
+                    $filename = str_replace('*', str_replace('\\', '/', substr($class, strlen($prefix))), $filename);
+                    if (is_file($filename)) {
+                        return $filename;
                     }
                 }
             }
-            foreach ($this->wildcardCache as $prefix => $filename) {
-                if (strpos($class, $prefix) === 0) {
-                    $filename = str_replace('*', str_replace('\\', '/', substr($class, strlen($prefix))), $filename);
-                    (static function($__filename) {
-                        include_once $__filename;
-                    })($filename);
-                    break;
-                }
-            }
         }
-        return $this;
+        return null;
     }
 
 }
