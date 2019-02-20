@@ -116,8 +116,10 @@ class ErrorHandler
                 
             }
         }
-        if (ob_get_length() > 0) {
-            ob_clean();
+
+        $level = ob_get_level();
+        for ($i = 0; $i < $level; $i++) {
+            ob_end_clean();
         }
         if ($displayErrors) {
             http_response_code(503);
