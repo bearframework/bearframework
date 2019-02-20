@@ -99,7 +99,7 @@ class ErrorHandler
             }
             $addContent('Message', $message, true, true);
             $addContent('Simple trace', implode("\n", $simpleTrace), true, true);
-            //$addContent('Full trace', print_r($trace, true), false, true);
+            $addContent('Full trace', print_r($trace, true), false, true);
         }
         $addContent('Request', $app->request->method . ' ' . $app->request->base . $app->request->path, true, true);
         $addContent('PHP variables', print_r([
