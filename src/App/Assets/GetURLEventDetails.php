@@ -12,7 +12,7 @@ namespace BearFramework\App\Assets;
 /**
  * @property string $filename
  * @property array $options
- * @property string $url
+ * @property string|null $url
  */
 class GetURLEventDetails
 {
@@ -23,9 +23,9 @@ class GetURLEventDetails
      * 
      * @param string $filename
      * @param array $options
-     * @param string $url
+     * @param string|null $url
      */
-    public function __construct(string $filename, array $options, string $url)
+    public function __construct(string $filename, array $options, string $url = null)
     {
         $this
                 ->defineProperty('filename', [
@@ -35,7 +35,7 @@ class GetURLEventDetails
                     'type' => 'array'
                 ])
                 ->defineProperty('url', [
-                    'type' => 'string'
+                    'type' => '?string'
                 ])
         ;
         $this->filename = $filename;

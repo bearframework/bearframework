@@ -1,7 +1,7 @@
 # BearFramework\App\Assets\GetURLEventDetails::__construct
 
 ```php
-public __construct ( string $filename , array $options , string $url )
+public __construct ( string $filename , array $options [, string|null $url ] )
 ```
 
 ## Parameters

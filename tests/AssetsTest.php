@@ -257,6 +257,25 @@ class AssetsTest extends BearFrameworkTestCase
         $app->assets->addEventListener('getURL', function(\BearFramework\App\Assets\GetURLEventDetails $details) {
             $details->url = 'http://example.com/file.svg';
         });
+
+        $url = $app->assets->getURL($filename);
+        $this->assertTrue($url === 'http://example.com/file.svg');
+    }
+
+    /**
+     * 
+     */
+    public function testAssetGetURLEvent2()
+    {
+        $app = $this->getApp();
+
+        $filename = $app->config['appDir'] . '/missing/file.svg';
+
+        $app->assets->addEventListener('getURL', function(\BearFramework\App\Assets\GetURLEventDetails $details) {
+            $this->assertTrue($details->url === null);
+            $details->url = 'http://example.com/file.svg';
+        });
+
         $url = $app->assets->getURL($filename);
         $this->assertTrue($url === 'http://example.com/file.svg');
     }

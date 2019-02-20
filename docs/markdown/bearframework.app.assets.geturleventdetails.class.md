@@ -6,10 +6,10 @@ BearFramework\App\Assets\GetURLEventDetails {
 	/* Properties */
 	public string $filename
 	public array $options
-	public string $url
+	public string|null $url
 
 	/* Methods */
-	public __construct ( string $filename , array $options , string $url )
+	public __construct ( string $filename , array $options [, string|null $url ] )
 
 }
 ```
@@ -20,11 +20,11 @@ BearFramework\App\Assets\GetURLEventDetails {
 
 ##### public array $options
 
-##### public string $url
+##### public string|null $url
 
 ## Methods
 
-##### public [__construct](bearframework.app.assets.geturleventdetails.__construct.method.md) ( string $filename , array $options , string $url )
+##### public [__construct](bearframework.app.assets.geturleventdetails.__construct.method.md) ( string $filename , array $options [, string|null $url ] )
 
 ## Details
 
