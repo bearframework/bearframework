@@ -646,15 +646,16 @@ class Assets
                 $destinationX = - ($resizedImageWidth - $width) / 2;
                 $destinationY = - ($resizedImageHeight - $height) / 2;
 
+                $tempFilename = $this->app->data->getFilename('.temp/assets/resize' . uniqid());
                 if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
-                    if ($outputType == 'jpg') {
-                        $result = imagejpeg($resultImage, $destinationFilename, 100);
-                    } elseif ($outputType == 'png') {
-                        $result = imagepng($resultImage, $destinationFilename, 9);
-                    } elseif ($outputType == 'gif') {
-                        $result = imagegif($resultImage, $destinationFilename);
-                    } elseif ($outputType == 'webp') {
-                        $result = imagewebp($resultImage, $destinationFilename, 100);
+                    if ($outputType === 'jpg') {
+                        $result = imagejpeg($resultImage, $tempFilename, 100);
+                    } elseif ($outputType === 'png') {
+                        $result = imagepng($resultImage, $tempFilename, 9);
+                    } elseif ($outputType === 'gif') {
+                        $result = imagegif($resultImage, $tempFilename);
+                    } elseif ($outputType === 'webp') {
+                        $result = imagewebp($resultImage, $tempFilename, 100);
                     }
                 }
                 imagedestroy($resultImage);
@@ -662,7 +663,18 @@ class Assets
                 
             }
             imagedestroy($sourceImage);
-            if (!$result) {
+            if ($result) {
+                $e = null;
+                try {
+                    copy($tempFilename, $destinationFilename);
+                } catch (\Exception $e) {
+                    
+                }
+                unlink($tempFilename);
+                if ($e !== null) {
+                    throw $e;
+                }
+            } else {
                 throw new \Exception('Cannot save resized asset (' . $destinationFilename . ')');
             }
         }

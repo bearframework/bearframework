@@ -158,7 +158,7 @@ class Request
                         $headers = new App\Request\HeadersRepository();
                         if ($initializeFromEnvironment && isset($_SERVER)) {
                             foreach ($_SERVER as $name => $value) {
-                                if (substr($name, 0, 5) == 'HTTP_') {
+                                if (substr($name, 0, 5) === 'HTTP_') {
                                     $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
                                 }
                             }
