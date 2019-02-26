@@ -40,10 +40,11 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      */
     public function __construct(string $dir)
     {
-        $this->dir = realpath($dir);
-        if ($this->dir === false) {
+        $dir = rtrim($dir, '/\\');
+        if (!is_dir($dir)) {
             throw new \Exception('The directory specified is not valid.');
         }
+        $this->dir = $dir;
     }
 
     /**

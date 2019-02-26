@@ -95,7 +95,7 @@ class ContextsRepository
         if (!isset($this->dirs[$dir])) {
             $this->dirs[$dir] = strlen($dir);
             arsort($this->dirs);
-            $indexFilename = realpath($dir . 'index.php');
+            $indexFilename = $dir . 'index.php';
             if (is_file($indexFilename)) {
                 ob_start();
                 try {

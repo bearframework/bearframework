@@ -27,8 +27,8 @@ class FileLogger implements ILogger
      */
     public function __construct($dir)
     {
-        $dir = realpath($dir);
-        if ($dir === false) {
+        $dir = rtrim($dir, '/\\');
+        if (!is_dir($dir)) {
             throw new \Exception('The logs directory specified is not valid.');
         }
         $this->dir = $dir;

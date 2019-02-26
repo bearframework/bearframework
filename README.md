@@ -2,9 +2,9 @@
 
 **Incredibly lightweight. Powerful enough.**
 
-An open-sourced **PHP framework** that can help you build successful projects better. It's also easy to install and extend. Just like you'd expect from a modern framework.
+An open-source **PHP framework** that can help you build successful projects better. It's also easy to install and extend. Just like you'd expect from a modern framework.
 
-Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/documentation/routing/">routing</a>, <a href="http://bearframework.com/documentation/data/">data storage</a>, <a href="http://bearframework.com/documentation/addons/">addons</a>, <a href="http://bearframework.com/documentation/logging/">logging</a>, <a href="http://bearframework.com/documentation/assets/">assets helpers</a> and <a href="http://bearframework.com/documentation/">few more useful tools</a>.
+Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/docs/routing/">routing</a>, <a href="http://bearframework.com/docs/data/">data storage</a>, <a href="http://bearframework.com/docs/addons/">addons</a>, <a href="http://bearframework.com/docs/logging/">logging</a>, <a href="http://bearframework.com/docs/assets/">assets helpers</a> and <a href="http://bearframework.com/docs/">few more useful tools</a>.
 
 [![Build Status](https://travis-ci.org/bearframework/bearframework.svg)](https://travis-ci.org/bearframework/bearframework)
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
@@ -45,13 +45,13 @@ composer create-project bearframework/app [my-app-name]
 Download the [latest release](https://github.com/bearframework/bearframework/releases) from our GitHub page.
 
 ## Documentation
-Documentation is available at [http://bearframework.com/documentation/](http://bearframework.com/documentation/).
+Documentation is available at [http://bearframework.com/docs/](http://bearframework.com/docs/).
 
 ## How to run the tests
 After installing the dependencies with Composer, you will have a local version of PHPUnit. You can run the tests like this: `vendor/bin/phpunit tests/`.
 
 ## License
-Bear Framework is open-sourced software. It's free to use under the MIT license. See the [license file](https://github.com/bearframework/bearframework/blob/master/LICENSE) for more information.
+Bear Framework is open-source software. It's free to use under the MIT license. See the [license file](https://github.com/bearframework/bearframework/blob/master/LICENSE) for more information.
 
 ## Let's talk
 Follow and contact Bear Framework team at [bearframework.com](http://bearframework.com), [Twitter (@bearframework)](https://twitter.com/bearframework) and [Facebook](https://www.facebook.com/bearframework/).
