@@ -74,13 +74,14 @@ class FileDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
             }
             return false;
         };
-        for ($i = 0; $i < 3; $i++) {
+        $retriesCount = 40;
+        for ($i = 0; $i < $retriesCount; $i++) {
             $handle = $getFileHandle();
             if ($handle !== false) {
                 $this->fileHandle = $handle;
                 return true;
             }
-            if ($i < 2) {
+            if ($i < $retriesCount - 1) {
                 usleep(500000);
             }
         }
