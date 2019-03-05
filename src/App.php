@@ -206,6 +206,9 @@ class App
         if (!$response->headers->exists('Content-Length')) {
             $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
         }
+        if (!$response->headers->exists('Cache-Control')) {
+            $response->headers->set($response->headers->make('Cache-Control', 'no-cache, no-store, must-revalidate, private, max-age=0'));
+        }
         http_response_code($response->statusCode);
         if (!headers_sent()) {
             $headers = $response->headers->getList();
