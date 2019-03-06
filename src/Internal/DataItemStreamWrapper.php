@@ -294,58 +294,74 @@ class DataItemStreamWrapper
      */
     public function url_stat(string $path, int $flags)
     {
+        $makeResult = function($mode, $size) {
+            $result = [];
+            $result[0] = $result['dev'] = 0;
+            $result[1] = $result['ino'] = 0;
+            $result[2] = $result['mode'] = $mode;
+            $result[3] = $result['nlink'] = 0;
+            $result[4] = $result['uid'] = 0;
+            $result[5] = $result['gid'] = 0;
+            $result[6] = $result['rdev'] = -1;
+            $result[7] = $result['size'] = $size;
+            $result[8] = $result['atime'] = 0;
+            $result[9] = $result['mtime'] = 0;
+            $result[10] = $result['ctime'] = 0;
+            $result[11] = $result['blksize'] = -1;
+            $result[12] = $result['blocks'] = -1;
+            return $result;
+        };
         if (substr($path, -3) === '://') {
-            $mode = 0040666; //dir
-            $size = 0;
+            return $makeResult(0040666, 0); // dir
         } else {
             $pathInfo = $this->getPathInfo(rtrim($path, '/'));
             if ($pathInfo === false) {
                 return false;
             }
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $caller = isset($backtrace[1], $backtrace[1]['function']) ? (isset($backtrace[1]['class']) ? $backtrace[1]['class'] . '::' : '') . $backtrace[1]['function'] : null;
+
             $key = $pathInfo['key'];
             $dataDriver = $pathInfo['dataDriver'];
-            $result = $dataDriver->getList()
-                    ->filterBy('key', $key . '/', 'startWith')
-                    ->sliceProperties(['key']);
-            if ($result->count() > 0) { // TODO optimize
-                $mode = 0040666; //dir
-                $size = 0;
-            } else {
-                $dataRepository = $pathInfo['dataRepository'];
-                if ($dataDriver->exists($key)) {
-                    $dataItemWrapper = $dataDriver->getDataItemStreamWrapper($key);
-                    $mode = 0100666; // file
-                    $size = $dataItemWrapper->size();
-                    $exists = true;
-                } else {
-                    $exists = false;
+            if (array_search($caller, ['filetype', 'is_dir', 'file_exists', 'lstat', 'stat', 'SplFileInfo::getType', 'SplFileInfo::isDir']) !== false) {
+                $listContext = new \BearFramework\DataList\Context();
+                $action = new \BearFramework\DataList\FilterByAction();
+                $action->property = 'key';
+                $action->value = $key . '/';
+                $action->operator = 'startWith';
+                $listContext->actions[] = $action;
+                $action = new \BearFramework\DataList\SlicePropertiesAction();
+                $action->properties = ['key'];
+                $listContext->actions[] = $action;
+                $result = $dataDriver->getList($listContext);
+                if ($result->count() > 0) { // TODO optimize
+                    return $makeResult(0040666, 0); // dir
                 }
-                if ($dataRepository->hasEventListeners('itemExists')) {
-                    $dataRepository->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEventDetails($key, $exists));
-                }
-                if ($dataRepository->hasEventListeners('itemRequest')) {
-                    $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
-                }
-                if (!$exists) {
+                if (array_search($caller, ['is_dir', 'SplFileInfo::isDir']) !== false) {
                     return false;
                 }
             }
+            // maybe it's a file
+            if ($dataDriver->exists($key)) {
+                $dataItemWrapper = $dataDriver->getDataItemStreamWrapper($key);
+                $result = $makeResult(0100666, $dataItemWrapper->size()); // file
+                $exists = true;
+            } else {
+                $exists = false;
+            }
+            $dataRepository = $pathInfo['dataRepository'];
+            if ($dataRepository->hasEventListeners('itemExists')) {
+                $dataRepository->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEventDetails($key, $exists));
+            }
+            if ($dataRepository->hasEventListeners('itemRequest')) {
+                $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+            }
+            if ($exists) {
+                return $result;
+            } else {
+                return false;
+            }
         }
-        $result = [];
-        $result[0] = $result['dev'] = 0;
-        $result[1] = $result['ino'] = 0;
-        $result[2] = $result['mode'] = $mode;
-        $result[3] = $result['nlink'] = 0;
-        $result[4] = $result['uid'] = 0;
-        $result[5] = $result['gid'] = 0;
-        $result[6] = $result['rdev'] = -1;
-        $result[7] = $result['size'] = $size;
-        $result[8] = $result['atime'] = 0;
-        $result[9] = $result['mtime'] = 0;
-        $result[10] = $result['ctime'] = 0;
-        $result[11] = $result['blksize'] = -1;
-        $result[12] = $result['blocks'] = -1;
-        return $result;
     }
 
     /**

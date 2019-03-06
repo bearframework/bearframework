@@ -314,7 +314,9 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
                     $whereOptions[] = [$action->property, $action->value, $action->operator];
                 } elseif ($action instanceof \BearFramework\DataList\SlicePropertiesAction) {
                     foreach ($action->properties as $requestedProperty) {
-                        if ($requestedProperty === 'value') {
+                        if ($requestedProperty === 'key') {
+                            $resultKeys[] = 'key';
+                        } elseif ($requestedProperty === 'value') {
                             $resultKeys[] = 'body';
                         } elseif ($requestedProperty === 'metadata') {
                             $resultKeys[] = 'metadata';
