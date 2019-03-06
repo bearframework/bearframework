@@ -12,7 +12,7 @@ namespace BearFramework\DataList;
 /**
  * 
  */
-class Object implements \ArrayAccess
+class DataObject implements \ArrayAccess
 {
 
     use \IvoPetkov\DataObjectTrait;
