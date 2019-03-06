@@ -1038,18 +1038,22 @@ class DataTest extends BearFrameworkTestCase
         $app->data->setValue('aa/bb/cc', '123');
         $app->data->setValue('aa/bb/dd', '124');
 
+        $this->assertTrue(is_dir('appdata://aa/bb'));
+        $this->assertTrue(rmdir('appdata://aa/bb'));
+        $this->assertTrue(mkdir('appdata://aa/bb'));
+
         $this->assertTrue(is_dir('appdata://aa/bb/'));
         $this->assertTrue(rmdir('appdata://aa/bb/'));
         $this->assertTrue(mkdir('appdata://aa/bb/'));
 
-        $this->assertEquals(scandir('appdata://aa'), ['.', '..', 'bb/cc', 'bb/dd']);
-        $this->assertEquals(scandir('appdata://aa/'), ['.', '..', 'bb/cc', 'bb/dd']);
-        $this->assertEquals(scandir('appdata://'), ['.', '..', 'aa/bb/cc', 'aa/bb/dd']);
+        $this->assertEquals(scandir('appdata://aa'), ['.', '..', 'bb']);
+        $this->assertEquals(scandir('appdata://aa/'), ['.', '..', 'bb']);
+        $this->assertEquals(scandir('appdata://'), ['.', '..', 'aa']);
 
-        $app->data->setValue('aa/bb/ee', '125');
-        $this->assertEquals(scandir('appdata://aa'), ['.', '..', 'bb/cc', 'bb/dd', 'bb/ee']);
-        $this->assertEquals(scandir('appdata://aa/'), ['.', '..', 'bb/cc', 'bb/dd', 'bb/ee']);
-        $this->assertEquals(scandir('appdata://'), ['.', '..', 'aa/bb/cc', 'aa/bb/dd', 'aa/bb/ee']);
+        $app->data->setValue('aa/xx/ee', '125');
+        $this->assertEquals(scandir('appdata://aa'), ['.', '..', 'bb', 'xx']);
+        $this->assertEquals(scandir('appdata://aa/'), ['.', '..', 'bb', 'xx']);
+        $this->assertEquals(scandir('appdata://'), ['.', '..', 'aa']);
     }
 
     /**

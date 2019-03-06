@@ -298,30 +298,19 @@ class DataItemStreamWrapper
             $mode = 0040666; //dir
             $size = 0;
         } else {
-            $treatAsDir = false;
-            $lastCharacter = substr($path, -1);
-            if ($lastCharacter === '/' || $lastCharacter === '\\') {
-                $treatAsDir = true;
-                $path = substr($path, 0, -1);
-            }
-            $pathInfo = $this->getPathInfo($path);
+            $pathInfo = $this->getPathInfo(rtrim($path, '/'));
             if ($pathInfo === false) {
                 return false;
             }
             $key = $pathInfo['key'];
-            if ($treatAsDir) {
-                $dataRepository = $pathInfo['dataRepository'];
-                $result = $dataRepository->getList()
-                        ->filterBy('key', $key, 'startWith')
-                        ->sliceProperties(['key']);
-                if ($result->count() > 0) {
-                    $mode = 0040666; //dir
-                    $size = 0;
-                } else {
-                    return false;
-                }
+            $dataDriver = $pathInfo['dataDriver'];
+            $result = $dataDriver->getList()
+                    ->filterBy('key', $key . '/', 'startWith')
+                    ->sliceProperties(['key']);
+            if ($result->count() > 0) { // TODO optimize
+                $mode = 0040666; //dir
+                $size = 0;
             } else {
-                $dataDriver = $pathInfo['dataDriver'];
                 $dataRepository = $pathInfo['dataRepository'];
                 if ($dataDriver->exists($key)) {
                     $dataItemWrapper = $dataDriver->getDataItemStreamWrapper($key);
@@ -426,25 +415,30 @@ class DataItemStreamWrapper
         if ($pathInfo === false) {
             return false;
         }
-        $this->dirFiles[] = '.';
-        $this->dirFiles[] = '..';
+        $temp = [];
+        $temp['.'] = 0;
+        $temp['..'] = 0;
         $dataRepository = $pathInfo['dataRepository'];
-        if ($isRoot) {
-            $result = $dataRepository->getList()
-                    ->sliceProperties(['key']);
-            foreach ($result as $item) {
-                $this->dirFiles[] = $item['key'];
-            }
-        } else {
+        $list = $dataRepository->getList(); // TODO optimize
+        if (!$isRoot) {
             $key = $pathInfo['key'] . '/';
             $keyLength = strlen($key);
-            $result = $dataRepository->getList()
-                    ->filterBy('key', $key, 'startWith')
-                    ->sliceProperties(['key']);
-            foreach ($result as $item) {
-                $this->dirFiles[] = substr($item['key'], $keyLength);
+            $list->filterBy('key', $key, 'startWith');
+        }
+        $result = $list->sliceProperties(['key']);
+        foreach ($result as $item) {
+            if (!$isRoot) {
+                $item['key'] = substr($item['key'], $keyLength);
+            }
+            $slashPosition = strpos($item['key'], '/');
+            if ($slashPosition !== false) {
+                $temp[substr($item['key'], 0, $slashPosition)] = 0;
+            } else {
+                $temp[$item['key']] = 0;
             }
         }
+        $this->dirFiles = array_keys($temp);
+        unset($temp);
         return true;
     }
 

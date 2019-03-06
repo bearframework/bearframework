@@ -299,24 +299,26 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     /**
      * Returns a list of all items in the data storage.
      * 
-     * @param \BearFramework\DataList\Context $context
+     * @param \BearFramework\DataList\Context|null $context
      * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function getList(\BearFramework\DataList\Context $context): \BearFramework\DataList
+    public function getList(\BearFramework\DataList\Context $context = null): \BearFramework\DataList
     {
         $whereOptions = [];
         $resultKeys = [];
-        foreach ($context->actions as $action) {
-            if ($action instanceof \BearFramework\DataList\FilterByAction) {
-                $whereOptions[] = [$action->property, $action->value, $action->operator];
-            } elseif ($action instanceof \BearFramework\DataList\SlicePropertiesAction) {
-                foreach ($action->properties as $requestedProperty) {
-                    if ($requestedProperty === 'value') {
-                        $resultKeys[] = 'body';
-                    } elseif ($requestedProperty === 'metadata') {
-                        $resultKeys[] = 'metadata';
+        if ($context !== null) {
+            foreach ($context->actions as $action) {
+                if ($action instanceof \BearFramework\DataList\FilterByAction) {
+                    $whereOptions[] = [$action->property, $action->value, $action->operator];
+                } elseif ($action instanceof \BearFramework\DataList\SlicePropertiesAction) {
+                    foreach ($action->properties as $requestedProperty) {
+                        if ($requestedProperty === 'value') {
+                            $resultKeys[] = 'body';
+                        } elseif ($requestedProperty === 'metadata') {
+                            $resultKeys[] = 'metadata';
+                        }
                     }
                 }
             }
