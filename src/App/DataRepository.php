@@ -55,11 +55,10 @@ class DataRepository
     /**
      * Constructs a new data repository.
      * 
-     * @param \BearFramework\App $app
      * @param array $options Available options: filenameProtocol - a protocol used for working with data items as files.
      * @throws \Exception
      */
-    public function __construct(\BearFramework\App $app, array $options = [])
+    public function __construct(array $options = [])
     {
         if (isset($options['filenameProtocol'])) {
             if (is_string($options['filenameProtocol'])) {

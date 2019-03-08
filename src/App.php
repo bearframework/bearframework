@@ -92,13 +92,13 @@ class App
                 ])
                 ->defineProperty('data', [
                     'init' => function() {
-                        return new App\DataRepository($this, ['filenameProtocol' => 'appdata']);
+                        return new App\DataRepository(['filenameProtocol' => 'appdata']);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('cache', [
                     'init' => function() {
-                        return new App\CacheRepository($this);
+                        return new App\CacheRepository();
                     },
                     'readonly' => true
                 ])

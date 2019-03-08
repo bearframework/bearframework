@@ -9,6 +9,7 @@
 
 namespace BearFramework\App;
 
+use BearFramework\App;
 use BearFramework\App\CacheItem;
 
 /**
@@ -39,28 +40,14 @@ class CacheRepository
     private $driver = null;
 
     /**
-     *
-     * @var \BearFramework\App 
-     */
-    private $app = null;
-
-    /**
-     * 
-     * @param \BearFramework\App $app
-     */
-    public function __construct(\BearFramework\App $app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * Enables the app cache driver. The cached data will be stored in the app data repository.
      * 
      * @return self Returns a reference to itself.
      */
     public function useAppDataDriver(): self
     {
-        $this->setDriver(new \BearFramework\App\DataCacheDriver($this->app->data));
+        $app = App::get();
+        $this->setDriver(new \BearFramework\App\DataCacheDriver($app->data));
         return $this;
     }
 
