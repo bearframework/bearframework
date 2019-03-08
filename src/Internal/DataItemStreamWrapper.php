@@ -20,12 +20,6 @@ class DataItemStreamWrapper
      *
      * @var string 
      */
-    private $protocol = null;
-
-    /**
-     *
-     * @var string 
-     */
     private $key = null;
 
     /**
@@ -89,7 +83,6 @@ class DataItemStreamWrapper
         if ($pathInfo === false) {
             return false;
         }
-        $this->protocol = $pathInfo['protocol'];
         $this->key = $pathInfo['key'];
         $dataDriver = $pathInfo['dataDriver'];
         $this->dataItemWrapper = $dataDriver->getDataItemStreamWrapper($this->key);
@@ -531,26 +524,20 @@ class DataItemStreamWrapper
             return false;
         }
         $environment = self::$environment[$protocol];
-        if (!isset($environment[0]) || !($environment[0] instanceof \BearFramework\App)) {
+        if (!isset($environment[0]) || !($environment[0] instanceof \BearFramework\App\DataRepository)) {
             return false;
         }
-        $app = $environment[0];
-        if (!isset($environment[1]) || !($environment[1] instanceof \BearFramework\App\DataRepository)) {
-            return false;
-        }
-        $dataRepository = $environment[1];
+        $dataRepository = $environment[0];
         $key = $pathParts[1];
         if (!$dataRepository->validate($key)) {
             return false;
         }
-        if (!isset($environment[2]) || !($environment[2] instanceof \BearFramework\App\IDataDriver)) {
+        if (!isset($environment[1]) || !($environment[1] instanceof \BearFramework\App\IDataDriver)) {
             return false;
         }
-        $dataDriver = $environment[2];
+        $dataDriver = $environment[1];
         return [
-            'protocol' => $protocol,
             'key' => $key,
-            'app' => $app,
             'dataRepository' => $dataRepository,
             'dataDriver' => $dataDriver
         ];

@@ -53,12 +53,6 @@ class DataRepository
     private $filenameProtocol = null;
 
     /**
-     *
-     * @var \BearFramework\App 
-     */
-    private $app = null;
-
-    /**
      * Constructs a new data repository.
      * 
      * @param \BearFramework\App $app
@@ -67,7 +61,6 @@ class DataRepository
      */
     public function __construct(\BearFramework\App $app, array $options = [])
     {
-        $this->app = $app;
         if (isset($options['filenameProtocol'])) {
             if (is_string($options['filenameProtocol'])) {
                 $this->filenameProtocol = $options['filenameProtocol'];
@@ -115,7 +108,7 @@ class DataRepository
         }
         $this->driver = $driver;
         if ($this->filenameProtocol !== null) {
-            \BearFramework\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$this->app, $this, $driver];
+            \BearFramework\Internal\DataItemStreamWrapper::$environment[$this->filenameProtocol] = [$this, $driver];
         }
         return $this;
     }
