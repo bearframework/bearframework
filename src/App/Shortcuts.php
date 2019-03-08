@@ -14,7 +14,7 @@ namespace BearFramework\App;
  * 
  * @codeCoverageIgnore
  */
-class ShortcutsRepository
+class Shortcuts
 {
 
     /**

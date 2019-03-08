@@ -12,7 +12,7 @@ namespace BearFramework\App\Response;
 /**
  * Provides information about the response cookies
  */
-class CookiesRepository
+class Cookies
 {
 
     /**

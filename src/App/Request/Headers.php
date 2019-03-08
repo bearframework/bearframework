@@ -12,7 +12,7 @@ namespace BearFramework\App\Request;
 /**
  * Provides information about the request headers
  */
-class HeadersRepository
+class Headers
 {
 
     /**

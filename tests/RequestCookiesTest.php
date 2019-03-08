@@ -8,7 +8,7 @@
  */
 
 use BearFramework\App\Request\Cookie;
-use BearFramework\App\Request\CookiesRepository;
+use BearFramework\App\Request\Cookies;
 
 /**
  * @runTestsInSeparateProcesses
@@ -21,7 +21,7 @@ class RequestCookiesTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $cookies = new CookiesRepository();
+        $cookies = new Cookies();
         $cookies->set($cookies->make('name1', 'value1'));
         $cookies->set($cookies->make('name2', 'value2'));
         $this->assertNull($cookies->get('missing'));

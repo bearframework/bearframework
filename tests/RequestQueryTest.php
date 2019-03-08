@@ -8,7 +8,7 @@
  */
 
 use BearFramework\App\Request\QueryItem;
-use BearFramework\App\Request\QueryRepository;
+use BearFramework\App\Request\Query;
 
 /**
  * @runTestsInSeparateProcesses
@@ -21,7 +21,7 @@ class RequestQueryTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $query = new QueryRepository();
+        $query = new Query();
         $query->set($query->make('name1', 'value1'));
         $query->set($query->make('name2', 'value2'));
         $this->assertNull($query->get('missing'));

@@ -12,7 +12,7 @@ namespace BearFramework\App;
 /**
  *  Provides a way to enable addons.
  */
-class AddonsRepository
+class Addons
 {
 
     /**

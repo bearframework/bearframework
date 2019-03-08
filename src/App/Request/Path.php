@@ -12,7 +12,7 @@ namespace BearFramework\App\Request;
 /**
  * Provides information about the request path.
  */
-class PathRepository
+class Path
 {
 
     /**

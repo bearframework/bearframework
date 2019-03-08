@@ -19,11 +19,11 @@ use BearFramework\App;
  * @property string|null $scheme The request scheme.
  * @property string|null $host The request hostname.
  * @property int|null $port The request port.
- * @property-read \BearFramework\App\Request\PathRepository $path The request path.
- * @property-read \BearFramework\App\Request\QueryRepository $query The request query string.
- * @property-read \BearFramework\App\Request\HeadersRepository $headers The request headers.
- * @property-read \BearFramework\App\Request\CookiesRepository $cookies The request cookies.
- * @property-read \BearFramework\App\Request\FormDataRepository $formData The request POST data and files.
+ * @property-read \BearFramework\App\Request\Path $path The request path.
+ * @property-read \BearFramework\App\Request\Query $query The request query string.
+ * @property-read \BearFramework\App\Request\Headers $headers The request headers.
+ * @property-read \BearFramework\App\Request\Cookies $cookies The request cookies.
+ * @property-read \BearFramework\App\Request\FormData $formData The request POST data and files.
  */
 class Request
 {
@@ -130,13 +130,13 @@ class Request
         $this
                 ->defineProperty('path', [
                     'init' => function() use ($path) {
-                        return new App\Request\PathRepository(isset($path{0}) ? rawurldecode($path) : '/');
+                        return new App\Request\Path(isset($path{0}) ? rawurldecode($path) : '/');
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('query', [
                     'init' => function() use ($initializeFromEnvironment) {
-                        $query = new App\Request\QueryRepository();
+                        $query = new App\Request\Query();
                         if ($initializeFromEnvironment && isset($_GET)) {
                             $walkVariables = function($variables, $parent = null) use (&$query, &$walkVariables) {
                                         foreach ($variables as $name => $value) {
@@ -155,7 +155,7 @@ class Request
                 ])
                 ->defineProperty('headers', [
                     'init' => function() use ($initializeFromEnvironment) {
-                        $headers = new App\Request\HeadersRepository();
+                        $headers = new App\Request\Headers();
                         if ($initializeFromEnvironment && isset($_SERVER)) {
                             foreach ($_SERVER as $name => $value) {
                                 if (substr($name, 0, 5) === 'HTTP_') {
@@ -169,7 +169,7 @@ class Request
                 ])
                 ->defineProperty('cookies', [
                     'init' => function() use ($initializeFromEnvironment) {
-                        $cookies = new App\Request\CookiesRepository();
+                        $cookies = new App\Request\Cookies();
                         if ($initializeFromEnvironment && isset($_COOKIE)) {
                             $stringifyKeys = function($rawCookies, $level = 0) use (&$stringifyKeys) {
                                         $result = [];
@@ -197,7 +197,7 @@ class Request
                 ])
                 ->defineProperty('formData', [
                     'init' => function() use ($initializeFromEnvironment) {
-                        $data = new App\Request\FormDataRepository();
+                        $data = new App\Request\FormData();
                         if ($initializeFromEnvironment && isset($_POST, $_FILES)) {
                             $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
                                         foreach ($variables as $name => $value) {

@@ -12,7 +12,7 @@ namespace BearFramework\App\Request;
 /**
  * Provides information about the response query items
  */
-class QueryRepository
+class Query
 {
 
     /**

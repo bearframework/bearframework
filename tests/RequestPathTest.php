@@ -18,7 +18,7 @@ class RequestPathTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $path = new \BearFramework\App\Request\PathRepository('/path1/path2/');
+        $path = new \BearFramework\App\Request\Path('/path1/path2/');
         $this->assertTrue((string) $path === '/path1/path2/');
         $this->assertTrue($path->get() === '/path1/path2/');
         $this->assertTrue($path->getSegment(0) === 'path1');
@@ -31,7 +31,7 @@ class RequestPathTest extends BearFrameworkTestCase
      */
     function testSpecialChars()
     {
-        $path = new \BearFramework\App\Request\PathRepository('/път1/път2/');
+        $path = new \BearFramework\App\Request\Path('/път1/път2/');
         $this->assertTrue((string) $path === '/път1/път2/');
         $this->assertTrue($path->get() === '/път1/път2/');
         $this->assertTrue($path->getSegment(0) === 'път1');

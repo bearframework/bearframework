@@ -8,7 +8,7 @@
  */
 
 use BearFramework\App\Request\FormDataItem;
-use BearFramework\App\Request\FormDataRepository;
+use BearFramework\App\Request\FormData;
 
 /**
  * @runTestsInSeparateProcesses
@@ -21,7 +21,7 @@ class RequestDataTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $formData = new FormDataRepository();
+        $formData = new FormData();
         $formData->set($formData->make('name1', 'value1'));
         $formData->set($formData->make('name2', 'value2'));
         $this->assertNull($formData->get('missing'));

@@ -15,7 +15,7 @@ use BearFramework\App\Request\FormDataItemsList;
 /**
  * Provides information about the response form data items.
  */
-class FormDataRepository
+class FormData
 {
 
     /**

@@ -12,7 +12,7 @@ namespace BearFramework\App;
 /**
  * Logs repository
  */
-class LogsRepository
+class Logs
 {
 
     /**

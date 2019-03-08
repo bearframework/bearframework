@@ -14,7 +14,7 @@ use BearFramework\App;
 /**
  * Provides information about your code context (the directory its located).
  */
-class ContextsRepository
+class Contexts
 {
 
     /**

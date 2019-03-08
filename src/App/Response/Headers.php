@@ -12,7 +12,7 @@ namespace BearFramework\App\Response;
 /**
  * A repository for the response headers.
  */
-class HeadersRepository
+class Headers
 {
 
     /**

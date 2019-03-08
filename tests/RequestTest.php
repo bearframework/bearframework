@@ -77,21 +77,21 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPath()
     {
-        $path = new \BearFramework\App\Request\PathRepository('/part1/part2/');
+        $path = new \BearFramework\App\Request\Path('/part1/part2/');
         $this->assertTrue((string) $path === '/part1/part2/');
         $this->assertTrue($path->getSegment(0) === 'part1');
         $this->assertTrue($path->getSegment(1) === 'part2');
         $this->assertTrue($path->getSegment(2) === null);
 
-        $path = new \BearFramework\App\Request\PathRepository('part1/part2');
+        $path = new \BearFramework\App\Request\Path('part1/part2');
         $this->assertTrue($path->getSegment(0) === 'part1');
         $this->assertTrue($path->getSegment(1) === 'part2');
         $this->assertTrue($path->getSegment(2) === null);
 
-        $path = new \BearFramework\App\Request\PathRepository('');
+        $path = new \BearFramework\App\Request\Path('');
         $this->assertTrue($path->getSegment(0) === null);
 
-        $path = new \BearFramework\App\Request\PathRepository('/');
+        $path = new \BearFramework\App\Request\Path('/');
         $this->assertTrue($path->getSegment(0) === null);
     }
 
@@ -100,7 +100,7 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQuery()
     {
-        $query = new \BearFramework\App\Request\QueryRepository();
+        $query = new \BearFramework\App\Request\Query();
         $query->set($query->make('var1', '1'));
         $query->set($query->make('var2', 'a'));
         $this->assertTrue((string) $query === 'var1=1&var2=a');
@@ -111,7 +111,7 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($query->getValue('var2') === 'a');
         $this->assertTrue($query->getValue('var3') === null);
 
-        $query = new \BearFramework\App\Request\QueryRepository();
+        $query = new \BearFramework\App\Request\Query();
         $this->assertFalse($query->exists('var1'));
         $this->assertTrue($query->getValue('var1') === null);
     }

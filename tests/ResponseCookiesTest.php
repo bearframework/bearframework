@@ -8,7 +8,7 @@
  */
 
 use BearFramework\App\Response\Cookie;
-use BearFramework\App\Response\CookiesRepository;
+use BearFramework\App\Response\Cookies;
 
 /**
  * @runTestsInSeparateProcesses
@@ -21,7 +21,7 @@ class ResponseCookiesTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $cookies = new CookiesRepository();
+        $cookies = new Cookies();
         $cookie = $cookies->make('name1', 'value1');
         $cookies->set($cookie);
         $cookie = $cookies->make('name2', 'value2');

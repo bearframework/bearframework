@@ -8,7 +8,7 @@
  */
 
 use BearFramework\App\Response\Header;
-use BearFramework\App\Response\HeadersRepository;
+use BearFramework\App\Response\Headers;
 
 /**
  * @runTestsInSeparateProcesses
@@ -21,7 +21,7 @@ class ResponseHeadersTest extends BearFrameworkTestCase
      */
     function test()
     {
-        $headers = new HeadersRepository();
+        $headers = new Headers();
         $headers->set($headers->make('Content-Type', 'application/x-www-form-urlencoded'));
         $headers->set($headers->make('Content-Length', '123'));
         $this->assertNull($headers->get('missing'));

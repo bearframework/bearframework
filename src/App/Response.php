@@ -17,8 +17,8 @@ use BearFramework\App;
  * @property string $content The content of the response.
  * @property int|null $statusCode The response status code.
  * @property string $charset The response character set.
- * @property-read \BearFramework\App\Response\HeadersRepository $headers The response headers.
- * @property-read \BearFramework\App\Response\CookiesRepository $cookies The response cookies.
+ * @property-read \BearFramework\App\Response\Headers $headers The response headers.
+ * @property-read \BearFramework\App\Response\Cookies $cookies The response cookies.
  */
 class Response
 {
@@ -51,13 +51,13 @@ class Response
                 ])
                 ->defineProperty('headers', [
                     'init' => function() {
-                        return new App\Response\HeadersRepository();
+                        return new App\Response\Headers();
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('cookies', [
                     'init' => function() {
-                        return new App\Response\CookiesRepository();
+                        return new App\Response\Cookies();
                     },
                     'readonly' => true
                 ])

@@ -15,16 +15,16 @@ use BearFramework\App;
  * The is the class used to instantiate you application.
  * 
  * @property-read \BearFramework\App\Request $request Provides information about the current request.
- * @property-read \BearFramework\App\RoutesRepository $routes Stores the data about the defined routes callbacks.
- * @property-read \BearFramework\App\LogsRepository $logs Provides logging functionality.
- * @property-read \BearFramework\App\AddonsRepository $addons Provides a way to enable addons and manage their options.
+ * @property-read \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks.
+ * @property-read \BearFramework\App\Logs $logs Provides logging functionality.
+ * @property-read \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options.
  * @property-read \BearFramework\App\Assets $assets Provides utility functions for assets.
  * @property-read \BearFramework\App\DataRepository $data A file-based data storage.
  * @property-read \BearFramework\App\CacheRepository $cache Data cache.
- * @property-read \BearFramework\App\ClassesRepository $classes Provides functionality for registering and autoloading classes.
+ * @property-read \BearFramework\App\Classes $classes Provides functionality for registering and autoloading classes.
  * @property-read \BearFramework\App\URLs $urls URLs utilities.
- * @property-read \BearFramework\App\ContextsRepository $contexts Provides information about your code context (the directory its located).
- * @property-read \BearFramework\App\ShortcutsRepository $shortcuts Allow registration of $app object properties (shortcuts).
+ * @property-read \BearFramework\App\Contexts $contexts Provides information about your code context (the directory its located).
+ * @property-read \BearFramework\App\Shortcuts $shortcuts Allow registration of $app object properties (shortcuts).
  * @event \Bearframework\App\BeforeSendResponseEvent beforeSendResponse An event dispatched before the response is sent to the client.
  * @event \BearFramework\App\SendResponseEvent sendResponse An event dispatched after the response is sent to the client.
  */
@@ -68,19 +68,19 @@ class App
                 ])
                 ->defineProperty('routes', [
                     'init' => function() {
-                        return new App\RoutesRepository();
+                        return new App\Routes();
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('logs', [
                     'init' => function() {
-                        return new App\LogsRepository();
+                        return new App\Logs();
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('addons', [
                     'init' => function() {
-                        return new App\AddonsRepository($this);
+                        return new App\Addons($this);
                     },
                     'readonly' => true
                 ])
@@ -104,7 +104,7 @@ class App
                 ])
                 ->defineProperty('classes', [
                     'init' => function() {
-                        return new App\ClassesRepository();
+                        return new App\Classes();
                     },
                     'readonly' => true
                 ])
@@ -116,13 +116,13 @@ class App
                 ])
                 ->defineProperty('contexts', [
                     'init' => function() {
-                        return new App\ContextsRepository($this);
+                        return new App\Contexts($this);
                     },
                     'readonly' => true
                 ])
                 ->defineProperty('shortcuts', [
                     'init' => function() {
-                        return new App\ShortcutsRepository(function(string $name, callable $callback) {
+                        return new App\Shortcuts(function(string $name, callable $callback) {
                                     if (isset($this->$name)) {
                                         throw new \Exception('A property/shortcut named "' . $name . '" already exists!');
                                     }

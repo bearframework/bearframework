@@ -23,7 +23,7 @@ class Classes
 
     /**
      *
-     * @var \BearFramework\App\ClassesRepository 
+     * @var \BearFramework\App\Classes 
      */
     private $appClasses = null;
 
