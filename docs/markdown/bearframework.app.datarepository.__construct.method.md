@@ -3,12 +3,10 @@
 Constructs a new data repository.
 
 ```php
-public __construct ( BearFramework\App $app [, array $options = [] ] )
+public __construct ( [ array $options = [] ] )
 ```
 
 ## Parameters
-
-##### app
 
 ##### options
 

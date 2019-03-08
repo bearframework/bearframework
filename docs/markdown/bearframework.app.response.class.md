@@ -8,8 +8,8 @@ BearFramework\App\Response {
 	/* Properties */
 	public string $charset
 	public string $content
-	public readonly BearFramework\App\Response\CookiesRepository $cookies
-	public readonly BearFramework\App\Response\HeadersRepository $headers
+	public readonly BearFramework\App\Response\Cookies $cookies
+	public readonly BearFramework\App\Response\Headers $headers
 	public int|null $statusCode
 
 	/* Methods */
@@ -28,11 +28,11 @@ BearFramework\App\Response {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The content of the response.
 
-##### public readonly [BearFramework\App\Response\CookiesRepository](bearframework.app.response.cookiesrepository.class.md) $cookies
+##### public readonly [BearFramework\App\Response\Cookies](bearframework.app.response.cookies.class.md) $cookies
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The response cookies.
 
-##### public readonly [BearFramework\App\Response\HeadersRepository](bearframework.app.response.headersrepository.class.md) $headers
+##### public readonly [BearFramework\App\Response\Headers](bearframework.app.response.headers.class.md) $headers
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The response headers.
 

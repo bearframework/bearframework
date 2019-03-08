@@ -6,16 +6,16 @@ The is the class used to instantiate you application.
 BearFramework\App {
 
 	/* Properties */
-	public readonly BearFramework\App\AddonsRepository $addons
+	public readonly BearFramework\App\Addons $addons
 	public readonly BearFramework\App\Assets $assets
 	public readonly BearFramework\App\CacheRepository $cache
-	public readonly BearFramework\App\ClassesRepository $classes
-	public readonly BearFramework\App\ContextsRepository $contexts
+	public readonly BearFramework\App\Classes $classes
+	public readonly BearFramework\App\Contexts $contexts
 	public readonly BearFramework\App\DataRepository $data
-	public readonly BearFramework\App\LogsRepository $logs
+	public readonly BearFramework\App\Logs $logs
 	public readonly BearFramework\App\Request $request
-	public readonly BearFramework\App\RoutesRepository $routes
-	public readonly BearFramework\App\ShortcutsRepository $shortcuts
+	public readonly BearFramework\App\Routes $routes
+	public readonly BearFramework\App\Shortcuts $shortcuts
 	public readonly BearFramework\App\URLs $urls
 
 	/* Methods */
@@ -34,7 +34,7 @@ BearFramework\App {
 
 ## Properties
 
-##### public readonly [BearFramework\App\AddonsRepository](bearframework.app.addonsrepository.class.md) $addons
+##### public readonly [BearFramework\App\Addons](bearframework.app.addons.class.md) $addons
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides a way to enable addons and manage their options.
 
@@ -46,11 +46,11 @@ BearFramework\App {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data cache.
 
-##### public readonly [BearFramework\App\ClassesRepository](bearframework.app.classesrepository.class.md) $classes
+##### public readonly [BearFramework\App\Classes](bearframework.app.classes.class.md) $classes
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides functionality for registering and autoloading classes.
 
-##### public readonly [BearFramework\App\ContextsRepository](bearframework.app.contextsrepository.class.md) $contexts
+##### public readonly [BearFramework\App\Contexts](bearframework.app.contexts.class.md) $contexts
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides information about your code context (the directory its located).
 
@@ -58,7 +58,7 @@ BearFramework\App {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A file-based data storage.
 
-##### public readonly [BearFramework\App\LogsRepository](bearframework.app.logsrepository.class.md) $logs
+##### public readonly [BearFramework\App\Logs](bearframework.app.logs.class.md) $logs
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides logging functionality.
 
@@ -66,11 +66,11 @@ BearFramework\App {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides information about the current request.
 
-##### public readonly [BearFramework\App\RoutesRepository](bearframework.app.routesrepository.class.md) $routes
+##### public readonly [BearFramework\App\Routes](bearframework.app.routes.class.md) $routes
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores the data about the defined routes callbacks.
 
-##### public readonly [BearFramework\App\ShortcutsRepository](bearframework.app.shortcutsrepository.class.md) $shortcuts
+##### public readonly [BearFramework\App\Shortcuts](bearframework.app.shortcuts.class.md) $shortcuts
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Allow registration of $app object properties (shortcuts).
 

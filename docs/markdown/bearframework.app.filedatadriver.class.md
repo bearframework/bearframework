@@ -14,7 +14,7 @@ BearFramework\App\FileDataDriver implements BearFramework\App\IDataDriver {
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
 	public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
-	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( BearFramework\DataList\Context $context )
+	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( [ BearFramework\DataList\Context|null $context ] )
 	public string|null getMetadata ( string $key , string $name )
 	public string|null getValue ( string $key )
 	public void rename ( string $sourceKey , string $destinationKey )
@@ -63,7 +63,7 @@ BearFramework\App\FileDataDriver implements BearFramework\App\IDataDriver {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataItemStreamWrapper for the key specified.
 
-##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.filedatadriver.getlist.method.md) ( [BearFramework\DataList\Context](bearframework.datalist.context.class.md) $context )
+##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.filedatadriver.getlist.method.md) ( [ [BearFramework\DataList\Context](bearframework.datalist.context.class.md)|null $context ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all items in the data storage.
 

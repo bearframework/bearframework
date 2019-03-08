@@ -6,7 +6,6 @@ Data cache
 BearFramework\App\CacheRepository {
 
 	/* Methods */
-	public __construct ( BearFramework\App $app )
 	public self addEventListener ( string $name , callable $listener )
 	public self clear ( void )
 	public self delete ( string $key )
@@ -26,8 +25,6 @@ BearFramework\App\CacheRepository {
 ```
 
 ## Methods
-
-##### public [__construct](bearframework.app.cacherepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app )
 
 ##### public self [addEventListener](bearframework.app.cacherepository.addeventlistener.method.md) ( string $name , callable $listener )
 

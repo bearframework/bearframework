@@ -6,7 +6,7 @@ Data storage
 BearFramework\App\DataRepository {
 
 	/* Methods */
-	public __construct ( BearFramework\App $app [, array $options = [] ] )
+	public __construct ( [ array $options = [] ] )
 	public self addEventListener ( string $name , callable $listener )
 	public self append ( string $key , string $content )
 	public self delete ( string $key )
@@ -36,7 +36,7 @@ BearFramework\App\DataRepository {
 
 ## Methods
 
-##### public [__construct](bearframework.app.datarepository.__construct.method.md) ( [BearFramework\App](bearframework.app.class.md) $app [, array $options = [] ] )
+##### public [__construct](bearframework.app.datarepository.__construct.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data repository.
 
