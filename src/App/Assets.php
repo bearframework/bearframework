@@ -24,7 +24,7 @@ use BearFramework\App;
 class Assets
 {
 
-    use \BearFramework\App\EventsTrait;
+    use \BearFramework\EventsTrait;
     use \IvoPetkov\DataObjectTrait;
 
     /**

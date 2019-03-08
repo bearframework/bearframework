@@ -26,7 +26,7 @@ use BearFramework\App\CacheItem;
 class CacheRepository
 {
 
-    use \BearFramework\App\EventsTrait;
+    use \BearFramework\EventsTrait;
 
     /**
      *

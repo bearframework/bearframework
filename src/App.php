@@ -32,7 +32,7 @@ class App
 {
 
     use \IvoPetkov\DataObjectTrait;
-    use \BearFramework\App\EventsTrait;
+    use \BearFramework\EventsTrait;
 
     /**
      * The instance of the App object. Only one can be created.

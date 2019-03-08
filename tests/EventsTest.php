@@ -20,7 +20,7 @@ class EventsTest extends BearFrameworkTestCase
     {
         $object = new class {
 
-            use \BearFramework\App\EventsTrait;
+            use \BearFramework\EventsTrait;
         };
 
         $result = '';
@@ -66,7 +66,7 @@ class EventsTest extends BearFrameworkTestCase
     {
         $object = new class {
 
-            use \BearFramework\App\EventsTrait;
+            use \BearFramework\EventsTrait;
         };
 
         $result = '';
@@ -86,7 +86,7 @@ class EventsTest extends BearFrameworkTestCase
     {
         $object = new class {
 
-            use \BearFramework\App\EventsTrait;
+            use \BearFramework\EventsTrait;
         };
 
         $result = [
@@ -119,7 +119,7 @@ class EventsTest extends BearFrameworkTestCase
     {
         $object = new class {
 
-            use \BearFramework\App\EventsTrait;
+            use \BearFramework\EventsTrait;
         };
 
         $details = new class {

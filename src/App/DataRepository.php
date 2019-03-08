@@ -32,7 +32,7 @@ use BearFramework\App\DataItem;
 class DataRepository
 {
 
-    use \BearFramework\App\EventsTrait;
+    use \BearFramework\EventsTrait;
 
     /**
      *
