@@ -9,8 +9,6 @@
 
 namespace BearFramework\App\Context;
 
-use BearFramework\App;
-
 /**
  * Provides functionality for autoloading classes in the current context.
  */

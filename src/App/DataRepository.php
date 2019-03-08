@@ -9,7 +9,6 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App;
 use BearFramework\App\DataItem;
 
 /**

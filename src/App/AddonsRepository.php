@@ -9,8 +9,6 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App;
-
 /**
  *  Provides a way to enable addons.
  */
