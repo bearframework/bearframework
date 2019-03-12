@@ -12,7 +12,7 @@ BearFramework\App\Request\FormData {
 	public BearFramework\App\Request\FormDataFileItem|null getFile ( string $name )
 	public BearFramework\DataList|BearFramework\App\Request\FormDataItem[] getList ( void )
 	public string|null getValue ( string $name )
-	public BearFramework\App\Request\FormDataItem make ( [ string $name [, string $value ]] )
+	public BearFramework\App\Request\FormDataItem make ( [ string|null $name [, string|null $value ]] )
 	public self set ( BearFramework\App\Request\FormDataItem $dataItem )
 
 }
@@ -44,7 +44,7 @@ BearFramework\App\Request\FormData {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a form data item value or null if not found.
 
-##### public [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md) [make](bearframework.app.request.formdata.make.method.md) ( [ string $name [, string $value ]] )
+##### public [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md) [make](bearframework.app.request.formdata.make.method.md) ( [ string|null $name [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new form data item and returns it.
 

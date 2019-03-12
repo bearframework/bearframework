@@ -84,7 +84,11 @@ BearFramework\App {
 
 ##### public self [addEventListener](bearframework.app.addeventlistener.method.md) ( string $name , callable $listener )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new event listener.
+
 ##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( string $name [, mixed $details ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calls the registered listeners (in order) for the event name specified.
 
 ##### public void [enableErrorHandler](bearframework.app.enableerrorhandler.method.md) ( [ array $options = [] ] )
 
@@ -96,7 +100,11 @@ BearFramework\App {
 
 ##### public bool [hasEventListeners](bearframework.app.haseventlisteners.method.md) ( string $name )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
+
 ##### public self [removeEventListener](bearframework.app.removeeventlistener.method.md) ( string $name , callable $listener )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removes a registered event listener.
 
 ##### public void [run](bearframework.app.run.method.md) ( void )
 

@@ -1,6 +1,6 @@
 # BearFramework\App\CacheRepository::delete
 
-Deletes a cache from the cache.
+Deletes an item from the cache.
 
 ```php
 public self delete ( string $key )

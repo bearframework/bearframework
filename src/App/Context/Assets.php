@@ -9,8 +9,6 @@
 
 namespace BearFramework\App\Context;
 
-use BearFramework\App;
-
 /**
  * Provides utility functions for assets in the current context.
  */

@@ -11,7 +11,7 @@ BearFramework\App\Response\Headers {
 	public BearFramework\App\Response\Header|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Response\Header[] getList ( void )
 	public string|null getValue ( string $name )
-	public BearFramework\App\Response\Header make ( [ string $name [, string $value ]] )
+	public BearFramework\App\Response\Header make ( [ string|null $name [, string|null $value ]] )
 	public self set ( BearFramework\App\Response\Header $header )
 
 }
@@ -39,7 +39,7 @@ BearFramework\App\Response\Headers {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of the header or null if not found.
 
-##### public [BearFramework\App\Response\Header](bearframework.app.response.header.class.md) [make](bearframework.app.response.headers.make.method.md) ( [ string $name [, string $value ]] )
+##### public [BearFramework\App\Response\Header](bearframework.app.response.header.class.md) [make](bearframework.app.response.headers.make.method.md) ( [ string|null $name [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new header and returns it.
 

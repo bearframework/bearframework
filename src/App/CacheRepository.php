@@ -95,8 +95,8 @@ class CacheRepository
     /**
      * Constructs a new cache item and returns it.
      * 
-     * @var string|null $key The key of the cache item.
-     * @var string|null $value The value of the cache item.
+     * @param string|null $key The key of the cache item.
+     * @param string|null $value The value of the cache item.
      * @return \BearFramework\App\CacheItem Returns a new cache item.
      */
     public function make(string $key = null, $value = null): \BearFramework\App\CacheItem
@@ -195,7 +195,7 @@ class CacheRepository
     }
 
     /**
-     * Deletes a cache from the cache.
+     * Deletes an item from the cache.
      * 
      * @param string $key The key of the cache item.
      * @return self Returns a reference to itself.

@@ -42,6 +42,8 @@ BearFramework\App\DataRepository {
 
 ##### public self [addEventListener](bearframework.app.datarepository.addeventlistener.method.md) ( string $name , callable $listener )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new event listener.
+
 ##### public self [append](bearframework.app.datarepository.append.method.md) ( string $key , string $content )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Appends data to the data item's value specified. If the data item does not exist, it will be created.
@@ -55,6 +57,8 @@ BearFramework\App\DataRepository {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes metadata for the data item key specified.
 
 ##### public self [dispatchEvent](bearframework.app.datarepository.dispatchevent.method.md) ( string $name [, mixed $details ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calls the registered listeners (in order) for the event name specified.
 
 ##### public self [duplicate](bearframework.app.datarepository.duplicate.method.md) ( string $sourceKey , string $destinationKey )
 
@@ -86,11 +90,15 @@ BearFramework\App\DataRepository {
 
 ##### public bool [hasEventListeners](bearframework.app.datarepository.haseventlisteners.method.md) ( string $name )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
+
 ##### public [BearFramework\App\DataItem](bearframework.app.dataitem.class.md) [make](bearframework.app.datarepository.make.method.md) ( [ string|null $key [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data item and returns it.
 
 ##### public self [removeEventListener](bearframework.app.datarepository.removeeventlistener.method.md) ( string $name , callable $listener )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removes a registered event listener.
 
 ##### public self [rename](bearframework.app.datarepository.rename.method.md) ( string $sourceKey , string $destinationKey )
 

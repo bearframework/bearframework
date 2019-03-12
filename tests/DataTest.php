@@ -7,8 +7,6 @@
  * Free to use under the MIT license.
  */
 
-use BearFramework\App\DataItem;
-
 /**
  * @runTestsInSeparateProcesses
  */

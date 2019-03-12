@@ -14,7 +14,7 @@ BearFramework\App\CacheRepository {
 	public BearFramework\App\CacheItem|null get ( string $key )
 	public mixed getValue ( string $key )
 	public bool hasEventListeners ( string $name )
-	public BearFramework\App\CacheItem make ( [ string $key [,  $value ]] )
+	public BearFramework\App\CacheItem make ( [ string|null $key [, string|null $value ]] )
 	public self removeEventListener ( string $name , callable $listener )
 	public self set ( BearFramework\App\CacheItem $item )
 	public self setDriver ( BearFramework\App\ICacheDriver $driver )
@@ -28,15 +28,19 @@ BearFramework\App\CacheRepository {
 
 ##### public self [addEventListener](bearframework.app.cacherepository.addeventlistener.method.md) ( string $name , callable $listener )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new event listener.
+
 ##### public self [clear](bearframework.app.cacherepository.clear.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes all values from the cache.
 
 ##### public self [delete](bearframework.app.cacherepository.delete.method.md) ( string $key )
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a cache from the cache.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes an item from the cache.
 
 ##### public self [dispatchEvent](bearframework.app.cacherepository.dispatchevent.method.md) ( string $name [, mixed $details ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calls the registered listeners (in order) for the event name specified.
 
 ##### public bool [exists](bearframework.app.cacherepository.exists.method.md) ( string $key )
 
@@ -52,11 +56,15 @@ BearFramework\App\CacheRepository {
 
 ##### public bool [hasEventListeners](bearframework.app.cacherepository.haseventlisteners.method.md) ( string $name )
 
-##### public [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md) [make](bearframework.app.cacherepository.make.method.md) ( [ string $key [,  $value ]] )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
+
+##### public [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md) [make](bearframework.app.cacherepository.make.method.md) ( [ string|null $key [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new cache item and returns it.
 
 ##### public self [removeEventListener](bearframework.app.cacherepository.removeeventlistener.method.md) ( string $name , callable $listener )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removes a registered event listener.
 
 ##### public self [set](bearframework.app.cacherepository.set.method.md) ( [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md) $item )
 

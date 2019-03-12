@@ -19,7 +19,7 @@ BearFramework\App\Contexts {
 
 ##### public self [add](bearframework.app.contexts.add.method.md) ( string $dir )
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new context dir.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new context.
 
 ##### public [BearFramework\App\Context](bearframework.app.context.class.md) [get](bearframework.app.contexts.get.method.md) ( [ string|null $filename ] )
 

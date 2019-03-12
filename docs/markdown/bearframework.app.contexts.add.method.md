@@ -1,6 +1,6 @@
 # BearFramework\App\Contexts::add
 
-Registers a new context dir.
+Registers a new context.
 
 ```php
 public self add ( string $dir )

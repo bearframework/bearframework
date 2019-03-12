@@ -11,7 +11,7 @@ BearFramework\App\Request\Cookies {
 	public BearFramework\App\Request\Cookie|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Request\Cookie[] getList ( void )
 	public string|null getValue ( string $name )
-	public BearFramework\App\Request\Cookie make ( [ string $name [, string $value ]] )
+	public BearFramework\App\Request\Cookie make ( [ string|null $name [, string|null $value ]] )
 	public self set ( BearFramework\App\Request\Cookie $cookie )
 
 }
@@ -39,7 +39,7 @@ BearFramework\App\Request\Cookies {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a cookie value or null if not found.
 
-##### public [BearFramework\App\Request\Cookie](bearframework.app.request.cookie.class.md) [make](bearframework.app.request.cookies.make.method.md) ( [ string $name [, string $value ]] )
+##### public [BearFramework\App\Request\Cookie](bearframework.app.request.cookie.class.md) [make](bearframework.app.request.cookies.make.method.md) ( [ string|null $name [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new cookie and returns it.
 

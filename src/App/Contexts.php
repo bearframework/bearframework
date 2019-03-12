@@ -83,7 +83,7 @@ class Contexts
     }
 
     /**
-     * Registers a new context dir.
+     * Registers a new context.
      * 
      * @param string $dir The context dir.
      * @throws \Exception

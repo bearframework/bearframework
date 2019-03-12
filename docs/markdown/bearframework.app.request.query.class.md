@@ -11,7 +11,7 @@ BearFramework\App\Request\Query {
 	public BearFramework\App\Request\QueryItem|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Request\QueryItem[] getList ( void )
 	public string|null getValue ( string $name )
-	public BearFramework\App\Request\QueryItem make ( [ string $name [, string $value ]] )
+	public BearFramework\App\Request\QueryItem make ( [ string|null $name [, string|null $value ]] )
 	public self set ( BearFramework\App\Request\QueryItem $queryItem )
 	public string toString ( void )
 
@@ -40,7 +40,7 @@ BearFramework\App\Request\Query {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a query item value or null if not found.
 
-##### public [BearFramework\App\Request\QueryItem](bearframework.app.request.queryitem.class.md) [make](bearframework.app.request.query.make.method.md) ( [ string $name [, string $value ]] )
+##### public [BearFramework\App\Request\QueryItem](bearframework.app.request.queryitem.class.md) [make](bearframework.app.request.query.make.method.md) ( [ string|null $name [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new query item and returns it.
 

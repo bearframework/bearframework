@@ -22,9 +22,10 @@ trait EventsTrait
     private $internalEventListenersData = [];
 
     /**
+     * Registers a new event listener.
      * 
-     * @param string $name
-     * @param callable $listener
+     * @param string $name The name of the event.
+     * @param callable $listener A listener callback.
      * @return self Returns a reference to itself.
      */
     public function addEventListener(string $name, callable $listener): self
@@ -37,9 +38,10 @@ trait EventsTrait
     }
 
     /**
+     * Removes a registered event listener.
      * 
-     * @param string $name
-     * @param callable $listener
+     * @param string $name The name of the event.
+     * @param callable $listener A listener callback.
      * @return self Returns a reference to itself.
      */
     public function removeEventListener(string $name, callable $listener): self
@@ -59,9 +61,10 @@ trait EventsTrait
     }
 
     /**
+     * Calls the registered listeners (in order) for the event name specified.
      * 
-     * @param string $name
-     * @param mixed $details
+     * @param string $name The name of the event.
+     * @param mixed $details Additional event data.
      * @return self Returns a reference to itself.
      */
     public function dispatchEvent(string $name, $details = null): self
@@ -75,9 +78,10 @@ trait EventsTrait
     }
 
     /**
+     * Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
      * 
-     * @param string $name
-     * @return bool
+     * @param string $name The name of the event.
+     * @return bool Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
      */
     public function hasEventListeners(string $name): bool
     {

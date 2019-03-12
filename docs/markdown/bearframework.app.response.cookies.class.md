@@ -10,7 +10,7 @@ BearFramework\App\Response\Cookies {
 	public bool exists ( string $name )
 	public BearFramework\App\Response\Cookie|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Response\Cookie[] getList ( void )
-	public BearFramework\App\Response\Cookie make ( [ string $name [, string $value ]] )
+	public BearFramework\App\Response\Cookie make ( [ string|null $name [, string|null $value ]] )
 	public self set ( BearFramework\App\Response\Cookie $cookie )
 
 }
@@ -34,7 +34,7 @@ BearFramework\App\Response\Cookies {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a list of all cookies.
 
-##### public [BearFramework\App\Response\Cookie](bearframework.app.response.cookie.class.md) [make](bearframework.app.response.cookies.make.method.md) ( [ string $name [, string $value ]] )
+##### public [BearFramework\App\Response\Cookie](bearframework.app.response.cookie.class.md) [make](bearframework.app.response.cookies.make.method.md) ( [ string|null $name [, string|null $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new cookie and returns it.
 

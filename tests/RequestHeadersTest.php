@@ -7,7 +7,6 @@
  * Free to use under the MIT license.
  */
 
-use BearFramework\App\Request\Header;
 use BearFramework\App\Request\Headers;
 
 /**

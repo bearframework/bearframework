@@ -3,14 +3,18 @@
 Constructs a new cookie and returns it.
 
 ```php
-public BearFramework\App\Request\Cookie make ( [ string $name [, string $value ]] )
+public BearFramework\App\Request\Cookie make ( [ string|null $name [, string|null $value ]] )
 ```
 
 ## Parameters
 
 ##### name
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the cookie.
+
 ##### value
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of the cookie.
 
 ## Returns
 

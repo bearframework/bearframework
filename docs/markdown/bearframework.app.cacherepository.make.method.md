@@ -3,14 +3,18 @@
 Constructs a new cache item and returns it.
 
 ```php
-public BearFramework\App\CacheItem make ( [ string $key [,  $value ]] )
+public BearFramework\App\CacheItem make ( [ string|null $key [, string|null $value ]] )
 ```
 
 ## Parameters
 
 ##### key
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key of the cache item.
+
 ##### value
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of the cache item.
 
 ## Returns
 

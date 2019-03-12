@@ -1,5 +1,7 @@
 # BearFramework\App\Assets::removeEventListener
 
+Removes a registered event listener.
+
 ```php
 public self removeEventListener ( string $name , callable $listener )
 ```
@@ -8,7 +10,11 @@ public self removeEventListener ( string $name , callable $listener )
 
 ##### name
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the event.
+
 ##### listener
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A listener callback.
 
 ## Returns
 

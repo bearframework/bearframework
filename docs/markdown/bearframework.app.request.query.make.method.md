@@ -3,14 +3,18 @@
 Constructs a new query item and returns it.
 
 ```php
-public BearFramework\App\Request\QueryItem make ( [ string $name [, string $value ]] )
+public BearFramework\App\Request\QueryItem make ( [ string|null $name [, string|null $value ]] )
 ```
 
 ## Parameters
 
 ##### name
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the query item.
+
 ##### value
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of the query item.
 
 ## Returns
 

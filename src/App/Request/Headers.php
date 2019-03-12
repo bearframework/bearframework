@@ -28,8 +28,8 @@ class Headers
     /**
      * Constructs a new header and returns it.
      * 
-     * @var string|null $name The name of the header.
-     * @var string|null $value The value of the header.
+     * @param string|null $name The name of the header.
+     * @param string|null $value The value of the header.
      * @return \BearFramework\App\Request\Header Returns a new header.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\Header

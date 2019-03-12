@@ -7,7 +7,6 @@
  * Free to use under the MIT license.
  */
 
-use BearFramework\App\Request\FormDataItem;
 use BearFramework\App\Request\FormData;
 
 /**

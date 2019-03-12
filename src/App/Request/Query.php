@@ -28,8 +28,8 @@ class Query
     /**
      * Constructs a new query item and returns it.
      * 
-     * @var string|null $name The name of the query item.
-     * @var string|null $value The value of the query item.
+     * @param string|null $name The name of the query item.
+     * @param string|null $value The value of the query item.
      * @return \BearFramework\App\Request\QueryItem Returns a new query item.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\QueryItem

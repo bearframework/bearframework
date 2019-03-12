@@ -3,14 +3,18 @@
 Constructs a new header and returns it.
 
 ```php
-public BearFramework\App\Request\Header make ( [ string $name [, string $value ]] )
+public BearFramework\App\Request\Header make ( [ string|null $name [, string|null $value ]] )
 ```
 
 ## Parameters
 
 ##### name
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the header.
+
 ##### value
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of the header.
 
 ## Returns
 

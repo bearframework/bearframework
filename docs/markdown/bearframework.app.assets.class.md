@@ -39,7 +39,11 @@ BearFramework\App\Assets {
 
 ##### public self [addEventListener](bearframework.app.assets.addeventlistener.method.md) ( string $name , callable $listener )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new event listener.
+
 ##### public self [dispatchEvent](bearframework.app.assets.dispatchevent.method.md) ( string $name [, mixed $details ] )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calls the registered listeners (in order) for the event name specified.
 
 ##### public string|null [getContent](bearframework.app.assets.getcontent.method.md) ( string $filename [, array $options = [] ] )
 
@@ -59,7 +63,11 @@ BearFramework\App\Assets {
 
 ##### public bool [hasEventListeners](bearframework.app.assets.haseventlisteners.method.md) ( string $name )
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
+
 ##### public self [removeEventListener](bearframework.app.assets.removeeventlistener.method.md) ( string $name , callable $listener )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removes a registered event listener.
 
 ## Events
 

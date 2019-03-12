@@ -7,7 +7,6 @@
  * Free to use under the MIT license.
  */
 
-use BearFramework\App\Request\Cookie;
 use BearFramework\App\Request\Cookies;
 
 /**

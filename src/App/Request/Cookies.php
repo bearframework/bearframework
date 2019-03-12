@@ -28,8 +28,8 @@ class Cookies
     /**
      * Constructs a new cookie and returns it.
      * 
-     * @var string|null $name The name of the cookie.
-     * @var string|null $value The value of the cookie.
+     * @param string|null $name The name of the cookie.
+     * @param string|null $value The value of the cookie.
      * @return \BearFramework\App\Request\Cookie Returns a new cookie.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\Cookie

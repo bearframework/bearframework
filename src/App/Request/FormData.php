@@ -9,9 +9,6 @@
 
 namespace BearFramework\App\Request;
 
-use BearFramework\App\Request\FormDataItem;
-use BearFramework\App\Request\FormDataItemsList;
-
 /**
  * Provides information about the response form data items.
  */
@@ -31,8 +28,8 @@ class FormData
     /**
      * Constructs a new form data item and returns it.
      * 
-     * @var string|null $name The name of the form data item.
-     * @var string|null $value The value of the form data item.
+     * @param string|null $name The name of the form data item.
+     * @param string|null $value The value of the form data item.
      * @return \BearFramework\App\Request\FormDataItem Returns a new form data item.
      */
     public function make(string $name = null, string $value = null): \BearFramework\App\Request\FormDataItem
