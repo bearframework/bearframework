@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  */
 
-namespace BearFramework\DataList;
+namespace BearFramework;
 
 /**
  * 
