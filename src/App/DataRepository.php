@@ -166,7 +166,8 @@ class DataRepository
         if ($item->key === null || !$this->validate($item->key)) {
             throw new \InvalidArgumentException('The key provided (' . ($item->key === null ? 'null' : $item->key) . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        foreach ($item->metadata as $name => $value) {
+        $metadataAsArray = $item->metadata->toArray();
+        foreach ($metadataAsArray as $name => $value) {
             if (!$this->validateMetadataName($name)) {
                 throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
             }
