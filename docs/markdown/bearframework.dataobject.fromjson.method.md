@@ -1,4 +1,4 @@
-# BearFramework\DataList\DataObject::fromJSON
+# BearFramework\DataObject::fromJSON
 
 Creates an object and fills its properties from the JSON specified.
 
@@ -18,9 +18,9 @@ public static object fromJSON ( string $data )
 
 ## Details
 
-Class: [BearFramework\DataList\DataObject](bearframework.datalist.dataobject.class.md)
+Class: [BearFramework\DataObject](bearframework.dataobject.class.md)
 
-Location: ~/src/DataList/DataObject.php
+Location: ~/src/DataObject.php
 
 ---
 

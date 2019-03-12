@@ -1,4 +1,4 @@
-# BearFramework\DataList\DataObject::fromArray
+# BearFramework\DataObject::fromArray
 
 Creates an object and fills its properties from the array specified.
 
@@ -18,9 +18,9 @@ public static object fromArray ( array $data )
 
 ## Details
 
-Class: [BearFramework\DataList\DataObject](bearframework.datalist.dataobject.class.md)
+Class: [BearFramework\DataObject](bearframework.dataobject.class.md)
 
-Location: ~/src/DataList/DataObject.php
+Location: ~/src/DataObject.php
 
 ---
 

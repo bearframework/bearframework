@@ -266,11 +266,11 @@
 
 ### [BearFramework\DataList\Context](bearframework.datalist.context.class.md)
 
-### [BearFramework\DataList\DataObject](bearframework.datalist.dataobject.class.md)
-
 ### [BearFramework\DataList\FilterByAction](bearframework.datalist.filterbyaction.class.md)
 
 ### [BearFramework\DataList\SlicePropertiesAction](bearframework.datalist.slicepropertiesaction.class.md)
 
 ### [BearFramework\DataList\SortByAction](bearframework.datalist.sortbyaction.class.md)
+
+### [BearFramework\DataObject](bearframework.dataobject.class.md)
 

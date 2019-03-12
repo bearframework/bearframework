@@ -1,4 +1,4 @@
-# BearFramework\DataList\DataObject::toJSON
+# BearFramework\DataObject::toJSON
 
 Returns the object data converted as JSON.
 
@@ -12,9 +12,9 @@ public string toJSON ( void )
 
 ## Details
 
-Class: [BearFramework\DataList\DataObject](bearframework.datalist.dataobject.class.md)
+Class: [BearFramework\DataObject](bearframework.dataobject.class.md)
 
-Location: ~/src/DataList/DataObject.php
+Location: ~/src/DataObject.php
 
 ---
 
