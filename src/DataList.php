@@ -11,7 +11,6 @@ namespace BearFramework;
 
 /**
  * Base class for lists.
- * @codeCoverageIgnore
  */
 class DataList implements \ArrayAccess, \Iterator, \Countable
 {
