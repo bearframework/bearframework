@@ -326,8 +326,12 @@ class DataItemStreamWrapper
                 $action = new \BearFramework\DataList\SlicePropertiesAction();
                 $action->properties = ['key'];
                 $listContext->actions[] = $action;
+                $action = new \BearFramework\DataList\SliceAction();
+                $action->offset = 0;
+                $action->limit = 1;
+                $listContext->actions[] = $action;
                 $result = $dataDriver->getList($listContext);
-                if ($result->count() > 0) { // TODO optimize
+                if ($result->count() > 0) {
                     return $makeResult(0040666, 0); // dir
                 }
                 if (array_search($caller, ['is_dir', 'SplFileInfo::isDir']) !== false) {

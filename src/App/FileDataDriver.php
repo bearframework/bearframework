@@ -310,6 +310,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
         $whereOptions = [];
         $resultKeys = [];
         if ($context !== null) {
+            $limit = null;
             foreach ($context->actions as $action) {
                 if ($action instanceof \BearFramework\DataList\FilterByAction) {
                     $whereOptions[] = [$action->property, $action->value, $action->operator];
@@ -323,17 +324,21 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
                             $resultKeys[] = 'metadata';
                         }
                     }
+                } elseif ($action instanceof \BearFramework\DataList\SliceAction) {
+                    $limit = $action->offset + $action->limit;
                 }
             }
         }
         $resultKeys = empty($resultKeys) ? ['key', 'body', 'metadata'] : array_unique(array_merge(['key'], $resultKeys));
-        $result = $this->execute([
-            [
-                'command' => 'search',
-                'where' => $whereOptions,
-                'result' => $resultKeys
-            ]
-        ]);
+        $executeArgs = [
+            'command' => 'search',
+            'where' => $whereOptions,
+            'result' => $resultKeys
+        ];
+        if ($limit !== null) {
+            $executeArgs['limit'] = $limit;
+        }
+        $result = $this->execute([$executeArgs]);
         $list = new \BearFramework\DataList();
         foreach ($result[0] as $rawData) {
             $list[] = $this->makeDataItemFromRawData($rawData);
