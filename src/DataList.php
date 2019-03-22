@@ -33,6 +33,7 @@ class DataList implements \ArrayAccess, \Iterator, \Countable
         $this->registerDataListClass('IvoPetkov\DataListFilterByAction', 'BearFramework\DataList\FilterByAction');
         $this->registerDataListClass('IvoPetkov\DataListSortByAction', 'BearFramework\DataList\SortByAction');
         $this->registerDataListClass('IvoPetkov\DataListAction', 'BearFramework\DataList\Action');
+        $this->registerDataListClass('IvoPetkov\DataListSliceAction', 'BearFramework\DataList\SliceAction');
         $this->registerDataListClass('IvoPetkov\DataListSlicePropertiesAction', 'BearFramework\DataList\SlicePropertiesAction');
         $this->registerDataListClass('IvoPetkov\DataListObject', 'BearFramework\DataObject');
         if ($dataSource !== null) {

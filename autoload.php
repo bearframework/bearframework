@@ -101,6 +101,7 @@ $classes = [
     'BearFramework\DataList\Action' => 'src/DataList/Action.php',
     'BearFramework\DataList\Context' => 'src/DataList/Context.php',
     'BearFramework\DataList\FilterByAction' => 'src/DataList/FilterByAction.php',
+    'BearFramework\DataList\SliceAction' => 'src/DataList/SliceAction.php',
     'BearFramework\DataList\SlicePropertiesAction' => 'src/DataList/SlicePropertiesAction.php',
     'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php',
     'BearFramework\DataObject' => 'src/DataObject.php',
