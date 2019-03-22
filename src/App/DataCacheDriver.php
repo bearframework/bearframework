@@ -19,16 +19,24 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
      *
      * @var \BearFramework\App\DataRepository 
      */
-    private $data = null;
+    private $dataRepository = null;
+
+    /**
+     *
+     * @var string 
+     */
+    private $keyPrefix = null;
 
     /**
      * Constructs a new data cache driver.
      * 
-     * @param \BearFramework\App\DataRepository $data The data repository to use to store data.
+     * @param \BearFramework\App\DataRepository $dataRepository The data repository to use to store data.
+     * @param string $keyPrefix The key prefix for the cache items.
      */
-    public function __construct(\BearFramework\App\DataRepository $data)
+    public function __construct(\BearFramework\App\DataRepository $dataRepository, string $keyPrefix = '.temp/cache')
     {
-        $this->data = $data;
+        $this->dataRepository = $dataRepository;
+        $this->keyPrefix = $keyPrefix;
     }
 
     /**
@@ -42,8 +50,8 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
     public function set(string $key, $value, int $ttl = null): void
     {
         $keyMD5 = md5($key);
-        $key = '.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2';
-        $this->data->setValue($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $value])));
+        $key = $this->keyPrefix . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2';
+        $this->dataRepository->setValue($key, gzcompress(serialize([$ttl > 0 ? time() + $ttl : 0, $value])));
     }
 
     /**
@@ -55,7 +63,7 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
     public function get(string $key)
     {
         $keyMD5 = md5($key);
-        $value = $this->data->getValue('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        $value = $this->dataRepository->getValue($this->keyPrefix . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
         if ($value !== null) {
             try {
                 $value = unserialize(gzuncompress($value));
@@ -82,7 +90,7 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
     public function delete(string $key): void
     {
         $keyMD5 = md5($key);
-        $this->data->delete('.temp/cache/' . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
+        $this->dataRepository->delete($this->keyPrefix . substr($keyMD5, 0, 3) . '/' . substr($keyMD5, 3) . '.2');
     }
 
     /**
@@ -131,10 +139,10 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function clear(): void
     {
-        $list = $this->data->getList()
-                ->filterBy('key', '.temp/cache/', 'startWith');
+        $list = $this->dataRepository->getList()
+                ->filterBy('key', $this->keyPrefix, 'startWith');
         foreach ($list as $item) {
-            $this->data->delete($item->key);
+            $this->dataRepository->delete($item->key);
         };
     }
 

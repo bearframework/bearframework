@@ -42,12 +42,13 @@ class CacheRepository
     /**
      * Enables the app cache driver. The cached data will be stored in the app data repository.
      * 
+     * @param string $keyPrefix The key prefix for the cache items.
      * @return self Returns a reference to itself.
      */
-    public function useAppDataDriver(): self
+    public function useAppDataDriver(string $keyPrefix = '.temp/cache'): self
     {
         $app = App::get();
-        $this->setDriver(new \BearFramework\App\DataCacheDriver($app->data));
+        $this->setDriver(new \BearFramework\App\DataCacheDriver($app->data, $keyPrefix));
         return $this;
     }
 
