@@ -45,7 +45,7 @@ class CacheRepository
      * @param string $keyPrefix The key prefix for the cache items.
      * @return self Returns a reference to itself.
      */
-    public function useAppDataDriver(string $keyPrefix = '.temp/cache'): self
+    public function useAppDataDriver(string $keyPrefix = '.temp/cache/'): self
     {
         $app = App::get();
         $this->setDriver(new \BearFramework\App\DataCacheDriver($app->data, $keyPrefix));

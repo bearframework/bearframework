@@ -33,7 +33,7 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
      * @param \BearFramework\App\DataRepository $dataRepository The data repository to use to store data.
      * @param string $keyPrefix The key prefix for the cache items.
      */
-    public function __construct(\BearFramework\App\DataRepository $dataRepository, string $keyPrefix = '.temp/cache')
+    public function __construct(\BearFramework\App\DataRepository $dataRepository, string $keyPrefix = '.temp/cache/')
     {
         $this->dataRepository = $dataRepository;
         $this->keyPrefix = $keyPrefix;
