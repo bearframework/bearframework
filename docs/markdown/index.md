@@ -268,6 +268,8 @@
 
 ### [BearFramework\DataList\FilterByAction](bearframework.datalist.filterbyaction.class.md)
 
+### [BearFramework\DataList\SliceAction](bearframework.datalist.sliceaction.class.md)
+
 ### [BearFramework\DataList\SlicePropertiesAction](bearframework.datalist.slicepropertiesaction.class.md)
 
 ### [BearFramework\DataList\SortByAction](bearframework.datalist.sortbyaction.class.md)

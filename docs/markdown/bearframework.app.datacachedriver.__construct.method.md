@@ -3,14 +3,18 @@
 Constructs a new data cache driver.
 
 ```php
-public __construct ( BearFramework\App\DataRepository $data )
+public __construct ( BearFramework\App\DataRepository $dataRepository [, string $keyPrefix = '.temp/cache/' ] )
 ```
 
 ## Parameters
 
-##### data
+##### dataRepository
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data repository to use to store data.
+
+##### keyPrefix
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key prefix for the cache items.
 
 ## Details
 

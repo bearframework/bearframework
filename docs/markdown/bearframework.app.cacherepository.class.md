@@ -18,7 +18,7 @@ BearFramework\App\CacheRepository {
 	public self removeEventListener ( string $name , callable $listener )
 	public self set ( BearFramework\App\CacheItem $item )
 	public self setDriver ( BearFramework\App\ICacheDriver $driver )
-	public self useAppDataDriver ( void )
+	public self useAppDataDriver ( [ string $keyPrefix = '.temp/cache/' ] )
 	public self useNullDriver ( void )
 
 }
@@ -74,7 +74,7 @@ BearFramework\App\CacheRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets a new cache driver.
 
-##### public self [useAppDataDriver](bearframework.app.cacherepository.useappdatadriver.method.md) ( void )
+##### public self [useAppDataDriver](bearframework.app.cacherepository.useappdatadriver.method.md) ( [ string $keyPrefix = '.temp/cache/' ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enables the app cache driver. The cached data will be stored in the app data repository.
 

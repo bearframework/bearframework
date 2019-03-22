@@ -3,8 +3,14 @@
 Enables the app cache driver. The cached data will be stored in the app data repository.
 
 ```php
-public self useAppDataDriver ( void )
+public self useAppDataDriver ( [ string $keyPrefix = '.temp/cache/' ] )
 ```
+
+## Parameters
+
+##### keyPrefix
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key prefix for the cache items.
 
 ## Returns
 

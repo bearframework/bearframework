@@ -6,7 +6,7 @@ A data cache driver. It uses the data repository provided to store the values.
 BearFramework\App\DataCacheDriver implements BearFramework\App\ICacheDriver {
 
 	/* Methods */
-	public __construct ( BearFramework\App\DataRepository $data )
+	public __construct ( BearFramework\App\DataRepository $dataRepository [, string $keyPrefix = '.temp/cache/' ] )
 	public void clear ( void )
 	public void delete ( string $key )
 	public void deleteMultiple ( array $keys )
@@ -26,7 +26,7 @@ BearFramework\App\DataCacheDriver implements BearFramework\App\ICacheDriver {
 
 ## Methods
 
-##### public [__construct](bearframework.app.datacachedriver.__construct.method.md) ( [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md) $data )
+##### public [__construct](bearframework.app.datacachedriver.__construct.method.md) ( [BearFramework\App\DataRepository](bearframework.app.datarepository.class.md) $dataRepository [, string $keyPrefix = '.temp/cache/' ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new data cache driver.
 
