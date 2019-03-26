@@ -4,7 +4,7 @@
 
 An open-source **PHP framework** that can help you build successful projects better. It's also easy to install and extend. Just like you'd expect from a modern framework.
 
-Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/docs/routing/">routing</a>, <a href="http://bearframework.com/docs/data/">data storage</a>, <a href="http://bearframework.com/docs/addons/">addons</a>, <a href="http://bearframework.com/docs/logging/">logging</a>, <a href="http://bearframework.com/docs/assets/">assets helpers</a> and <a href="http://bearframework.com/docs/">few more useful tools</a>.
+Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/docs/latest/routing/">routing</a>, <a href="http://bearframework.com/docs/latest/data/">data storage</a>, <a href="http://bearframework.com/docs/latest/addons/">addons</a>, <a href="http://bearframework.com/docs/latest/logs/">logs</a>, <a href="http://bearframework.com/docs/latest/assets/">assets helpers</a> and <a href="http://bearframework.com/docs/latest/">few more useful tools</a>.
 
 [![Build Status](https://travis-ci.org/bearframework/bearframework.svg)](https://travis-ci.org/bearframework/bearframework)
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
@@ -40,7 +40,7 @@ or the following command to create a sleketon application
 composer create-project bearframework/app [my-app-name]
 ```
 
-* Download the zip file
+* Download a zip/phar file
 
 Download the [latest release](https://github.com/bearframework/bearframework/releases) from our GitHub page.
 
