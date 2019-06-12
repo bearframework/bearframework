@@ -223,26 +223,22 @@ class Assets
         if (!empty($options)) {
             $this->validateOptions($options);
         }
-        $urlOptions = [];
+        $prepareOptions = [];
         if (isset($options['width'])) {
-            $urlOptions['width'] = $options['width'];
+            $prepareOptions['width'] = $options['width'];
         }
         if (isset($options['height'])) {
-            $urlOptions['height'] = $options['height'];
+            $prepareOptions['height'] = $options['height'];
         }
         if (isset($options['outputType'])) {
-            $urlOptions['outputType'] = $options['outputType'];
+            $prepareOptions['outputType'] = $options['outputType'];
         }
-        $url = $this->getURL($filename, $urlOptions);
-        $path = substr($url, strlen($this->app->request->base));
 
-        $request = new \BearFramework\App\Request();
-        $request->path->set($path);
-        $response = $this->getResponse($request);
-        if ($response === null) {
+        $resultFilename = $this->prepare($filename, $prepareOptions);
+        if ($resultFilename === null || !is_file($resultFilename)) {
             return null;
         }
-        $content = file_get_contents($response->filename);
+        $content = file_get_contents($resultFilename);
         if (isset($options['encoding'])) {
             if ($options['encoding'] === 'base64') {
                 return base64_encode($content);
