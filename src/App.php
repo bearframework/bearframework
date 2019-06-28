@@ -9,8 +9,6 @@
 
 namespace BearFramework;
 
-use BearFramework\App;
-
 /**
  * The is the class used to instantiate you application.
  * 
