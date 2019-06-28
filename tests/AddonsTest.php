@@ -53,7 +53,7 @@ class AddonsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testMultipleAds()
+    public function testMultipleAdds()
     {
         $app = $this->getApp();
 
