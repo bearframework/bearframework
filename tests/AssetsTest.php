@@ -618,12 +618,12 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testResizeInvalidArgument7()
-    {
-        $app = $this->getApp();
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getContent('missing/source.png', ['width' => 100, 'height' => 100]);
-    }
+    // public function testResizeInvalidArgument7()
+    // {
+    //     $app = $this->getApp();
+    //     $this->expectException('InvalidArgumentException');
+    //     $app->assets->getContent('missing/source.png', ['width' => 100, 'height' => 100]);
+    // }
 
     /**
      * 
