@@ -1617,6 +1617,7 @@ class Assets
                 'wmx' => 'video/x-ms-wmx',
                 'wmz' => 'application/x-ms-wmz',
                 'woff' => 'application/x-font-woff',
+                'woff2' => 'application/x-font-woff2',
                 'wpd' => 'application/vnd.wordperfect',
                 'wpl' => 'application/vnd.ms-wpl',
                 'wps' => 'application/vnd.ms-works',
