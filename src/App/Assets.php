@@ -347,7 +347,7 @@ class Assets
                 $response->headers->set($response->headers->make('X-Robots-Tag', 'noindex'));
             }
             if (isset($options['download'])) {
-                $response->headers->set($response->headers->make('Content-Disposition', 'attachment; filename=' . pathinfo($filename, PATHINFO_BASENAME)));
+                $response->headers->set($response->headers->make('Content-Disposition', 'attachment; filename="' . pathinfo($filename, PATHINFO_BASENAME) . '"'));
             }
             $mimeType = $this->getMimeType($filename);
             if ($mimeType !== null) {
