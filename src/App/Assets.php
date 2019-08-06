@@ -65,21 +65,20 @@ class Assets
     {
         $this->app = $app;
         $this->app->routes
-                ->add($this->internalPathPrefix . '*', function(\BearFramework\App\Request $request) {
-                    $response = $this->getResponse($request);
-                    if ($response !== null) {
-                        return $response;
-                    }
-                });
+            ->add($this->internalPathPrefix . '*', function (\BearFramework\App\Request $request) {
+                $response = $this->getResponse($request);
+                if ($response !== null) {
+                    return $response;
+                }
+            });
 
         $this
-                ->defineProperty('pathPrefix', [
-                    'get' => function() {
-                        return $this->internalPathPrefix;
-                    },
-                    'readonly' => true
-                ])
-        ;
+            ->defineProperty('pathPrefix', [
+                'get' => function () {
+                    return $this->internalPathPrefix;
+                },
+                'readonly' => true
+            ]);
     }
 
     /**
@@ -263,7 +262,7 @@ class Assets
      */
     public function getResponse(\BearFramework\App\Request $request): ?\BearFramework\App\Response
     {
-        $parsePath = function($path) {
+        $parsePath = function ($path) {
             if (strpos($path, $this->internalPathPrefix) !== 0) {
                 return null;
             }
@@ -523,9 +522,7 @@ class Assets
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
             }
-        } catch (\Exception $e) {
-            
-        }
+        } catch (\Exception $e) { }
         return $result;
     }
 
@@ -622,9 +619,9 @@ class Assets
             }
 
             if (!$sourceImage) {
-                throw new \InvalidArgumentException('Cannot read the source image (' . $sourceFilename . ')');
+                throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
             }
-            $result = false;
+            $tempFilename = $this->app->data->getFilename('.temp/assets/resize' . uniqid());
             try {
                 $resultImage = imagecreatetruecolor($width, $height);
                 imagealphablending($resultImage, false);
@@ -639,39 +636,33 @@ class Assets
                 } else {
                     $resizedImageHeight = ceil($sourceHeight / $widthRatio);
                 }
-                $destinationX = - ($resizedImageWidth - $width) / 2;
-                $destinationY = - ($resizedImageHeight - $height) / 2;
-
-                $tempFilename = $this->app->data->getFilename('.temp/assets/resize' . uniqid());
+                $destinationX = -($resizedImageWidth - $width) / 2;
+                $destinationY = -($resizedImageHeight - $height) / 2;
                 if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
                     if ($outputType === 'jpg') {
-                        $result = imagejpeg($resultImage, $tempFilename, 100);
+                        imagejpeg($resultImage, $tempFilename, 100);
                     } elseif ($outputType === 'png') {
-                        $result = imagepng($resultImage, $tempFilename, 9);
+                        imagepng($resultImage, $tempFilename, 9);
                     } elseif ($outputType === 'gif') {
-                        $result = imagegif($resultImage, $tempFilename);
+                        imagegif($resultImage, $tempFilename);
                     } elseif ($outputType === 'webp') {
-                        $result = imagewebp($resultImage, $tempFilename, 100);
+                        imagewebp($resultImage, $tempFilename, 100);
                     }
                 }
                 imagedestroy($resultImage);
-            } catch (\Exception $e) {
-                
-            }
+            } catch (\Exception $e) { }
             imagedestroy($sourceImage);
-            if ($result) {
+            if (is_file($tempFilename)) {
                 $e = null;
                 try {
                     copy($tempFilename, $destinationFilename);
-                } catch (\Exception $e) {
-                    
-                }
+                } catch (\Exception $e) { }
                 unlink($tempFilename);
                 if ($e !== null) {
                     throw $e;
                 }
             } else {
-                throw new \Exception('Cannot save resized asset (' . $destinationFilename . ')');
+                throw new \Exception('Cannot resize image (' . $sourceFilename . ')');
             }
         }
     }
@@ -1714,5 +1705,4 @@ class Assets
         }
         return null;
     }
-
 }
