@@ -592,9 +592,17 @@ class Assets
             $width = $sourceWidth;
             $height = $sourceHeight;
         } elseif ($width === null && $height !== null) {
-            $width = (int) floor($sourceWidth / $sourceHeight * $height);
+            if ($height === $sourceHeight) {
+                $width = $sourceWidth;
+            } else {
+                $width = (int) floor($sourceWidth / $sourceHeight * $height);
+            }
         } elseif ($height === null && $width !== null) {
-            $height = (int) floor($sourceHeight / $sourceWidth * $width);
+            if ($width === $sourceWidth) {
+                $height = $sourceHeight;
+            } else {
+                $height = (int) floor($sourceHeight / $sourceWidth * $width);
+            }
         }
         if ($width === 0) {
             $width = 1;
