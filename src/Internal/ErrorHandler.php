@@ -84,7 +84,7 @@ class ErrorHandler
 
                 $isSimpleLog = $i === 0 || $i === 2;
                 $log = '';
-                $addContent = function(string $title, string $data) use (&$log) {
+                $addContent = function (string $title, string $data) use (&$log) {
                     if (isset($log[0])) {
                         $log .= "\n\n";
                     }
@@ -115,12 +115,16 @@ class ErrorHandler
 
                 $addContent('Request', $app->request->method . ' ' . $app->request->base . $app->request->path);
                 if (!$isSimpleLog) {
-                    $addContent('PHP variables', print_r(
-                                    [
-                                        'GET' => $_GET,
-                                        'POST' => $_POST,
-                                        'SERVER' => $_SERVER
-                                    ], true)
+                    $addContent(
+                        'PHP variables',
+                        print_r(
+                            [
+                                'GET' => $_GET,
+                                'POST' => $_POST,
+                                'SERVER' => $_SERVER
+                            ],
+                            true
+                        )
                     );
                 }
 
@@ -132,9 +136,7 @@ class ErrorHandler
                             } else {
                                 $app->logs->log('error-' . $logKey, $log);
                             }
-                        } catch (\Exception $e) {
-                            
-                        }
+                        } catch (\Exception $e) { }
                     }
                 } else {
                     if ($displayErrors) {
@@ -148,7 +150,7 @@ class ErrorHandler
                 }
             }
         }
-        
+
         try {
             $app->send(new App\Response\TemporaryUnavailable());
         } catch (\Exception $e) {
@@ -159,5 +161,4 @@ class ErrorHandler
         }
         exit;
     }
-
 }
