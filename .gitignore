@@ -1,4 +1,5 @@
 nbproject/*
 vendor/*
 composer.lock
+cov.xml
 .idea/
