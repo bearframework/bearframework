@@ -1,7 +1,12 @@
 {
     "name": "bearframework/bearframework",
     "description": "An open-source PHP framework. Incredibly lightweight. Powerful enough.",
-    "keywords": ["framework", "routing", "error handling", "logging"],
+    "keywords": [
+        "framework",
+        "routing",
+        "error handling",
+        "logging"
+    ],
     "homepage": "https://github.com/bearframework/bearframework",
     "license": "MIT",
     "authors": [
@@ -14,7 +19,7 @@
     "require": {
         "php": ">=7.1.0",
         "ext-gd": "*",
-        "ivopetkov/object-storage": "^0.4.2",
+        "ivopetkov/object-storage": "0.5.*",
         "ivopetkov/data-object": "^0.7.1"
     },
     "require-dev": {
@@ -22,11 +27,13 @@
         "ivopetkov/docs-generator": "0.2.*"
     },
     "autoload": {
-        "files": ["autoload.php"]
+        "files": [
+            "autoload.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "": "tests/utilities/"
-        }   
+        }
     }
 }
