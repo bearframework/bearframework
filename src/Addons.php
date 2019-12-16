@@ -34,7 +34,7 @@ class Addons
         if (isset(self::$data[$id])) {
             return false;
         }
-        if (!isset($id{0})) {
+        if (!isset($id[0])) {
             throw new \InvalidArgumentException('The value of the id argument cannot be empty.');
         }
         $dir = rtrim(\BearFramework\Internal\Utilities::normalizePath($dir), '/');

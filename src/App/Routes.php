@@ -35,7 +35,7 @@ class Routes
     public function add($pattern, $callback): self
     {
         if (is_string($pattern)) {
-            if (!isset($pattern{0})) {
+            if (!isset($pattern[0])) {
                 throw new \InvalidArgumentException('The pattern argument must be a not empty string or array of not empty strings');
             }
             $pattern = [$pattern];
@@ -47,7 +47,7 @@ class Routes
                 if (!is_string($_pattern)) {
                     throw new \InvalidArgumentException('The pattern argument must be a not empty string or array of not empty strings');
                 }
-                if (!isset($_pattern{0})) {
+                if (!isset($_pattern[0])) {
                     throw new \InvalidArgumentException('The pattern argument must be a not empty string or array of not empty strings');
                 }
             }

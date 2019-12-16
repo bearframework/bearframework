@@ -46,7 +46,7 @@ class FileReader extends \BearFramework\App\Response
                 ])
         ;
 
-        if (isset($filename{0})) {
+        if (isset($filename[0])) {
             $this->filename = $filename;
         }
     }

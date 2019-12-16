@@ -70,7 +70,7 @@ class Path
     public function getSegment($index): ?string
     {
         $path = trim($this->path, '/');
-        if (isset($path{0})) {
+        if (isset($path[0])) {
             $parts = explode('/', $path);
             if (array_key_exists($index, $parts)) {
                 return $parts[$index];
