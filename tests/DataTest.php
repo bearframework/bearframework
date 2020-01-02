@@ -41,18 +41,18 @@ class DataTest extends BearFrameworkTestCase
         $app->data->delete('users/3');
 
         $result = $app->data->getList()
-                ->filterBy('key', 'users/1');
+            ->filterBy('key', 'users/1');
         $this->assertTrue($result->count() === 1);
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
         $this->assertTrue($result[0]->metadata['lastAccessTime'] === '1234567890');
 
         $result = $app->data->getList()
-                ->filterBy('key', 'users/9');
+            ->filterBy('key', 'users/9');
         $this->assertTrue($result->count() === 0);
 
         $result = $app->data->getList()
-                ->filterBy('key', '^users\/', 'regExp');
+            ->filterBy('key', '^users\/', 'regExp');
         $this->assertTrue($result->count() === 1);
         $this->assertTrue($result[0]->key === 'users/1');
         $this->assertTrue($result[0]->value === '{"name":"John Smith","email":"john@example.com"}');
@@ -83,49 +83,49 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-//    public function testGetKeyFromFilenameInvalidArguments2()
-//    {
-//        $app = $this->getApp();
-//        $this->expectException('InvalidArgumentException');
-//        $app->data->getKeyFromFilename('missing/file');
-//    }
+    //    public function testGetKeyFromFilenameInvalidArguments2()
+    //    {
+    //        $app = $this->getApp();
+    //        $this->expectException('InvalidArgumentException');
+    //        $app->data->getKeyFromFilename('missing/file');
+    //    }
 
     /**
      * 
      */
-//    public function testGetKeyFromFilenameInvalidArguments3()
-//    {
-//        $app = $this->getApp([
-//            'dataDir' => null
-//        ]);
-//        $filename = $app->config['appDir'] . '/file.png';
-//        $this->makeFile($filename, '123');
-//        $this->expectException('\BearFramework\App\Config\InvalidOptionException');
-//        $app->data->getKeyFromFilename($filename);
-//    }
+    //    public function testGetKeyFromFilenameInvalidArguments3()
+    //    {
+    //        $app = $this->getApp([
+    //            'dataDir' => null
+    //        ]);
+    //        $filename = $app->config['appDir'] . '/file.png';
+    //        $this->makeFile($filename, '123');
+    //        $this->expectException('\BearFramework\App\Config\InvalidOptionException');
+    //        $app->data->getKeyFromFilename($filename);
+    //    }
 
     /**
      * 
      */
-//    public function testGetKeyFromFilenameInvalidArguments4()
-//    {
-//        $app = $this->getApp();
-//        $filename = $app->config['appDir'] . '/file.png';
-//        $this->makeFile($filename, '123');
-//        $this->expectException('InvalidArgumentException');
-//        $app->data->getKeyFromFilename($filename);
-//    }
+    //    public function testGetKeyFromFilenameInvalidArguments4()
+    //    {
+    //        $app = $this->getApp();
+    //        $filename = $app->config['appDir'] . '/file.png';
+    //        $this->makeFile($filename, '123');
+    //        $this->expectException('InvalidArgumentException');
+    //        $app->data->getKeyFromFilename($filename);
+    //    }
 
     /**
      * 
      */
-//    public function testGetExceptions1()
-//    {
-//        $app = $this->getApp();
-//        $this->makeFile($app->config['dataDir'] . '/objects', 'data');
-//        $this->expectException('\Exception');
-//        $app->data->get('data1');
-//    }
+    //    public function testGetExceptions1()
+    //    {
+    //        $app = $this->getApp();
+    //        $this->makeFile($app->config['dataDir'] . '/objects', 'data');
+    //        $this->expectException('\Exception');
+    //        $app->data->get('data1');
+    //    }
 
     /**
      * 
@@ -240,63 +240,63 @@ class DataTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemChange', function (\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['change', $details->key];
         });
 
-        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemRequest', function (\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['request', $details->key];
         });
 
-        $app->data->addEventListener('itemSet', function(\BearFramework\App\Data\ItemSetEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemSet', function (\BearFramework\App\Data\ItemSetEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['set', $details->item->key, $details->item->value];
         });
 
-        $app->data->addEventListener('itemSetMetadata', function(\BearFramework\App\Data\ItemSetMetadataEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemSetMetadata', function (\BearFramework\App\Data\ItemSetMetadataEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['setMetadata', $details->key, $details->name, $details->value];
         });
 
-        $app->data->addEventListener('itemGetMetadata', function(\BearFramework\App\Data\ItemGetMetadataEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemGetMetadata', function (\BearFramework\App\Data\ItemGetMetadataEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getMetadata', $details->key, $details->name, $details->value];
         });
 
-        $app->data->addEventListener('itemDeleteMetadata', function(\BearFramework\App\Data\ItemDeleteMetadataEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemDeleteMetadata', function (\BearFramework\App\Data\ItemDeleteMetadataEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['deleteMetadata', $details->key, $details->name];
         });
 
-        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemSetValue', function (\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['setValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemGet', function(\BearFramework\App\Data\ItemGetEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemGet', function (\BearFramework\App\Data\ItemGetEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['get', $details->item->key, $details->item->value];
         });
 
-        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemGetValue', function (\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemAppend', function (\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['append', $details->key, $details->content];
         });
 
-        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemExists', function (\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->data->addEventListener('itemDuplicate', function(\BearFramework\App\Data\ItemDuplicateEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemDuplicate', function (\BearFramework\App\Data\ItemDuplicateEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['duplicate', $details->sourceKey, $details->destinationKey];
         });
 
-        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemRename', function (\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['rename', $details->sourceKey, $details->destinationKey];
         });
 
-        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemDelete', function (\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['delete', $details->key];
         });
 
-        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('getList', function (\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getList', get_class($details->list)];
         });
 
@@ -401,7 +401,7 @@ class DataTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $content = str_repeat('abcdefghijklmnopqrstuvwxyz' . PHP_EOL, 1000);
 
-        $generateFilename = function(bool $isAppData, bool $exists) use ($app, $content) {
+        $generateFilename = function (bool $isAppData, bool $exists) use ($app, $content) {
             if ($isAppData) {
                 $key = 'example-files/' . md5(uniqid('', true));
                 $filename = $app->data->getFilename($key);
@@ -428,11 +428,11 @@ class DataTest extends BearFrameworkTestCase
             $generateFilename(false, false) => false
         ];
 
-        set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
+        set_error_handler(function ($errorNumber, $errorMessage, $errorFile, $errorLine) {
             throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
         });
 
-        $assertException = function(callable $callable, string $expectedExceptionMessage) {
+        $assertException = function (callable $callable, string $expectedExceptionMessage) {
             $exceptionMessage = null;
             try {
                 $callable();
@@ -450,7 +450,7 @@ class DataTest extends BearFrameworkTestCase
             if ($exists) {
                 $this->assertEquals(file_get_contents($filename), $content);
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     file_get_contents($filename);
                 }, 'failed to open stream');
             }
@@ -459,7 +459,7 @@ class DataTest extends BearFrameworkTestCase
             if ($exists) {
                 $this->assertEquals(file($filename, FILE_IGNORE_NEW_LINES), explode(PHP_EOL, trim($content)));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     file($filename);
                 }, 'failed to open stream');
             }
@@ -476,7 +476,7 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(copy($filename, $filename . '_copy'));
                 $this->assertEquals(file_get_contents($filename . '_copy'), $content);
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     copy($filename, $filename . '_copy');
                 }, 'failed to open stream');
             }
@@ -486,10 +486,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(fileperms($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getPerms()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     fileperms($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getPerms();
                 }, 'stat failed for');
             }
@@ -499,10 +499,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(fileinode($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getInode()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     fileinode($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getInode();
                 }, 'stat failed for');
             }
@@ -512,10 +512,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertEquals(filesize($filename), strlen($content));
                 $this->assertEquals($fileInfo->getSize(), strlen($content));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     filesize($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getSize();
                 }, 'stat failed for');
             }
@@ -525,10 +525,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(fileowner($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getOwner()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     fileowner($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getOwner();
                 }, 'stat failed for');
             }
@@ -538,10 +538,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(filegroup($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getGroup()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     filegroup($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getGroup();
                 }, 'stat failed for');
             }
@@ -551,10 +551,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(fileatime($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getATime()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     fileatime($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getATime();
                 }, 'stat failed for');
             }
@@ -564,10 +564,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(filemtime($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getMTime()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     filemtime($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getMTime();
                 }, 'stat failed for');
             }
@@ -577,10 +577,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertTrue(is_numeric(filectime($filename)));
                 $this->assertTrue(is_numeric($fileInfo->getCTime()));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     filectime($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getCTime();
                 }, 'stat failed for');
             }
@@ -590,10 +590,10 @@ class DataTest extends BearFrameworkTestCase
                 $this->assertEquals(filetype($filename), 'file');
                 $this->assertEquals($fileInfo->getType(), 'file');
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     filetype($filename);
                 }, 'stat failed for');
-                $assertException(function() use ($fileInfo) {
+                $assertException(function () use ($fileInfo) {
                     $fileInfo->getType();
                 }, 'stat failed for');
             }
@@ -648,7 +648,7 @@ class DataTest extends BearFrameworkTestCase
             if ($exists) {
                 $this->assertTrue(is_array(lstat($filename)));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     lstat($filename);
                 }, 'stat failed for');
             }
@@ -657,7 +657,7 @@ class DataTest extends BearFrameworkTestCase
             if ($exists) {
                 $this->assertTrue(is_array(stat($filename)));
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     stat($filename);
                 }, 'stat failed for');
             }
@@ -669,7 +669,7 @@ class DataTest extends BearFrameworkTestCase
                 $result = ob_get_clean();
                 $this->assertEquals($result, $content);
             } else {
-                $assertException(function() use ($filename) {
+                $assertException(function () use ($filename) {
                     readfile($filename);
                 }, 'failed to open stream');
             }
@@ -793,7 +793,7 @@ class DataTest extends BearFrameworkTestCase
             ];
             foreach ($filenamesToTest as $filename => $exists) {
 
-                $thisReadInFileWithContent = function($handle) use ($content) {
+                $thisReadInFileWithContent = function ($handle) use ($content) {
                     $this->assertTrue(is_resource($handle));
 
                     $this->assertTrue(rewind($handle));
@@ -842,7 +842,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
-                $thisReadInFileWithoutContent = function($handle) {
+                $thisReadInFileWithoutContent = function ($handle) {
                     $this->assertTrue(rewind($handle));
 
                     $this->assertEquals(ftell($handle), 0);
@@ -879,7 +879,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
-                $thisWriteInFileWithContent = function($handle) use ($content) {
+                $thisWriteInFileWithContent = function ($handle) use ($content) {
                     $this->assertTrue(rewind($handle));
 
                     $this->assertEquals(fread($handle, 3), substr($content, 0, 3));
@@ -901,7 +901,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
-                $thisWriteInFileWithoutContent = function($handle) {
+                $thisWriteInFileWithoutContent = function ($handle) {
                     $this->assertTrue(rewind($handle));
 
                     $this->assertEquals(ftell($handle), 0);
@@ -929,7 +929,7 @@ class DataTest extends BearFrameworkTestCase
                         $this->assertEquals(fwrite($handle, 'zzz'), 0);
                         fclose($handle);
                     } else {
-                        $assertException(function() use ($filename, $mode) {
+                        $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
                         }, 'failed to open stream');
                     }
@@ -940,7 +940,7 @@ class DataTest extends BearFrameworkTestCase
                         $thisWriteInFileWithContent($handle);
                         fclose($handle);
                     } else {
-                        $assertException(function() use ($filename, $mode) {
+                        $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
                         }, 'failed to open stream');
                     }
@@ -970,7 +970,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertEquals(file_get_contents($filename), ($exists ? $content : '') . 'zzz');
                 } elseif ($mode === 'xb') { // Create and open for writing only; place the file pointer at the beginning of the file. If the file already exists, the fopen() call will fail by returning FALSE and generating an error of level E_WARNING. If the file does not exist, attempt to create it. This is equivalent to specifying O_EXCL|O_CREAT flags for the underlying open(2) system call. 
                     if ($exists) {
-                        $assertException(function() use ($filename, $mode) {
+                        $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
                         }, 'failed to open stream');
                     } else {
@@ -1066,39 +1066,39 @@ class DataTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->data->addEventListener('itemChange', function(\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemChange', function (\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['change', $details->key];
         });
 
-        $app->data->addEventListener('itemRequest', function(\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemRequest', function (\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['request', $details->key];
         });
 
-        $app->data->addEventListener('itemSetValue', function(\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemSetValue', function (\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['setValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemGetValue', function(\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemGetValue', function (\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->data->addEventListener('itemAppend', function(\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemAppend', function (\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['append', $details->key, $details->content];
         });
 
-        $app->data->addEventListener('itemExists', function(\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemExists', function (\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->data->addEventListener('itemRename', function(\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemRename', function (\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['rename', $details->sourceKey, $details->destinationKey];
         });
 
-        $app->data->addEventListener('itemDelete', function(\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('itemDelete', function (\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['delete', $details->key];
         });
 
-        $app->data->addEventListener('getList', function(\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
+        $app->data->addEventListener('getList', function (\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getList', get_class($details->list)];
         });
 
@@ -1193,5 +1193,4 @@ class DataTest extends BearFrameworkTestCase
         $this->assertFalse(is_file($filename));
         $this->assertTrue(true);
     }
-
 }
