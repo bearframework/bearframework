@@ -926,7 +926,17 @@ class DataTest extends BearFrameworkTestCase
                     if ($exists) {
                         $handle = fopen($filename, $mode);
                         $thisReadInFileWithContent($handle);
-                        $this->assertEquals(fwrite($handle, 'zzz'), 0);
+                        if (version_compare(phpversion(), "7.4.0", ">=")) {
+                            $exceptionThrown = null;
+                            try {
+                                fwrite($handle, 'zzz'); // expected: fwrite(): write of 3 bytes failed with errno=9 Bad file descriptor
+                            } catch (\Throwable $e) {
+                                $exceptionThrown = $e;
+                            }
+                            $this->assertTrue($exceptionThrown instanceof \ErrorException);
+                        } else {
+                            $this->assertEquals(fwrite($handle, 'zzz'), 0);
+                        }
                         fclose($handle);
                     } else {
                         $assertException(function () use ($filename, $mode) {
