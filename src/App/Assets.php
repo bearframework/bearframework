@@ -567,24 +567,10 @@ class Assets
             throw new \InvalidArgumentException('The output format is not supported!');
         }
 
-        try {
-            if (isset($sourcePathInfo['extension']) && strtolower($sourcePathInfo['extension']) === 'webp') {
-                $sourceSize = $this->getImageSize($sourceFilename);
-                $sourceWidth = $sourceSize[0];
-                $sourceHeight = $sourceSize[1];
-                $sourceMimeType = 'image/webp';
-            } else {
-                $sourceImageInfo = getimagesize($sourceFilename);
-                if (!is_array($sourceImageInfo)) {
-                    throw new \InvalidArgumentException('Cannot get source asset size of ' . $sourceFilename . '!');
-                }
-                $sourceWidth = $sourceImageInfo[0];
-                $sourceHeight = $sourceImageInfo[1];
-                $sourceMimeType = $sourceImageInfo['mime'];
-            }
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Unknown error (' . $e->getMessage() . ')');
-        }
+        $sourceContent = file_get_contents($sourceFilename);
+        $sourceImage = imagecreatefromstring($sourceContent);
+        $sourceWidth = imagesx($sourceImage);
+        $sourceHeight = imagesy($sourceImage);
 
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
@@ -613,23 +599,9 @@ class Assets
         }
 
         if ($sourceWidth === $width && $sourceHeight === $height) {
-            copy($sourceFilename, $destinationFilename);
+            imagedestroy($sourceImage);
+            file_put_contents($destinationFilename, $sourceContent);
         } else {
-
-            $sourceImage = null;
-            if ($sourceMimeType === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
-                $sourceImage = imagecreatefromjpeg($sourceFilename);
-            } elseif ($sourceMimeType === 'image/png' && function_exists('imagecreatefrompng')) {
-                $sourceImage = imagecreatefrompng($sourceFilename);
-            } elseif ($sourceMimeType === 'image/gif' && function_exists('imagecreatefromgif')) {
-                $sourceImage = imagecreatefromgif($sourceFilename);
-            } elseif ($sourceMimeType === 'image/webp' && function_exists('imagecreatefromwebp')) {
-                $sourceImage = imagecreatefromwebp($sourceFilename);
-            }
-
-            if (!$sourceImage) {
-                throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
-            }
             $tempFilename = $this->app->data->getFilename('.temp/assets/resize' . uniqid());
             try {
                 $resultImage = imagecreatetruecolor($width, $height);
@@ -663,14 +635,14 @@ class Assets
             }
             imagedestroy($sourceImage);
             if (is_file($tempFilename)) {
-                $e = null;
+                $exception = null;
                 try {
                     copy($tempFilename, $destinationFilename);
-                } catch (\Exception $e) {
+                } catch (\Exception $exception) {
                 }
                 unlink($tempFilename);
-                if ($e !== null) {
-                    throw $e;
+                if ($exception !== null) {
+                    throw $exception;
                 }
             } else {
                 throw new \Exception('Cannot resize image (' . $sourceFilename . ')');
