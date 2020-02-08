@@ -18,6 +18,6 @@ class BearFramework
      * 
      * @var string
      */
-    const VERSION = '1.1.9';
+    const VERSION = '1.1.10';
 
 }
