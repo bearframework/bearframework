@@ -522,7 +522,8 @@ class Assets
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
             }
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
         return $result;
     }
 
@@ -644,8 +645,8 @@ class Assets
                 } else {
                     $resizedImageHeight = ceil($sourceHeight / $widthRatio);
                 }
-                $destinationX = -($resizedImageWidth - $width) / 2;
-                $destinationY = -($resizedImageHeight - $height) / 2;
+                $destinationX = - ($resizedImageWidth - $width) / 2;
+                $destinationY = - ($resizedImageHeight - $height) / 2;
                 if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
                     if ($outputType === 'jpg') {
                         imagejpeg($resultImage, $tempFilename, 100);
@@ -658,13 +659,15 @@ class Assets
                     }
                 }
                 imagedestroy($resultImage);
-            } catch (\Exception $e) { }
+            } catch (\Exception $e) {
+            }
             imagedestroy($sourceImage);
             if (is_file($tempFilename)) {
                 $e = null;
                 try {
                     copy($tempFilename, $destinationFilename);
-                } catch (\Exception $e) { }
+                } catch (\Exception $e) {
+                }
                 unlink($tempFilename);
                 if ($e !== null) {
                     throw $e;
