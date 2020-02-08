@@ -62,8 +62,8 @@ class AssetsTest extends BearFrameworkTestCase
         $imageOptionsTypes = ['width', 'height', 'both'];
         $sizeModifiers = [0.5, 1, 2];
 
-        $getAssetResponse = function($url) use ($app) {
-            $request = clone($app->request);
+        $getAssetResponse = function ($url) use ($app) {
+            $request = clone ($app->request);
             $request->path->set(substr($url, strlen($app->request->base)));
             return $app->assets->getResponse($request);
         };
@@ -162,8 +162,8 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config['appDir'] . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
 
-        $getAssetResponse = function($url) use ($app) {
-            $request = clone($app->request);
+        $getAssetResponse = function ($url) use ($app) {
+            $request = clone ($app->request);
             $request->path->set(substr($url, strlen($app->request->base)));
             return $app->assets->getResponse($request);
         };
@@ -195,7 +195,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config['appDir'] . '/assets/file2.svg';
         $this->makeFile($filename2, 'sample-svg-content-2');
 
-        $app->assets->addEventListener('beforePrepare', function(\BearFramework\App\Assets\BeforePrepareEventDetails $details) use ($filename2) {
+        $app->assets->addEventListener('beforePrepare', function (\BearFramework\App\Assets\BeforePrepareEventDetails $details) use ($filename2) {
             $details->filename = $filename2;
         });
         $content = $app->assets->getContent($filename1);
@@ -216,7 +216,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config['appDir'] . '/assets/file2.svg';
         $this->makeFile($filename2, 'sample-svg-content-2');
 
-        $app->assets->addEventListener('prepare', function(\BearFramework\App\Assets\PrepareEventDetails $details) use ($filename2) {
+        $app->assets->addEventListener('prepare', function (\BearFramework\App\Assets\PrepareEventDetails $details) use ($filename2) {
             $details->returnValue = $filename2;
         });
         $content = $app->assets->getContent($filename1);
@@ -235,7 +235,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config['appDir'] . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
 
-        $app->assets->addEventListener('beforeGetURL', function(\BearFramework\App\Assets\BeforeGetURLEventDetails $details) {
+        $app->assets->addEventListener('beforeGetURL', function (\BearFramework\App\Assets\BeforeGetURLEventDetails $details) {
             $details->returnValue = 'http://example.com/file.svg';
         });
         $url = $app->assets->getURL($filename);
@@ -254,7 +254,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config['appDir'] . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
 
-        $app->assets->addEventListener('getURL', function(\BearFramework\App\Assets\GetURLEventDetails $details) {
+        $app->assets->addEventListener('getURL', function (\BearFramework\App\Assets\GetURLEventDetails $details) {
             $details->url = 'http://example.com/file.svg';
         });
 
@@ -271,7 +271,7 @@ class AssetsTest extends BearFrameworkTestCase
 
         $filename = $app->config['appDir'] . '/missing/file.svg';
 
-        $app->assets->addEventListener('getURL', function(\BearFramework\App\Assets\GetURLEventDetails $details) {
+        $app->assets->addEventListener('getURL', function (\BearFramework\App\Assets\GetURLEventDetails $details) {
             $this->assertTrue($details->url === null);
             $details->url = 'http://example.com/file.svg';
         });
@@ -283,13 +283,13 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-//    public function testAddDirInvalidArguments2()
-//    {
-//        $app = $this->getApp();
-//
-//        $this->expectException('InvalidArgumentException');
-//        $app->assets->addDir('missing/dir');
-//    }
+    //    public function testAddDirInvalidArguments2()
+    //    {
+    //        $app = $this->getApp();
+    //
+    //        $this->expectException('InvalidArgumentException');
+    //        $app->assets->addDir('missing/dir');
+    //    }
 
     /**
      * Zero width
@@ -335,79 +335,79 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-//    public function testGetFilenameInvalidArguments2()
-//    {
-//        $app = $this->getApp();
-//        $app->config->assetsPathPrefix = null;
-//
-//        $this->expectException('Exception');
-//        $app->assets->getFilename('path.png');
-//    }
+    //    public function testGetFilenameInvalidArguments2()
+    //    {
+    //        $app = $this->getApp();
+    //        $app->config->assetsPathPrefix = null;
+    //
+    //        $this->expectException('Exception');
+    //        $app->assets->getFilename('path.png');
+    //    }
 
     /**
      * 
      */
-//    public function testGetFilenameInvalidArguments3()
-//    {
-//        $app = $this->getApp();
-//
-//        $this->assertFalse($app->assets->getFilename('path.png'));
-//    }
+    //    public function testGetFilenameInvalidArguments3()
+    //    {
+    //        $app = $this->getApp();
+    //
+    //        $this->assertFalse($app->assets->getFilename('path.png'));
+    //    }
 
     /**
      * 
      */
-//    public function testGetFilenameInvalidArguments4a()
-//    {
-//        $app = $this->getApp();
-//        $filename = $app->config['appDir'] . '/assets/logo.png';
-//        $this->makeSampleFile($filename, 'png');
-//        $app->assets->addDir($app->config['appDir'] . '/assets/');
-//
-//        $url = $app->assets->getURL($filename);
-//        $path = substr($url, strlen($app->request->base));
-//        $brokenPath = str_replace('/assets/', '/assets/abc', $path);
-//        $this->assertFalse($app->assets->getFilename($brokenPath));
-//    }
+    //    public function testGetFilenameInvalidArguments4a()
+    //    {
+    //        $app = $this->getApp();
+    //        $filename = $app->config['appDir'] . '/assets/logo.png';
+    //        $this->makeSampleFile($filename, 'png');
+    //        $app->assets->addDir($app->config['appDir'] . '/assets/');
+    //
+    //        $url = $app->assets->getURL($filename);
+    //        $path = substr($url, strlen($app->request->base));
+    //        $brokenPath = str_replace('/assets/', '/assets/abc', $path);
+    //        $this->assertFalse($app->assets->getFilename($brokenPath));
+    //    }
 
     /**
      * 
      */
-//    public function testGetFilenameInvalidArguments4b()
-//    {
-//        $app = $this->getApp();
-//        $filename = $app->config['appDir'] . '/assets/logo.png';
-//        $this->makeSampleFile($filename, 'png');
-//        $app->assets->addDir($app->config['appDir'] . '/assets/');
-//
-//        $url = $app->assets->getURL($filename);
-//        $path = substr($url, strlen($app->request->base));
-//        $brokenPath = '/assets/abc' . substr($path, strlen('/assets/') + 3);
-//        $this->assertFalse($app->assets->getFilename($brokenPath));
-//    }
+    //    public function testGetFilenameInvalidArguments4b()
+    //    {
+    //        $app = $this->getApp();
+    //        $filename = $app->config['appDir'] . '/assets/logo.png';
+    //        $this->makeSampleFile($filename, 'png');
+    //        $app->assets->addDir($app->config['appDir'] . '/assets/');
+    //
+    //        $url = $app->assets->getURL($filename);
+    //        $path = substr($url, strlen($app->request->base));
+    //        $brokenPath = '/assets/abc' . substr($path, strlen('/assets/') + 3);
+    //        $this->assertFalse($app->assets->getFilename($brokenPath));
+    //    }
 
     /**
      * 
      */
-//    public function testGetFilenameInvalidArguments4c()
-//    {
-//        $app = $this->getApp();
-//        $this->makeDir($app->config['appDir'] . '/assets/');
-//        $app->assets->addDir($app->config['appDir'] . '/assets/');
-//
-//        $brokenPath = '/assets/abcd/logo.png';
-//        $this->assertFalse($app->assets->getFilename($brokenPath));
-//    }
+    //    public function testGetFilenameInvalidArguments4c()
+    //    {
+    //        $app = $this->getApp();
+    //        $this->makeDir($app->config['appDir'] . '/assets/');
+    //        $app->assets->addDir($app->config['appDir'] . '/assets/');
+    //
+    //        $brokenPath = '/assets/abcd/logo.png';
+    //        $this->assertFalse($app->assets->getFilename($brokenPath));
+    //    }
 
     /**
      * 
      */
-//    public function testGetFilenameInvalidArguments4d()
-//    {
-//        $app = $this->getApp();
-//
-//        $this->assertFalse($app->assets->getFilename('/assets/brokenpath.jpg'));
-//    }
+    //    public function testGetFilenameInvalidArguments4d()
+    //    {
+    //        $app = $this->getApp();
+    //
+    //        $this->assertFalse($app->assets->getFilename('/assets/brokenpath.jpg'));
+    //    }
 
     /**
      * 
@@ -434,18 +434,18 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-//    public function testMissingExtensionFile()
-//    {
-//        $app = $this->getApp();
-//
-//        $filename = $app->config['appDir'] . '/assets/logo';
-//        $this->makeSampleFile($filename, 'png');
-//
-//        $app->assets->addDir($app->config['appDir'] . '/assets/');
-//
-//        $url = $app->assets->getURL($filename, ['width' => 50, 'height ' => 50]);
-//        $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));
-//    }
+    //    public function testMissingExtensionFile()
+    //    {
+    //        $app = $this->getApp();
+    //
+    //        $filename = $app->config['appDir'] . '/assets/logo';
+    //        $this->makeSampleFile($filename, 'png');
+    //
+    //        $app->assets->addDir($app->config['appDir'] . '/assets/');
+    //
+    //        $url = $app->assets->getURL($filename, ['width' => 50, 'height ' => 50]);
+    //        $this->assertFalse($app->assets->getFilename(substr($url, strlen($app->request->base))));
+    //    }
 
     /**
      * 
@@ -473,7 +473,7 @@ class AssetsTest extends BearFrameworkTestCase
     public function testBeforeGetDetailsEvent1()
     {
         $app = $this->getApp();
-        $app->assets->addEventListener('beforeGetDetails', function(\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details) {
+        $app->assets->addEventListener('beforeGetDetails', function (\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details) {
             $details->returnValue = ['width' => 200, 'height' => 100];
         });
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 200);
@@ -489,7 +489,7 @@ class AssetsTest extends BearFrameworkTestCase
 
         $filename = $app->config['appDir'] . '/assets/logo.jpg';
         $this->makeSampleFile($filename, 'jpg');
-        $app->assets->addEventListener('beforeGetDetails', function(\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details)use ($filename) {
+        $app->assets->addEventListener('beforeGetDetails', function (\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details) use ($filename) {
             $details->filename = $filename;
         });
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 100);
@@ -504,7 +504,7 @@ class AssetsTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $imageWidth = null;
-        $app->assets->addEventListener('getDetails', function(\BearFramework\App\Assets\GetDetailsEventDetails $details) use (&$imageWidth) {
+        $app->assets->addEventListener('getDetails', function (\BearFramework\App\Assets\GetDetailsEventDetails $details) use (&$imageWidth) {
             $imageWidth = $details->returnValue['width'];
         });
         $filename = $app->config['appDir'] . '/assets/logo.jpg';
@@ -652,5 +652,4 @@ class AssetsTest extends BearFrameworkTestCase
         $this->expectException('InvalidArgumentException');
         $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
     }
-
 }
