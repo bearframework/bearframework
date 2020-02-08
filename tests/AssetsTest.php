@@ -648,7 +648,7 @@ class AssetsTest extends BearFrameworkTestCase
 
         $sourceFilename = $app->config['appDir'] . '/assets/logo.png';
         $destinationFilename = $app->config['appDir'] . '/assets/newlogo.png';
-        $this->makeSampleFile($sourceFilename, 'bmp');
+        $this->makeSampleFile($sourceFilename, 'broken');
         $this->expectException('InvalidArgumentException');
         $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
     }

@@ -549,7 +549,6 @@ class Assets
             throw new \InvalidArgumentException('The height value must be higher than 0 and lower than 100001');
         }
         $outputType = null;
-        $sourcePathInfo = pathinfo($sourceFilename);
         $destinationPathInfo = pathinfo($destinationFilename);
         if (isset($destinationPathInfo['extension'])) {
             $extension = strtolower($destinationPathInfo['extension']);
@@ -569,6 +568,9 @@ class Assets
 
         $sourceContent = file_get_contents($sourceFilename);
         $sourceImage = imagecreatefromstring($sourceContent);
+        if ($sourceImage === false) {
+            throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
+        }
         $sourceWidth = imagesx($sourceImage);
         $sourceHeight = imagesy($sourceImage);
 
