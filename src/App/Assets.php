@@ -567,7 +567,7 @@ class Assets
         }
 
         $sourceContent = file_get_contents($sourceFilename);
-        $sourceImage = imagecreatefromstring($sourceContent);
+        $sourceImage = @imagecreatefromstring($sourceContent);
         if ($sourceImage === false) {
             throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
         }
