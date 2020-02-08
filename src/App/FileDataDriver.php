@@ -148,12 +148,11 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     {
         $result = $this->execute([
             [
-                'command' => 'get',
-                'key' => $key,
-                'result' => ['key']
+                'command' => 'exists',
+                'key' => $key
             ]
         ]);
-        return isset($result[0]['key']);
+        return $result[0];
     }
 
     /**

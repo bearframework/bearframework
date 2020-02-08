@@ -19,7 +19,7 @@
     "require": {
         "php": ">=7.1.0",
         "ext-gd": "*",
-        "ivopetkov/object-storage": "0.5.*",
+        "ivopetkov/object-storage": "0.6.*",
         "ivopetkov/data-object": "^0.7.1"
     },
     "require-dev": {
