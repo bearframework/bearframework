@@ -31,14 +31,13 @@ class URLs
     }
 
     /**
-     * Constructs a url for the path specified.
+     * Constructs an URL for the path specified.
      * 
-     * @param string $path The path.
+     * @param string $path The path to use (will be encoded).
      * @return string Absolute URL containing the base URL plus the path given.
      */
     public function get(string $path = '/')
     {
         return $this->app->request->base . implode('/', array_map('urlencode', explode('/', $path)));
     }
-
 }
