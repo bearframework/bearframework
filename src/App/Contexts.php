@@ -62,7 +62,7 @@ class Contexts
         }
         $filename = \BearFramework\Internal\Utilities::normalizePath($filename);
         if (isset($this->objectsCache[$filename])) {
-            return clone($this->objectsCache[$filename]);
+            return clone ($this->objectsCache[$filename]);
         }
         $matchedDir = null;
         foreach ($this->dirs as $dir => $length) {
@@ -73,11 +73,11 @@ class Contexts
         }
         if ($matchedDir !== null) {
             if (isset($this->objectsCache[$matchedDir])) {
-                return clone($this->objectsCache[$matchedDir]);
+                return clone ($this->objectsCache[$matchedDir]);
             }
             $this->objectsCache[$matchedDir] = new App\Context($this->app, substr($matchedDir, 0, -1));
-            $this->objectsCache[$filename] = clone($this->objectsCache[$matchedDir]);
-            return clone($this->objectsCache[$matchedDir]);
+            $this->objectsCache[$filename] = clone ($this->objectsCache[$matchedDir]);
+            return clone ($this->objectsCache[$matchedDir]);
         }
         throw new \Exception('Connot find context for ' . $filename);
     }
@@ -99,7 +99,7 @@ class Contexts
             if (is_file($indexFilename)) {
                 ob_start();
                 try {
-                    (static function($__filename) {
+                    (static function ($__filename) {
                         include $__filename;
                     })($indexFilename);
                     ob_end_clean();
@@ -113,5 +113,4 @@ class Contexts
         }
         return $this;
     }
-
 }
