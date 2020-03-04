@@ -17,9 +17,9 @@ class URLs
 
     /**
      *
-     * @var \BearFramework\App 
+     * @var string
      */
-    private $app = null;
+    private $base = null;
 
     /**
      * 
@@ -27,7 +27,7 @@ class URLs
      */
     public function __construct(\BearFramework\App $app)
     {
-        $this->app = $app;
+        $this->base = $app->request->base;
     }
 
     /**
@@ -38,6 +38,6 @@ class URLs
      */
     public function get(string $path = '/')
     {
-        return $this->app->request->base . implode('/', array_map('urlencode', explode('/', $path)));
+        return $this->base . implode('/', array_map('urlencode', explode('/', $path)));
     }
 }
