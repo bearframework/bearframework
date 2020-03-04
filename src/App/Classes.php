@@ -91,14 +91,13 @@ class Classes
     {
         if (isset($this->classes[$class])) {
             return $this->classes[$class];
-        } else {
-            foreach ($this->patterns as $pattern) {
-                list($prefix, $filename) = $pattern;
-                if (strpos($class, $prefix) === 0) {
-                    $filename = str_replace('*', str_replace('\\', '/', substr($class, strlen($prefix))), $filename);
-                    if (is_file($filename)) {
-                        return $filename;
-                    }
+        }
+        foreach ($this->patterns as $pattern) {
+            list($prefix, $filename) = $pattern;
+            if (strpos($class, $prefix) === 0) {
+                $filename = str_replace('*', str_replace('\\', '/', substr($class, strlen($prefix))), $filename);
+                if (is_file($filename)) {
+                    return $filename;
                 }
             }
         }
