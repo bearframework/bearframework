@@ -34,9 +34,7 @@ class Classes
      */
     public function __construct()
     {
-        spl_autoload_register(function (string $class) {
-            $this->load($class);
-        });
+        spl_autoload_register([$this, 'load']);
     }
 
     /**
@@ -77,7 +75,7 @@ class Classes
     {
         $filename = $this->getFilename($class);
         if ($filename !== null) {
-            (static function($__filename) {
+            (static function ($__filename) {
                 include_once $__filename;
             })($filename);
         }
@@ -106,5 +104,4 @@ class Classes
         }
         return null;
     }
-
 }
