@@ -53,9 +53,15 @@ class Assets
 
     /**
      *
-     * @var \BearFramework\App 
+     * @var \BearFramework\App\DataRepository 
      */
-    private $app = null;
+    private $appData = null;
+
+    /**
+     *
+     * @var \BearFramework\App\URLs 
+     */
+    private $appURLs = null;
 
     /**
      * 
@@ -63,7 +69,8 @@ class Assets
      */
     public function __construct(\BearFramework\App $app)
     {
-        $this->app = $app;
+        $this->appData = $app->data;
+        $this->appURLs = $app->urls;
         $this->app->routes
             ->add($this->internalPathPrefix . '*', function (\BearFramework\App\Request $request) {
                 $response = $this->getResponse($request);
@@ -194,7 +201,7 @@ class Assets
                     }
                 }
             }
-            $url = $this->cache[$fileDirCacheKey] === false ? null : $this->app->urls->get($this->internalPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
+            $url = $this->cache[$fileDirCacheKey] === false ? null : $this->appURLs->get($this->internalPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
         }
 
         if ($this->hasEventListeners('getURL')) {
@@ -390,7 +397,7 @@ class Assets
                 if (isset($options['outputType'])) {
                     $extension = $options['outputType'];
                 }
-                $tempFilename = $this->app->data->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+                $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
                 if (!is_file($tempFilename)) {
                     $this->resize($filename, $tempFilename, [
                         'width' => (isset($options['width']) ? $options['width'] : null),
@@ -604,7 +611,7 @@ class Assets
             imagedestroy($sourceImage);
             file_put_contents($destinationFilename, $sourceContent);
         } else {
-            $tempFilename = $this->app->data->getFilename('.temp/assets/resize' . uniqid());
+            $tempFilename = $this->appData->getFilename('.temp/assets/resize' . uniqid());
             try {
                 $resultImage = imagecreatetruecolor($width, $height);
                 imagealphablending($resultImage, false);
