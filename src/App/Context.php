@@ -31,24 +31,23 @@ class Context
     public function __construct(\BearFramework\App $app, string $dir)
     {
         $this
-                ->defineProperty('dir', [
-                    'get' => function() use ($dir) {
-                        return $dir;
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('assets', [
-                    'init' => function() use ($app, $dir) {
-                        return new App\Context\Assets($app, $dir);
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('classes', [
-                    'init' => function() use ($app, $dir) {
-                        return new App\Context\Classes($app, $dir);
-                    },
-                    'readonly' => true
-        ]);
+            ->defineProperty('dir', [
+                'get' => function () use ($dir) {
+                    return $dir;
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('assets', [
+                'init' => function () use ($app, $dir) {
+                    return new App\Context\Assets($app, $dir);
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('classes', [
+                'init' => function () use ($app, $dir) {
+                    return new App\Context\Classes($app, $dir);
+                },
+                'readonly' => true
+            ]);
     }
-
 }
