@@ -9,6 +9,8 @@
 
 namespace BearFramework\App;
 
+use BearFramework\Internal\Utilities;
+
 /**
  *  Provides a way to enable addons.
  */
@@ -23,9 +25,9 @@ class Addons
 
     /**
      *
-     * @var \BearFramework\App 
+     * @var \BearFramework\App\Contexts
      */
-    private $app = null;
+    private $appContexts = null;
 
     /**
      * 
@@ -33,7 +35,7 @@ class Addons
      */
     public function __construct(\BearFramework\App $app)
     {
-        $this->app = $app;
+        $this->appContexts = $app->contexts;
     }
 
     /**
@@ -46,11 +48,11 @@ class Addons
     public function add(string $id): self
     {
         if (!isset($this->data[$id])) {
-            $registeredAddon = \BearFramework\Addons::get($id);
-            if ($registeredAddon === null) {
+            if (!isset(Utilities::$registeredAddons[$id])) {
                 throw new \Exception('The addon ' . $id . ' is not registered!');
             }
-            $registeredAddonOptions = $registeredAddon->options;
+            $registeredAddonRawData = Utilities::$registeredAddons[$id];
+            $registeredAddonOptions = $registeredAddonRawData[1];
             if (isset($registeredAddonOptions['require']) && is_array($registeredAddonOptions['require'])) {
                 foreach ($registeredAddonOptions['require'] as $requiredAddonID) {
                     if (is_string($requiredAddonID) && !isset($this->data[$requiredAddonID])) {
@@ -58,10 +60,9 @@ class Addons
                     }
                 }
             }
-
-            $dir = $registeredAddon->dir;
-            $this->data[$id] = new \BearFramework\App\Addon($id, $dir);
-            $this->app->contexts->add($dir);
+            $dir = $registeredAddonRawData[0];
+            $this->data[$id] = [null];
+            $this->appContexts->add($dir);
         }
         return $this;
     }
@@ -75,7 +76,11 @@ class Addons
     public function get(string $id): ?\BearFramework\App\Addon
     {
         if (isset($this->data[$id])) {
-            return clone($this->data[$id]);
+            $rawData = &$this->data[$id];
+            if ($rawData[0] === null) {
+                $rawData[0] = new \BearFramework\App\Addon($id, Utilities::$registeredAddons[$id][0]);
+            }
+            return clone ($rawData[0]);
         }
         return null;
     }
@@ -99,10 +104,9 @@ class Addons
     public function getList()
     {
         $list = new \BearFramework\DataList();
-        foreach ($this->data as $addon) {
-            $list[] = clone($addon);
+        foreach ($this->data as $addonID => $rawData) {
+            $list[] = $this->get($addonID);
         }
         return $list;
     }
-
 }

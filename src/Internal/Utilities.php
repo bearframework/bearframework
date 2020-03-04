@@ -17,6 +17,11 @@ class Utilities
 {
 
     /**
+     * 
+     */
+    static $registeredAddons = [];
+
+    /**
      *
      * @var array 
      */
@@ -83,5 +88,4 @@ class Utilities
         }
         return self::$cache[$cacheKey];
     }
-
 }

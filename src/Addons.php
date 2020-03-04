@@ -9,16 +9,13 @@
 
 namespace BearFramework;
 
+use BearFramework\Internal\Utilities;
+
 /**
  * The place to register addons that can be enabled for the application.
  */
 class Addons
 {
-
-    /**
-     * @var array 
-     */
-    static private $data = [];
 
     /**
      * Registers an addon.
@@ -31,7 +28,7 @@ class Addons
      */
     static function register(string $id, string $dir, $options = []): bool
     {
-        if (isset(self::$data[$id])) {
+        if (isset(Utilities::$registeredAddons[$id])) {
             return false;
         }
         if (!isset($id[0])) {
@@ -41,7 +38,7 @@ class Addons
         if (!is_dir($dir)) {
             throw new \InvalidArgumentException('The value of the dir argument is not a valid directory.');
         }
-        self::$data[$id] = new \BearFramework\Addon($id, $dir, $options);
+        Utilities::$registeredAddons[$id] = [$dir, $options, null];
         return true;
     }
 
@@ -53,7 +50,7 @@ class Addons
      */
     static function exists(string $id): bool
     {
-        return isset(self::$data[$id]);
+        return isset(Utilities::$registeredAddons[$id]);
     }
 
     /**
@@ -64,8 +61,12 @@ class Addons
      */
     static function get(string $id): ?\BearFramework\Addon
     {
-        if (isset(self::$data[$id])) {
-            return clone(self::$data[$id]);
+        if (isset(Utilities::$registeredAddons[$id])) {
+            $rawData = &Utilities::$registeredAddons[$id];
+            if ($rawData[2] === null) {
+                $rawData[2] = new \BearFramework\Addon($id, $rawData[0], $rawData[1]);
+            }
+            return clone ($rawData[2]);
         }
         return null;
     }
@@ -78,10 +79,9 @@ class Addons
     static function getList()
     {
         $list = new \BearFramework\DataList();
-        foreach (self::$data as $addon) {
-            $list[] = clone($addon);
+        foreach (Utilities::$registeredAddons as $id => $rawData) {
+            $list[] = self::get($id);
         }
         return $list;
     }
-
 }
