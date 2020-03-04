@@ -71,7 +71,7 @@ class Assets
     {
         $this->appData = $app->data;
         $this->appURLs = $app->urls;
-        $this->app->routes
+        $app->routes
             ->add($this->internalPathPrefix . '*', function (\BearFramework\App\Request $request) {
                 $response = $this->getResponse($request);
                 if ($response !== null) {
