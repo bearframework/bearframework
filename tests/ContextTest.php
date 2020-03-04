@@ -167,4 +167,24 @@ $app->valueToCheck = $context->dir;
         $app->contexts->get($addonDir);
     }
 
+
+    /**
+     * 
+     */
+    public function testContextOptimizations()
+    {
+        $app = $this->getApp();
+        $addonDir = $app->config['addonsDir'] . '/tempaddon' . uniqid();
+
+        $this->makeFile($addonDir . '/index.php', '<?php
+            
+$app = BearFramework\App::get();
+$context = $app->contexts->get("' . $addonDir . '");
+$app->valueToCheck = $context->dir;
+');
+
+        BearFramework\Addons::register('tempaddon', $addonDir);
+        $app->addons->add('tempaddon');
+        $this->assertTrue($app->valueToCheck === $addonDir);
+    }
 }

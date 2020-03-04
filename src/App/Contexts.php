@@ -47,7 +47,7 @@ class Contexts
     /**
      * Returns a context object for the filename specified.
      * 
-     * @param string|null $filename The filename used to find the context. Will be automatically detected if not provided.
+     * @param string|null $filename The filename used to find the context. Will be automatically detected if not provided. Passing the context dir has performance benefits.
      * @throws \Exception
      * @return \BearFramework\App\Context The context object for the filename specified.
      */
@@ -65,8 +65,11 @@ class Contexts
             return clone ($this->objectsCache[$filename]);
         }
         $matchedDir = null;
+        if (isset($this->dirs[$filename])) {
+            $matchedDir = $filename;
+        }
         foreach ($this->dirs as $dir => $length) {
-            if ($dir === $filename . '/' || substr($filename, 0, $length) === $dir) {
+            if (substr($filename, 0, $length + 1) === $dir . '/') {
                 $matchedDir = $dir;
                 break;
             }
@@ -75,8 +78,10 @@ class Contexts
             if (isset($this->objectsCache[$matchedDir])) {
                 return clone ($this->objectsCache[$matchedDir]);
             }
-            $this->objectsCache[$matchedDir] = new App\Context($this->app, substr($matchedDir, 0, -1));
-            $this->objectsCache[$filename] = clone ($this->objectsCache[$matchedDir]);
+            $this->objectsCache[$matchedDir] = new App\Context($this->app, $matchedDir);
+            if ($matchedDir !== $filename) {
+                $this->objectsCache[$filename] = clone ($this->objectsCache[$matchedDir]);
+            }
             return clone ($this->objectsCache[$matchedDir]);
         }
         throw new \Exception('Connot find context for ' . $filename);
@@ -91,11 +96,11 @@ class Contexts
      */
     public function add(string $dir): self
     {
-        $dir = rtrim(\BearFramework\Internal\Utilities::normalizePath($dir), '/') . '/';
+        $dir = rtrim(\BearFramework\Internal\Utilities::normalizePath($dir), '/');
         if (!isset($this->dirs[$dir])) {
             $this->dirs[$dir] = strlen($dir);
             arsort($this->dirs);
-            $indexFilename = $dir . 'index.php';
+            $indexFilename = $dir . '/index.php';
             if (is_file($indexFilename)) {
                 ob_start();
                 try {
