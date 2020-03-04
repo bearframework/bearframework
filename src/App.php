@@ -58,81 +58,80 @@ class App
         self::$instance = &$this;
 
         $this
-                ->defineProperty('request', [
-                    'init' => function() {
-                        return new App\Request(true);
-                    },
-                    'type' => 'BearFramework\App\Request'
-                ])
-                ->defineProperty('routes', [
-                    'init' => function() {
-                        return new App\Routes();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('logs', [
-                    'init' => function() {
-                        return new App\Logs();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('addons', [
-                    'init' => function() {
-                        return new App\Addons($this);
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('assets', [
-                    'init' => function() {
-                        return new App\Assets($this);
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('data', [
-                    'init' => function() {
-                        return new App\DataRepository(['filenameProtocol' => 'appdata']);
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('cache', [
-                    'init' => function() {
-                        return new App\CacheRepository();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('classes', [
-                    'init' => function() {
-                        return new App\Classes();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('urls', [
-                    'init' => function() {
-                        return new App\URLs($this);
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('contexts', [
-                    'init' => function() {
-                        return new App\Contexts($this);
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('shortcuts', [
-                    'init' => function() {
-                        return new App\Shortcuts(function(string $name, callable $callback) {
-                                    if (isset($this->$name)) {
-                                        throw new \Exception('A property/shortcut named "' . $name . '" already exists!');
-                                    }
-                                    $this->defineProperty($name, [
-                                        'init' => $callback,
-                                        'readonly' => true
-                                    ]);
-                                });
-                    },
-                    'readonly' => true
-                ])
-        ;
+            ->defineProperty('request', [
+                'init' => function () {
+                    return new App\Request(true);
+                },
+                'type' => 'BearFramework\App\Request'
+            ])
+            ->defineProperty('routes', [
+                'init' => function () {
+                    return new App\Routes();
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('logs', [
+                'init' => function () {
+                    return new App\Logs();
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('addons', [
+                'init' => function () {
+                    return new App\Addons($this);
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('assets', [
+                'init' => function () {
+                    return new App\Assets($this);
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('data', [
+                'init' => function () {
+                    return new App\DataRepository(['filenameProtocol' => 'appdata']);
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('cache', [
+                'init' => function () {
+                    return new App\CacheRepository();
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('classes', [
+                'init' => function () {
+                    return new App\Classes();
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('urls', [
+                'init' => function () {
+                    return new App\URLs($this);
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('contexts', [
+                'init' => function () {
+                    return new App\Contexts($this);
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('shortcuts', [
+                'init' => function () {
+                    return new App\Shortcuts(function (string $name, callable $callback) {
+                        if (isset($this->$name)) {
+                            throw new \Exception('A property/shortcut named "' . $name . '" already exists!');
+                        }
+                        $this->defineProperty($name, [
+                            'init' => $callback,
+                            'readonly' => true
+                        ]);
+                    });
+                },
+                'readonly' => true
+            ]);
     }
 
     /**
@@ -161,16 +160,16 @@ class App
         if ($this->errorHandlerEnabled) {
             throw new \Exception('The error handler is already enabled!');
         }
-        set_exception_handler(function($exception) use ($options) {
+        set_exception_handler(function ($exception) use ($options) {
             \BearFramework\Internal\ErrorHandler::handleException($this, $exception, $options);
         });
-        register_shutdown_function(function() use ($options) {
+        register_shutdown_function(function () use ($options) {
             $errorData = error_get_last();
             if (is_array($errorData)) {
                 \BearFramework\Internal\ErrorHandler::handleFatalError($this, $errorData, $options);
             }
         });
-        set_error_handler(function($errorNumber, $errorMessage, $errorFile, $errorLine) {
+        set_error_handler(function ($errorNumber, $errorMessage, $errorFile, $errorLine) {
             throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
         });
         $this->errorHandlerEnabled = true;
@@ -255,5 +254,4 @@ class App
     {
         throw new \Exception('Cannot have multiple App instances');
     }
-
 }
