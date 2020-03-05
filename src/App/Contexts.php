@@ -64,14 +64,15 @@ class Contexts
         if (isset($this->objectsCache[$filename])) {
             return clone ($this->objectsCache[$filename]);
         }
-        $matchedDir = null;
         if (isset($this->dirs[$filename])) {
             $matchedDir = $filename;
-        }
-        foreach ($this->dirs as $dir => $length) {
-            if (substr($filename, 0, $length + 1) === $dir . '/') {
-                $matchedDir = $dir;
-                break;
+        } else {
+            $matchedDir = null;
+            foreach ($this->dirs as $dir => $length) {
+                if (substr($filename, 0, $length + 1) === $dir . '/') {
+                    $matchedDir = $dir;
+                    break;
+                }
             }
         }
         if ($matchedDir !== null) {

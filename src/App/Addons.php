@@ -60,9 +60,8 @@ class Addons
                     }
                 }
             }
-            $dir = $registeredAddonRawData[0];
             $this->data[$id] = [null];
-            $this->appContexts->add($dir);
+            $this->appContexts->add($registeredAddonRawData[0]);
         }
         return $this;
     }
