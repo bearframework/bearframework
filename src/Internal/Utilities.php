@@ -32,7 +32,10 @@ class Utilities
      */
     static function normalizePath(string $path): string
     {
-        $cacheKey = '0' . $path;
+        if ($path === '') {
+            return '';
+        }
+        $cacheKey = 'normalize-path-' . $path;
         if (!isset(self::$cache[$cacheKey])) {
             for ($i = 0; $i < 2; $i++) {
                 if (strpos($path, '://') !== false) { // is url
@@ -40,16 +43,16 @@ class Utilities
                     $root = $temp[0] . '://';
                     $path = $temp[1];
                     break;
-                } elseif (substr($path, 0, 1) === '/') { // is absolute on linux
+                } elseif ($path[0] === '/') { // is absolute on Linux
                     $root = '/';
                     $path = substr($path, 1);
                     break;
-                } elseif (preg_match('/^[A-Za-z]:[\/\\\]/i', $path) === 1) { // is absolute on windows
+                } elseif (preg_match('/^[A-Za-z]:[\/\\\]/i', $path) === 1) { // is absolute on Windows
                     $root = substr($path, 0, 2) . '/';
                     $path = substr($path, 3);
                     break;
                 } else {
-                    if ($i === 0) {
+                    if ($i === 0) { // is relative
                         $path = getcwd() . '/' . $path;
                     } else {
                         throw new \Exception('Cannot find absolute path for "' . $path . '"!');
@@ -83,8 +86,10 @@ class Utilities
                 }
                 $path = implode('/', $temp);
             }
-            self::$cache[$cacheKey] = $root . $path;
-            self::$cache['0' . $root . $path] = $root . $path; // cache to optimize normalizing normalized paths
+            $result = $root . $path;
+            self::$cache[$cacheKey] = $result;
+            self::$cache['normalize-path-' . $result] = $result; // cache to optimize normalizing normalized paths
+            return $result;
         }
         return self::$cache[$cacheKey];
     }
