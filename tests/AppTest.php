@@ -173,18 +173,18 @@ $app->routes->add(\'/\', function() {
     {
         $app = $this->getApp();
         $this->expectException('Exception');
-        clone($app);
+        clone ($app);
     }
 
     /**
      * Disabled due to error in HHVM
      */
-//    function testUnserialize()
-//    {
-//        $app = $this->getApp();
-//        $this->expectException('Exception');
-//        unserialize(serialize($app));
-//    }
+    //    function testUnserialize()
+    //    {
+    //        $app = $this->getApp();
+    //        $this->expectException('Exception');
+    //        unserialize(serialize($app));
+    //    }
 
     /**
      * 
@@ -201,7 +201,7 @@ $app->routes->add(\'/\', function() {
     function testBeforeSendResponseEvent()
     {
         $app = $this->getApp();
-        $app->addEventListener('beforeSendResponse', function(\BearFramework\App\BeforeSendResponseEventDetails $details) {
+        $app->addEventListener('beforeSendResponse', function (\BearFramework\App\BeforeSendResponseEventDetails $details) {
             $details->response->content .= '2';
         });
         $this->expectOutputString('Hi2');
@@ -214,7 +214,7 @@ $app->routes->add(\'/\', function() {
     function testSendResponseEvent()
     {
         $app = $this->getApp();
-        $app->addEventListener('sendResponse', function(\BearFramework\App\SendResponseEventDetails $details) {
+        $app->addEventListener('sendResponse', function (\BearFramework\App\SendResponseEventDetails $details) {
             $details->response->content .= '2';
         });
         $this->expectOutputString('Hi');
@@ -223,4 +223,57 @@ $app->routes->add(\'/\', function() {
         $this->assertEquals($response->content, 'Hi2');
     }
 
+    /**
+     * 
+     */
+    public function testRangeRequest1()
+    {
+        $_SERVER['HTTP_RANGE'] = 'bytes=2-8';
+        $app = new \BearFramework\App();
+        $this->expectOutputString('2345678');
+        $content = '0123456789';
+        $response = new \BearFramework\App\Response($content);
+        $app->send($response);
+    }
+
+    /**
+     * 
+     */
+    public function testRangeRequest2()
+    {
+        $_SERVER['HTTP_RANGE'] = 'bytes=5-';
+        $app = new \BearFramework\App();
+        $this->expectOutputString('56789');
+        $content = '0123456789';
+        $response = new \BearFramework\App\Response($content);
+        $app->send($response);
+    }
+
+    /**
+     * 
+     */
+    public function testRangeRequest3()
+    {
+        $_SERVER['HTTP_RANGE'] = 'bytes=-4';
+        $app = new \BearFramework\App();
+        $this->expectOutputString('6789');
+        $content = '0123456789';
+        $response = new \BearFramework\App\Response($content);
+        $app->send($response);
+    }
+
+    /**
+     * 
+     */
+    public function testRangeRequest4()
+    {
+        $_SERVER['HTTP_RANGE'] = 'bytes=3-8';
+        $app = new \BearFramework\App();
+        $this->expectOutputString('2345678');
+        $content = '0123456789';
+        $filename = $this->getTempDir() . '/file';
+        $this->makeFile($filename, $content);
+        $response = new \BearFramework\App\Response\FileReader($filename);
+        $app->send($response);
+    }
 }

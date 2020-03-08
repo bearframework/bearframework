@@ -203,6 +203,34 @@ class App
         if (!$response->headers->exists('Content-Length')) {
             $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
         }
+        $rangeHeaderValue = $response->headers->getValue('Accept-Ranges') === 'bytes' ? $this->request->headers->getValue('Range') : null;
+        if ($rangeHeaderValue !== null) {
+            $rangeStart = null;
+            $rangeEnd = null;
+            $matches = null;
+            if (preg_match('/^bytes=(\d+)?-(\d+)?$/i', $rangeHeaderValue, $matches)) {
+                $contentLength = $response->headers->getValue('Content-Length');
+                $rangeStart = strlen($matches[1]) > 0 ? (int) $matches[1] : null;
+                if (isset($matches[2])) {
+                    $rangeEnd = (int) $matches[2];
+                    if ($rangeStart === null) {
+                        $rangeStart = $contentLength - $rangeEnd;
+                        if ($rangeStart < 0) {
+                            $rangeStart = 0;
+                        }
+                        $rangeEnd = $rangeStart + $rangeEnd - 1;
+                    }
+                    if ($rangeEnd >= $contentLength) {
+                        $rangeEnd = $contentLength - 1;
+                    }
+                } else {
+                    $rangeEnd = $contentLength - 1;
+                }
+                $response->statusCode = 206;
+                $response->headers->set($response->headers->make('Content-Range', 'bytes ' . $rangeStart . '-' . $rangeEnd . '/' . $contentLength));
+                $response->headers->set($response->headers->make('Content-Length', $rangeEnd - $rangeStart + 1));
+            }
+        }
         if (!$response->headers->exists('Cache-Control')) {
             $response->headers->set($response->headers->make('Cache-Control', 'no-cache, no-store, must-revalidate, private, max-age=0'));
         }
@@ -223,10 +251,34 @@ class App
                 }
             }
         }
-        if ($response instanceof App\Response\FileReader) {
-            readfile($response->filename);
+        if ($rangeHeaderValue !== null && $rangeStart !== null) {
+            if ($response instanceof App\Response\FileReader) {
+                $handle = fopen($response->filename, 'rb');
+                if (fseek($handle, $rangeStart, SEEK_SET) === -1) {
+                    throw new \Exception('Cannot set offset to ' . $rangeStart . '!');
+                }
+                $buffer = '';
+                $bytesLeftToRead = $rangeEnd - $rangeStart + 1;
+                while ($bytesLeftToRead > 0) {
+                    $buffer = fread($handle, min(16384, $bytesLeftToRead));
+                    $bytesRead = strlen($buffer);
+                    if ($bytesRead === 0) { // something is wrong
+                        break;
+                    }
+                    $bytesLeftToRead -= $bytesRead;
+                    echo $buffer;
+                    flush();
+                }
+                fclose($handle);
+            } else {
+                echo substr($response->content, $rangeStart, $rangeEnd - $rangeStart + 1);
+            }
         } else {
-            echo $response->content;
+            if ($response instanceof App\Response\FileReader) {
+                readfile($response->filename);
+            } else {
+                echo $response->content;
+            }
         }
         if ($this->hasEventListeners('sendResponse')) {
             $this->dispatchEvent('sendResponse', new \BearFramework\App\SendResponseEventDetails($response));
