@@ -233,6 +233,7 @@ $app->routes->add(\'/\', function() {
         $this->expectOutputString('2345678');
         $content = '0123456789';
         $response = new \BearFramework\App\Response($content);
+        $response->headers->set($response->headers->make('Accept-Ranges', 'bytes'));
         $app->send($response);
     }
 
@@ -246,6 +247,7 @@ $app->routes->add(\'/\', function() {
         $this->expectOutputString('56789');
         $content = '0123456789';
         $response = new \BearFramework\App\Response($content);
+        $response->headers->set($response->headers->make('Accept-Ranges', 'bytes'));
         $app->send($response);
     }
 
@@ -259,6 +261,7 @@ $app->routes->add(\'/\', function() {
         $this->expectOutputString('6789');
         $content = '0123456789';
         $response = new \BearFramework\App\Response($content);
+        $response->headers->set($response->headers->make('Accept-Ranges', 'bytes'));
         $app->send($response);
     }
 
@@ -274,6 +277,7 @@ $app->routes->add(\'/\', function() {
         $filename = $this->getTempDir() . '/file';
         $this->makeFile($filename, $content);
         $response = new \BearFramework\App\Response\FileReader($filename);
+        $response->headers->set($response->headers->make('Accept-Ranges', 'bytes'));
         $app->send($response);
     }
 }
