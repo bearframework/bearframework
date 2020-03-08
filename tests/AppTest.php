@@ -272,7 +272,7 @@ $app->routes->add(\'/\', function() {
     {
         $_SERVER['HTTP_RANGE'] = 'bytes=3-8';
         $app = new \BearFramework\App();
-        $this->expectOutputString('2345678');
+        $this->expectOutputString('345678');
         $content = '0123456789';
         $filename = $this->getTempDir() . '/file';
         $this->makeFile($filename, $content);
