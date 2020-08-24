@@ -1,4 +1,4 @@
-![Bear Framework](http://bearframework.github.io/bearframework-logo-for-github.png)
+![Bear Framework](https://bearframework.github.io/bearframework-logo-for-github.png)
 
 **Incredibly lightweight. Powerful enough.**
 
