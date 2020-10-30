@@ -107,10 +107,7 @@ class ErrorHandler
                         $addContent('Error ' . ($j + 1) . ' of ' . $errorsCount, '');
                     }
                     $addContent('Message', $message);
-                    $addContent('Simple trace', implode("\n", $simpleTrace));
-                    if (!$isSimpleLog) {
-                        $addContent('Full trace', print_r($trace, true));
-                    }
+                    $addContent('Trace', implode("\n", $simpleTrace));
                 }
 
                 $addContent('Request', $app->request->method . ' ' . $app->request->base . $app->request->path);
@@ -136,7 +133,8 @@ class ErrorHandler
                             } else {
                                 $app->logs->log('error-' . $logKey, $log);
                             }
-                        } catch (\Exception $e) { }
+                        } catch (\Exception $e) {
+                        }
                     }
                 } else {
                     if ($displayErrors) {
