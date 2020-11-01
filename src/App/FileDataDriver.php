@@ -271,8 +271,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
                 'key' => $key,
                 'result' => ['metadata.' . $name]
             ]
-                ]
-        );
+        ]);
         return isset($result[0]['metadata.' . $name]) ? $result[0]['metadata.' . $name] : null;
     }
 
@@ -379,7 +378,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
         if ($this->newDataItemCache === null) {
             $this->newDataItemCache = new \BearFramework\App\DataItem();
         }
-        $dataItem = clone($this->newDataItemCache);
+        $dataItem = clone ($this->newDataItemCache);
         if (isset($rawData['key'])) {
             $dataItem->key = $rawData['key'];
         }
@@ -405,5 +404,4 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     {
         return new \BearFramework\App\FileDataItemStreamWrapper($key, $this->dir);
     }
-
 }
