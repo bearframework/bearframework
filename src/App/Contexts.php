@@ -85,7 +85,7 @@ class Contexts
             }
             return $this->objectsCache[$matchedDir];
         }
-        throw new \Exception('Connot find context for ' . $filename);
+        throw new \Exception('Cannot find context for ' . $filename);
     }
 
     /**
