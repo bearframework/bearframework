@@ -258,10 +258,6 @@ class DataItemStreamWrapper
      */
     public function stream_stat(): array
     {
-        $originalPointer = $this->dataItemWrapper->tell();
-        $this->dataItemWrapper->seek(0, SEEK_END);
-        $lastPosition = $this->dataItemWrapper->tell();
-        $this->dataItemWrapper->seek($originalPointer, SEEK_SET);
         $result = [];
         $result[0] = $result['dev'] = 0;
         $result[1] = $result['ino'] = 0;
@@ -270,7 +266,7 @@ class DataItemStreamWrapper
         $result[4] = $result['uid'] = 0;
         $result[5] = $result['gid'] = 0;
         $result[6] = $result['rdev'] = -1;
-        $result[7] = $result['size'] = $lastPosition;
+        $result[7] = $result['size'] = $this->dataItemWrapper->size();
         $result[8] = $result['atime'] = 0;
         $result[9] = $result['mtime'] = 0;
         $result[10] = $result['ctime'] = 0;
@@ -287,7 +283,7 @@ class DataItemStreamWrapper
      */
     public function url_stat(string $path, int $flags)
     {
-        $makeResult = function($mode, $size) {
+        $makeResult = function ($mode, $size) {
             $result = [];
             $result[0] = $result['dev'] = 0;
             $result[1] = $result['ino'] = 0;
@@ -355,9 +351,8 @@ class DataItemStreamWrapper
             }
             if ($exists) {
                 return $result;
-            } else {
-                return false;
             }
+            return false;
         }
     }
 
@@ -546,5 +541,4 @@ class DataItemStreamWrapper
             'dataDriver' => $dataDriver
         ];
     }
-
 }

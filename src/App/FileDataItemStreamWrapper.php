@@ -62,7 +62,7 @@ class FileDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
                 }
             }
         }
-        $getFileHandle = function() use ($filename, $mode) {
+        $getFileHandle = function () use ($filename, $mode) {
             $handle = fopen($filename, $mode);
             if ($handle) {
                 $flockResult = flock($handle, $mode === 'rb' ? LOCK_SH : (LOCK_EX | LOCK_NB));
@@ -172,8 +172,16 @@ class FileDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
      */
     public function size(): int
     {
-        $filename = $this->getFilename();
-        return is_file($filename) ? filesize($filename) : 0;
+        if ($this->fileHandle !== null) {
+            $originalPointer = ftell($this->fileHandle);
+            fseek($this->fileHandle, 0, SEEK_END);
+            $lastPosition = ftell($this->fileHandle);
+            fseek($this->fileHandle, $originalPointer, SEEK_SET);
+            return $lastPosition;
+        } else {
+            $filename = $this->getFilename();
+            return is_file($filename) ? filesize($filename) : 0;
+        }
     }
 
     /**
@@ -193,5 +201,4 @@ class FileDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
     {
         return $this->dir . '/objects/' . $this->key;
     }
-
 }
