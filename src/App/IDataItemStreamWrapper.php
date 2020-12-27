@@ -80,7 +80,7 @@ interface IDataItemStreamWrapper
      * @return int
      */
     public function size(): int;
-    
+
     /**
      * 
      * @return bool

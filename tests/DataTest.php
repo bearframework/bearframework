@@ -396,10 +396,51 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testStreamWrapper()
+    public function testFileDriverStreamWrapper()
     {
-        $app = $this->getApp();
-        $content = str_repeat('abcdefghijklmnopqrstuvwxyz' . PHP_EOL, 1000);
+        $app = new BearFramework\App();
+        $app->data->useFileDriver($this->getTempDir());
+        $this->internalTestAppStreamWrapper($app, 1);
+        $this->internalTestAppStreamWrapper($app, 1000);
+    }
+
+    /**
+     * 
+     */
+    public function testMemoryDriverStreamWrapper()
+    {
+        $app = new BearFramework\App();
+        $app->data->useMemoryDriver();
+        $this->internalTestAppStreamWrapper($app, 1);
+        $this->internalTestAppStreamWrapper($app, 1000);
+    }
+
+    /**
+     * 
+     */
+    public function testFileDriverDirsStreamWrapper()
+    {
+        $app = new BearFramework\App();
+        $app->data->useFileDriver($this->getTempDir());
+        $this->internalTestDirsStreamWrapper($app);
+    }
+
+    /**
+     * 
+     */
+    public function testMemoryDriverDirsStreamWrapper()
+    {
+        $app = new BearFramework\App();
+        $app->data->useMemoryDriver();
+        $this->internalTestDirsStreamWrapper($app);
+    }
+
+    /**
+     * 
+     */
+    public function internalTestAppStreamWrapper($app, $contentSize)
+    {
+        $content = str_repeat('abcdefghijklmnopqrstuvwxyz' . PHP_EOL, $contentSize);
 
         $generateFilename = function (bool $isAppData, bool $exists) use ($app, $content) {
             if ($isAppData) {
@@ -793,7 +834,7 @@ class DataTest extends BearFrameworkTestCase
             ];
             foreach ($filenamesToTest as $filename => $exists) {
 
-                $thisReadInFileWithContent = function ($handle) use ($content) {
+                $readFileWithContent = function ($handle) use ($content) {
                     $this->assertTrue(is_resource($handle));
 
                     $this->assertTrue(rewind($handle));
@@ -842,7 +883,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
-                $thisReadInFileWithoutContent = function ($handle) {
+                $readFileWithoutContent = function ($handle) {
                     $this->assertTrue(rewind($handle));
 
                     $this->assertEquals(ftell($handle), 0);
@@ -879,7 +920,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
-                $thisWriteInFileWithContent = function ($handle) use ($content) {
+                $writeFileWithContent = function ($handle) use ($content) {
                     $this->assertTrue(rewind($handle));
 
                     $this->assertEquals(fread($handle, 3), substr($content, 0, 3));
@@ -901,7 +942,7 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
-                $thisWriteInFileWithoutContent = function ($handle) {
+                $writeFileWithoutContent = function ($handle) {
                     $this->assertTrue(rewind($handle));
 
                     $this->assertEquals(ftell($handle), 0);
@@ -922,10 +963,35 @@ class DataTest extends BearFrameworkTestCase
                     $this->assertTrue(rewind($handle));
                 };
 
+                $nullBytesFileWithoutContent = function ($handle, $mode) {
+                    $this->assertTrue(rewind($handle));
+
+                    $this->assertEquals(fseek($handle, 3, SEEK_END), 0);
+                    $this->assertEquals(ftell($handle), 3);
+                    $this->assertEquals(fwrite($handle, 'abcd'), 4); // test write null bytes
+                    $this->assertEquals(fseek($handle, 0), 0);
+                    if ($mode === 'a+b') {
+                        $this->assertEquals(fread($handle, 7), 'abcd'); // fseek does not work for a+b
+                    } else {
+                        $this->assertEquals(fread($handle, 7), str_repeat(hex2bin('00'), 3) . 'abcd');
+                    }
+
+                    $this->assertTrue(ftruncate($handle, 0));
+                    $this->assertTrue(rewind($handle));
+
+                    $this->assertEquals(fwrite($handle, 'yz'), 2);
+                    $this->assertTrue(ftruncate($handle, 4)); // test truncate null bytes
+                    $this->assertEquals(fseek($handle, 0), 0);
+                    $this->assertEquals(fread($handle, 4), 'yz' . str_repeat(hex2bin('00'), 2));
+
+                    $this->assertTrue(ftruncate($handle, 0));
+                    $this->assertTrue(rewind($handle));
+                };
+
                 if ($mode === 'rb') { // Open for reading only; place the file pointer at the beginning of the file.
                     if ($exists) {
                         $handle = fopen($filename, $mode);
-                        $thisReadInFileWithContent($handle);
+                        $readFileWithContent($handle);
                         if (version_compare(phpversion(), "7.4.0", ">=")) {
                             $exceptionThrown = null;
                             try {
@@ -946,8 +1012,8 @@ class DataTest extends BearFrameworkTestCase
                 } elseif ($mode === 'r+b') { // Open for reading and writing; place the file pointer at the beginning of the file.
                     if ($exists) {
                         $handle = fopen($filename, $mode);
-                        $thisReadInFileWithContent($handle);
-                        $thisWriteInFileWithContent($handle);
+                        $readFileWithContent($handle);
+                        $writeFileWithContent($handle);
                         fclose($handle);
                     } else {
                         $assertException(function () use ($filename, $mode) {
@@ -956,26 +1022,34 @@ class DataTest extends BearFrameworkTestCase
                     }
                 } elseif ($mode === 'wb') { // Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it.
                     $handle = fopen($filename, $mode);
-                    $thisWriteInFileWithoutContent($handle);
+                    $writeFileWithoutContent($handle);
                     fclose($handle);
                 } elseif ($mode === 'w+b') { // Open for reading and writing; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it. 
                     $handle = fopen($filename, $mode);
-                    $thisReadInFileWithoutContent($handle);
-                    $thisWriteInFileWithoutContent($handle);
+                    $readFileWithoutContent($handle);
+                    $writeFileWithoutContent($handle);
+                    $nullBytesFileWithoutContent($handle, $mode);
                     fclose($handle);
                 } elseif ($mode === 'ab') { // Open for writing only; place the file pointer at the end of the file. If the file does not exist, attempt to create it. In this mode, fseek() has no effect, writes are always appended.
                     $handle = fopen($filename, $mode);
+                    fwrite($handle, 'yyy');
+                    $this->assertEquals(fseek($handle, 2), 0);
                     fwrite($handle, 'zzz');
                     fclose($handle);
-                    $this->assertEquals(file_get_contents($filename), ($exists ? $content : '') . 'zzz');
+                    $this->assertEquals(file_get_contents($filename), ($exists ? $content : '') . 'yyyzzz');
                 } elseif ($mode === 'a+b') { // Open for reading and writing; place the file pointer at the end of the file. If the file does not exist, attempt to create it. In this mode, fseek() only affects the reading position, writes are always appended. 
                     $handle = fopen($filename, $mode);
                     if ($exists) {
-                        $thisReadInFileWithContent($handle);
+                        //$this->assertEquals(ftell($handle), strlen($content)); // strangly its 0 for regular files (it says 'place the file pointer at the end of the file').
+                        $readFileWithContent($handle);
                     } else {
-                        $thisReadInFileWithoutContent($handle);
+                        $this->assertEquals(ftell($handle), 0);
+                        $readFileWithoutContent($handle);
+                        $nullBytesFileWithoutContent($handle, $mode);
                     }
                     fwrite($handle, 'zzz');
+                    // $this->assertEquals(ftell($handle), $exists ? strlen($content) + 3 : 3);
+                    // $this->assertEquals(fread($handle, 10), ''); // Confirm that the pointer has moved because ftell is updated some kind of internaly for StringDataItemStreamWrapper
                     fclose($handle);
                     $this->assertEquals(file_get_contents($filename), ($exists ? $content : '') . 'zzz');
                 } elseif ($mode === 'xb') { // Create and open for writing only; place the file pointer at the beginning of the file. If the file already exists, the fopen() call will fail by returning FALSE and generating an error of level E_WARNING. If the file does not exist, attempt to create it. This is equivalent to specifying O_EXCL|O_CREAT flags for the underlying open(2) system call. 
@@ -985,19 +1059,21 @@ class DataTest extends BearFrameworkTestCase
                         }, 'failed to open stream');
                     } else {
                         $handle = fopen($filename, $mode);
-                        $thisWriteInFileWithoutContent($handle);
+                        $writeFileWithoutContent($handle);
                         fclose($handle);
                     }
-                } elseif ($mode === 'w+b') { // Create and open for reading and writing; otherwise it has the same behavior as 'x'.
-                    $handle = fopen($filename, $mode);
+                } elseif ($mode === 'x+b') { // Create and open for reading and writing; otherwise it has the same behavior as 'x'.
                     if ($exists) {
-                        $thisReadInFileWithContent($handle);
-                        $thisWriteInFileWithContent($handle);
+                        $assertException(function () use ($filename, $mode) {
+                            fopen($filename, $mode);
+                        }, 'failed to open stream');
                     } else {
-                        $thisReadInFileWithoutContent($handle);
-                        $thisWriteInFileWithoutContent($handle);
+                        $handle = fopen($filename, $mode);
+                        $readFileWithoutContent($handle);
+                        $writeFileWithoutContent($handle);
+                        $nullBytesFileWithoutContent($handle, $mode);
+                        fclose($handle);
                     }
-                    fclose($handle);
                 } elseif ($mode === 'cb') { // Open the file for writing only. If the file does not exist, it is created. If it exists, it is neither truncated (as opposed to 'w'), nor the call to this function fails (as is the case with 'x'). The file pointer is positioned on the beginning of the file. This may be useful if it's desired to get an advisory lock (see flock()) before attempting to modify the file, as using 'w' could truncate the file before the lock was obtained (if truncation is desired, ftruncate() can be used after the lock is requested).
                     if ($exists) {
                         $handle = fopen($filename, $mode);
@@ -1006,17 +1082,18 @@ class DataTest extends BearFrameworkTestCase
                         $this->assertEquals(file_get_contents($filename), 'zzz' . substr($content, 3));
                     } else {
                         $handle = fopen($filename, $mode);
-                        $thisWriteInFileWithoutContent($handle);
+                        $writeFileWithoutContent($handle);
                         fclose($handle);
                     }
                 } elseif ($mode === 'c+b') { // Open the file for reading and writing; otherwise it has the same behavior as 'c'.
                     $handle = fopen($filename, $mode);
                     if ($exists) {
-                        $thisReadInFileWithContent($handle);
-                        $thisWriteInFileWithContent($handle);
+                        $readFileWithContent($handle);
+                        $writeFileWithContent($handle);
                     } else {
-                        $thisReadInFileWithoutContent($handle);
-                        $thisWriteInFileWithoutContent($handle);
+                        $readFileWithoutContent($handle);
+                        $writeFileWithoutContent($handle);
+                        $nullBytesFileWithoutContent($handle, $mode);
                     }
                     fclose($handle);
                 }
@@ -1027,10 +1104,8 @@ class DataTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testDirsStreamWrapper()
+    public function internalTestDirsStreamWrapper($app)
     {
-        $app = $this->getApp();
-
         $this->assertTrue(is_dir('appdata://'));
         $this->assertTrue(rmdir('appdata://'));
         $this->assertTrue(mkdir('appdata://'));

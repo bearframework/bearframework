@@ -83,6 +83,17 @@ class DataRepository
     }
 
     /**
+     * Enables a memory data driver. All the data will be stored in the request memory and will be deleted when the request ends.
+     * 
+     * @return self Returns a reference to itself.
+     */
+    public function useMemoryDriver(): self
+    {
+        $this->setDriver(new \BearFramework\App\MemoryDataDriver());
+        return $this;
+    }
+
+    /**
      * Enables a null data driver. No data is stored and no errors are thrown.
      * 
      * @return self Returns a reference to itself.
@@ -139,7 +150,7 @@ class DataRepository
         if ($this->newDataItemCache === null) {
             $this->newDataItemCache = new \BearFramework\App\DataItem();
         }
-        $object = clone($this->newDataItemCache);
+        $object = clone ($this->newDataItemCache);
         if ($key !== null) {
             if (!$this->validate($key)) {
                 throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
@@ -161,7 +172,7 @@ class DataRepository
      * @throws \BearFramework\App\Data\DataLockedException
      * @throws \InvalidArgumentException
      */
-    public function set(DataItem $item): self
+    public function set(\BearFramework\App\DataItem $item): self
     {
         if ($item->key === null || !$this->validate($item->key)) {
             throw new \InvalidArgumentException('The key provided (' . ($item->key === null ? 'null' : $item->key) . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');

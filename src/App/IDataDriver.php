@@ -22,7 +22,7 @@ interface IDataDriver
      * @param \BearFramework\App\DataItem $item The data item to store.
      * @return void No value is returned.
      */
-    public function set(DataItem $item): void;
+    public function set(\BearFramework\App\DataItem $item): void;
 
     /**
      * Sets a new value of the item specified or creates a new item with the key and value specified.

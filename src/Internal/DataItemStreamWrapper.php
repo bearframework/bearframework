@@ -370,6 +370,7 @@ class DataItemStreamWrapper
         $dataRepository = $pathInfo['dataRepository'];
         try {
             $dataRepository->delete($pathInfo['key']); // Events are dispached here
+            clearstatcache(true, $path);
             return true;
         } catch (\Exception $e) {
             return false;
@@ -399,6 +400,8 @@ class DataItemStreamWrapper
         }
         try {
             $fromPathDataRepository->rename($fromPathInfo['key'], $toPathInfo['key']); // Events are dispached here
+            clearstatcache(true, $fromPath);
+            clearstatcache(true, $toPath);
             return true;
         } catch (\Exception $e) {
             return false;

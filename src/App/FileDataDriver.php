@@ -55,7 +55,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function set(DataItem $item): void
+    public function set(\BearFramework\App\DataItem $item): void
     {
         $command = [
             'command' => 'set',
