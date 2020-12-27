@@ -18,17 +18,17 @@ class EventsTest extends BearFrameworkTestCase
      */
     function testBasics()
     {
-        $object = new class {
-
+        $object = new class
+        {
             use \BearFramework\EventsTrait;
         };
 
         $result = '';
 
-        $listener1 = function() use (&$result) {
+        $listener1 = function () use (&$result) {
             $result .= '1';
         };
-        $listener2 = function() use (&$result) {
+        $listener2 = function () use (&$result) {
             $result .= '2';
         };
 
@@ -64,14 +64,14 @@ class EventsTest extends BearFrameworkTestCase
      */
     function testEventArgument()
     {
-        $object = new class {
-
+        $object = new class
+        {
             use \BearFramework\EventsTrait;
         };
 
         $result = '';
 
-        $object->addEventListener('done', function() use (&$result) {
+        $object->addEventListener('done', function () use (&$result) {
             $result .= '1';
         });
         $object->dispatchEvent('done');
@@ -84,8 +84,8 @@ class EventsTest extends BearFrameworkTestCase
      */
     function testHasEventListeners()
     {
-        $object = new class {
-
+        $object = new class
+        {
             use \BearFramework\EventsTrait;
         };
 
@@ -95,7 +95,7 @@ class EventsTest extends BearFrameworkTestCase
             'event2Dispached' => 0,
         ];
 
-        $object->addEventListener('event1', function() use (&$result) {
+        $object->addEventListener('event1', function () use (&$result) {
             $result['event1Handled'] = 1;
         });
         if ($object->hasEventListeners('event1')) {
@@ -117,19 +117,19 @@ class EventsTest extends BearFrameworkTestCase
      */
     function testCustomData()
     {
-        $object = new class {
-
+        $object = new class
+        {
             use \BearFramework\EventsTrait;
         };
 
-        $details = new class {
-
+        $details = new class
+        {
             public $value = '1';
         };
 
         $result = '';
 
-        $object->addEventListener('done', function($details) use (&$result) {
+        $object->addEventListener('done', function ($details) use (&$result) {
             $result .= $details->value;
         });
         $object->dispatchEvent('done', $details);
@@ -137,4 +137,88 @@ class EventsTest extends BearFrameworkTestCase
         $this->assertTrue($result === '1');
     }
 
+    /**
+     * 
+     */
+    function testDispatcherArgument1()
+    {
+        $object = new class
+        {
+            use \BearFramework\EventsTrait;
+        };
+
+        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+            $dispatcher->continue();
+            $eventDetails->value .= '1';
+        });
+
+        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+            $eventDetails->value .= '2';
+        });
+
+        $eventDetails = new stdClass();
+        $eventDetails->value = '';
+
+        $object->dispatchEvent('test', $eventDetails, [
+            'defaultListener' => function ($eventDetails) {
+                $eventDetails->value .= '3';
+            }
+        ]);
+
+        $this->assertEquals($eventDetails->value, '231');
+    }
+
+    /**
+     * 
+     */
+    function testDispatcherArgument2()
+    {
+        $object = new class
+        {
+            use \BearFramework\EventsTrait;
+        };
+
+        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+            $eventDetails->value .= '1';
+            $dispatcher->cancel();
+        });
+
+        $eventDetails = new stdClass();
+        $eventDetails->value = '';
+
+        $object->dispatchEvent('test', $eventDetails, [
+            'defaultListener' => function ($eventDetails) {
+                $eventDetails->value .= '3';
+            }
+        ]);
+
+        $this->assertEquals($eventDetails->value, '1');
+    }
+
+    /**
+     * 
+     */
+    function testDispatcherArgument3()
+    {
+        $object = new class
+        {
+            use \BearFramework\EventsTrait;
+        };
+
+        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+            $eventDetails->value .= '1';
+        });
+
+        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+            $dispatcher->continue();
+            $eventDetails->value .= '2';
+        });
+
+        $eventDetails = new stdClass();
+        $eventDetails->value = '';
+
+        $object->dispatchEvent('test', $eventDetails);
+
+        $this->assertEquals($eventDetails->value, '12');
+    }
 }

@@ -52,6 +52,8 @@ trait EventsTrait
                     unset($this->internalEventListenersData[$name][$i]);
                     if (empty($this->internalEventListenersData[$name])) {
                         unset($this->internalEventListenersData[$name]);
+                    } else {
+                        $this->internalEventListenersData[$name] = array_values($this->internalEventListenersData[$name]); // Correct indexes are needed in dispatchEvent()
                     }
                     break;
                 }
@@ -65,13 +67,68 @@ trait EventsTrait
      * 
      * @param string $name The name of the event.
      * @param mixed $details Additional event data.
+     * @param array $options Dispatch options. Available values: defaultListener.
      * @return self Returns a reference to itself.
      */
-    public function dispatchEvent(string $name, $details = null): self
+    public function dispatchEvent(string $name, $details = null, $options = []): self
     {
+        $hasDefaultListener = isset($options['defaultListener']);
         if (isset($this->internalEventListenersData[$name])) {
-            foreach ($this->internalEventListenersData[$name] as $listener) {
-                call_user_func($listener, $details);
+            $canceled = false;
+            $dispatcher = new class (
+                function () use (&$canceled) {
+                    $canceled = true;
+                },
+                function () use (&$executeNext) {
+                    $executeNext();
+                }
+            )
+            {
+                public $canceledCallback = null;
+                public $executeNextCallback = null;
+
+                public function __construct(callable $canceledCallback, callable $executeNextCallback)
+                {
+                    $this->canceledCallback = $canceledCallback;
+                    $this->executeNextCallback = $executeNextCallback;
+                }
+
+                public function cancel()
+                {
+                    call_user_func($this->canceledCallback);
+                }
+
+                public function continue()
+                {
+                    call_user_func($this->executeNextCallback);
+                }
+            };
+
+            $nextIndex = 0;
+            $lastIndex = sizeof($this->internalEventListenersData[$name]) - 1;
+            
+            $executeNext = function () use (&$executeNext, $name, $dispatcher, &$nextIndex, $lastIndex, $details, $hasDefaultListener, $options, &$canceled) {
+                if ($nextIndex <= $lastIndex) {
+                    $listener = $this->internalEventListenersData[$name][$nextIndex];
+                    $nextIndex++;
+                    call_user_func($listener, $details, $dispatcher);
+                    if ($canceled) {
+                        return;
+                    }
+                } elseif ($nextIndex === $lastIndex + 1) {
+                    $nextIndex++;
+                    if ($hasDefaultListener) {
+                        call_user_func($options['defaultListener'], $details);
+                    }
+                } else {
+                    return;
+                }
+                $executeNext();
+            };
+            $executeNext();
+        } else {
+            if ($hasDefaultListener) {
+                call_user_func($options['defaultListener'], $details);
             }
         }
         return $this;
@@ -87,5 +144,4 @@ trait EventsTrait
     {
         return isset($this->internalEventListenersData[$name]);
     }
-
 }
