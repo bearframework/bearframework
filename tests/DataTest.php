@@ -20,7 +20,6 @@ class DataTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        //$dataItem = $app->data->make('users/1', '{"name":"John Smith","email":"john@example.com"}');
         $dataItem = $app->data->make('users/1', '{"name":"John Smith","email":"john@example.com"}');
         $dataItem->metadata['lastAccessTime'] = '1234567890';
         $app->data->set($dataItem);

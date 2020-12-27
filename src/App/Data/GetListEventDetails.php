@@ -24,11 +24,9 @@ class GetListEventDetails
     public function __construct(\BearFramework\DataList $list)
     {
         $this
-                ->defineProperty('list', [
-                    'type' => '\BearFramework\DataList'
-                ])
-        ;
+            ->defineProperty('list', [
+                'type' => '\BearFramework\DataList'
+            ]);
         $this->list = $list;
     }
-
 }

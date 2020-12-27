@@ -558,5 +558,4 @@ class DataRepository
     {
         return preg_match("/^[a-zA-Z0-9\.\-\_]*$/", $key) === 1;
     }
-
 }

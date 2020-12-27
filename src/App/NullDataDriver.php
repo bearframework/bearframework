@@ -90,7 +90,6 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      */
     public function append(string $key, string $content): void
     {
-        
     }
 
     /**
@@ -104,7 +103,6 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      */
     public function duplicate(string $sourceKey, string $destinationKey): void
     {
-        
     }
 
     /**
@@ -118,7 +116,6 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      */
     public function rename(string $sourceKey, string $destinationKey): void
     {
-        
     }
 
     /**
@@ -131,7 +128,6 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      */
     public function delete(string $key): void
     {
-        
     }
 
     /**
@@ -146,7 +142,6 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      */
     public function setMetadata(string $key, string $name, string $value): void
     {
-        
     }
 
     /**
@@ -174,7 +169,6 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      */
     public function deleteMetadata(string $key, string $name): void
     {
-        
     }
 
     /**
