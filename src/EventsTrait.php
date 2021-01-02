@@ -75,8 +75,12 @@ trait EventsTrait
         $hasDefaultListener = isset($options['defaultListener']);
         if (isset($this->internalEventListenersData[$name])) {
             $canceled = false;
+            $cancelable = isset($options['cancelable']) && $options['cancelable'] === true;
             $dispatcher = new class (
-                function () use (&$canceled) {
+                function () use (&$canceled, $cancelable, $name) {
+                    if (!$cancelable) {
+                        throw new \Exception('This event "' . $name . '" cannot be canceled!');
+                    }
                     $canceled = true;
                 },
                 function () use (&$executeNext) {
@@ -106,7 +110,7 @@ trait EventsTrait
 
             $nextIndex = 0;
             $lastIndex = sizeof($this->internalEventListenersData[$name]) - 1;
-            
+
             $executeNext = function () use (&$executeNext, $name, $dispatcher, &$nextIndex, $lastIndex, $details, $hasDefaultListener, $options, &$canceled) {
                 if ($nextIndex <= $lastIndex) {
                     $listener = $this->internalEventListenersData[$name][$nextIndex];

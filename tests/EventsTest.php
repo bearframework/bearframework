@@ -221,4 +221,33 @@ class EventsTest extends BearFrameworkTestCase
 
         $this->assertEquals($eventDetails->value, '12');
     }
+
+    /**
+     * 
+     */
+    function testCancelableEvent()
+    {
+        $object = new class
+        {
+            use \BearFramework\EventsTrait;
+        };
+
+        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+            $eventDetails->value = '1';
+            $dispatcher->cancel();
+        });
+
+        $eventDetails = new stdClass();
+        try {
+            $object->dispatchEvent('test', $eventDetails);
+            $this->assertTrue(false); // should not get here
+        } catch (\Exception $e) {
+            $this->assertEquals($e->getMessage(), 'This event "test" cannot be canceled!');
+            $this->assertEquals($eventDetails->value, '1');
+        }
+
+        $eventDetails = new stdClass();
+        $object->dispatchEvent('test', $eventDetails, ['cancelable' => true]);
+        $this->assertEquals($eventDetails->value, '1');
+    }
 }
