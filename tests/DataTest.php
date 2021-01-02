@@ -1088,7 +1088,7 @@ class DataTest extends BearFrameworkTestCase
             } catch (\Exception $e) {
                 $exceptionMessage = $e->getMessage();
             }
-            $this->assertTrue(strpos($exceptionMessage, $expectedExceptionMessage) !== false, $expectedExceptionMessage);
+            $this->assertTrue(strpos($exceptionMessage, $expectedExceptionMessage) !== false, 'Expected: ' . $expectedExceptionMessage . ' | Received: ' . $exceptionMessage);
         };
 
         foreach ($filenamesToTest as $filename => $exists) {
@@ -1101,7 +1101,7 @@ class DataTest extends BearFrameworkTestCase
             } else {
                 $assertException(function () use ($filename) {
                     file_get_contents($filename);
-                }, 'failed to open stream');
+                }, 'ailed to open stream');
             }
 
             // file
@@ -1110,7 +1110,7 @@ class DataTest extends BearFrameworkTestCase
             } else {
                 $assertException(function () use ($filename) {
                     file($filename);
-                }, 'failed to open stream');
+                }, 'ailed to open stream');
             }
 
             // is_file
@@ -1127,7 +1127,7 @@ class DataTest extends BearFrameworkTestCase
             } else {
                 $assertException(function () use ($filename) {
                     copy($filename, $filename . '_copy');
-                }, 'failed to open stream');
+                }, 'ailed to open stream');
             }
 
             // fileperms
@@ -1320,7 +1320,7 @@ class DataTest extends BearFrameworkTestCase
             } else {
                 $assertException(function () use ($filename) {
                     readfile($filename);
-                }, 'failed to open stream');
+                }, 'ailed to open stream');
             }
 
             // clearstatcache - expect no error
@@ -1615,7 +1615,7 @@ class DataTest extends BearFrameworkTestCase
                     } else {
                         $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
-                        }, 'failed to open stream');
+                        }, 'ailed to open stream');
                     }
                 } elseif ($mode === 'r+b') { // Open for reading and writing; place the file pointer at the beginning of the file.
                     if ($exists) {
@@ -1626,7 +1626,7 @@ class DataTest extends BearFrameworkTestCase
                     } else {
                         $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
-                        }, 'failed to open stream');
+                        }, 'ailed to open stream');
                     }
                 } elseif ($mode === 'wb') { // Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it.
                     $handle = fopen($filename, $mode);
@@ -1664,7 +1664,7 @@ class DataTest extends BearFrameworkTestCase
                     if ($exists) {
                         $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
-                        }, 'failed to open stream');
+                        }, 'ailed to open stream');
                     } else {
                         $handle = fopen($filename, $mode);
                         $writeFileWithoutContent($handle);
@@ -1674,7 +1674,7 @@ class DataTest extends BearFrameworkTestCase
                     if ($exists) {
                         $assertException(function () use ($filename, $mode) {
                             fopen($filename, $mode);
-                        }, 'failed to open stream');
+                        }, 'ailed to open stream');
                     } else {
                         $handle = fopen($filename, $mode);
                         $readFileWithoutContent($handle);
