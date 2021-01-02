@@ -1842,14 +1842,12 @@ class DataTest extends BearFrameworkTestCase
         $eventsLogs = [];
         is_file('appdata://key1');
         $this->assertEquals($eventsLogs, [
-            ['exists', 'key1', true],
             ['request', 'key1']
         ]);
 
         $eventsLogs = [];
         copy('appdata://key1', 'appdata://key2');
         $this->assertEquals($eventsLogs, [
-            ['exists', 'key2', false],
             ['request', 'key2'],
             ['getValue', 'key1', $exampleValue2 . $exampleValue1],
             ['request', 'key1'],
