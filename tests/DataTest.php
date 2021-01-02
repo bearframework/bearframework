@@ -980,9 +980,6 @@ class DataTest extends BearFrameworkTestCase
             ['itemBeforeGetStreamWrapper', 'key2', 'w+b'],
             ['setValue', 'key2', 'data2'],
             ['change', 'key2'],
-            ['beforeExists', 'key2'],
-            ['exists', 'key2', true],
-            ['request', 'key2'],
             ['itemBeforeGetStreamWrapper', 'key2', 'rb'],
             ['getValue', 'key2', 'data2'],
             ['request', 'key2']
@@ -998,9 +995,6 @@ class DataTest extends BearFrameworkTestCase
             ['itemBeforeGetStreamWrapper', 'key2', 'w+b'],
             ['setValue', 'key2', 'data2'],
             ['change', 'key2'],
-            ['beforeExists', 'key2'],
-            ['exists', 'key2', true],
-            ['request', 'key2'],
             ['itemBeforeGetStreamWrapper', 'key2', 'rb'],
             ['getValue', 'key2', 'data2MODIFIED'],
             ['request', 'key2']
