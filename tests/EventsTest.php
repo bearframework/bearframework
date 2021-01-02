@@ -187,6 +187,7 @@ class EventsTest extends BearFrameworkTestCase
         $eventDetails->value = '';
 
         $object->dispatchEvent('test', $eventDetails, [
+            'cancelable' => true,
             'defaultListener' => function ($eventDetails) {
                 $eventDetails->value .= '3';
             }
