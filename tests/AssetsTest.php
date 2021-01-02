@@ -599,8 +599,12 @@ class AssetsTest extends BearFrameworkTestCase
         $app = $this->getApp();
         $filename = $app->config['appDir'] . '/source.png';
         $this->makeSampleFile($filename, 'png');
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getContent($filename, ['width' => 0, 'height' => 100]);
+        try {
+            $app->assets->getContent($filename, ['width' => 0, 'height' => 100]);
+            $this->assertTrue(false);
+        } catch (\Exception $e) {
+            $this->assertTrue(strpos($e->getMessage(), 'The value of the width option cannot be lower than 1') === 0);
+        }
     }
 
     /**
@@ -635,8 +639,12 @@ class AssetsTest extends BearFrameworkTestCase
         $sourceFilename = $app->config['appDir'] . '/assets/logo.bmp';
         $destinationFilename = $app->config['appDir'] . '/assets/newlogo.bmp';
         $this->makeSampleFile($sourceFilename, 'bmp');
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
+        try {
+            $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
+            $this->assertTrue(false);
+        } catch (\Exception $e) {
+            $this->assertTrue(strpos($e->getMessage(), 'The output format is not supported') === 0);
+        }
     }
 
     /**
@@ -649,7 +657,11 @@ class AssetsTest extends BearFrameworkTestCase
         $sourceFilename = $app->config['appDir'] . '/assets/logo.png';
         $destinationFilename = $app->config['appDir'] . '/assets/newlogo.png';
         $this->makeSampleFile($sourceFilename, 'broken');
-        $this->expectException('InvalidArgumentException');
-        $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
+        try {
+            $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
+            $this->assertTrue(false);
+        } catch (\Exception $e) {
+            $this->assertTrue(strpos($e->getMessage(), 'Cannot read the source image or unsupported format') === 0);
+        }
     }
 }
