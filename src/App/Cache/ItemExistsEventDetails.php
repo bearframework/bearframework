@@ -29,7 +29,10 @@ class ItemExistsEventDetails
                     'type' => 'string'
                 ])
                 ->defineProperty('exists', [
-                    'type' => 'bool'
+                    'type' => 'bool',
+                    'init' => function () {
+                        return false;
+                    }
                 ])
         ;
         $this->key = $key;
