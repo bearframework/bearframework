@@ -11,30 +11,27 @@ namespace BearFramework\App\Data;
 
 /**
  * @property string $key
- * @property bool $exists
+ * @property int|null $length
  */
-class ItemExistsEventDetails
+class ItemGetValueLengthEventDetails
 {
 
     use \IvoPetkov\DataObjectTrait;
 
     /**
      * @param string $key
-     * @param bool $exists
+     * @param int|null $length
      */
-    public function __construct(string $key, bool $exists)
+    public function __construct(string $key, int $length = null)
     {
         $this
             ->defineProperty('key', [
                 'type' => 'string'
             ])
-            ->defineProperty('exists', [
-                'type' => 'bool',
-                'init' => function () {
-                    return false;
-                }
+            ->defineProperty('length', [
+                'type' => '?int'
             ]);
         $this->key = $key;
-        $this->exists = $exists;
+        $this->length = $length;
     }
 }

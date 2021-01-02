@@ -238,6 +238,8 @@ class DataTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $eventsLogs = [];
+        $modifyBeforeEvent = false;
+        $preventCompleteEvents = false;
 
         $app->data->addEventListener('itemChange', function (\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['change', $details->key];
@@ -247,148 +249,761 @@ class DataTest extends BearFrameworkTestCase
             $eventsLogs[] = ['request', $details->key];
         });
 
+        $app->data->addEventListener('itemBeforeSet', function (\BearFramework\App\Data\ItemBeforeSetEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeSet', $details->item->key, $details->item->value, $details->item->metadata->toArray()];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemSet', function (\BearFramework\App\Data\ItemSetEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['set', $details->item->key, $details->item->value];
+            $eventsLogs[] = ['set', $details->item->key, $details->item->value, $details->item->metadata->toArray()];
+        });
+
+        $app->data->addEventListener('itemBeforeSetMetadata', function (\BearFramework\App\Data\ItemBeforeSetMetadataEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeSetMetadata', $details->key, $details->name, $details->value];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
         });
 
         $app->data->addEventListener('itemSetMetadata', function (\BearFramework\App\Data\ItemSetMetadataEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['setMetadata', $details->key, $details->name, $details->value];
         });
 
+        $app->data->addEventListener('itemBeforeGetMetadata', function (\BearFramework\App\Data\ItemBeforeGetMetadataEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeGetMetadata', $details->key, $details->name];
+            if ($modifyBeforeEvent) {
+                $details->returnValue = 'changed1';
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemGetMetadata', function (\BearFramework\App\Data\ItemGetMetadataEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getMetadata', $details->key, $details->name, $details->value];
+        });
+
+        $app->data->addEventListener('itemBeforeDeleteMetadata', function (\BearFramework\App\Data\ItemBeforeDeleteMetadataEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeDeleteMetadata', $details->key, $details->name];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
         });
 
         $app->data->addEventListener('itemDeleteMetadata', function (\BearFramework\App\Data\ItemDeleteMetadataEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['deleteMetadata', $details->key, $details->name];
         });
 
+        $app->data->addEventListener('itemBeforeSetValue', function (\BearFramework\App\Data\ItemBeforeSetValueEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeSetValue', $details->key, $details->value];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemSetValue', function (\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['setValue', $details->key, $details->value];
         });
 
+        $app->data->addEventListener('itemBeforeGet', function (\BearFramework\App\Data\ItemBeforeGetEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents, $app) {
+            $eventsLogs[] = ['beforeGet', $details->key];
+            if ($modifyBeforeEvent) {
+                $details->returnValue = $app->data->make($details->key, 'changed1');
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemGet', function (\BearFramework\App\Data\ItemGetEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['get', $details->item->key, $details->item->value];
+            $eventsLogs[] = ['get', $details->key, $details->item !== null ? $details->item->value : null, $details->item !== null ? $details->item->metadata->toArray() : null];
+        });
+
+        $app->data->addEventListener('itemBeforeGetValue', function (\BearFramework\App\Data\ItemBeforeGetValueEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeGetValue', $details->key];
+            if ($modifyBeforeEvent) {
+                $details->returnValue = 'changed1';
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
         });
 
         $app->data->addEventListener('itemGetValue', function (\BearFramework\App\Data\ItemGetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
+        $app->data->addEventListener('itemBeforeGetValueLength', function (\BearFramework\App\Data\ItemBeforeGetValueLengthEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeGetValueLength', $details->key];
+            if ($modifyBeforeEvent) {
+                $details->returnValue = 999;
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
+        $app->data->addEventListener('itemGetValueLength', function (\BearFramework\App\Data\ItemGetValueLengthEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['getValueLength', $details->key, $details->length];
+        });
+
+        $app->data->addEventListener('itemBeforeAppend', function (\BearFramework\App\Data\ItemBeforeAppendEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeAppend', $details->key, $details->content];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemAppend', function (\BearFramework\App\Data\ItemAppendEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['append', $details->key, $details->content];
+        });
+
+        $app->data->addEventListener('itemBeforeExists', function (\BearFramework\App\Data\ItemBeforeExistsEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeExists', $details->key];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+                $details->returnValue = false;
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
         });
 
         $app->data->addEventListener('itemExists', function (\BearFramework\App\Data\ItemExistsEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
+        $app->data->addEventListener('itemBeforeDuplicate', function (\BearFramework\App\Data\ItemBeforeDuplicateEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeDuplicate', $details->sourceKey, $details->destinationKey];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemDuplicate', function (\BearFramework\App\Data\ItemDuplicateEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['duplicate', $details->sourceKey, $details->destinationKey];
+        });
+
+        $app->data->addEventListener('itemBeforeRename', function (\BearFramework\App\Data\ItemBeforeRenameEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeRename', $details->sourceKey, $details->destinationKey];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
         });
 
         $app->data->addEventListener('itemRename', function (\BearFramework\App\Data\ItemRenameEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['rename', $details->sourceKey, $details->destinationKey];
         });
 
+        $app->data->addEventListener('itemBeforeDelete', function (\BearFramework\App\Data\ItemBeforeDeleteEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeDelete', $details->key];
+            if ($modifyBeforeEvent) {
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
+        });
+
         $app->data->addEventListener('itemDelete', function (\BearFramework\App\Data\ItemDeleteEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['delete', $details->key];
+        });
+
+        $app->data->addEventListener('beforeGetList', function (\BearFramework\App\Data\BeforeGetListEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
+            $eventsLogs[] = ['beforeGetList'];
+            if ($modifyBeforeEvent) {
+                $details->returnValue = new \BearFramework\DataList([
+                    ['key' => 'key1', 'value' => 'value1'],
+                    ['key' => 'key2', 'value' => 'value2']
+                ]);
+                $dispatcher->cancel();
+            }
+            if ($preventCompleteEvents) {
+                $details->preventCompleteEvents = true;
+            }
         });
 
         $app->data->addEventListener('getList', function (\BearFramework\App\Data\GetListEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getList', get_class($details->list)];
         });
 
+        $modifyStreamWrapperBeforeEvent = false;
+        $streamWrapperStorage = [];
+        $app->data->addEventListener('itemBeforeExists', function (\BearFramework\App\Data\ItemBeforeExistsEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyStreamWrapperBeforeEvent, &$streamWrapperStorage) {
+            if ($modifyStreamWrapperBeforeEvent) {
+                if (isset($streamWrapperStorage[$details->key])) {
+                    $details->returnValue = true;
+                    $dispatcher->cancel();
+                }
+            }
+        });
+        $app->data->addEventListener('itemBeforeGetStreamWrapper', function (\BearFramework\App\Data\ItemBeforeGetStreamWrapperEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyStreamWrapperBeforeEvent, &$streamWrapperStorage) {
+            $eventsLogs[] = ['itemBeforeGetStreamWrapper', $details->key, $details->mode];
+            if ($modifyStreamWrapperBeforeEvent) {
+                $key = $details->key;
+                $details->returnValue = new \BearFramework\App\StringDataItemStreamWrapper(
+                    function () use (&$streamWrapperStorage, $key): ?string {
+                        return isset($streamWrapperStorage[$key]) ? $streamWrapperStorage[$key] : null;
+                    },
+                    function (string $value) use (&$streamWrapperStorage, $key): void {
+                        $streamWrapperStorage[$key] = $value . 'MODIFIED';
+                    }
+                );
+                $dispatcher->cancel();
+            }
+        });
+
+        // SET
+
         $eventsLogs = [];
         $app->data->set($app->data->make('key1', 'data1'));
         $this->assertEquals($eventsLogs, [
-            ['set', 'key1', 'data1'],
+            ['beforeSet', 'key1', 'data1', []],
+            ['set', 'key1', 'data1', []],
             ['change', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->set($app->data->make('key1', 'data1'));
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeSet', 'key1', 'data1', []],
+            ['set', 'key1', 'data1', []],
+            ['change', 'key1']
+        ]);
+        $this->assertNull($app->data->get('key1'));
+        $app->data->delete('key1');
+
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->set($app->data->make('key1', 'data1'));
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeSet', 'key1', 'data1', []]
+        ]);
+        $app->data->delete('key1');
+
+
+        // SET METADATA
+
+        $app->data->set($app->data->make('key1', 'data1'));
         $eventsLogs = [];
         $app->data->setMetadata('key1', 'name1', 'mdata1');
         $this->assertEquals($eventsLogs, [
+            ['beforeSetMetadata', 'key1', 'name1', 'mdata1'],
             ['setMetadata', 'key1', 'name1', 'mdata1'],
             ['change', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $app->data->set($app->data->make('key1', 'data1'));
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeSetMetadata', 'key1', 'name1', 'mdata1'],
+            ['setMetadata', 'key1', 'name1', 'mdata1'],
+            ['change', 'key1']
+        ]);
+        $a = $app->data->getMetadata('key1', 'name2');
+        $this->assertEquals($app->data->getMetadata('key1', 'name1'), ''); // $this->assertNull when Object Storage fixed
+        $app->data->delete('key1');
+
+        $app->data->set($app->data->make('key1', 'data1'));
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeSetMetadata', 'key1', 'name1', 'mdata1']
+        ]);
+        $app->data->delete('key1');
+
+        // GET METADATA
+
+        $app->data->set($app->data->make('key1', 'data1'));
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
         $eventsLogs = [];
         $app->data->getMetadata('key1', 'name1');
         $this->assertEquals($eventsLogs, [
+            ['beforeGetMetadata', 'key1', 'name1'],
             ['getMetadata', 'key1', 'name1', 'mdata1'],
             ['request', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $app->data->set($app->data->make('key1', 'data1'));
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $this->assertEquals($app->data->getMetadata('key1', 'name1'), 'changed1');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetMetadata', 'key1', 'name1'],
+            ['getMetadata', 'key1', 'name1', 'changed1'],
+            ['request', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        $app->data->set($app->data->make('key1', 'data1'));
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->getMetadata('key1', 'name1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetMetadata', 'key1', 'name1']
+        ]);
+        $app->data->delete('key1');
+
+        // DELETE METADATA
+
+        $app->data->set($app->data->make('key1', 'data1'));
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
         $eventsLogs = [];
         $app->data->deleteMetadata('key1', 'name1');
         $this->assertEquals($eventsLogs, [
+            ['beforeDeleteMetadata', 'key1', 'name1'],
             ['deleteMetadata', 'key1', 'name1'],
             ['change', 'key1']
         ]);
+        $app->data->delete('key1');
+
+        $app->data->set($app->data->make('key1', 'data1'));
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->deleteMetadata('key1', 'name1');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeDeleteMetadata', 'key1', 'name1'],
+            ['deleteMetadata', 'key1', 'name1'],
+            ['change', 'key1']
+        ]);
+        $this->assertEquals($app->data->getMetadata('key1', 'name1'), 'mdata1');
+        $app->data->delete('key1');
+
+        $app->data->set($app->data->make('key1', 'data1'));
+        $app->data->setMetadata('key1', 'name1', 'mdata1');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->deleteMetadata('key1', 'name1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeDeleteMetadata', 'key1', 'name1']
+        ]);
+        $app->data->delete('key1');
+
+        // SET VALUE
 
         $eventsLogs = [];
         $app->data->setValue('key1', 'data2');
         $this->assertEquals($eventsLogs, [
+            ['beforeSetValue', 'key1', 'data2'],
             ['setValue', 'key1', 'data2'],
             ['change', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->setValue('key1', 'data2');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeSetValue', 'key1', 'data2'],
+            ['setValue', 'key1', 'data2'],
+            ['change', 'key1']
+        ]);
+        $this->assertNull($app->data->getValue('key1'));
+        $app->data->delete('key1');
+
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->setValue('key1', 'data2');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeSetValue', 'key1', 'data2']
+        ]);
+        $app->data->delete('key1');
+
+        // GET
+
+        $app->data->setValue('key1', 'data2');
         $eventsLogs = [];
         $app->data->get('key1');
         $this->assertEquals($eventsLogs, [
-            ['get', 'key1', 'data2'],
+            ['beforeGet', 'key1'],
+            ['get', 'key1', 'data2', []],
             ['request', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $item = $app->data->get('key1');
+        $this->assertEquals($item->key, 'key1');
+        $this->assertEquals($item->value, 'changed1');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGet', 'key1'],
+            ['get', 'key1', 'changed1', []],
+            ['request', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->get('key1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGet', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        // GET VALUE
+
+        $app->data->setValue('key1', 'data2');
         $eventsLogs = [];
         $app->data->getValue('key1');
         $this->assertEquals($eventsLogs, [
+            ['beforeGetValue', 'key1'],
             ['getValue', 'key1', 'data2'],
             ['request', 'key1']
         ]);
+        $app->data->delete('key1');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $this->assertEquals($app->data->getValue('key1'), 'changed1');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetValue', 'key1'],
+            ['getValue', 'key1', 'changed1'],
+            ['request', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->getValue('key1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetValue', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        // GET VALUE LENGTH
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $app->data->getValueLength('key1');
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetValueLength', 'key1'],
+            ['getValueLength', 'key1', 5],
+            ['request', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $this->assertEquals($app->data->getValueLength('key1'), 999);
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetValueLength', 'key1'],
+            ['getValueLength', 'key1', 999],
+            ['request', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->getValueLength('key1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetValueLength', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        // APPEND
 
         $eventsLogs = [];
         $app->data->append('key1', 'data3');
         $this->assertEquals($eventsLogs, [
+            ['beforeAppend', 'key1', 'data3'],
             ['append', 'key1', 'data3'],
             ['change', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->append('key1', 'data3');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeAppend', 'key1', 'data3'],
+            ['append', 'key1', 'data3'],
+            ['change', 'key1']
+        ]);
+        $this->assertNull($app->data->getValue('key1'));
+        $app->data->delete('key1');
+
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->append('key1', 'data3');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeAppend', 'key1', 'data3']
+        ]);
+        $app->data->delete('key1');
+
+        // EXISTS
+
+        $app->data->setValue('key1', 'data2');
         $eventsLogs = [];
         $app->data->exists('key1');
         $this->assertEquals($eventsLogs, [
+            ['beforeExists', 'key1'],
             ['exists', 'key1', true],
             ['request', 'key1']
         ]);
+        $app->data->delete('key1');
 
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $this->assertFalse($app->data->exists('key1'));
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeExists', 'key1'],
+            ['exists', 'key1', false],
+            ['request', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->exists('key1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeExists', 'key1']
+        ]);
+        $app->data->delete('key1');
+
+        // DUPLICATE
+
+        $app->data->setValue('key1', 'data2');
         $eventsLogs = [];
         $app->data->duplicate('key1', 'key2');
         $this->assertEquals($eventsLogs, [
+            ['beforeDuplicate', 'key1', 'key2'],
             ['duplicate', 'key1', 'key2'],
             ['request', 'key1'],
             ['change', 'key2'],
         ]);
+        $app->data->delete('key1');
+        $app->data->delete('key2');
 
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->duplicate('key1', 'key2');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeDuplicate', 'key1', 'key2'],
+            ['duplicate', 'key1', 'key2'],
+            ['request', 'key1'],
+            ['change', 'key2'],
+        ]);
+        $this->assertEquals($app->data->getValue('key1'), 'data2');
+        $this->assertNull($app->data->getValue('key2'));
+        $app->data->delete('key1');
+        $app->data->delete('key2');
+
+        $app->data->setValue('key1', 'data2');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->duplicate('key1', 'key2');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeDuplicate', 'key1', 'key2']
+        ]);
+        $app->data->delete('key1');
+        $app->data->delete('key2');
+
+        // RENAME
+
+        $app->data->setValue('key2', 'data2');
         $eventsLogs = [];
         $app->data->rename('key2', 'key3');
         $this->assertEquals($eventsLogs, [
+            ['beforeRename', 'key2', 'key3'],
             ['rename', 'key2', 'key3'],
             ['change', 'key2'],
             ['change', 'key3'],
         ]);
+        $app->data->delete('key2');
+        $app->data->delete('key3');
 
+        $app->data->setValue('key2', 'data2');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->rename('key2', 'key3');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeRename', 'key2', 'key3'],
+            ['rename', 'key2', 'key3'],
+            ['change', 'key2'],
+            ['change', 'key3'],
+        ]);
+        $this->assertEquals($app->data->getValue('key2'), 'data2');
+        $this->assertNull($app->data->getValue('key3'));
+        $app->data->delete('key2');
+        $app->data->delete('key3');
+
+        $app->data->setValue('key2', 'data2');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->rename('key2', 'key3');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeRename', 'key2', 'key3']
+        ]);
+        $app->data->delete('key2');
+        $app->data->delete('key3');
+
+        // DELETE
+
+        $app->data->setValue('key1', 'data1');
         $eventsLogs = [];
         $app->data->delete('key1');
         $this->assertEquals($eventsLogs, [
+            ['beforeDelete', 'key1'],
             ['delete', 'key1'],
             ['change', 'key1'],
         ]);
 
+        $app->data->setValue('key1', 'data1');
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $app->data->delete('key1');
+        $modifyBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeDelete', 'key1'],
+            ['delete', 'key1'],
+            ['change', 'key1'],
+        ]);
+        $this->assertEquals($app->data->getValue('key1'), 'data1');
+
+        $app->data->setValue('key1', 'data1');
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->delete('key1');
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeDelete', 'key1']
+        ]);
+
+        // GET LIST
+
         $eventsLogs = [];
         $app->data->getList();
         $this->assertEquals($eventsLogs, [
+            ['beforeGetList'],
             ['getList', 'BearFramework\DataList']
+        ]);
+
+        $eventsLogs = [];
+        $modifyBeforeEvent = true;
+        $list = $app->data->getList();
+        $modifyBeforeEvent = false;
+        $this->assertEquals($list->toArray(), [
+            ['key' => 'key1', 'value' => 'value1'],
+            ['key' => 'key2', 'value' => 'value2']
+        ]);
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetList'],
+            ['getList', 'BearFramework\DataList']
+        ]);
+
+        $eventsLogs = [];
+        $preventCompleteEvents = true;
+        $app->data->getList();
+        $preventCompleteEvents = false;
+        $this->assertEquals($eventsLogs, [
+            ['beforeGetList']
+        ]);
+
+        // GET ITEM STREAM WRAPPER
+
+        $eventsLogs = [];
+        $filename = $app->data->getFilename('key2');
+        file_put_contents($filename, 'data2');
+        file_get_contents($filename);
+        $this->assertEquals($eventsLogs, [
+            ['itemBeforeGetStreamWrapper', 'key2', 'w+b'],
+            ['setValue', 'key2', 'data2'],
+            ['change', 'key2'],
+            ['beforeExists', 'key2'],
+            ['exists', 'key2', true],
+            ['request', 'key2'],
+            ['itemBeforeGetStreamWrapper', 'key2', 'rb'],
+            ['getValue', 'key2', 'data2'],
+            ['request', 'key2']
+        ]);
+
+        $eventsLogs = [];
+        $filename = $app->data->getFilename('key2');
+        $modifyStreamWrapperBeforeEvent = true;
+        file_put_contents($filename, 'data2');
+        file_get_contents($filename);
+        $modifyStreamWrapperBeforeEvent = false;
+        $this->assertEquals($eventsLogs, [
+            ['itemBeforeGetStreamWrapper', 'key2', 'w+b'],
+            ['setValue', 'key2', 'data2'],
+            ['change', 'key2'],
+            ['beforeExists', 'key2'],
+            ['exists', 'key2', true],
+            ['request', 'key2'],
+            ['itemBeforeGetStreamWrapper', 'key2', 'rb'],
+            ['getValue', 'key2', 'data2MODIFIED'],
+            ['request', 'key2']
         ]);
     }
 
@@ -1276,5 +1891,240 @@ class DataTest extends BearFrameworkTestCase
         file_put_contents($filename, 'value2');
         $this->assertFalse(is_file($filename));
         $this->assertTrue(true);
+    }
+
+    /**
+     * 
+     */
+    public function testDataAccessCallback()
+    {
+        $app = $this->getApp();
+
+        define('BEARFRAMEWORK_DATA_ACCESS_CALLBACK', ['DataTest', 'logDataAccess']);
+
+        $item = $app->data->make('key1', 'value1');
+        $item->metadata['meta1'] = 'meta1value';
+        $app->data->set($item);
+        $app->data->setValue('key1', 'value1');
+        $app->data->get('key1');
+        $app->data->get('key2');
+        $app->data->getValue('key1');
+        $app->data->getValue('key2');
+        $app->data->getValueLength('key1');
+        $app->data->getValueLength('key2');
+        $app->data->exists('key1');
+        $app->data->exists('key2');
+        $app->data->append('key1', '11');
+        $app->data->append('key2', '22');
+        $app->data->duplicate('key1', 'key3');
+        $app->data->rename('key3', 'key4');
+        $app->data->delete('key4');
+        $app->data->delete('key5');
+        $app->data->setMetadata('key1', 'meta2', 'meta2value');
+        $app->data->getMetadata('key1', 'meta2');
+        $app->data->getMetadata('key1', 'meta3');
+        $app->data->deleteMetadata('key1', 'meta2');
+        $app->data->deleteMetadata('key1', 'meta3');
+        $list = $app->data->getList()
+            ->filter(function () {
+                return true;
+            })
+            ->filterBy('key', 'k', 'startWith')
+            ->sort(function () {
+                return 0;
+            })
+            ->sortBy('key', 'desc')
+            ->reverse()
+            ->shuffle()
+            ->map(function () {
+            })
+            ->sliceProperties(['key']);
+        count($list);
+
+        $this->assertEquals(self::$dataAccessLog, array(
+            0 =>
+            array(
+                0 => 'set',
+                1 => 'key1',
+                2 => 'value1',
+                3 =>
+                array(
+                    'meta1' => 'meta1value',
+                ),
+            ),
+            1 =>
+            array(
+                0 => 'setValue',
+                1 => 'key1',
+                2 => 'value1',
+            ),
+            2 =>
+            array(
+                0 => 'get',
+                1 => 'key1',
+            ),
+            3 =>
+            array(
+                0 => 'get',
+                1 => 'key2',
+            ),
+            4 =>
+            array(
+                0 => 'getValue',
+                1 => 'key1',
+            ),
+            5 =>
+            array(
+                0 => 'getValue',
+                1 => 'key2',
+            ),
+            6 =>
+            array(
+                0 => 'getValueLength',
+                1 => 'key1',
+            ),
+            7 =>
+            array(
+                0 => 'getValueLength',
+                1 => 'key2',
+            ),
+            8 =>
+            array(
+                0 => 'exists',
+                1 => 'key1',
+            ),
+            9 =>
+            array(
+                0 => 'exists',
+                1 => 'key2',
+            ),
+            10 =>
+            array(
+                0 => 'append',
+                1 => 'key1',
+                2 => '11',
+            ),
+            11 =>
+            array(
+                0 => 'append',
+                1 => 'key2',
+                2 => '22',
+            ),
+            12 =>
+            array(
+                0 => 'duplicate',
+                1 => 'key1',
+                2 => 'key3',
+            ),
+            13 =>
+            array(
+                0 => 'rename',
+                1 => 'key3',
+                2 => 'key4',
+            ),
+            14 =>
+            array(
+                0 => 'delete',
+                1 => 'key4',
+            ),
+            15 =>
+            array(
+                0 => 'delete',
+                1 => 'key5',
+            ),
+            16 =>
+            array(
+                0 => 'setMetadata',
+                1 => 'key1',
+                2 => 'meta2',
+                3 => 'meta2value',
+            ),
+            17 =>
+            array(
+                0 => 'getMetadata',
+                1 => 'key1',
+                2 => 'meta2',
+            ),
+            18 =>
+            array(
+                0 => 'getMetadata',
+                1 => 'key1',
+                2 => 'meta3',
+            ),
+            19 =>
+            array(
+                0 => 'deleteMetadata',
+                1 => 'key1',
+                2 => 'meta2',
+            ),
+            20 =>
+            array(
+                0 => 'deleteMetadata',
+                1 => 'key1',
+                2 => 'meta3',
+            ),
+            21 =>
+            array(
+                0 => 'getList',
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        0 => 'filter',
+                    ),
+                    1 =>
+                    array(
+                        0 => 'filterBy',
+                        1 => 'key',
+                        2 => 'k',
+                        3 => 'startWith',
+                    ),
+                    2 =>
+                    array(
+                        0 => 'sort',
+                    ),
+                    3 =>
+                    array(
+                        0 => 'sortBy',
+                        1 => 'key',
+                        2 => 'desc',
+                    ),
+                    4 =>
+                    array(
+                        0 => 'reverse',
+                    ),
+                    5 =>
+                    array(
+                        0 => 'shuffle',
+                    ),
+                    6 =>
+                    array(
+                        0 => 'map',
+                    ),
+                    7 =>
+                    array(
+                        0 => 'sliceProperties',
+                        1 =>
+                        array(
+                            0 => 'key',
+                        ),
+                    ),
+                ),
+            ),
+        ));
+    }
+
+    /**
+     *
+     */
+    static $dataAccessLog = [];
+
+    /**
+     * 
+     * @return void
+     */
+    static function logDataAccess()
+    {
+        self::$dataAccessLog[] = func_get_args();
     }
 }

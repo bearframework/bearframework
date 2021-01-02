@@ -12,9 +12,10 @@ namespace BearFramework\App\Data;
 /**
  * @property string $key
  * @property string $name
- * @property string|null $value
+ * @property string $value
+ * @property bool $preventCompleteEvents
  */
-class ItemGetMetadataEventDetails
+class ItemBeforeSetMetadataEventDetails
 {
 
     use \IvoPetkov\DataObjectTrait;
@@ -25,7 +26,7 @@ class ItemGetMetadataEventDetails
      * @param string $name
      * @param string $value
      */
-    public function __construct(string $key, string $name, string $value = null)
+    public function __construct(string $key, string $name, string $value)
     {
         $this
             ->defineProperty('key', [
@@ -35,7 +36,13 @@ class ItemGetMetadataEventDetails
                 'type' => 'string'
             ])
             ->defineProperty('value', [
-                'type' => '?string'
+                'type' => 'string'
+            ])
+            ->defineProperty('preventCompleteEvents', [
+                'type' => 'bool',
+                'init' => function () {
+                    return false;
+                }
             ]);
         $this->key = $key;
         $this->name = $name;

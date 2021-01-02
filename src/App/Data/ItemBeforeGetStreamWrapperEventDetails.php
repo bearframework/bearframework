@@ -11,34 +11,31 @@ namespace BearFramework\App\Data;
 
 /**
  * @property string $key
- * @property string $name
- * @property string|null $value
+ * @property string $mode
+ * @property \BearFramework\App\IDataItemStreamWrapper|null $returnValue
  */
-class ItemGetMetadataEventDetails
+class ItemBeforeGetStreamWrapperEventDetails
 {
 
     use \IvoPetkov\DataObjectTrait;
 
     /**
-     * 
      * @param string $key
-     * @param string $name
-     * @param string $value
+     * @param string $mode
      */
-    public function __construct(string $key, string $name, string $value = null)
+    public function __construct(string $key, string $mode)
     {
         $this
             ->defineProperty('key', [
                 'type' => 'string'
             ])
-            ->defineProperty('name', [
+            ->defineProperty('mode', [
                 'type' => 'string'
             ])
-            ->defineProperty('value', [
-                'type' => '?string'
+            ->defineProperty('returnValue', [
+                'type' => '?\BearFramework\App\IDataItemStreamWrapper'
             ]);
         $this->key = $key;
-        $this->name = $name;
-        $this->value = $value;
+        $this->mode = $mode;
     }
 }

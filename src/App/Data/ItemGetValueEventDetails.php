@@ -11,7 +11,7 @@ namespace BearFramework\App\Data;
 
 /**
  * @property string $key
- * @property string $value
+ * @property string|null $value
  */
 class ItemGetValueEventDetails
 {
@@ -20,20 +20,18 @@ class ItemGetValueEventDetails
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param string|null $value
      */
-    public function __construct(string $key, string $value)
+    public function __construct(string $key, string $value = null)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('value', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('value', [
+                'type' => '?string'
+            ]);
         $this->key = $key;
         $this->value = $value;
     }
-
 }

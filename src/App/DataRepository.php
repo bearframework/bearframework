@@ -15,18 +15,31 @@ use BearFramework\App\DataItem;
  * Data storage
  * @event \BearFramework\App\Data\ItemRequestEvent itemRequest An event dispatched after a data item is requested.
  * @event \BearFramework\App\Data\ItemChangeEvent itemChange An event dispatched after a data item is changed.
+ * @event \BearFramework\App\Data\ItemBeforeSetEvent itemBeforeSet An event dispatched after a data item is added or updated.
  * @event \BearFramework\App\Data\ItemSetEvent itemSet An event dispatched after a data item is added or updated.
+ * @event \BearFramework\App\Data\ItemBeforeSetValueEvent itemBeforeSetValue An event dispatched after the value of a data item is added or updated.
  * @event \BearFramework\App\Data\ItemSetValueEvent itemSetValue An event dispatched after the value of a data item is added or updated.
+ * @event \BearFramework\App\Data\ItemBeforeGetEvent itemBeforeGet An event dispatched after a data item is requested.
  * @event \BearFramework\App\Data\ItemGetEvent itemGet An event dispatched after a data item is requested.
+ * @event \BearFramework\App\Data\ItemBeforeGetValueEvent itemBeforeGetValue An event dispatched after the value of a data item is requested.
  * @event \BearFramework\App\Data\ItemGetValueEvent itemGetValue An event dispatched after the value of a data item is requested.
+ * @event \BearFramework\App\Data\ItemBeforeExistsEvent itemBeforeExists An event dispatched after a data item is checked for existence.
  * @event \BearFramework\App\Data\ItemExistsEvent itemExists An event dispatched after a data item is checked for existence.
+ * @event \BearFramework\App\Data\ItemBeforeAppendEvent itemBeforeAppend An event dispatched after a content is appended to a data value.
  * @event \BearFramework\App\Data\ItemAppendEvent itemAppend An event dispatched after a content is appended to a data value.
+ * @event \BearFramework\App\Data\ItemBeforeDuplicateEvent itemBeforeDuplicate An event dispatched after a data item is duplicated.
  * @event \BearFramework\App\Data\ItemDuplicateEvent itemDuplicate An event dispatched after a data item is duplicated.
+ * @event \BearFramework\App\Data\ItemBeforeRenameEvent itemBeforeRename An event dispatched after a data item is renamed.
  * @event \BearFramework\App\Data\ItemRenameEvent itemRename An event dispatched after a data item is renamed.
+ * @event \BearFramework\App\Data\ItemBeforeDeleteEvent itemBeforeDelete An event dispatched after a data item is deleted.
  * @event \BearFramework\App\Data\ItemDeleteEvent itemDelete An event dispatched after a data item is deleted.
+ * @event \BearFramework\App\Data\ItemBeforeSetMetadataEvent itemBeforeSetMetadata An event dispatched after a data item metadata is added or updated.
  * @event \BearFramework\App\Data\ItemSetMetadataEvent itemSetMetadata An event dispatched after a data item metadata is added or updated.
+ * @event \BearFramework\App\Data\ItemBeforeGetMetadataEvent itemBeforeGetMetadata An event dispatched after a data item metadata is requested.
  * @event \BearFramework\App\Data\ItemGetMetadataEvent itemGetMetadata An event dispatched after a data item metadata is requested.
+ * @event \BearFramework\App\Data\ItemBeforeDeleteMetadataEvent itemBeforeDeleteMetadata An event dispatched after a data item metadata is deleted.
  * @event \BearFramework\App\Data\ItemDeleteMetadataEvent itemDeleteMetadata An event dispatched after a data item metadata is deleted.
+ * @event \BearFramework\App\Data\BeforeGetListEvent beforeGetList An event dispatched after a data items list is requested.
  * @event \BearFramework\App\Data\GetListEvent getList An event dispatched after a data items list is requested.
  */
 class DataRepository
@@ -134,7 +147,7 @@ class DataRepository
         if ($this->driver !== null) {
             return $this->driver;
         }
-        throw new \Exception('No data driver specified! Use useFileDriver() or setDriver() to specify one.');
+        throw new \Exception('No data driver specified! Use useFileDriver(), useMemoryDriver() or setDriver() to specify one.');
     }
 
     /**
@@ -183,13 +196,31 @@ class DataRepository
                 throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
             }
         }
-        $driver = $this->getDriver();
-        $driver->set($item);
-        if ($this->hasEventListeners('itemSet')) {
-            $this->dispatchEvent('itemSet', new \BearFramework\App\Data\ItemSetEventDetails(clone($item)));
+        $preventCompleteEvents = false;
+        $set = function () use ($item, $metadataAsArray) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'set', $item->key, $item->value, $metadataAsArray);
+            }
+            $driver = $this->getDriver();
+            $driver->set($item);
+        };
+        if ($this->hasEventListeners('itemBeforeSet')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeSetEventDetails($item);
+            $this->dispatchEvent('itemBeforeSet', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $set
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $set();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($item->key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemSet')) {
+                $this->dispatchEvent('itemSet', new \BearFramework\App\Data\ItemSetEventDetails(clone ($item)));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($item->key));
+            }
         }
         return $this;
     }
@@ -209,13 +240,31 @@ class DataRepository
         if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->setValue($key, $value);
-        if ($this->hasEventListeners('itemSetValue')) {
-            $this->dispatchEvent('itemSetValue', new \BearFramework\App\Data\ItemSetValueEventDetails($key, $value));
+        $preventCompleteEvents = false;
+        $setValue = function () use ($key, $value) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'setValue', $key, $value);
+            }
+            $driver = $this->getDriver();
+            $driver->setValue($key, $value);
+        };
+        if ($this->hasEventListeners('itemBeforeSetValue')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeSetValueEventDetails($key, $value);
+            $this->dispatchEvent('itemBeforeSetValue', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $setValue
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $setValue();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemSetValue')) {
+                $this->dispatchEvent('itemSetValue', new \BearFramework\App\Data\ItemSetValueEventDetails($key, $value));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+            }
         }
         return $this;
     }
@@ -234,13 +283,35 @@ class DataRepository
         if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $item = $driver->get($key);
-        if ($this->hasEventListeners('itemGet')) {
-            $this->dispatchEvent('itemGet', new \BearFramework\App\Data\ItemGetEventDetails($key, $item === null ? null : clone($item)));
+        $item = null;
+        $preventCompleteEvents = false;
+        $get = function () use ($key) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'get', $key);
+            }
+            $driver = $this->getDriver();
+            return $driver->get($key);
+        };
+        if ($this->hasEventListeners('itemBeforeGet')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeGetEventDetails($key);
+            $this->dispatchEvent('itemBeforeGet', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($get) {
+                    $eventDetails->returnValue = $get();
+                }
+            ]);
+            $item = $eventDetails->returnValue;
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $item = $get();
         }
-        if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemGet')) {
+                $this->dispatchEvent('itemGet', new \BearFramework\App\Data\ItemGetEventDetails($key, $item === null ? null : clone ($item)));
+            }
+            if ($this->hasEventListeners('itemRequest')) {
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+            }
         }
         return $item;
     }
@@ -259,15 +330,84 @@ class DataRepository
         if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $value = $driver->getValue($key);
-        if ($this->hasEventListeners('itemGetValue')) {
-            $this->dispatchEvent('itemGetValue', new \BearFramework\App\Data\ItemGetValueEventDetails($key, $value));
+        $value = null;
+        $preventCompleteEvents = false;
+        $getValue = function () use ($key) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'getValue', $key);
+            }
+            $driver = $this->getDriver();
+            return $driver->getValue($key);
+        };
+        if ($this->hasEventListeners('itemBeforeGetValue')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeGetValueEventDetails($key);
+            $this->dispatchEvent('itemBeforeGetValue', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($getValue) {
+                    $eventDetails->returnValue = $getValue();
+                }
+            ]);
+            $value = $eventDetails->returnValue;
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $value = $getValue();
         }
-        if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemGetValue')) {
+                $this->dispatchEvent('itemGetValue', new \BearFramework\App\Data\ItemGetValueEventDetails($key, $value));
+            }
+            if ($this->hasEventListeners('itemRequest')) {
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+            }
         }
         return $value;
+    }
+
+    /**
+     * Returns the value of a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @return string|null The value of a stored data item or null if not found.
+     * @throws \Exception
+     * @throws \BearFramework\App\Data\DataLockedException
+     * @throws \InvalidArgumentException
+     */
+    public function getValueLength(string $key): ?int
+    {
+        if (!$this->validate($key)) {
+            throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
+        }
+        $result = null;
+        $preventCompleteEvents = false;
+        $getValueLength = function () use ($key) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'getValueLength', $key);
+            }
+            $driver = $this->getDriver();
+            return $driver->getValueLength($key);
+        };
+        if ($this->hasEventListeners('itemBeforeGetValueLength')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeGetValueLengthEventDetails($key);
+            $this->dispatchEvent('itemBeforeGetValueLength', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($getValueLength) {
+                    $eventDetails->returnValue = $getValueLength();
+                }
+            ]);
+            $result = $eventDetails->returnValue;
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $result = $getValueLength();
+        }
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemGetValueLength')) {
+                $this->dispatchEvent('itemGetValueLength', new \BearFramework\App\Data\ItemGetValueLengthEventDetails($key, $result));
+            }
+            if ($this->hasEventListeners('itemRequest')) {
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+            }
+        }
+        return $result;
     }
 
     /**
@@ -284,15 +424,37 @@ class DataRepository
         if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $exists = $driver->exists($key);
-        if ($this->hasEventListeners('itemExists')) {
-            $this->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEventDetails($key, $exists));
+        $result = null;
+        $preventCompleteEvents = false;
+        $exists = function () use ($key) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'exists', $key);
+            }
+            $driver = $this->getDriver();
+            return $driver->exists($key);
+        };
+        if ($this->hasEventListeners('itemBeforeExists')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeExistsEventDetails($key);
+            $this->dispatchEvent('itemBeforeExists', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($exists) {
+                    $eventDetails->returnValue = $exists();
+                }
+            ]);
+            $result = $eventDetails->returnValue;
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $result = $exists();
         }
-        if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemExists')) {
+                $this->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEventDetails($key, $result));
+            }
+            if ($this->hasEventListeners('itemRequest')) {
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+            }
         }
-        return $exists;
+        return $result;
     }
 
     /**
@@ -310,13 +472,31 @@ class DataRepository
         if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->append($key, $content);
-        if ($this->hasEventListeners('itemAppend')) {
-            $this->dispatchEvent('itemAppend', new \BearFramework\App\Data\ItemAppendEventDetails($key, $content));
+        $preventCompleteEvents = false;
+        $append = function () use ($key, $content) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'append', $key, $content);
+            }
+            $driver = $this->getDriver();
+            $driver->append($key, $content);
+        };
+        if ($this->hasEventListeners('itemBeforeAppend')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeAppendEventDetails($key, $content);
+            $this->dispatchEvent('itemBeforeAppend', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $append
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $append();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemAppend')) {
+                $this->dispatchEvent('itemAppend', new \BearFramework\App\Data\ItemAppendEventDetails($key, $content));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+            }
         }
         return $this;
     }
@@ -339,16 +519,34 @@ class DataRepository
         if (!$this->validate($destinationKey)) {
             throw new \InvalidArgumentException('The key provided (' . $destinationKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->duplicate($sourceKey, $destinationKey);
-        if ($this->hasEventListeners('itemDuplicate')) {
-            $this->dispatchEvent('itemDuplicate', new \BearFramework\App\Data\ItemDuplicateEventDetails($sourceKey, $destinationKey));
+        $preventCompleteEvents = false;
+        $duplicate = function () use ($sourceKey, $destinationKey) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'duplicate', $sourceKey, $destinationKey);
+            }
+            $driver = $this->getDriver();
+            $driver->duplicate($sourceKey, $destinationKey);
+        };
+        if ($this->hasEventListeners('itemBeforeDuplicate')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeDuplicateEventDetails($sourceKey, $destinationKey);
+            $this->dispatchEvent('itemBeforeDuplicate', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $duplicate
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $duplicate();
         }
-        if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($sourceKey));
-        }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemDuplicate')) {
+                $this->dispatchEvent('itemDuplicate', new \BearFramework\App\Data\ItemDuplicateEventDetails($sourceKey, $destinationKey));
+            }
+            if ($this->hasEventListeners('itemRequest')) {
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($sourceKey));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey));
+            }
         }
         return $this;
     }
@@ -371,14 +569,32 @@ class DataRepository
         if (!$this->validate($destinationKey)) {
             throw new \InvalidArgumentException('The key provided (' . $destinationKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->rename($sourceKey, $destinationKey);
-        if ($this->hasEventListeners('itemRename')) {
-            $this->dispatchEvent('itemRename', new \BearFramework\App\Data\ItemRenameEventDetails($sourceKey, $destinationKey));
+        $preventCompleteEvents = false;
+        $rename = function () use ($sourceKey, $destinationKey) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'rename', $sourceKey, $destinationKey);
+            }
+            $driver = $this->getDriver();
+            $driver->rename($sourceKey, $destinationKey);
+        };
+        if ($this->hasEventListeners('itemBeforeRename')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeRenameEventDetails($sourceKey, $destinationKey);
+            $this->dispatchEvent('itemBeforeRename', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $rename
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $rename();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($sourceKey));
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemRename')) {
+                $this->dispatchEvent('itemRename', new \BearFramework\App\Data\ItemRenameEventDetails($sourceKey, $destinationKey));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($sourceKey));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey));
+            }
         }
         return $this;
     }
@@ -397,13 +613,31 @@ class DataRepository
         if (!$this->validate($key)) {
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->delete($key);
-        if ($this->hasEventListeners('itemDelete')) {
-            $this->dispatchEvent('itemDelete', new \BearFramework\App\Data\ItemDeleteEventDetails($key));
+        $preventCompleteEvents = false;
+        $delete = function () use ($key) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'delete', $key);
+            }
+            $driver = $this->getDriver();
+            $driver->delete($key);
+        };
+        if ($this->hasEventListeners('itemBeforeDelete')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeDeleteEventDetails($key);
+            $this->dispatchEvent('itemBeforeDelete', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $delete
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $delete();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemDelete')) {
+                $this->dispatchEvent('itemDelete', new \BearFramework\App\Data\ItemDeleteEventDetails($key));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+            }
         }
         return $this;
     }
@@ -427,13 +661,31 @@ class DataRepository
         if (!$this->validateMetadataName($name)) {
             throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->setMetadata($key, $name, $value);
-        if ($this->hasEventListeners('itemSetMetadata')) {
-            $this->dispatchEvent('itemSetMetadata', new \BearFramework\App\Data\ItemSetMetadataEventDetails($key, $name, $value));
+        $preventCompleteEvents = false;
+        $setMetadata = function () use ($key, $name, $value) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'setMetadata', $key, $name, $value);
+            }
+            $driver = $this->getDriver();
+            $driver->setMetadata($key, $name, $value);
+        };
+        if ($this->hasEventListeners('itemBeforeSetMetadata')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeSetMetadataEventDetails($key, $name, $value);
+            $this->dispatchEvent('itemBeforeSetMetadata', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $setMetadata
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $setMetadata();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemSetMetadata')) {
+                $this->dispatchEvent('itemSetMetadata', new \BearFramework\App\Data\ItemSetMetadataEventDetails($key, $name, $value));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+            }
         }
         return $this;
     }
@@ -456,13 +708,35 @@ class DataRepository
         if (!$this->validateMetadataName($name)) {
             throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $value = $driver->getMetadata($key, $name);
-        if ($this->hasEventListeners('itemGetMetadata')) {
-            $this->dispatchEvent('itemGetMetadata', new \BearFramework\App\Data\ItemGetMetadataEventDetails($key, $name, $value));
+        $value = null;
+        $preventCompleteEvents = false;
+        $getMetadata = function () use ($key, $name) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'getMetadata', $key, $name);
+            }
+            $driver = $this->getDriver();
+            return $driver->getMetadata($key, $name);
+        };
+        if ($this->hasEventListeners('itemBeforeGetMetadata')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeGetMetadataEventDetails($key, $name);
+            $this->dispatchEvent('itemBeforeGetMetadata', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($getMetadata) {
+                    $eventDetails->returnValue = $getMetadata();
+                }
+            ]);
+            $value = $eventDetails->returnValue;
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $value = $getMetadata();
         }
-        if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemGetMetadata')) {
+                $this->dispatchEvent('itemGetMetadata', new \BearFramework\App\Data\ItemGetMetadataEventDetails($key, $name, $value));
+            }
+            if ($this->hasEventListeners('itemRequest')) {
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+            }
         }
         return $value;
     }
@@ -485,13 +759,31 @@ class DataRepository
         if (!$this->validateMetadataName($name)) {
             throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
         }
-        $driver = $this->getDriver();
-        $driver->deleteMetadata($key, $name);
-        if ($this->hasEventListeners('itemDeleteMetadata')) {
-            $this->dispatchEvent('itemDeleteMetadata', new \BearFramework\App\Data\ItemDeleteMetadataEventDetails($key, $name));
+        $preventCompleteEvents = false;
+        $deleteMetadata = function () use ($key, $name) {
+            if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'deleteMetadata', $key, $name);
+            }
+            $driver = $this->getDriver();
+            $driver->deleteMetadata($key, $name);
+        };
+        if ($this->hasEventListeners('itemBeforeDeleteMetadata')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeDeleteMetadataEventDetails($key, $name);
+            $this->dispatchEvent('itemBeforeDeleteMetadata', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => $deleteMetadata
+            ]);
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $deleteMetadata();
         }
-        if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('itemDeleteMetadata')) {
+                $this->dispatchEvent('itemDeleteMetadata', new \BearFramework\App\Data\ItemDeleteMetadataEventDetails($key, $name));
+            }
+            if ($this->hasEventListeners('itemChange')) {
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+            }
         }
         return $this;
     }
@@ -505,12 +797,54 @@ class DataRepository
      */
     public function getList(): \BearFramework\DataList
     {
-        $list = new \BearFramework\DataList(function(\BearFramework\DataList\Context $context) {
-            $driver = $this->getDriver();
-            return $driver->getList($context);
-        });
-        if ($this->hasEventListeners('getList')) {
-            $this->dispatchEvent('getList', new \BearFramework\App\Data\GetListEventDetails($list));
+        $preventCompleteEvents = false;
+        $list = null;
+        $getList = function () {
+            return new \BearFramework\DataList(function (\BearFramework\DataList\Context $context) {
+                if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+                    $actions = [];
+                    foreach ($context->actions as $action) {
+                        switch ($action->name) {
+                            case 'filterBy':
+                                $actions[] = [$action->name, $action->property, $action->value, $action->operator];
+                                break;
+                            case 'sortBy':
+                                $actions[] = [$action->name, $action->property, $action->order];
+                                break;
+                            case 'sliceProperties':
+                                $actions[] = [$action->name, $action->properties];
+                                break;
+                            case 'slice':
+                                $actions[] = [$action->name, $action->offset, $action->limit];
+                                break;
+                            default:
+                                $actions[] = [$action->name];
+                                break;
+                        }
+                    }
+                    call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'getList', $actions);
+                }
+                $driver = $this->getDriver();
+                return $driver->getList($context);
+            });
+        };
+        if ($this->hasEventListeners('beforeGetList')) {
+            $eventDetails = new \BearFramework\App\Data\BeforeGetListEventDetails();
+            $this->dispatchEvent('beforeGetList', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($getList) {
+                    $eventDetails->returnValue = $getList();
+                }
+            ]);
+            $list = $eventDetails->returnValue;
+            $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+        } else {
+            $list = $getList();
+        }
+        if (!$preventCompleteEvents) {
+            if ($this->hasEventListeners('getList')) {
+                $this->dispatchEvent('getList', new \BearFramework\App\Data\GetListEventDetails($list));
+            }
         }
         return $list;
     }
