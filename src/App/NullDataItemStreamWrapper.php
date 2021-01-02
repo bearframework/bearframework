@@ -31,7 +31,6 @@ class NullDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
      */
     public function close(): void
     {
-        
     }
 
     /**
@@ -110,14 +109,4 @@ class NullDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
     {
         return 0;
     }
-
-    /**
-     * 
-     * @return bool
-     */
-    public function exists(): bool
-    {
-        return false;
-    }
-
 }

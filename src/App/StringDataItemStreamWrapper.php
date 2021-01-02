@@ -19,25 +19,13 @@ class StringDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamW
      *
      * @var callable 
      */
-    private $getValueCallback;
+    private $reader;
 
     /**
      *
      * @var callable 
      */
-    private $setValueCallback;
-
-    /**
-     *
-     * @var callable 
-     */
-    private $existsCallback;
-
-    /**
-     *
-     * @var callable 
-     */
-    private $getSizeCallback;
+    private $writer;
 
     /**
      * 
@@ -62,12 +50,10 @@ class StringDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamW
      * @param callable $reader
      * @param callable $writer
      */
-    public function __construct(callable $getValueCallback, callable $setValueCallback, callable $existsCallback, callable $getSizeCallback)
+    public function __construct(callable $reader, callable $writer)
     {
-        $this->getValueCallback = $getValueCallback;
-        $this->setValueCallback = $setValueCallback;
-        $this->existsCallback = $existsCallback;
-        $this->getSizeCallback = $getSizeCallback;
+        $this->reader = $reader;
+        $this->writer = $writer;
     }
 
     /**
@@ -77,7 +63,7 @@ class StringDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamW
      */
     public function open(string $mode): bool
     {
-        $this->value = call_user_func($this->getValueCallback);
+        $this->value = call_user_func($this->reader);
         $this->pointer = 0;
         $this->mode = $mode;
         if ($mode === 'rb') { // Open for reading only; place the file pointer at the beginning of the file.
@@ -131,7 +117,7 @@ class StringDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamW
     public function close(): void
     {
         if ($this->mode !== 'rb') {
-            call_user_func($this->setValueCallback, $this->value);
+            call_user_func($this->writer, $this->value);
         }
         $this->pointer = null;
         $this->value = null;
@@ -259,23 +245,6 @@ class StringDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamW
      */
     public function size(): int
     {
-        if ($this->pointer !== null) {
-            return strlen($this->value);
-        } else {
-            return call_user_func($this->getSizeCallback);
-        }
-    }
-
-    /**
-     * 
-     * @return bool
-     */
-    public function exists(): bool
-    {
-        if ($this->pointer !== null) {
-            return $this->value !== null;
-        } else {
-            return call_user_func($this->existsCallback);
-        }
+        return strlen($this->value);
     }
 }

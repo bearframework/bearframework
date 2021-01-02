@@ -398,9 +398,10 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      * Returns a DataItemStreamWrapper for the key specified.
      * 
      * @param string $key The data item key.
+     * @param string $mode The access type. Available values: rb, r+b, wb, w+b, ab, a+b, xb, x+b, cb, cs+b
      * @return \BearFramework\App\IDataItemStreamWrapper
      */
-    public function getDataItemStreamWrapper(string $key): \BearFramework\App\IDataItemStreamWrapper
+    public function getDataItemStreamWrapper(string $key, string $mode): \BearFramework\App\IDataItemStreamWrapper
     {
         return new \BearFramework\App\FileDataItemStreamWrapper($key, $this->dir);
     }

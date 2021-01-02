@@ -172,25 +172,12 @@ class FileDataItemStreamWrapper implements \BearFramework\App\IDataItemStreamWra
      */
     public function size(): int
     {
-        if ($this->fileHandle !== null) {
-            $originalPointer = ftell($this->fileHandle);
-            fseek($this->fileHandle, 0, SEEK_END);
-            $lastPosition = ftell($this->fileHandle);
-            fseek($this->fileHandle, $originalPointer, SEEK_SET);
-            return $lastPosition;
-        } else {
-            $filename = $this->getFilename();
-            return is_file($filename) ? filesize($filename) : 0;
-        }
-    }
 
-    /**
-     * 
-     * @return bool
-     */
-    public function exists(): bool
-    {
-        return is_file($this->getFilename());
+        $originalPointer = ftell($this->fileHandle);
+        fseek($this->fileHandle, 0, SEEK_END);
+        $lastPosition = ftell($this->fileHandle);
+        fseek($this->fileHandle, $originalPointer, SEEK_SET);
+        return $lastPosition;
     }
 
     /**

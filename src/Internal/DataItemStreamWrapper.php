@@ -84,32 +84,45 @@ class DataItemStreamWrapper
             return false;
         }
         $this->key = $pathInfo['key'];
-        $dataDriver = $pathInfo['dataDriver'];
-        $this->dataItemWrapper = $dataDriver->getDataItemStreamWrapper($this->key);
-        if (array_search($mode, ['r', 'rb']) !== false && !$this->dataItemWrapper->exists()) {
-            return false;
-        }
-        $this->dataItemPathInfo = $pathInfo;
         $dataRepository = $pathInfo['dataRepository'];
+        $dataDriver = $pathInfo['dataDriver'];
+
+        $this->dataItemPathInfo = $pathInfo;
         if (array_search($mode, ['wb', 'w+b', 'xb', 'x+b', 'c', 'c+b']) !== false && $dataRepository->hasEventListeners('itemSetValue')) {
             if ($mode === 'wb') {
-                $mode = 'w+b';
+                $mode = 'w+b'; // open for reading too because the value may be needed for the events
             } elseif ($mode === 'xb') {
-                $mode = 'x+b';
+                $mode = 'x+b'; // open for reading too because the value may be needed for the events
             } elseif ($mode === 'cb') {
-                $mode = 'c+b';
+                $mode = 'c+b'; // open for reading too because the value may be needed for the events
             }
             $this->eventToDispatchOnClose['itemSetValue'] = 1;
         }
         if (array_search($mode, ['ab', 'a+b']) !== false && $dataRepository->hasEventListeners('itemAppend')) {
             if ($mode === 'ab') {
-                $mode = 'a+b';
+                $mode = 'a+b'; // open for reading too because the value may be needed for the events
             }
             $this->eventToDispatchOnClose['itemAppend'] = 1;
             $this->writtenData = '';
         }
         if (array_search($mode, ['rb', 'r+b']) !== false && $dataRepository->hasEventListeners('itemGetValue')) {
             $this->eventToDispatchOnClose['itemGetValue'] = 1;
+        }
+
+        if ($dataRepository->hasEventListeners('itemBeforeGetStreamWrapper')) {
+            $eventDetails = new \BearFramework\App\Data\ItemBeforeGetStreamWrapperEventDetails($this->key, $mode);
+            $dataRepository->dispatchEvent('itemBeforeGetStreamWrapper', $eventDetails, [
+                'cancelable' => true,
+                'defaultListener' => function ($eventDetails) use ($dataDriver) {
+                    $eventDetails->returnValue = $dataDriver->getDataItemStreamWrapper($eventDetails->key, $eventDetails->mode);
+                }
+            ]);
+            $this->dataItemWrapper = $eventDetails->returnValue;
+        } else {
+            $this->dataItemWrapper = $dataDriver->getDataItemStreamWrapper($this->key, $mode);
+        }
+        if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+            call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'dataItemStreamWrapperOpen', $this->key, $mode);
         }
         return $this->dataItemWrapper->open($mode);
     }
@@ -132,6 +145,9 @@ class DataItemStreamWrapper
                     $value .= $this->dataItemWrapper->read(8192);
                 }
             }
+        }
+        if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
+            call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'dataItemStreamWrapperClose', $this->key);
         }
         $this->dataItemWrapper->close();
         if ($hasItemSetValueListeners) {
@@ -311,22 +327,12 @@ class DataItemStreamWrapper
             $caller = isset($backtrace[1], $backtrace[1]['function']) ? (isset($backtrace[1]['class']) ? $backtrace[1]['class'] . '::' : '') . $backtrace[1]['function'] : null;
 
             $key = $pathInfo['key'];
-            $dataDriver = $pathInfo['dataDriver'];
+            $dataRepository = $pathInfo['dataRepository'];
             if (array_search($caller, ['filetype', 'is_dir', 'file_exists', 'lstat', 'stat', 'SplFileInfo::getType', 'SplFileInfo::isDir']) !== false) {
-                $listContext = new \BearFramework\DataList\Context();
-                $action = new \BearFramework\DataList\FilterByAction();
-                $action->property = 'key';
-                $action->value = $key . '/';
-                $action->operator = 'startWith';
-                $listContext->actions[] = $action;
-                $action = new \BearFramework\DataList\SlicePropertiesAction();
-                $action->properties = ['key'];
-                $listContext->actions[] = $action;
-                $action = new \BearFramework\DataList\SliceAction();
-                $action->offset = 0;
-                $action->limit = 1;
-                $listContext->actions[] = $action;
-                $result = $dataDriver->getList($listContext);
+                $result = $dataRepository->getList()
+                    ->filterBy('key', $key . '/', 'startWith')
+                    ->sliceProperties(['key'])
+                    ->slice(0, 1);
                 if ($result->count() > 0) {
                     return $makeResult(0040666, 0); // dir
                 }
@@ -335,22 +341,9 @@ class DataItemStreamWrapper
                 }
             }
             // maybe it's a file
-            if ($dataDriver->exists($key)) {
-                $dataItemWrapper = $dataDriver->getDataItemStreamWrapper($key);
-                $result = $makeResult(0100666, $dataItemWrapper->size()); // file
-                $exists = true;
-            } else {
-                $exists = false;
-            }
-            $dataRepository = $pathInfo['dataRepository'];
-            if ($dataRepository->hasEventListeners('itemExists')) {
-                $dataRepository->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEventDetails($key, $exists));
-            }
-            if ($dataRepository->hasEventListeners('itemRequest')) {
-                $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
-            }
-            if ($exists) {
-                return $result;
+            $size = $dataRepository->getValueLength($key); // Events are dispached here
+            if ($size !== null) {
+                return $makeResult(0100666, $size); // file
             }
             return false;
         }
@@ -537,11 +530,10 @@ class DataItemStreamWrapper
         if (!isset($environment[1]) || !($environment[1] instanceof \BearFramework\App\IDataDriver)) {
             return false;
         }
-        $dataDriver = $environment[1];
         return [
             'key' => $key,
             'dataRepository' => $dataRepository,
-            'dataDriver' => $dataDriver
+            'dataDriver' => $environment[1]
         ];
     }
 }

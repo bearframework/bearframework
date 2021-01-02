@@ -48,7 +48,7 @@ class MemoryDataDriver implements \BearFramework\App\IDataDriver
     public function setValue(string $key, string $value): void
     {
         if (!isset($this->data[$key])) {
-            $this->data[$key] = [null, null];
+            $this->data[$key] = [null, null]; // value, metadata
         }
         $this->data[$key][0] = $value;
     }
@@ -268,22 +268,20 @@ class MemoryDataDriver implements \BearFramework\App\IDataDriver
      * Returns a DataItemStreamWrapper for the key specified.
      * 
      * @param string $key The data item key.
+     * @param string $mode The access type. Available values: rb, r+b, wb, w+b, ab, a+b, xb, x+b, cb, cs+b
      * @return \BearFramework\App\IDataItemStreamWrapper
      */
-    public function getDataItemStreamWrapper(string $key): \BearFramework\App\IDataItemStreamWrapper
+    public function getDataItemStreamWrapper(string $key, string $mode): \BearFramework\App\IDataItemStreamWrapper
     {
         return new \BearFramework\App\StringDataItemStreamWrapper(
             function () use ($key): ?string {
-                return isset($this->data[$key]) ? $this->data[$key] : null;
+                return isset($this->data[$key]) ? $this->data[$key][0] : null;
             },
             function (string $value) use ($key): void {
-                $this->data[$key] = $value;
-            },
-            function () use ($key): bool {
-                return isset($this->data[$key]);
-            },
-            function () use ($key): int {
-                return isset($this->data[$key]) ? strlen($this->data[$key]) : 0;
+                if (!isset($this->data[$key])) {
+                    $this->data[$key] = ['', null];
+                }
+                $this->data[$key][0] = $value;
             }
         );
     }
