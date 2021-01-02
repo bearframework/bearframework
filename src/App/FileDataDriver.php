@@ -137,6 +137,51 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     }
 
     /**
+     * Returns the value length of a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @return int|null The value length of a stored data item or null if not found.
+     */
+    public function getValueLength(string $key): ?int
+    {
+        $result = $this->execute([
+            [
+                'command' => 'get',
+                'key' => $key,
+                'result' => ['body.length']
+            ]
+        ]);
+        if (isset($result[0]['body.length'])) {
+            return $result[0]['body.length'];
+        }
+        return null;
+    }
+
+    /**
+     * Returns a range of the value of a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @param int $start The start of the range.
+     * @param int $end The end of the range.
+     * @return string|null The value of a stored data item or null if not found.
+     */
+    public function getValueRange(string $key, int $start, int $end): ?string
+    {
+        $rangeName = 'body.range(' . $start . ',' . $end . ')';
+        $result = $this->execute([
+            [
+                'command' => 'get',
+                'key' => $key,
+                'result' => [$rangeName]
+            ]
+        ]);
+        if (isset($result[0][$rangeName])) {
+            return $result[0][$rangeName];
+        }
+        return null;
+    }
+
+    /**
      * Returns TRUE if the data item exists. FALSE otherwise.
      * 
      * @param string $key The key of the stored data item.
@@ -322,7 +367,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
                             $resultKeys[] = 'metadata';
                         }
                     }
-                } elseif ($action instanceof \BearFramework\DataList\SliceAction) {
+                } elseif ($action instanceof \BearFramework\DataList\SliceAction) { // todo what if there is sort before slice
                     $limit = $action->offset + $action->limit;
                 }
             }

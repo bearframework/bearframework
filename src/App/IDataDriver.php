@@ -50,6 +50,24 @@ interface IDataDriver
     public function getValue(string $key): ?string;
 
     /**
+     * Returns the value length of a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @return int|null The value length of a stored data item or null if not found.
+     */
+    public function getValueLength(string $key): ?int;
+
+    /**
+     * Returns a range of the value of a stored data item or null if not found.
+     * 
+     * @param string $key The key of the stored data item.
+     * @param int $start The start of the range.
+     * @param int $end The end of the range.
+     * @return string|null The value of a stored data item or null if not found.
+     */
+    public function getValueRange(string $key, int $start, int $end): ?string;
+
+    /**
      * Returns TRUE if the data item exists. FALSE otherwise.
      * 
      * @param string $key The key of the stored data item.
