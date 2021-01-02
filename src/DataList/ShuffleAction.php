@@ -12,8 +12,7 @@ namespace BearFramework\DataList;
 /**
  * 
  */
-class SliceAction
+class ShuffleAction
 {
     use \IvoPetkov\DataListActionTrait;
-    use \IvoPetkov\DataListSliceActionTrait;
 }

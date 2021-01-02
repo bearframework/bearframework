@@ -12,8 +12,7 @@ namespace BearFramework\DataList;
 /**
  * 
  */
-class Action
+class ReverseAction
 {
-
     use \IvoPetkov\DataListActionTrait;
 }

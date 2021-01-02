@@ -14,6 +14,6 @@ namespace BearFramework\DataList;
  */
 class FilterByAction
 {
-
+    use \IvoPetkov\DataListActionTrait;
     use \IvoPetkov\DataListFilterByActionTrait;
 }

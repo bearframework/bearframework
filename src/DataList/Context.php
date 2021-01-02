@@ -14,6 +14,5 @@ namespace BearFramework\DataList;
  */
 class Context
 {
-
     use \IvoPetkov\DataListContextTrait;
 }

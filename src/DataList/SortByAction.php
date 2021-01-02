@@ -14,6 +14,6 @@ namespace BearFramework\DataList;
  */
 class SortByAction
 {
-
+    use \IvoPetkov\DataListActionTrait;
     use \IvoPetkov\DataListSortByActionTrait;
 }

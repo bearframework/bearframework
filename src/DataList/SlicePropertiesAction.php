@@ -14,6 +14,6 @@ namespace BearFramework\DataList;
  */
 class SlicePropertiesAction
 {
-
+    use \IvoPetkov\DataListActionTrait;
     use \IvoPetkov\DataListSlicePropertiesActionTrait;
 }

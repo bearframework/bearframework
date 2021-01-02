@@ -12,8 +12,8 @@ namespace BearFramework\DataList;
 /**
  * 
  */
-class SliceAction
+class MapAction
 {
     use \IvoPetkov\DataListActionTrait;
-    use \IvoPetkov\DataListSliceActionTrait;
+    use \IvoPetkov\DataListMapActionTrait;
 }

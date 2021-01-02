@@ -30,15 +30,18 @@ class DataList implements \ArrayAccess, \Iterator, \Countable
     public function __construct($dataSource = null)
     {
         $this->registerDataListClass('IvoPetkov\DataListContext', 'BearFramework\DataList\Context');
+        $this->registerDataListClass('IvoPetkov\DataListFilterAction', 'BearFramework\DataList\FilterAction');
         $this->registerDataListClass('IvoPetkov\DataListFilterByAction', 'BearFramework\DataList\FilterByAction');
-        $this->registerDataListClass('IvoPetkov\DataListSortByAction', 'BearFramework\DataList\SortByAction');
-        $this->registerDataListClass('IvoPetkov\DataListAction', 'BearFramework\DataList\Action');
+        $this->registerDataListClass('IvoPetkov\DataListMapAction', 'BearFramework\DataList\MapAction');
+        $this->registerDataListClass('IvoPetkov\DataListReverseAction', 'BearFramework\DataList\ReverseAction');
+        $this->registerDataListClass('IvoPetkov\DataListShuffleAction', 'BearFramework\DataList\ShuffleAction');
         $this->registerDataListClass('IvoPetkov\DataListSliceAction', 'BearFramework\DataList\SliceAction');
         $this->registerDataListClass('IvoPetkov\DataListSlicePropertiesAction', 'BearFramework\DataList\SlicePropertiesAction');
+        $this->registerDataListClass('IvoPetkov\DataListSortAction', 'BearFramework\DataList\SortAction');
+        $this->registerDataListClass('IvoPetkov\DataListSortByAction', 'BearFramework\DataList\SortByAction');
         $this->registerDataListClass('IvoPetkov\DataListObject', 'BearFramework\DataObject');
         if ($dataSource !== null) {
             $this->setDataSource($dataSource);
         }
     }
-
 }
