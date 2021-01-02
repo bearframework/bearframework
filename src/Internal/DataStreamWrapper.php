@@ -13,7 +13,7 @@ namespace BearFramework\Internal;
  * Data item stream wrapper
  * @internal
  */
-class DataItemStreamWrapper
+class DataStreamWrapper
 {
 
     /**

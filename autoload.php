@@ -127,7 +127,7 @@ $classes = [
     'BearFramework\DataList\SortAction' => 'src/DataList/SortAction.php',
     'BearFramework\DataList\SortByAction' => 'src/DataList/SortByAction.php',
     'BearFramework\DataObject' => 'src/DataObject.php',
-    'BearFramework\Internal\DataItemStreamWrapper' => 'src/Internal/DataItemStreamWrapper.php',
+    'BearFramework\Internal\DataStreamWrapper' => 'src/Internal/DataStreamWrapper.php',
     'BearFramework\Internal\ErrorHandler' => 'src/Internal/ErrorHandler.php',
     'BearFramework\Internal\Utilities' => 'src/Internal/Utilities.php',
 ];
