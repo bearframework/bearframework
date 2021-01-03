@@ -578,6 +578,8 @@ class Assets
             $sourceImage = @imagecreatefromstring($sourceContent);
         } catch (\Error $e) {
             $sourceImage = false;
+        } catch (\Exception $e) {
+            $sourceImage = false;
         }
         if ($sourceImage === false) {
             throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
