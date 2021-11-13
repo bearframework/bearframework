@@ -23,8 +23,8 @@ namespace BearFramework;
  * @property-read \BearFramework\App\URLs $urls URLs utilities.
  * @property-read \BearFramework\App\Contexts $contexts Provides information about your code context (the directory its located).
  * @property-read \BearFramework\App\Shortcuts $shortcuts Allow registration of $app object properties (shortcuts).
- * @event \Bearframework\App\BeforeSendResponseEvent beforeSendResponse An event dispatched before the response is sent to the client.
- * @event \BearFramework\App\SendResponseEvent sendResponse An event dispatched after the response is sent to the client.
+ * @event \Bearframework\App\BeforeSendResponseEventDetails beforeSendResponse An event dispatched before the response is sent to the client.
+ * @event \BearFramework\App\SendResponseEventDetails sendResponse An event dispatched after the response is sent to the client.
  */
 class App
 {

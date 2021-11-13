@@ -9,40 +9,38 @@
 
 namespace BearFramework\App;
 
-use BearFramework\App\DataItem;
-
 /**
  * Data storage
- * @event \BearFramework\App\Data\ItemRequestEvent itemRequest An event dispatched after a data item is requested.
- * @event \BearFramework\App\Data\ItemChangeEvent itemChange An event dispatched after a data item is changed.
- * @event \BearFramework\App\Data\ItemBeforeSetEvent itemBeforeSet An event dispatched before a data item is added or updated.
- * @event \BearFramework\App\Data\ItemSetEvent itemSet An event dispatched after a data item is added or updated.
- * @event \BearFramework\App\Data\ItemBeforeSetValueEvent itemBeforeSetValue An event dispatched before the value of a data item is added or updated.
- * @event \BearFramework\App\Data\ItemSetValueEvent itemSetValue An event dispatched after the value of a data item is added or updated.
- * @event \BearFramework\App\Data\ItemBeforeGetEvent itemBeforeGet An event dispatched before a data item is requested.
- * @event \BearFramework\App\Data\ItemGetEvent itemGet An event dispatched after a data item is requested.
- * @event \BearFramework\App\Data\ItemBeforeGetValueEvent itemBeforeGetValue An event dispatched before the value of a data item is requested.
- * @event \BearFramework\App\Data\ItemGetValueEvent itemGetValue An event dispatched after the value of a data item is requested.
- * @event \BearFramework\App\Data\ItemBeforeGetValueLengthEvent itemBeforeGetValueLength An event dispatched before the value length of a data item is requested.
- * @event \BearFramework\App\Data\ItemGetValueLengthEvent itemGetValueLength An event dispatched after the value length of a data item is requested.
- * @event \BearFramework\App\Data\ItemBeforeExistsEvent itemBeforeExists An event dispatched before a data item is checked for existence.
- * @event \BearFramework\App\Data\ItemExistsEvent itemExists An event dispatched after a data item is checked for existence.
- * @event \BearFramework\App\Data\ItemBeforeAppendEvent itemBeforeAppend An event dispatched before a content is appended to a data value.
- * @event \BearFramework\App\Data\ItemAppendEvent itemAppend An event dispatched after a content is appended to a data value.
- * @event \BearFramework\App\Data\ItemBeforeDuplicateEvent itemBeforeDuplicate An event dispatched before a data item is duplicated.
- * @event \BearFramework\App\Data\ItemDuplicateEvent itemDuplicate An event dispatched after a data item is duplicated.
- * @event \BearFramework\App\Data\ItemBeforeRenameEvent itemBeforeRename An event dispatched before a data item is renamed.
- * @event \BearFramework\App\Data\ItemRenameEvent itemRename An event dispatched after a data item is renamed.
- * @event \BearFramework\App\Data\ItemBeforeDeleteEvent itemBeforeDelete An event dispatched before a data item is deleted.
- * @event \BearFramework\App\Data\ItemDeleteEvent itemDelete An event dispatched after a data item is deleted.
- * @event \BearFramework\App\Data\ItemBeforeSetMetadataEvent itemBeforeSetMetadata An event dispatched before a data item metadata is added or updated.
- * @event \BearFramework\App\Data\ItemSetMetadataEvent itemSetMetadata An event dispatched after a data item metadata is added or updated.
- * @event \BearFramework\App\Data\ItemBeforeGetMetadataEvent itemBeforeGetMetadata An event dispatched before a data item metadata is requested.
- * @event \BearFramework\App\Data\ItemGetMetadataEvent itemGetMetadata An event dispatched after a data item metadata is requested.
- * @event \BearFramework\App\Data\ItemBeforeDeleteMetadataEvent itemBeforeDeleteMetadata An event dispatched before a data item metadata is deleted.
- * @event \BearFramework\App\Data\ItemDeleteMetadataEvent itemDeleteMetadata An event dispatched after a data item metadata is deleted.
- * @event \BearFramework\App\Data\BeforeGetListEvent beforeGetList An event dispatched before a data items list is requested.
- * @event \BearFramework\App\Data\GetListEvent getList An event dispatched after a data items list is requested.
+ * @event \BearFramework\App\Data\ItemRequestEventDetails itemRequest An event dispatched after a data item is requested.
+ * @event \BearFramework\App\Data\ItemChangeEventDetails itemChange An event dispatched after a data item is changed.
+ * @event \BearFramework\App\Data\ItemBeforeSetEventDetails itemBeforeSet An event dispatched before a data item is added or updated.
+ * @event \BearFramework\App\Data\ItemSetEventDetails itemSet An event dispatched after a data item is added or updated.
+ * @event \BearFramework\App\Data\ItemBeforeSetValueEventDetails itemBeforeSetValue An event dispatched before the value of a data item is added or updated.
+ * @event \BearFramework\App\Data\ItemSetValueEventDetails itemSetValue An event dispatched after the value of a data item is added or updated.
+ * @event \BearFramework\App\Data\ItemBeforeGetEventDetails itemBeforeGet An event dispatched before a data item is requested.
+ * @event \BearFramework\App\Data\ItemGetEventDetails itemGet An event dispatched after a data item is requested.
+ * @event \BearFramework\App\Data\ItemBeforeGetValueEventDetails itemBeforeGetValue An event dispatched before the value of a data item is requested.
+ * @event \BearFramework\App\Data\ItemGetValueEventDetails itemGetValue An event dispatched after the value of a data item is requested.
+ * @event \BearFramework\App\Data\ItemBeforeGetValueLengthEventDetails itemBeforeGetValueLength An event dispatched before the value length of a data item is requested.
+ * @event \BearFramework\App\Data\ItemGetValueLengthEventDetails itemGetValueLength An event dispatched after the value length of a data item is requested.
+ * @event \BearFramework\App\Data\ItemBeforeExistsEventDetails itemBeforeExists An event dispatched before a data item is checked for existence.
+ * @event \BearFramework\App\Data\ItemExistsEventDetails itemExists An event dispatched after a data item is checked for existence.
+ * @event \BearFramework\App\Data\ItemBeforeAppendEventDetails itemBeforeAppend An event dispatched before a content is appended to a data value.
+ * @event \BearFramework\App\Data\ItemAppendEventDetails itemAppend An event dispatched after a content is appended to a data value.
+ * @event \BearFramework\App\Data\ItemBeforeDuplicateEventDetails itemBeforeDuplicate An event dispatched before a data item is duplicated.
+ * @event \BearFramework\App\Data\ItemDuplicateEventDetails itemDuplicate An event dispatched after a data item is duplicated.
+ * @event \BearFramework\App\Data\ItemBeforeRenameEventDetails itemBeforeRename An event dispatched before a data item is renamed.
+ * @event \BearFramework\App\Data\ItemRenameEventDetails itemRename An event dispatched after a data item is renamed.
+ * @event \BearFramework\App\Data\ItemBeforeDeleteEventDetails itemBeforeDelete An event dispatched before a data item is deleted.
+ * @event \BearFramework\App\Data\ItemDeleteEventDetails itemDelete An event dispatched after a data item is deleted.
+ * @event \BearFramework\App\Data\ItemBeforeSetMetadataEventDetails itemBeforeSetMetadata An event dispatched before a data item metadata is added or updated.
+ * @event \BearFramework\App\Data\ItemSetMetadataEventDetails itemSetMetadata An event dispatched after a data item metadata is added or updated.
+ * @event \BearFramework\App\Data\ItemBeforeGetMetadataEventDetails itemBeforeGetMetadata An event dispatched before a data item metadata is requested.
+ * @event \BearFramework\App\Data\ItemGetMetadataEventDetails itemGetMetadata An event dispatched after a data item metadata is requested.
+ * @event \BearFramework\App\Data\ItemBeforeDeleteMetadataEventDetails itemBeforeDeleteMetadata An event dispatched before a data item metadata is deleted.
+ * @event \BearFramework\App\Data\ItemDeleteMetadataEventDetails itemDeleteMetadata An event dispatched after a data item metadata is deleted.
+ * @event \BearFramework\App\Data\BeforeGetListEventDetails beforeGetList An event dispatched before a data items list is requested.
+ * @event \BearFramework\App\Data\GetListEventDetails getList An event dispatched after a data items list is requested.
  * @event \BearFramework\App\Data\ItemBeforeGetStreamWrapperEventDetails itemBeforeGetStreamWrapper An event dispatched when a data items stream wrapper is requested.
  */
 class DataRepository

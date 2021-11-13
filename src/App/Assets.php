@@ -14,12 +14,12 @@ use BearFramework\App;
 /**
  * Provides utility functions for assets.
  * @property-read string $pathPrefix The prefix of the assets URLs.
- * @event \BearFramework\App\Assets\BeforeGetURLEvent beforeGetURL An event dispatched before the URL of the asset specified is created.
- * @event \BearFramework\App\Assets\GetURLEvent getURL An event dispatched after the URL of the asset specified is created.
- * @event \BearFramework\App\Assets\BeforePrepareEvent beforePrepare An event dispatched before the asset specified is prepared for returning (resized for example).
- * @event \BearFramework\App\Assets\PrepareEvent prepare An event dispatched after the asset specified is prepared for returning (resized for example)
- * @event \BearFramework\App\Assets\BeforeGetDetailsEvent beforeGetDetails An event dispatched before the details of the asset specified is created.
- * @event \BearFramework\App\Assets\GetDetailsEvent getDetails An event dispatched after the details of the asset specified is created.
+ * @event \BearFramework\App\Assets\BeforeGetURLEventDetails beforeGetURL An event dispatched before the URL of the asset specified is created.
+ * @event \BearFramework\App\Assets\GetURLEventDetails getURL An event dispatched after the URL of the asset specified is created.
+ * @event \BearFramework\App\Assets\BeforePrepareEventDetails beforePrepare An event dispatched before the asset specified is prepared for returning (resized for example).
+ * @event \BearFramework\App\Assets\PrepareEventDetails prepare An event dispatched after the asset specified is prepared for returning (resized for example)
+ * @event \BearFramework\App\Assets\BeforeGetDetailsEventDetails beforeGetDetails An event dispatched before the details of the asset specified is created.
+ * @event \BearFramework\App\Assets\GetDetailsEventDetails getDetails An event dispatched after the details of the asset specified is created.
  */
 class Assets
 {
