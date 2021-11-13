@@ -176,6 +176,9 @@ class Assets
             if (isset($options['version'])) {
                 $optionsString .= '-v' . $options['version'];
             }
+            if (isset($options['quality'])) {
+                $optionsString .= '-q' . $options['quality'];
+            }
             if (isset($options['robotsNoIndex']) && $options['robotsNoIndex'] === true) {
                 $optionsString .= '-r1';
             }
@@ -238,6 +241,9 @@ class Assets
         }
         if (isset($options['outputType'])) {
             $prepareOptions['outputType'] = $options['outputType'];
+        }
+        if (isset($options['quality'])) {
+            $prepareOptions['quality'] = $options['quality'];
         }
 
         $resultFilename = $this->prepare($filename, $prepareOptions);
@@ -305,6 +311,12 @@ class Assets
                         $value = (int) substr($option, 1);
                         if ($value >= 0) {
                             $result['options']['cacheMaxAge'] = $value;
+                        }
+                    }
+                    if (substr($option, 0, 1) === 'q') {
+                        $value = (int) substr($option, 1);
+                        if ($value >= 0 && $value <= 100) {
+                            $result['options']['quality'] = $value;
                         }
                     }
                     if (substr($option, 0, 2) === 'r1') {
@@ -387,7 +399,7 @@ class Assets
         }
 
         if (strlen($filename) > 0 && is_file($filename)) {
-            if (!isset($options['width']) && !isset($options['height'])) {
+            if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality'])) {
                 $result = $filename;
             } else {
                 $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -401,7 +413,8 @@ class Assets
                 if (!is_file($tempFilename)) {
                     $this->resize($filename, $tempFilename, [
                         'width' => (isset($options['width']) ? $options['width'] : null),
-                        'height' => (isset($options['height']) ? $options['height'] : null)
+                        'height' => (isset($options['height']) ? $options['height'] : null),
+                        'quality' => (isset($options['quality']) ? $options['quality'] : null)
                     ]);
                 }
                 $result = $tempFilename;
@@ -450,6 +463,11 @@ class Assets
         if (isset($options['cacheMaxAge'])) {
             if (!is_int($options['cacheMaxAge']) || $options['cacheMaxAge'] < 0) {
                 throw new \InvalidArgumentException('The value of the cacheMaxAge option must be of type int, ' . gettype($options['cacheMaxAge']) . ' given. It must be positive also.');
+            }
+        }
+        if (isset($options['quality'])) {
+            if (!is_int($options['quality']) || $options['quality'] < 0 || $options['quality'] > 100) {
+                throw new \InvalidArgumentException('The value of the cacheMaxAge option must be of type int, ' . gettype($options['quality']) . ' given. It must be >= 0 and <= 100.');
             }
         }
         if (isset($options['robotsNoIndex'])) {
@@ -539,7 +557,7 @@ class Assets
      * 
      * @param string $sourceFilename The asset file to resize.
      * @param string $destinationFilename The filename where the result asset will be saved.
-     * @param array $options Resize options. You can resize the file by providing "width", "height" or both.
+     * @param array $options Resize options. You can resize the file by providing "width", "height" or both. You can also provide "quality".
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @return void No value is returned.
@@ -554,6 +572,9 @@ class Assets
         }
         if (isset($options['height']) && (!is_int($options['height']) || $options['height'] < 1 || $options['height'] > 100000)) {
             throw new \InvalidArgumentException('The height value must be higher than 0 and lower than 100001');
+        }
+        if (isset($options['quality']) && (!is_int($options['quality']) || $options['quality'] < 0 || $options['quality'] > 100)) {
+            throw new \InvalidArgumentException('The quality value must be >= 0 and <= 100');
         }
         $outputType = null;
         $destinationPathInfo = pathinfo($destinationFilename);
@@ -589,6 +610,7 @@ class Assets
 
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
+        $quality = isset($options['quality']) ? $options['quality'] : 100;
 
         if ($width === null && $height === null) {
             $width = $sourceWidth;
@@ -613,7 +635,7 @@ class Assets
             $height = 1;
         }
 
-        if ($sourceWidth === $width && $sourceHeight === $height) {
+        if ($sourceWidth === $width && $sourceHeight === $height && $quality === null) {
             imagedestroy($sourceImage);
             file_put_contents($destinationFilename, $sourceContent);
         } else {
@@ -636,13 +658,13 @@ class Assets
                 $destinationY = - ($resizedImageHeight - $height) / 2;
                 if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
                     if ($outputType === 'jpg') {
-                        imagejpeg($resultImage, $tempFilename, 100);
+                        imagejpeg($resultImage, $tempFilename, $quality);
                     } elseif ($outputType === 'png') {
                         imagepng($resultImage, $tempFilename, 9);
                     } elseif ($outputType === 'gif') {
                         imagegif($resultImage, $tempFilename);
                     } elseif ($outputType === 'webp') {
-                        imagewebp($resultImage, $tempFilename, 100);
+                        imagewebp($resultImage, $tempFilename, $quality);
                     }
                 }
                 imagedestroy($resultImage);
