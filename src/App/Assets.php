@@ -377,25 +377,45 @@ class Assets
     }
 
     /**
-     * Returns a list of supported asset types (that can be converted to)
-     * @return array
+     * Returns a list of supported output types (that can be converted to).
+     * 
+     * @return array A list of supported output types.
      */
     public function getSupportedOutputTypes(): array
     {
-        $result = [];
-        if (function_exists('imagejpeg')) {
-            $result[] = 'jpg';
+        $cacheKey = '2sot';
+        if (!isset($this->cache[$cacheKey])) {
+            $result = [];
+            if (function_exists('imagejpeg')) {
+                $result[] = 'jpg';
+            }
+            if (function_exists('imagepng')) {
+                $result[] = 'png';
+            }
+            if (function_exists('imagegif')) {
+                $result[] = 'gif';
+            }
+            if (function_exists('imagewebp')) {
+                $result[] = 'webp';
+            }
+            if (function_exists('imageavif')) {
+                $result[] = 'avif';
+            }
+            $this->cache[$cacheKey] = $result;
         }
-        if (function_exists('imagepng')) {
-            $result[] = 'png';
-        }
-        if (function_exists('imagegif')) {
-            $result[] = 'gif';
-        }
-        if (function_exists('imagewebp')) {
-            $result[] = 'webp';
-        }
-        return $result;
+        return $this->cache[$cacheKey];
+    }
+
+    /**
+     * Returns TRUE if the output type specified is supported.
+     * 
+     * @param string $name
+     * @return boolean TRUE if the output type specified is supported. FALSE otherwise.
+     */
+    public function isSupportedOutputType(string $name): bool
+    {
+        $types = $this->getSupportedOutputTypes();
+        return array_search($name, $types) !== false;
     }
 
     /**
