@@ -377,6 +377,28 @@ class Assets
     }
 
     /**
+     * Returns a list of supported asset types (that can be converted to)
+     * @return array
+     */
+    public function getSupportedOutputTypes(): array
+    {
+        $result = [];
+        if (function_exists('imagejpeg')) {
+            $result[] = 'jpg';
+        }
+        if (function_exists('imagepng')) {
+            $result[] = 'png';
+        }
+        if (function_exists('imagegif')) {
+            $result[] = 'gif';
+        }
+        if (function_exists('imagewebp')) {
+            $result[] = 'webp';
+        }
+        return $result;
+    }
+
+    /**
      * Prepares a local filename that will be returned for the file requested.
      * 
      * @param string $filename The filename to prepare.
@@ -590,7 +612,8 @@ class Assets
                 $outputType = 'webp';
             }
         }
-        if ($outputType !== 'png' && $outputType !== 'gif' && $outputType !== 'jpg' && $outputType !== 'webp') {
+        $supportedOutputTypes = $this->getSupportedOutputTypes();
+        if (array_search($outputType, $supportedOutputTypes) === false) {
             throw new \InvalidArgumentException('The output format is not supported!');
         }
 
