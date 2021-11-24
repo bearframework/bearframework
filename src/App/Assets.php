@@ -14,6 +14,8 @@ use BearFramework\App;
 /**
  * Provides utility functions for assets.
  * @property-read string $pathPrefix The prefix of the assets URLs.
+ * @event \BearFramework\App\Assets\BeforeGetContentEventDetails beforeGetContent An event dispatched before the content of the asset specified is constructed.
+ * @event \BearFramework\App\Assets\GetContentEventDetails getContent An event dispatched after the content of the asset specified is constructed.
  * @event \BearFramework\App\Assets\BeforeGetURLEventDetails beforeGetURL An event dispatched before the URL of the asset specified is created.
  * @event \BearFramework\App\Assets\GetURLEventDetails getURL An event dispatched after the URL of the asset specified is created.
  * @event \BearFramework\App\Assets\BeforePrepareEventDetails beforePrepare An event dispatched before the asset specified is prepared for returning (resized for example).
@@ -229,41 +231,60 @@ class Assets
      */
     public function getContent(string $filename, array $options = []): ?string
     {
-        if (!empty($options)) {
-            $this->validateOptions($options);
-        }
-        $prepareOptions = [];
-        if (isset($options['width'])) {
-            $prepareOptions['width'] = $options['width'];
-        }
-        if (isset($options['height'])) {
-            $prepareOptions['height'] = $options['height'];
-        }
-        if (isset($options['outputType'])) {
-            $prepareOptions['outputType'] = $options['outputType'];
-        }
-        if (isset($options['quality'])) {
-            $prepareOptions['quality'] = $options['quality'];
-        }
-
-        $resultFilename = $this->prepare($filename, $prepareOptions);
-        if ($resultFilename === null || !is_file($resultFilename)) {
-            return null;
-        }
-        $content = file_get_contents($resultFilename);
-        if (isset($options['encoding'])) {
-            if ($options['encoding'] === 'base64') {
-                return base64_encode($content);
-            } elseif ($options['encoding'] === 'data-uri') {
-                $mimeType = $this->getMimeType($filename);
-                return 'data:' . $mimeType . ',' . $content;
-            } elseif ($options['encoding'] === 'data-uri-base64') {
-                $mimeType = $this->getMimeType($filename);
-                return 'data:' . $mimeType . ';base64,' . base64_encode($content);
-            } else {
-                throw new \InvalidArgumentException('Unsupported encoding type (' . $options['encoding'] . ')');
+        $content = null;
+        if ($this->hasEventListeners('beforeGetContent')) {
+            $eventDetails = new \BearFramework\App\Assets\BeforeGetContentEventDetails($filename, $options);
+            $this->dispatchEvent('beforeGetContent', $eventDetails);
+            $filename = $eventDetails->filename;
+            $options = $eventDetails->options;
+            if ($eventDetails->returnValue !== null) {
+                $content = $eventDetails->returnValue;
             }
         }
+
+        if ($content === null) {
+            if (!empty($options)) {
+                $this->validateOptions($options);
+            }
+            $prepareOptions = [];
+            if (isset($options['width'])) {
+                $prepareOptions['width'] = $options['width'];
+            }
+            if (isset($options['height'])) {
+                $prepareOptions['height'] = $options['height'];
+            }
+            if (isset($options['outputType'])) {
+                $prepareOptions['outputType'] = $options['outputType'];
+            }
+            if (isset($options['quality'])) {
+                $prepareOptions['quality'] = $options['quality'];
+            }
+
+            $resultFilename = $this->prepare($filename, $prepareOptions);
+            if ($resultFilename !== null && is_file($resultFilename)) {
+                $content = file_get_contents($resultFilename);
+                if (isset($options['encoding'])) {
+                    if ($options['encoding'] === 'base64') {
+                        $content = base64_encode($content);
+                    } elseif ($options['encoding'] === 'data-uri') {
+                        $mimeType = $this->getMimeType($filename);
+                        $content = 'data:' . $mimeType . ',' . $content;
+                    } elseif ($options['encoding'] === 'data-uri-base64') {
+                        $mimeType = $this->getMimeType($filename);
+                        $content = 'data:' . $mimeType . ';base64,' . base64_encode($content);
+                    } else {
+                        throw new \InvalidArgumentException('Unsupported encoding type (' . $options['encoding'] . ')');
+                    }
+                }
+            }
+        }
+
+        if ($this->hasEventListeners('getContent')) {
+            $eventDetails = new \BearFramework\App\Assets\GetContentEventDetails($filename, $options, $content);
+            $this->dispatchEvent('getContent', $eventDetails);
+            $content = $eventDetails->returnValue;
+        }
+
         return $content;
     }
 
