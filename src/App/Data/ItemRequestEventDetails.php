@@ -11,6 +11,7 @@ namespace BearFramework\App\Data;
 
 /**
  * @property string $key
+ * @property string $action
  */
 class ItemRequestEventDetails
 {

@@ -11,6 +11,7 @@ namespace BearFramework\App\Cache;
 
 /**
  * @property string $key
+ * @property string $action
  */
 class ItemChangeEventDetails
 {
