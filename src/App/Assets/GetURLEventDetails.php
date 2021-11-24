@@ -28,19 +28,17 @@ class GetURLEventDetails
     public function __construct(string $filename, array $options, string $url = null)
     {
         $this
-                ->defineProperty('filename', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('options', [
-                    'type' => 'array'
-                ])
-                ->defineProperty('url', [
-                    'type' => '?string'
-                ])
-        ;
+            ->defineProperty('filename', [
+                'type' => 'string'
+            ])
+            ->defineProperty('options', [
+                'type' => 'array'
+            ])
+            ->defineProperty('url', [ // Todo: Rename to returnValue in v2
+                'type' => '?string'
+            ]);
         $this->filename = $filename;
         $this->options = $options;
         $this->url = $url;
     }
-
 }

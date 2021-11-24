@@ -27,18 +27,16 @@ class BeforeGetDetailsEventDetails
     public function __construct(string $filename, array $list)
     {
         $this
-                ->defineProperty('filename', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('list', [
-                    'type' => 'array'
-                ])
-                ->defineProperty('returnValue', [
-                    'type' => '?array'
-                ])
-        ;
+            ->defineProperty('filename', [
+                'type' => 'string'
+            ])
+            ->defineProperty('list', [
+                'type' => 'array'
+            ])
+            ->defineProperty('returnValue', [
+                'type' => '?array'
+            ]);
         $this->filename = $filename;
         $this->list = $list;
     }
-
 }

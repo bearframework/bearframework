@@ -28,19 +28,17 @@ class PrepareEventDetails
     public function __construct(string $filename, array $options, $returnValue)
     {
         $this
-                ->defineProperty('filename', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('options', [
-                    'type' => 'array'
-                ])
-                ->defineProperty('returnValue', [
-                    'type' => '?string'
-                ])
-        ;
+            ->defineProperty('filename', [
+                'type' => 'string'
+            ])
+            ->defineProperty('options', [
+                'type' => 'array'
+            ])
+            ->defineProperty('returnValue', [
+                'type' => '?string'
+            ]);
         $this->filename = $filename;
         $this->options = $options;
         $this->returnValue = $returnValue;
     }
-
 }
