@@ -220,7 +220,7 @@ class DataRepository
                 $this->dispatchEvent('itemSet', new \BearFramework\App\Data\ItemSetEventDetails(clone ($item)));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($item->key));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($item->key, 'set'));
             }
         }
         return $this;
@@ -264,7 +264,7 @@ class DataRepository
                 $this->dispatchEvent('itemSetValue', new \BearFramework\App\Data\ItemSetValueEventDetails($key, $value));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key, 'setValue'));
             }
         }
         return $this;
@@ -311,7 +311,7 @@ class DataRepository
                 $this->dispatchEvent('itemGet', new \BearFramework\App\Data\ItemGetEventDetails($key, $item === null ? null : clone ($item)));
             }
             if ($this->hasEventListeners('itemRequest')) {
-                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key, 'get'));
             }
         }
         return $item;
@@ -358,7 +358,7 @@ class DataRepository
                 $this->dispatchEvent('itemGetValue', new \BearFramework\App\Data\ItemGetValueEventDetails($key, $value));
             }
             if ($this->hasEventListeners('itemRequest')) {
-                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key, 'getValue'));
             }
         }
         return $value;
@@ -405,7 +405,7 @@ class DataRepository
                 $this->dispatchEvent('itemGetValueLength', new \BearFramework\App\Data\ItemGetValueLengthEventDetails($key, $result));
             }
             if ($this->hasEventListeners('itemRequest')) {
-                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key, 'getValueLength'));
             }
         }
         return $result;
@@ -452,7 +452,7 @@ class DataRepository
                 $this->dispatchEvent('itemExists', new \BearFramework\App\Data\ItemExistsEventDetails($key, $result));
             }
             if ($this->hasEventListeners('itemRequest')) {
-                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key, 'exists'));
             }
         }
         return $result;
@@ -496,7 +496,7 @@ class DataRepository
                 $this->dispatchEvent('itemAppend', new \BearFramework\App\Data\ItemAppendEventDetails($key, $content));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key, 'append'));
             }
         }
         return $this;
@@ -543,10 +543,10 @@ class DataRepository
                 $this->dispatchEvent('itemDuplicate', new \BearFramework\App\Data\ItemDuplicateEventDetails($sourceKey, $destinationKey));
             }
             if ($this->hasEventListeners('itemRequest')) {
-                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($sourceKey));
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($sourceKey, 'duplicate'));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey, 'duplicate'));
             }
         }
         return $this;
@@ -593,8 +593,8 @@ class DataRepository
                 $this->dispatchEvent('itemRename', new \BearFramework\App\Data\ItemRenameEventDetails($sourceKey, $destinationKey));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($sourceKey));
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($sourceKey, 'rename'));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($destinationKey, 'rename'));
             }
         }
         return $this;
@@ -637,7 +637,7 @@ class DataRepository
                 $this->dispatchEvent('itemDelete', new \BearFramework\App\Data\ItemDeleteEventDetails($key));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key, 'delete'));
             }
         }
         return $this;
@@ -685,7 +685,7 @@ class DataRepository
                 $this->dispatchEvent('itemSetMetadata', new \BearFramework\App\Data\ItemSetMetadataEventDetails($key, $name, $value));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key, 'setMetadata'));
             }
         }
         return $this;
@@ -736,7 +736,7 @@ class DataRepository
                 $this->dispatchEvent('itemGetMetadata', new \BearFramework\App\Data\ItemGetMetadataEventDetails($key, $name, $value));
             }
             if ($this->hasEventListeners('itemRequest')) {
-                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key));
+                $this->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($key, 'getMetadata'));
             }
         }
         return $value;
@@ -783,7 +783,7 @@ class DataRepository
                 $this->dispatchEvent('itemDeleteMetadata', new \BearFramework\App\Data\ItemDeleteMetadataEventDetails($key, $name));
             }
             if ($this->hasEventListeners('itemChange')) {
-                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key));
+                $this->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($key, 'deleteMetadata'));
             }
         }
         return $this;

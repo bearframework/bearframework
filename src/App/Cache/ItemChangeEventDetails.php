@@ -20,15 +20,18 @@ class ItemChangeEventDetails
     /**
      * 
      * @param string $key
+     * @param string $action
      */
-    public function __construct(string $key)
+    public function __construct(string $key, string $action)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('action', [
+                'type' => 'string'
+            ]);
         $this->key = $key;
+        $this->action = $action;
     }
-
 }

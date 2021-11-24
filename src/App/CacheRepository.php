@@ -105,7 +105,7 @@ class CacheRepository
         if ($this->newCacheItemCache === null) {
             $this->newCacheItemCache = new CacheItem();
         }
-        $object = clone($this->newCacheItemCache);
+        $object = clone ($this->newCacheItemCache);
         if ($key !== null) {
             $object->key = $key;
         }
@@ -126,10 +126,10 @@ class CacheRepository
         $driver = $this->getDriver();
         $driver->set($item->key, $item->value, $item->ttl);
         if ($this->hasEventListeners('itemSet')) {
-            $this->dispatchEvent('itemSet', new \BearFramework\App\Cache\ItemSetEventDetails(clone($item)));
+            $this->dispatchEvent('itemSet', new \BearFramework\App\Cache\ItemSetEventDetails(clone ($item)));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEventDetails($item->key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEventDetails($item->key, 'set'));
         }
         return $this;
     }
@@ -149,10 +149,10 @@ class CacheRepository
             $item = $this->make($key, $value);
         }
         if ($this->hasEventListeners('itemGet')) {
-            $this->dispatchEvent('itemGet', new \BearFramework\App\Cache\ItemGetEventDetails($key, $item === null ? null : clone($item)));
+            $this->dispatchEvent('itemGet', new \BearFramework\App\Cache\ItemGetEventDetails($key, $item === null ? null : clone ($item)));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key, 'get'));
         }
         return $item;
     }
@@ -171,7 +171,7 @@ class CacheRepository
             $this->dispatchEvent('itemGetValue', new \BearFramework\App\Cache\ItemGetValueEventDetails($key, $value));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key, 'getValue'));
         }
         return $value;
     }
@@ -190,7 +190,7 @@ class CacheRepository
             $this->dispatchEvent('itemExists', new \BearFramework\App\Cache\ItemExistsEventDetails($key, $exists));
         }
         if ($this->hasEventListeners('itemRequest')) {
-            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key));
+            $this->dispatchEvent('itemRequest', new \BearFramework\App\Cache\ItemRequestEventDetails($key, 'exists'));
         }
         return $exists;
     }
@@ -209,7 +209,7 @@ class CacheRepository
             $this->dispatchEvent('itemDelete', new \BearFramework\App\Cache\ItemDeleteEventDetails($key));
         }
         if ($this->hasEventListeners('itemChange')) {
-            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEventDetails($key));
+            $this->dispatchEvent('itemChange', new \BearFramework\App\Cache\ItemChangeEventDetails($key, 'delete'));
         }
         return $this;
     }
@@ -228,5 +228,4 @@ class CacheRepository
         }
         return $this;
     }
-
 }

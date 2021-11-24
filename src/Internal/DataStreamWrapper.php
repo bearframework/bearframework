@@ -160,10 +160,10 @@ class DataStreamWrapper
             $dataRepository->dispatchEvent('itemGetValue', new \BearFramework\App\Data\ItemGetValueEventDetails($this->key, $value));
         }
         if (($hasItemSetValueListeners || $hasItemAppendListeners) && $dataRepository->hasEventListeners('itemChange')) {
-            $dataRepository->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($this->key));
+            $dataRepository->dispatchEvent('itemChange', new \BearFramework\App\Data\ItemChangeEventDetails($this->key, $hasItemSetValueListeners ? 'setValue' : 'append'));
         }
         if ($hasItemGetValueListeners && $dataRepository->hasEventListeners('itemRequest')) {
-            $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($this->key));
+            $dataRepository->dispatchEvent('itemRequest', new \BearFramework\App\Data\ItemRequestEventDetails($this->key, 'getValue'));
         }
     }
 
