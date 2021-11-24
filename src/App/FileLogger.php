@@ -56,5 +56,4 @@ class FileLogger implements ILogger
             throw new \Exception('Cannot write log file (' . $filename . ')');
         }
     }
-
 }

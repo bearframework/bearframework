@@ -85,5 +85,4 @@ class Assets
     {
         return $this->appAssets->getDetails($this->dir . '/' . $filename, $list);
     }
-
 }

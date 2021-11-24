@@ -25,15 +25,13 @@ class ItemGetEventDetails
     public function __construct(string $key, $item)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('item', [
-                    'type' => '?' . \BearFramework\App\DataItem::class
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('item', [
+                'type' => '?' . \BearFramework\App\DataItem::class
+            ]);
         $this->key = $key;
         $this->item = $item;
     }
-
 }

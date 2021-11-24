@@ -24,14 +24,12 @@ class CacheItem
     public function __construct()
     {
         $this
-                ->defineProperty('key', [
-                    'type' => '?string'
-                ])
-                ->defineProperty('value')
-                ->defineProperty('ttl', [
-                    'type' => '?int'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => '?string'
+            ])
+            ->defineProperty('value')
+            ->defineProperty('ttl', [
+                'type' => '?int'
+            ]);
     }
-
 }

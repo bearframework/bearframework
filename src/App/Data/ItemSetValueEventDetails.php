@@ -26,15 +26,13 @@ class ItemSetValueEventDetails
     public function __construct(string $key, string $value)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('value', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('value', [
+                'type' => 'string'
+            ]);
         $this->key = $key;
         $this->value = $value;
     }
-
 }

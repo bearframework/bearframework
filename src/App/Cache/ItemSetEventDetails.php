@@ -24,11 +24,9 @@ class ItemSetEventDetails
     public function __construct(\BearFramework\App\CacheItem $item)
     {
         $this
-                ->defineProperty('item', [
-                    'type' => \BearFramework\App\CacheItem::class
-                ])
-        ;
+            ->defineProperty('item', [
+                'type' => \BearFramework\App\CacheItem::class
+            ]);
         $this->item = $item;
     }
-
 }

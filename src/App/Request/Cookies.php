@@ -37,7 +37,7 @@ class Cookies
         if ($this->newCookieCache === null) {
             $this->newCookieCache = new \BearFramework\App\Request\Cookie();
         }
-        $object = clone($this->newCookieCache);
+        $object = clone ($this->newCookieCache);
         if ($name !== null) {
             $object->name = $name;
         }
@@ -68,7 +68,7 @@ class Cookies
     public function get(string $name): ?\BearFramework\App\Request\Cookie
     {
         if (isset($this->data[$name])) {
-            return clone($this->data[$name]);
+            return clone ($this->data[$name]);
         }
         return null;
     }
@@ -121,9 +121,8 @@ class Cookies
     {
         $list = new \BearFramework\DataList();
         foreach ($this->data as $cookie) {
-            $list[] = clone($cookie);
+            $list[] = clone ($cookie);
         }
         return $list;
     }
-
 }

@@ -26,5 +26,4 @@ class TemporaryUnavailable extends \BearFramework\App\Response
         $this->charset = 'UTF-8';
         $this->headers->set($this->headers->make('Content-Type', 'text/plain'));
     }
-
 }

@@ -110,7 +110,7 @@ class Routes
             }
         }
         if ($request->method === 'HEAD') {
-            $getRequest = clone($request);
+            $getRequest = clone ($request);
             $getRequest->method = 'GET';
             $response = $this->getResponse($getRequest);
             if ($response instanceof App\Response) {
@@ -120,5 +120,4 @@ class Routes
         }
         return null;
     }
-
 }

@@ -25,7 +25,5 @@ class NullLogger implements ILogger
      */
     public function log(string $name, string $message, array $data = []): void
     {
-        
     }
-
 }

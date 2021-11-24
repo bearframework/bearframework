@@ -37,7 +37,7 @@ class Query
         if ($this->newQueryItemCache === null) {
             $this->newQueryItemCache = new \BearFramework\App\Request\QueryItem();
         }
-        $object = clone($this->newQueryItemCache);
+        $object = clone ($this->newQueryItemCache);
         if ($name !== null) {
             $object->name = $name;
         }
@@ -68,7 +68,7 @@ class Query
     public function get(string $name): ?\BearFramework\App\Request\QueryItem
     {
         if (isset($this->data[$name])) {
-            return clone($this->data[$name]);
+            return clone ($this->data[$name]);
         }
         return null;
     }
@@ -121,7 +121,7 @@ class Query
     {
         $list = new \BearFramework\DataList();
         foreach ($this->data as $queryItem) {
-            $list[] = clone($queryItem);
+            $list[] = clone ($queryItem);
         }
         return $list;
     }
@@ -149,5 +149,4 @@ class Query
         }
         return http_build_query($temp);
     }
-
 }

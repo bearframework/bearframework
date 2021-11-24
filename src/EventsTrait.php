@@ -76,7 +76,7 @@ trait EventsTrait
         if (isset($this->internalEventListenersData[$name])) {
             $canceled = false;
             $cancelable = isset($options['cancelable']) && $options['cancelable'] === true;
-            $dispatcher = new class (
+            $dispatcher = new class(
                 function () use (&$canceled, $cancelable, $name) {
                     if (!$cancelable) {
                         throw new \Exception('This event "' . $name . '" cannot be canceled!');

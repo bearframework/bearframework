@@ -26,16 +26,14 @@ class DataItem
     public function __construct()
     {
         $this
-                ->defineProperty('key', [
-                    'type' => '?string'
-                ])
-                ->defineProperty('value', [
-                    'type' => '?string'
-                ])
-                ->defineProperty('metadata', [
-                    'type' => '\BearFramework\DataObject'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => '?string'
+            ])
+            ->defineProperty('value', [
+                'type' => '?string'
+            ])
+            ->defineProperty('metadata', [
+                'type' => '\BearFramework\DataObject'
+            ]);
     }
-
 }

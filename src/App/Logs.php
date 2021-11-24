@@ -94,5 +94,4 @@ class Logs
         $logger->log($name, $message, $data);
         return $this;
     }
-
 }

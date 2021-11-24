@@ -26,15 +26,13 @@ class ItemAppendEventDetails
     public function __construct(string $key, string $content)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('content', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('content', [
+                'type' => 'string'
+            ]);
         $this->key = $key;
         $this->content = $content;
     }
-
 }

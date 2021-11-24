@@ -26,15 +26,13 @@ class ItemDeleteMetadataEventDetails
     public function __construct(string $key, string $name)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('name', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('name', [
+                'type' => 'string'
+            ]);
         $this->key = $key;
         $this->name = $name;
     }
-
 }

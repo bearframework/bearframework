@@ -50,5 +50,4 @@ class Classes
         $this->appClasses->add($class, $this->dir . '/' . $filename);
         return $this;
     }
-
 }

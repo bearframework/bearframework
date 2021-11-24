@@ -25,7 +25,6 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function set(string $key, $value, int $ttl = null): void
     {
-        
     }
 
     /**
@@ -48,7 +47,6 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function delete(string $key): void
     {
-        
     }
 
     /**
@@ -60,7 +58,6 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function setMultiple(array $items, int $ttl = null): void
     {
-        
     }
 
     /**
@@ -81,7 +78,6 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function deleteMultiple(array $keys): void
     {
-        
     }
 
     /**
@@ -89,7 +85,5 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      */
     public function clear(): void
     {
-        
     }
-
 }

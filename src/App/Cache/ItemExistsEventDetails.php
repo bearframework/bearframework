@@ -25,18 +25,16 @@ class ItemExistsEventDetails
     public function __construct(string $key, bool $exists)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('exists', [
-                    'type' => 'bool',
-                    'init' => function () {
-                        return false;
-                    }
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('exists', [
+                'type' => 'bool',
+                'init' => function () {
+                    return false;
+                }
+            ]);
         $this->key = $key;
         $this->exists = $exists;
     }
-
 }

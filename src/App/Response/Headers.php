@@ -37,7 +37,7 @@ class Headers
         if ($this->newHeaderCache === null) {
             $this->newHeaderCache = new \BearFramework\App\Response\Header();
         }
-        $object = clone($this->newHeaderCache);
+        $object = clone ($this->newHeaderCache);
         if ($name !== null) {
             $object->name = $name;
         }
@@ -68,7 +68,7 @@ class Headers
     public function get(string $name): ?\BearFramework\App\Response\Header
     {
         if (isset($this->data[$name])) {
-            return clone($this->data[$name]);
+            return clone ($this->data[$name]);
         }
         return null;
     }
@@ -121,9 +121,8 @@ class Headers
     {
         $list = new \BearFramework\DataList();
         foreach ($this->data as $header) {
-            $list[] = clone($header);
+            $list[] = clone ($header);
         }
         return $list;
     }
-
 }

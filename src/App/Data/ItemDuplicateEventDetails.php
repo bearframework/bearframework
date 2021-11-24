@@ -26,15 +26,13 @@ class ItemDuplicateEventDetails
     public function __construct(string $sourceKey, string $destinationKey)
     {
         $this
-                ->defineProperty('sourceKey', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('destinationKey', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('sourceKey', [
+                'type' => 'string'
+            ])
+            ->defineProperty('destinationKey', [
+                'type' => 'string'
+            ]);
         $this->sourceKey = $sourceKey;
         $this->destinationKey = $destinationKey;
     }
-
 }

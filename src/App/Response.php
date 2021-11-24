@@ -34,34 +34,32 @@ class Response
         $this->content = $content;
 
         $this
-                ->defineProperty('content', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('statusCode', [
-                    'type' => '?int',
-                    'init' => function() {
-                        return 200;
-                    },
-                    'unset' => function() {
-                        return null;
-                    }
-                ])
-                ->defineProperty('charset', [
-                    'type' => '?string'
-                ])
-                ->defineProperty('headers', [
-                    'init' => function() {
-                        return new App\Response\Headers();
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('cookies', [
-                    'init' => function() {
-                        return new App\Response\Cookies();
-                    },
-                    'readonly' => true
-                ])
-        ;
+            ->defineProperty('content', [
+                'type' => 'string'
+            ])
+            ->defineProperty('statusCode', [
+                'type' => '?int',
+                'init' => function () {
+                    return 200;
+                },
+                'unset' => function () {
+                    return null;
+                }
+            ])
+            ->defineProperty('charset', [
+                'type' => '?string'
+            ])
+            ->defineProperty('headers', [
+                'init' => function () {
+                    return new App\Response\Headers();
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('cookies', [
+                'init' => function () {
+                    return new App\Response\Cookies();
+                },
+                'readonly' => true
+            ]);
     }
-
 }

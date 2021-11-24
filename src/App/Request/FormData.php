@@ -37,7 +37,7 @@ class FormData
         if ($this->newFormDataItemCache === null) {
             $this->newFormDataItemCache = new \BearFramework\App\Request\FormDataItem();
         }
-        $object = clone($this->newFormDataItemCache);
+        $object = clone ($this->newFormDataItemCache);
         if ($name !== null) {
             $object->name = $name;
         }
@@ -68,7 +68,7 @@ class FormData
     public function get(string $name): ?\BearFramework\App\Request\FormDataItem
     {
         if (isset($this->data[$name])) {
-            return clone($this->data[$name]);
+            return clone ($this->data[$name]);
         }
         return null;
     }
@@ -135,9 +135,8 @@ class FormData
     {
         $list = new \BearFramework\DataList();
         foreach ($this->data as $formDataItem) {
-            $list[] = clone($formDataItem);
+            $list[] = clone ($formDataItem);
         }
         return $list;
     }
-
 }

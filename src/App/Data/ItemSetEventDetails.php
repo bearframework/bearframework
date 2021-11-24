@@ -24,11 +24,9 @@ class ItemSetEventDetails
     public function __construct(\BearFramework\App\DataItem $item)
     {
         $this
-                ->defineProperty('item', [
-                    'type' => \BearFramework\App\DataItem::class
-                ])
-        ;
+            ->defineProperty('item', [
+                'type' => \BearFramework\App\DataItem::class
+            ]);
         $this->item = $item;
     }
-
 }

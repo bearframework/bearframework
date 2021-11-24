@@ -25,13 +25,11 @@ class ItemGetValueEventDetails
     public function __construct(string $key, $value)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-                ->defineProperty('value')
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ])
+            ->defineProperty('value');
         $this->key = $key;
         $this->value = $value;
     }
-
 }

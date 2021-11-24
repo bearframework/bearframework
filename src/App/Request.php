@@ -37,58 +37,57 @@ class Request
     public function __construct(bool $initializeFromEnvironment = false)
     {
 
-        $updateBase = function($name, $value) {
+        $updateBase = function ($name, $value) {
             $data = parse_url($this->base);
             $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
         };
 
         $this
-                ->defineProperty('method', [
-                    'type' => '?string'
-                ])
-                ->defineProperty('base', [
-                    'type' => '?string'
-                ])
-                ->defineProperty('scheme', [
-                    'type' => '?string',
-                    'get' => function() {
-                        $data = parse_url($this->base);
-                        return isset($data['scheme']) ? $data['scheme'] : null;
-                    },
-                    'set' => function($value) use (&$updateBase) {
-                        $updateBase('scheme', $value);
-                    },
-                    'unset' => function() use (&$updateBase) {
-                        $updateBase('scheme', '');
-                    }
-                ])
-                ->defineProperty('host', [
-                    'type' => '?string',
-                    'get' => function() {
-                        $data = parse_url($this->base);
-                        return isset($data['host']) ? $data['host'] : null;
-                    },
-                    'set' => function($value) use (&$updateBase) {
-                        $updateBase('host', $value);
-                    },
-                    'unset' => function() use (&$updateBase) {
-                        $updateBase('host', '');
-                    }
-                ])
-                ->defineProperty('port', [
-                    'type' => '?int',
-                    'get' => function() {
-                        $data = parse_url($this->base);
-                        return isset($data['port']) ? $data['port'] : null;
-                    },
-                    'set' => function($value) use (&$updateBase) {
-                        $updateBase('port', $value);
-                    },
-                    'unset' => function() use (&$updateBase) {
-                        $updateBase('port', '');
-                    }
-                ])
-        ;
+            ->defineProperty('method', [
+                'type' => '?string'
+            ])
+            ->defineProperty('base', [
+                'type' => '?string'
+            ])
+            ->defineProperty('scheme', [
+                'type' => '?string',
+                'get' => function () {
+                    $data = parse_url($this->base);
+                    return isset($data['scheme']) ? $data['scheme'] : null;
+                },
+                'set' => function ($value) use (&$updateBase) {
+                    $updateBase('scheme', $value);
+                },
+                'unset' => function () use (&$updateBase) {
+                    $updateBase('scheme', '');
+                }
+            ])
+            ->defineProperty('host', [
+                'type' => '?string',
+                'get' => function () {
+                    $data = parse_url($this->base);
+                    return isset($data['host']) ? $data['host'] : null;
+                },
+                'set' => function ($value) use (&$updateBase) {
+                    $updateBase('host', $value);
+                },
+                'unset' => function () use (&$updateBase) {
+                    $updateBase('host', '');
+                }
+            ])
+            ->defineProperty('port', [
+                'type' => '?int',
+                'get' => function () {
+                    $data = parse_url($this->base);
+                    return isset($data['port']) ? $data['port'] : null;
+                },
+                'set' => function ($value) use (&$updateBase) {
+                    $updateBase('port', $value);
+                },
+                'unset' => function () use (&$updateBase) {
+                    $updateBase('port', '');
+                }
+            ]);
 
         $path = '';
         if ($initializeFromEnvironment && isset($_SERVER)) {
@@ -128,107 +127,106 @@ class Request
         }
 
         $this
-                ->defineProperty('path', [
-                    'init' => function() use ($path) {
-                        return new App\Request\Path(isset($path[0]) ? rawurldecode($path) : '/');
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('query', [
-                    'init' => function() use ($initializeFromEnvironment) {
-                        $query = new App\Request\Query();
-                        if ($initializeFromEnvironment && isset($_GET)) {
-                            $walkVariables = function($variables, $parent = null) use (&$query, &$walkVariables) {
-                                        foreach ($variables as $name => $value) {
-                                            if (is_array($value)) {
-                                                $walkVariables($value, $name);
-                                                continue;
-                                            }
-                                            $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
-                                        }
-                                    };
-                            $walkVariables($_GET);
-                        }
-                        return $query;
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('headers', [
-                    'init' => function() use ($initializeFromEnvironment) {
-                        $headers = new App\Request\Headers();
-                        if ($initializeFromEnvironment && isset($_SERVER)) {
-                            foreach ($_SERVER as $name => $value) {
-                                if (substr($name, 0, 5) === 'HTTP_') {
-                                    $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
+            ->defineProperty('path', [
+                'init' => function () use ($path) {
+                    return new App\Request\Path(isset($path[0]) ? rawurldecode($path) : '/');
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('query', [
+                'init' => function () use ($initializeFromEnvironment) {
+                    $query = new App\Request\Query();
+                    if ($initializeFromEnvironment && isset($_GET)) {
+                        $walkVariables = function ($variables, $parent = null) use (&$query, &$walkVariables) {
+                            foreach ($variables as $name => $value) {
+                                if (is_array($value)) {
+                                    $walkVariables($value, $name);
+                                    continue;
                                 }
+                                $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                            }
+                        };
+                        $walkVariables($_GET);
+                    }
+                    return $query;
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('headers', [
+                'init' => function () use ($initializeFromEnvironment) {
+                    $headers = new App\Request\Headers();
+                    if ($initializeFromEnvironment && isset($_SERVER)) {
+                        foreach ($_SERVER as $name => $value) {
+                            if (substr($name, 0, 5) === 'HTTP_') {
+                                $headers->set($headers->make(str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))), $value));
                             }
                         }
-                        return $headers;
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('cookies', [
-                    'init' => function() use ($initializeFromEnvironment) {
-                        $cookies = new App\Request\Cookies();
-                        if ($initializeFromEnvironment && isset($_COOKIE)) {
-                            $stringifyKeys = function($rawCookies, $level = 0) use (&$stringifyKeys) {
-                                        $result = [];
-                                        foreach ($rawCookies as $name => $value) {
-                                            $name = (string) $name;
-                                            if (is_array($value)) {
-                                                $temp = $stringifyKeys($value, $level + 1);
-                                                foreach ($temp as $subKey => $subValue) {
-                                                    $result[($level === 0 ? $name : '[' . $name . ']') . $subKey] = $subValue;
-                                                }
-                                            } else {
-                                                $result[($level === 0 ? $name : '[' . $name . ']')] = (string) $value;
-                                            }
-                                        }
-                                        return $result;
-                                    };
-                            $stringifiedCookies = $stringifyKeys($_COOKIE);
-                            foreach ($stringifiedCookies as $name => $value) {
-                                $cookies->set($cookies->make((string) $name, (string) $value));
-                            }
-                        }
-                        return $cookies;
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('formData', [
-                    'init' => function() use ($initializeFromEnvironment) {
-                        $data = new App\Request\FormData();
-                        if ($initializeFromEnvironment && isset($_POST, $_FILES)) {
-                            $walkVariables = function($variables, $parent = null) use (&$data, &$walkVariables) {
-                                        foreach ($variables as $name => $value) {
-                                            if (is_array($value)) {
-                                                $walkVariables($value, $name);
-                                                continue;
-                                            }
-                                            $data->set($data->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
-                                        }
-                                    };
-                            $walkVariables($_POST);
-                            foreach ($_FILES as $name => $value) {
-                                if (is_uploaded_file($value['tmp_name'])) {
-                                    if ($value['error'] !== UPLOAD_ERR_OK) {
-                                        throw new \Exception('File upload error (' . $value['error'] . ')');
+                    }
+                    return $headers;
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('cookies', [
+                'init' => function () use ($initializeFromEnvironment) {
+                    $cookies = new App\Request\Cookies();
+                    if ($initializeFromEnvironment && isset($_COOKIE)) {
+                        $stringifyKeys = function ($rawCookies, $level = 0) use (&$stringifyKeys) {
+                            $result = [];
+                            foreach ($rawCookies as $name => $value) {
+                                $name = (string) $name;
+                                if (is_array($value)) {
+                                    $temp = $stringifyKeys($value, $level + 1);
+                                    foreach ($temp as $subKey => $subValue) {
+                                        $result[($level === 0 ? $name : '[' . $name . ']') . $subKey] = $subValue;
                                     }
-                                    $file = new \BearFramework\App\Request\FormDataFileItem();
-                                    $file->name = $name;
-                                    $file->value = $value['name'];
-                                    $file->filename = $value['tmp_name'];
-                                    $file->size = $value['size'];
-                                    $file->type = $value['type'];
-                                    $data->set($file);
+                                } else {
+                                    $result[($level === 0 ? $name : '[' . $name . ']')] = (string) $value;
                                 }
                             }
+                            return $result;
+                        };
+                        $stringifiedCookies = $stringifyKeys($_COOKIE);
+                        foreach ($stringifiedCookies as $name => $value) {
+                            $cookies->set($cookies->make((string) $name, (string) $value));
                         }
-                        return $data;
-                    },
-                    'readonly' => true
-                ])
-        ;
+                    }
+                    return $cookies;
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('formData', [
+                'init' => function () use ($initializeFromEnvironment) {
+                    $data = new App\Request\FormData();
+                    if ($initializeFromEnvironment && isset($_POST, $_FILES)) {
+                        $walkVariables = function ($variables, $parent = null) use (&$data, &$walkVariables) {
+                            foreach ($variables as $name => $value) {
+                                if (is_array($value)) {
+                                    $walkVariables($value, $name);
+                                    continue;
+                                }
+                                $data->set($data->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
+                            }
+                        };
+                        $walkVariables($_POST);
+                        foreach ($_FILES as $name => $value) {
+                            if (is_uploaded_file($value['tmp_name'])) {
+                                if ($value['error'] !== UPLOAD_ERR_OK) {
+                                    throw new \Exception('File upload error (' . $value['error'] . ')');
+                                }
+                                $file = new \BearFramework\App\Request\FormDataFileItem();
+                                $file->name = $name;
+                                $file->value = $value['name'];
+                                $file->filename = $value['tmp_name'];
+                                $file->size = $value['size'];
+                                $file->type = $value['type'];
+                                $data->set($file);
+                            }
+                        }
+                    }
+                    return $data;
+                },
+                'readonly' => true
+            ]);
     }
 
     /**
@@ -248,5 +246,4 @@ class Request
         }
         return null;
     }
-
 }

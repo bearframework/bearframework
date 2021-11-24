@@ -24,11 +24,9 @@ class BeforeSendResponseEventDetails
     public function __construct(\BearFramework\App\Response $response)
     {
         $this
-                ->defineProperty('response', [
-                    'type' => \BearFramework\App\Response::class
-                ])
-        ;
+            ->defineProperty('response', [
+                'type' => \BearFramework\App\Response::class
+            ]);
         $this->response = $response;
     }
-
 }

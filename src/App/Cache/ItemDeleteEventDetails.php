@@ -24,11 +24,9 @@ class ItemDeleteEventDetails
     public function __construct(string $key)
     {
         $this
-                ->defineProperty('key', [
-                    'type' => 'string'
-                ])
-        ;
+            ->defineProperty('key', [
+                'type' => 'string'
+            ]);
         $this->key = $key;
     }
-
 }

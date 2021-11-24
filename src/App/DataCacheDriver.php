@@ -75,7 +75,6 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
                 }
                 return $value[1];
             } catch (\Exception $e) {
-                
             }
         }
         return null;
@@ -140,10 +139,9 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
     public function clear(): void
     {
         $list = $this->dataRepository->getList()
-                ->filterBy('key', $this->keyPrefix, 'startWith');
+            ->filterBy('key', $this->keyPrefix, 'startWith');
         foreach ($list as $item) {
             $this->dataRepository->delete($item->key);
         };
     }
-
 }

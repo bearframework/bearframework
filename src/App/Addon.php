@@ -28,21 +28,19 @@ class Addon
     public function __construct(string $id, string $dir)
     {
         $this
-                ->defineProperty('id', [
-                    'type' => 'string',
-                    'get' => function() use ($id) {
-                        return $id;
-                    },
-                    'readonly' => true
-                ])
-                ->defineProperty('dir', [
-                    'type' => 'string',
-                    'get' => function() use ($dir) {
-                        return $dir;
-                    },
-                    'readonly' => true
-                ])
-        ;
+            ->defineProperty('id', [
+                'type' => 'string',
+                'get' => function () use ($id) {
+                    return $id;
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('dir', [
+                'type' => 'string',
+                'get' => function () use ($dir) {
+                    return $dir;
+                },
+                'readonly' => true
+            ]);
     }
-
 }

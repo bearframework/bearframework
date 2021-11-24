@@ -44,5 +44,4 @@ class Shortcuts
         call_user_func($this->addCallback, $name, $callback);
         return $this;
     }
-
 }
