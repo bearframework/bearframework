@@ -23,7 +23,6 @@
         "ivopetkov/data-object": "1.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "7.*|8.*|9.*",
         "ivopetkov/docs-generator": "0.2.*"
     },
     "autoload": {
