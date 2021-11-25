@@ -91,35 +91,35 @@ class CacheTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->cache->addEventListener('itemChange', function(\BearFramework\App\Cache\ItemChangeEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['change', $details->key];
+        $app->cache->addEventListener('itemChange', function (\BearFramework\App\Cache\ItemChangeEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['change', $details->key, $details->action];
         });
 
-        $app->cache->addEventListener('itemRequest', function(\BearFramework\App\Cache\ItemRequestEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['request', $details->key];
+        $app->cache->addEventListener('itemRequest', function (\BearFramework\App\Cache\ItemRequestEventDetails $details) use (&$eventsLogs) {
+            $eventsLogs[] = ['request', $details->key, $details->action];
         });
 
-        $app->cache->addEventListener('itemSet', function(\BearFramework\App\Cache\ItemSetEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemSet', function (\BearFramework\App\Cache\ItemSetEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['set', $details->item->key, $details->item->value];
         });
 
-        $app->cache->addEventListener('itemGet', function(\BearFramework\App\Cache\ItemGetEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemGet', function (\BearFramework\App\Cache\ItemGetEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['get', $details->item->key, $details->item->value];
         });
 
-        $app->cache->addEventListener('itemGetValue', function(\BearFramework\App\Cache\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemGetValue', function (\BearFramework\App\Cache\ItemGetValueEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->cache->addEventListener('itemExists', function(\BearFramework\App\Cache\ItemExistsEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemExists', function (\BearFramework\App\Cache\ItemExistsEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->cache->addEventListener('itemDelete', function(\BearFramework\App\Cache\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemDelete', function (\BearFramework\App\Cache\ItemDeleteEventDetails $details) use (&$eventsLogs) {
             $eventsLogs[] = ['delete', $details->key];
         });
 
-        $app->cache->addEventListener('clear', function() use (&$eventsLogs) {
+        $app->cache->addEventListener('clear', function () use (&$eventsLogs) {
             $eventsLogs[] = ['clear'];
         });
 
@@ -127,35 +127,35 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->set($app->cache->make('key1', 'data1'));
         $this->assertEquals($eventsLogs, [
             ['set', 'key1', 'data1'],
-            ['change', 'key1']
+            ['change', 'key1', 'set']
         ]);
 
         $eventsLogs = [];
         $app->cache->get('key1');
         $this->assertEquals($eventsLogs, [
             ['get', 'key1', 'data1'],
-            ['request', 'key1']
+            ['request', 'key1', 'get']
         ]);
 
         $eventsLogs = [];
         $app->cache->getValue('key1');
         $this->assertEquals($eventsLogs, [
             ['getValue', 'key1', 'data1'],
-            ['request', 'key1']
+            ['request', 'key1', 'getValue']
         ]);
 
         $eventsLogs = [];
         $app->cache->exists('key1');
         $this->assertEquals($eventsLogs, [
             ['exists', 'key1', true],
-            ['request', 'key1']
+            ['request', 'key1', 'exists']
         ]);
 
         $eventsLogs = [];
         $app->cache->delete('key1');
         $this->assertEquals($eventsLogs, [
             ['delete', 'key1'],
-            ['change', 'key1'],
+            ['change', 'key1', 'delete'],
         ]);
 
         $eventsLogs = [];
@@ -175,5 +175,4 @@ class CacheTest extends BearFrameworkTestCase
         $app->cache->set($app->cache->make('key1', 'value1'));
         $this->assertTrue(true);
     }
-
 }

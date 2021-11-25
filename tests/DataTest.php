@@ -13,6 +13,21 @@
 class DataTest extends BearFrameworkTestCase
 {
 
+
+    /**
+     *
+     */
+    static $dataAccessLog = [];
+
+    /**
+     * 
+     * @return void
+     */
+    static function logDataAccess()
+    {
+        self::$dataAccessLog[] = func_get_args();
+    }
+
     /**
      * 
      */
@@ -242,11 +257,11 @@ class DataTest extends BearFrameworkTestCase
         $preventCompleteEvents = false;
 
         $app->data->addEventListener('itemChange', function (\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['change', $details->key];
+            $eventsLogs[] = ['change', $details->key, $details->action];
         });
 
         $app->data->addEventListener('itemRequest', function (\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['request', $details->key];
+            $eventsLogs[] = ['request', $details->key, $details->action];
         });
 
         $app->data->addEventListener('itemBeforeSet', function (\BearFramework\App\Data\ItemBeforeSetEventDetails $details, $dispatcher) use (&$eventsLogs, &$modifyBeforeEvent, &$preventCompleteEvents) {
@@ -487,7 +502,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeSet', 'key1', 'data1', []],
             ['set', 'key1', 'data1', []],
-            ['change', 'key1']
+            ['change', 'key1', 'set']
         ]);
         $app->data->delete('key1');
 
@@ -498,7 +513,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeSet', 'key1', 'data1', []],
             ['set', 'key1', 'data1', []],
-            ['change', 'key1']
+            ['change', 'key1', 'set']
         ]);
         $this->assertNull($app->data->get('key1'));
         $app->data->delete('key1');
@@ -521,7 +536,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeSetMetadata', 'key1', 'name1', 'mdata1'],
             ['setMetadata', 'key1', 'name1', 'mdata1'],
-            ['change', 'key1']
+            ['change', 'key1', 'setMetadata']
         ]);
         $app->data->delete('key1');
 
@@ -533,7 +548,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeSetMetadata', 'key1', 'name1', 'mdata1'],
             ['setMetadata', 'key1', 'name1', 'mdata1'],
-            ['change', 'key1']
+            ['change', 'key1', 'setMetadata']
         ]);
         $a = $app->data->getMetadata('key1', 'name2');
         $this->assertEquals($app->data->getMetadata('key1', 'name1'), ''); // $this->assertNull when Object Storage fixed
@@ -558,7 +573,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGetMetadata', 'key1', 'name1'],
             ['getMetadata', 'key1', 'name1', 'mdata1'],
-            ['request', 'key1']
+            ['request', 'key1', 'getMetadata']
         ]);
         $app->data->delete('key1');
 
@@ -571,7 +586,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGetMetadata', 'key1', 'name1'],
             ['getMetadata', 'key1', 'name1', 'changed1'],
-            ['request', 'key1']
+            ['request', 'key1', 'getMetadata']
         ]);
         $app->data->delete('key1');
 
@@ -595,7 +610,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeDeleteMetadata', 'key1', 'name1'],
             ['deleteMetadata', 'key1', 'name1'],
-            ['change', 'key1']
+            ['change', 'key1', 'deleteMetadata']
         ]);
         $app->data->delete('key1');
 
@@ -608,7 +623,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeDeleteMetadata', 'key1', 'name1'],
             ['deleteMetadata', 'key1', 'name1'],
-            ['change', 'key1']
+            ['change', 'key1', 'deleteMetadata']
         ]);
         $this->assertEquals($app->data->getMetadata('key1', 'name1'), 'mdata1');
         $app->data->delete('key1');
@@ -631,7 +646,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeSetValue', 'key1', 'data2'],
             ['setValue', 'key1', 'data2'],
-            ['change', 'key1']
+            ['change', 'key1', 'setValue']
         ]);
         $app->data->delete('key1');
 
@@ -642,7 +657,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeSetValue', 'key1', 'data2'],
             ['setValue', 'key1', 'data2'],
-            ['change', 'key1']
+            ['change', 'key1', 'setValue']
         ]);
         $this->assertNull($app->data->getValue('key1'));
         $app->data->delete('key1');
@@ -664,7 +679,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGet', 'key1'],
             ['get', 'key1', 'data2', []],
-            ['request', 'key1']
+            ['request', 'key1', 'get']
         ]);
         $app->data->delete('key1');
 
@@ -678,7 +693,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGet', 'key1'],
             ['get', 'key1', 'changed1', []],
-            ['request', 'key1']
+            ['request', 'key1', 'get']
         ]);
         $app->data->delete('key1');
 
@@ -700,7 +715,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGetValue', 'key1'],
             ['getValue', 'key1', 'data2'],
-            ['request', 'key1']
+            ['request', 'key1', 'getValue']
         ]);
         $app->data->delete('key1');
 
@@ -712,7 +727,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGetValue', 'key1'],
             ['getValue', 'key1', 'changed1'],
-            ['request', 'key1']
+            ['request', 'key1', 'getValue']
         ]);
         $app->data->delete('key1');
 
@@ -734,7 +749,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGetValueLength', 'key1'],
             ['getValueLength', 'key1', 5],
-            ['request', 'key1']
+            ['request', 'key1', 'getValueLength']
         ]);
         $app->data->delete('key1');
 
@@ -746,7 +761,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeGetValueLength', 'key1'],
             ['getValueLength', 'key1', 999],
-            ['request', 'key1']
+            ['request', 'key1', 'getValueLength']
         ]);
         $app->data->delete('key1');
 
@@ -767,7 +782,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeAppend', 'key1', 'data3'],
             ['append', 'key1', 'data3'],
-            ['change', 'key1']
+            ['change', 'key1', 'append']
         ]);
         $app->data->delete('key1');
 
@@ -778,7 +793,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeAppend', 'key1', 'data3'],
             ['append', 'key1', 'data3'],
-            ['change', 'key1']
+            ['change', 'key1', 'append']
         ]);
         $this->assertNull($app->data->getValue('key1'));
         $app->data->delete('key1');
@@ -800,7 +815,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeExists', 'key1'],
             ['exists', 'key1', true],
-            ['request', 'key1']
+            ['request', 'key1', 'exists']
         ]);
         $app->data->delete('key1');
 
@@ -812,7 +827,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeExists', 'key1'],
             ['exists', 'key1', false],
-            ['request', 'key1']
+            ['request', 'key1', 'exists']
         ]);
         $app->data->delete('key1');
 
@@ -834,8 +849,8 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeDuplicate', 'key1', 'key2'],
             ['duplicate', 'key1', 'key2'],
-            ['request', 'key1'],
-            ['change', 'key2'],
+            ['request', 'key1', 'duplicate'],
+            ['change', 'key2', 'duplicate'],
         ]);
         $app->data->delete('key1');
         $app->data->delete('key2');
@@ -848,8 +863,8 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeDuplicate', 'key1', 'key2'],
             ['duplicate', 'key1', 'key2'],
-            ['request', 'key1'],
-            ['change', 'key2'],
+            ['request', 'key1', 'duplicate'],
+            ['change', 'key2', 'duplicate'],
         ]);
         $this->assertEquals($app->data->getValue('key1'), 'data2');
         $this->assertNull($app->data->getValue('key2'));
@@ -875,8 +890,8 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeRename', 'key2', 'key3'],
             ['rename', 'key2', 'key3'],
-            ['change', 'key2'],
-            ['change', 'key3'],
+            ['change', 'key2', 'rename'],
+            ['change', 'key3', 'rename'],
         ]);
         $app->data->delete('key2');
         $app->data->delete('key3');
@@ -889,8 +904,8 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeRename', 'key2', 'key3'],
             ['rename', 'key2', 'key3'],
-            ['change', 'key2'],
-            ['change', 'key3'],
+            ['change', 'key2', 'rename'],
+            ['change', 'key3', 'rename'],
         ]);
         $this->assertEquals($app->data->getValue('key2'), 'data2');
         $this->assertNull($app->data->getValue('key3'));
@@ -916,7 +931,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeDelete', 'key1'],
             ['delete', 'key1'],
-            ['change', 'key1'],
+            ['change', 'key1', 'delete'],
         ]);
 
         $app->data->setValue('key1', 'data1');
@@ -927,7 +942,7 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['beforeDelete', 'key1'],
             ['delete', 'key1'],
-            ['change', 'key1'],
+            ['change', 'key1', 'delete'],
         ]);
         $this->assertEquals($app->data->getValue('key1'), 'data1');
 
@@ -979,10 +994,10 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['itemBeforeGetStreamWrapper', 'key2', 'w+b'],
             ['setValue', 'key2', 'data2'],
-            ['change', 'key2'],
+            ['change', 'key2', 'setValue'],
             ['itemBeforeGetStreamWrapper', 'key2', 'rb'],
             ['getValue', 'key2', 'data2'],
-            ['request', 'key2']
+            ['request', 'key2', 'getValue']
         ]);
 
         $eventsLogs = [];
@@ -994,10 +1009,10 @@ class DataTest extends BearFrameworkTestCase
         $this->assertEquals($eventsLogs, [
             ['itemBeforeGetStreamWrapper', 'key2', 'w+b'],
             ['setValue', 'key2', 'data2'],
-            ['change', 'key2'],
+            ['change', 'key2', 'setValue'],
             ['itemBeforeGetStreamWrapper', 'key2', 'rb'],
             ['getValue', 'key2', 'data2MODIFIED'],
-            ['request', 'key2']
+            ['request', 'key2', 'getValue']
         ]);
     }
 
@@ -1714,6 +1729,10 @@ class DataTest extends BearFrameworkTestCase
      */
     public function internalTestDirsStreamWrapper($app)
     {
+        // Todo test
+        //$this->assertTrue(is_readable('appdata://test/'));
+        //$this->assertTrue(is_writable('appdata://test/'));
+
         $this->assertTrue(is_dir('appdata://'));
         $this->assertTrue(rmdir('appdata://'));
         $this->assertTrue(mkdir('appdata://'));
@@ -1760,11 +1779,11 @@ class DataTest extends BearFrameworkTestCase
         $eventsLogs = [];
 
         $app->data->addEventListener('itemChange', function (\BearFramework\App\Data\ItemChangeEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['change', $details->key];
+            $eventsLogs[] = ['change', $details->key, $details->action];
         });
 
         $app->data->addEventListener('itemRequest', function (\BearFramework\App\Data\ItemRequestEventDetails $details) use (&$eventsLogs) {
-            $eventsLogs[] = ['request', $details->key];
+            $eventsLogs[] = ['request', $details->key, $details->action];
         });
 
         $app->data->addEventListener('itemSetValue', function (\BearFramework\App\Data\ItemSetValueEventDetails $details) use (&$eventsLogs) {
@@ -1799,14 +1818,14 @@ class DataTest extends BearFrameworkTestCase
         file_put_contents('appdata://key1', $exampleValue1);
         $this->assertEquals($eventsLogs, [
             ['setValue', 'key1', $exampleValue1],
-            ['change', 'key1']
+            ['change', 'key1', 'setValue']
         ]);
 
         $eventsLogs = [];
         file_get_contents('appdata://key1');
         $this->assertEquals($eventsLogs, [
             ['getValue', 'key1', $exampleValue1],
-            ['request', 'key1']
+            ['request', 'key1', 'getValue']
         ]);
 
         $eventsLogs = [];
@@ -1815,7 +1834,7 @@ class DataTest extends BearFrameworkTestCase
         fclose($handle);
         $this->assertEquals($eventsLogs, [
             ['setValue', 'key1', $exampleValue2],
-            ['change', 'key1']
+            ['change', 'key1', 'setValue']
         ]);
 
         $eventsLogs = [];
@@ -1827,7 +1846,7 @@ class DataTest extends BearFrameworkTestCase
         fclose($handle);
         $this->assertEquals($eventsLogs, [
             ['getValue', 'key1', $exampleValue2],
-            ['request', 'key1']
+            ['request', 'key1', 'getValue']
         ]);
 
         $eventsLogs = [];
@@ -1836,38 +1855,38 @@ class DataTest extends BearFrameworkTestCase
         fclose($handle);
         $this->assertEquals($eventsLogs, [
             ['append', 'key1', $exampleValue1],
-            ['change', 'key1']
+            ['change', 'key1', 'append']
         ]);
 
         $eventsLogs = [];
         is_file('appdata://key1');
         $this->assertEquals($eventsLogs, [
-            ['request', 'key1']
+            ['request', 'key1', 'getValueLength']
         ]);
 
         $eventsLogs = [];
         copy('appdata://key1', 'appdata://key2');
         $this->assertEquals($eventsLogs, [
-            ['request', 'key2'],
+            ['request', 'key2', 'getValueLength'],
             ['getValue', 'key1', $exampleValue2 . $exampleValue1],
-            ['request', 'key1'],
+            ['request', 'key1', 'getValue'],
             ['setValue', 'key2', $exampleValue2 . $exampleValue1],
-            ['change', 'key2'],
+            ['change', 'key2', 'setValue'],
         ]);
 
         $eventsLogs = [];
         rename('appdata://key2', 'appdata://key3');
         $this->assertEquals($eventsLogs, [
             ['rename', 'key2', 'key3'],
-            ['change', 'key2'],
-            ['change', 'key3'],
+            ['change', 'key2', 'rename'],
+            ['change', 'key3', 'rename'],
         ]);
 
         $eventsLogs = [];
         unlink('appdata://key1');
         $this->assertEquals($eventsLogs, [
             ['delete', 'key1'],
-            ['change', 'key1'],
+            ['change', 'key1', 'delete'],
         ]);
     }
 
@@ -2107,16 +2126,18 @@ class DataTest extends BearFrameworkTestCase
     }
 
     /**
-     *
+     * TODO
      */
-    static $dataAccessLog = [];
+    // public function testGetListSortAndSlice()
+    // {
+    //     $app = $this->getApp();
 
-    /**
-     * 
-     * @return void
-     */
-    static function logDataAccess()
-    {
-        self::$dataAccessLog[] = func_get_args();
-    }
+    //     $app->data->setValue('a/2', '1');
+    //     $app->data->setValue('a/1', '2');
+    //     $app->data->setValue('c/3', '3');
+    //     $app->data->setValue('c/4', '4');
+    //     $app->data->setValue('b/5', '5');
+
+    //     print_r($app->data->getList()->sortBy('key', 'desc')->slice(0, 3)->toArray());
+    // }
 }

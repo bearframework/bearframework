@@ -514,6 +514,52 @@ class AssetsTest extends BearFrameworkTestCase
     }
 
     /**
+     * Return size in assetGetDetails
+     */
+    public function testBeforeGetContentEvent1()
+    {
+        $app = $this->getApp();
+        $app->assets->addEventListener('beforeGetContent', function (\BearFramework\App\Assets\BeforeGetContentEventDetails $details) {
+            $details->returnValue = 'changed';
+        });
+        $this->assertTrue($app->assets->getContent('samplefile.jpg') === 'changed');
+    }
+
+    /**
+     * Return size of other image (alias) in assetGetDetails
+     */
+    public function testBeforeGetContentEvent2()
+    {
+        $app = $this->getApp();
+
+        $filename1 = $app->config['appDir'] . '/assets/samplefile1.png';
+        $this->makeSampleFile($filename1, 'png');
+        $filename2 = $app->config['appDir'] . '/assets/samplefile1.jpg';
+        $this->makeSampleFile($filename2, 'jpg');
+        $app->assets->addEventListener('beforeGetContent', function (\BearFramework\App\Assets\BeforeGetContentEventDetails $details) use ($filename2) {
+            $details->filename = $filename2;
+        });
+        $this->assertTrue($app->assets->getContent($filename1) === file_get_contents($filename2));
+    }
+
+    /**
+     * Log assetGetDetails
+     */
+    public function testGetContentEvent()
+    {
+        $app = $this->getApp();
+
+        $imageContent = null;
+        $app->assets->addEventListener('getContent', function (\BearFramework\App\Assets\GetContentEventDetails $details) use (&$imageContent) {
+            $imageContent = $details->returnValue;
+        });
+        $filename = $app->config['appDir'] . '/assets/samplefile1.png';
+        $this->makeSampleFile($filename, 'jpg');
+        $app->assets->getContent($filename);
+        $this->assertTrue($imageContent === file_get_contents($filename));
+    }
+
+    /**
      * 
      */
     public function testGetDetails()
@@ -551,7 +597,7 @@ class AssetsTest extends BearFrameworkTestCase
         $app->assets->addDir($app->config['appDir'] . '/assets/');
 
         $fileTypes = ['jpeg', 'jpg', 'png', 'gif'];
-        if (function_exists('imagecreatefromwebp')) {
+        if (function_exists('imagecreatefromwebp') && version_compare(PHP_VERSION, '7.3', '>=')) { // imagecreatefromstring() - webp is supported in 7.3.0
             $fileTypes[] = 'webp';
         }
 

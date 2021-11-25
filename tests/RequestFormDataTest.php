@@ -12,7 +12,7 @@ use BearFramework\App\Request\FormData;
 /**
  * @runTestsInSeparateProcesses
  */
-class RequestDataTest extends BearFrameworkTestCase
+class RequestFormDataTest extends BearFrameworkTestCase
 {
 
     /**
