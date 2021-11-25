@@ -3,7 +3,7 @@
 Returns a DataItemStreamWrapper for the key specified.
 
 ```php
-public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
+public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key , string $mode )
 ```
 
 ## Parameters
@@ -11,6 +11,10 @@ public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( strin
 ##### key
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data item key.
+
+##### mode
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The access type. Available values: rb, r+b, wb, w+b, ab, a+b, xb, x+b, cb, cs+b
 
 ## Details
 

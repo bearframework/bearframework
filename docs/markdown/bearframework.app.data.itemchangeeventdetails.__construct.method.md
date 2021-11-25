@@ -1,12 +1,14 @@
 # BearFramework\App\Data\ItemChangeEventDetails::__construct
 
 ```php
-public __construct ( string $key )
+public __construct ( string $key , string $action )
 ```
 
 ## Parameters
 
 ##### key
+
+##### action
 
 ## Details
 

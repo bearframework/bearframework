@@ -9,7 +9,7 @@ BearFramework\App\CacheRepository {
 	public self addEventListener ( string $name , callable $listener )
 	public self clear ( void )
 	public self delete ( string $key )
-	public self dispatchEvent ( string $name [, mixed $details ] )
+	public self dispatchEvent ( string $name [, mixed $details [, array $options = [] ]] )
 	public bool exists ( string $key )
 	public BearFramework\App\CacheItem|null get ( string $key )
 	public mixed getValue ( string $key )
@@ -38,7 +38,7 @@ BearFramework\App\CacheRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes an item from the cache.
 
-##### public self [dispatchEvent](bearframework.app.cacherepository.dispatchevent.method.md) ( string $name [, mixed $details ] )
+##### public self [dispatchEvent](bearframework.app.cacherepository.dispatchevent.method.md) ( string $name [, mixed $details [, array $options = [] ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calls the registered listeners (in order) for the event name specified.
 
@@ -88,31 +88,31 @@ BearFramework\App\CacheRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the cache is cleared.
 
-##### BearFramework\App\Cache\ItemChangeEvent itemChange
+##### [BearFramework\App\Cache\ItemChangeEventDetails](bearframework.app.cache.itemchangeeventdetails.class.md) itemChange
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is changed.
 
-##### BearFramework\App\Cache\ItemDeleteEvent itemDelete
+##### [BearFramework\App\Cache\ItemDeleteEventDetails](bearframework.app.cache.itemdeleteeventdetails.class.md) itemDelete
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is deleted.
 
-##### BearFramework\App\Cache\ItemExistsEvent itemExists
+##### [BearFramework\App\Cache\ItemExistsEventDetails](bearframework.app.cache.itemexistseventdetails.class.md) itemExists
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is checked for existence.
 
-##### BearFramework\App\Cache\ItemGetEvent itemGet
+##### [BearFramework\App\Cache\ItemGetEventDetails](bearframework.app.cache.itemgeteventdetails.class.md) itemGet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is requested.
 
-##### BearFramework\App\Cache\ItemGetValueEvent itemGetValue
+##### [BearFramework\App\Cache\ItemGetValueEventDetails](bearframework.app.cache.itemgetvalueeventdetails.class.md) itemGetValue
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the value of a cache item is requested.
 
-##### BearFramework\App\Cache\ItemRequestEvent itemRequest
+##### [BearFramework\App\Cache\ItemRequestEventDetails](bearframework.app.cache.itemrequesteventdetails.class.md) itemRequest
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is requested.
 
-##### BearFramework\App\Cache\ItemSetEvent itemSet
+##### [BearFramework\App\Cache\ItemSetEventDetails](bearframework.app.cache.itemseteventdetails.class.md) itemSet
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after a cache item is added or updated.
 

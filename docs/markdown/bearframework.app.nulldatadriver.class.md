@@ -12,10 +12,12 @@ BearFramework\App\NullDataDriver implements BearFramework\App\IDataDriver {
 	public void duplicate ( string $sourceKey , string $destinationKey )
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
-	public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key )
+	public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key , string $mode )
 	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( [ BearFramework\DataList\Context|null $context ] )
 	public string|null getMetadata ( string $key , string $name )
 	public string|null getValue ( string $key )
+	public int|null getValueLength ( string $key )
+	public string|null getValueRange ( string $key , int $start , int $end )
 	public void rename ( string $sourceKey , string $destinationKey )
 	public void set ( BearFramework\App\DataItem $item )
 	public void setMetadata ( string $key , string $name , string $value )
@@ -56,7 +58,7 @@ BearFramework\App\NullDataDriver implements BearFramework\App\IDataDriver {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a stored data item or null if not found.
 
-##### public [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md) [getDataItemStreamWrapper](bearframework.app.nulldatadriver.getdataitemstreamwrapper.method.md) ( string $key )
+##### public [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md) [getDataItemStreamWrapper](bearframework.app.nulldatadriver.getdataitemstreamwrapper.method.md) ( string $key , string $mode )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataItemStreamWrapper for the key specified.
 
@@ -71,6 +73,14 @@ BearFramework\App\NullDataDriver implements BearFramework\App\IDataDriver {
 ##### public string|null [getValue](bearframework.app.nulldatadriver.getvalue.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value of a stored data item or null if not found.
+
+##### public int|null [getValueLength](bearframework.app.nulldatadriver.getvaluelength.method.md) ( string $key )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the value length of a stored data item or null if not found.
+
+##### public string|null [getValueRange](bearframework.app.nulldatadriver.getvaluerange.method.md) ( string $key , int $start , int $end )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a range of the value of a stored data item or null if not found.
 
 ##### public void [rename](bearframework.app.nulldatadriver.rename.method.md) ( string $sourceKey , string $destinationKey )
 

@@ -1,7 +1,7 @@
 # BearFramework\App\Data\ItemGetValueEventDetails::__construct
 
 ```php
-public __construct ( string $key , mixed $value )
+public __construct ( string $key [, string|null $value ] )
 ```
 
 ## Parameters

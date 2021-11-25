@@ -21,7 +21,7 @@ BearFramework\App {
 	/* Methods */
 	public __construct ( void )
 	public self addEventListener ( string $name , callable $listener )
-	public self dispatchEvent ( string $name [, mixed $details ] )
+	public self dispatchEvent ( string $name [, mixed $details [, array $options = [] ]] )
 	public void enableErrorHandler ( [ array $options = [] ] )
 	public static BearFramework\App get ( void )
 	public bool hasEventListeners ( string $name )
@@ -86,7 +86,7 @@ BearFramework\App {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registers a new event listener.
 
-##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( string $name [, mixed $details ] )
+##### public self [dispatchEvent](bearframework.app.dispatchevent.method.md) ( string $name [, mixed $details [, array $options = [] ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calls the registered listeners (in order) for the event name specified.
 
@@ -116,11 +116,11 @@ BearFramework\App {
 
 ## Events
 
-##### Bearframework\App\BeforeSendResponseEvent beforeSendResponse
+##### [Bearframework\App\BeforeSendResponseEventDetails](bearframework.app.beforesendresponseeventdetails.class.md) beforeSendResponse
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched before the response is sent to the client.
 
-##### BearFramework\App\SendResponseEvent sendResponse
+##### [BearFramework\App\SendResponseEventDetails](bearframework.app.sendresponseeventdetails.class.md) sendResponse
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An event dispatched after the response is sent to the client.
 

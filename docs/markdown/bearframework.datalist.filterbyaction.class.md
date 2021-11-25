@@ -4,6 +4,7 @@
 BearFramework\DataList\FilterByAction {
 
 	/* Properties */
+	public string $name
 	public string $operator
 	public string $property
 	public string $value
@@ -12,6 +13,10 @@ BearFramework\DataList\FilterByAction {
 ```
 
 ## Properties
+
+##### public string $name
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the action.
 
 ##### public string $operator
 

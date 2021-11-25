@@ -3,7 +3,7 @@
 Provides information about the response query items
 
 ```php
-BearFramework\App\Request\Query {
+BearFramework\App\Request\Query implements Stringable {
 
 	/* Methods */
 	public self delete ( string $name )
@@ -17,6 +17,10 @@ BearFramework\App\Request\Query {
 
 }
 ```
+
+## Implements
+
+##### [Stringable](http://php.net/manual/en/class.stringable.php)
 
 ## Methods
 

@@ -6,7 +6,6 @@ BearFramework\App\IDataItemStreamWrapper {
 	/* Methods */
 	abstract public void close ( void )
 	abstract public bool eof ( void )
-	abstract public bool exists ( void )
 	abstract public bool flush ( void )
 	abstract public bool open ( string $mode )
 	abstract public string read ( int $count )
@@ -24,8 +23,6 @@ BearFramework\App\IDataItemStreamWrapper {
 ##### abstract public void [close](bearframework.app.idataitemstreamwrapper.close.method.md) ( void )
 
 ##### abstract public bool [eof](bearframework.app.idataitemstreamwrapper.eof.method.md) ( void )
-
-##### abstract public bool [exists](bearframework.app.idataitemstreamwrapper.exists.method.md) ( void )
 
 ##### abstract public bool [flush](bearframework.app.idataitemstreamwrapper.flush.method.md) ( void )
 

@@ -5,10 +5,10 @@ BearFramework\App\Data\ItemGetValueEventDetails {
 
 	/* Properties */
 	public string $key
-	public string $value
+	public string|null $value
 
 	/* Methods */
-	public __construct ( string $key , mixed $value )
+	public __construct ( string $key [, string|null $value ] )
 
 }
 ```
@@ -17,11 +17,11 @@ BearFramework\App\Data\ItemGetValueEventDetails {
 
 ##### public string $key
 
-##### public string $value
+##### public string|null $value
 
 ## Methods
 
-##### public [__construct](bearframework.app.data.itemgetvalueeventdetails.__construct.method.md) ( string $key , mixed $value )
+##### public [__construct](bearframework.app.data.itemgetvalueeventdetails.__construct.method.md) ( string $key [, string|null $value ] )
 
 ## Details
 

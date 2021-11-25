@@ -6,7 +6,6 @@ BearFramework\App\NullDataItemStreamWrapper implements BearFramework\App\IDataIt
 	/* Methods */
 	public void close ( void )
 	public bool eof ( void )
-	public bool exists ( void )
 	public bool flush ( void )
 	public bool open ( string $mode )
 	public string read ( int $count )
@@ -28,8 +27,6 @@ BearFramework\App\NullDataItemStreamWrapper implements BearFramework\App\IDataIt
 ##### public void [close](bearframework.app.nulldataitemstreamwrapper.close.method.md) ( void )
 
 ##### public bool [eof](bearframework.app.nulldataitemstreamwrapper.eof.method.md) ( void )
-
-##### public bool [exists](bearframework.app.nulldataitemstreamwrapper.exists.method.md) ( void )
 
 ##### public bool [flush](bearframework.app.nulldataitemstreamwrapper.flush.method.md) ( void )
 

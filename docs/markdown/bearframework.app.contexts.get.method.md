@@ -10,7 +10,7 @@ public BearFramework\App\Context get ( [ string|null $filename ] )
 
 ##### filename
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename used to find the context. Will be automatically detected if not provided.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filename used to find the context. Will be automatically detected if not provided. Passing the context dir has performance benefits.
 
 ## Returns
 

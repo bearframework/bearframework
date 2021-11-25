@@ -22,11 +22,15 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides utility functions for assets.
 
+### [BearFramework\App\Assets\BeforeGetContentEventDetails](bearframework.app.assets.beforegetcontenteventdetails.class.md)
+
 ### [BearFramework\App\Assets\BeforeGetDetailsEventDetails](bearframework.app.assets.beforegetdetailseventdetails.class.md)
 
 ### [BearFramework\App\Assets\BeforeGetURLEventDetails](bearframework.app.assets.beforegeturleventdetails.class.md)
 
 ### [BearFramework\App\Assets\BeforePrepareEventDetails](bearframework.app.assets.beforeprepareeventdetails.class.md)
+
+### [BearFramework\App\Assets\GetContentEventDetails](bearframework.app.assets.getcontenteventdetails.class.md)
 
 ### [BearFramework\App\Assets\GetDetailsEventDetails](bearframework.app.assets.getdetailseventdetails.class.md)
 
@@ -88,11 +92,41 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data storage
 
+### [BearFramework\App\Data\BeforeGetListEventDetails](bearframework.app.data.beforegetlisteventdetails.class.md)
+
 ### [BearFramework\App\Data\DataLockedException](bearframework.app.data.datalockedexception.class.md)
 
 ### [BearFramework\App\Data\GetListEventDetails](bearframework.app.data.getlisteventdetails.class.md)
 
 ### [BearFramework\App\Data\ItemAppendEventDetails](bearframework.app.data.itemappendeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeAppendEventDetails](bearframework.app.data.itembeforeappendeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeDeleteEventDetails](bearframework.app.data.itembeforedeleteeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeDeleteMetadataEventDetails](bearframework.app.data.itembeforedeletemetadataeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeDuplicateEventDetails](bearframework.app.data.itembeforeduplicateeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeExistsEventDetails](bearframework.app.data.itembeforeexistseventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeGetEventDetails](bearframework.app.data.itembeforegeteventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeGetMetadataEventDetails](bearframework.app.data.itembeforegetmetadataeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeGetStreamWrapperEventDetails](bearframework.app.data.itembeforegetstreamwrappereventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeGetValueEventDetails](bearframework.app.data.itembeforegetvalueeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeGetValueLengthEventDetails](bearframework.app.data.itembeforegetvaluelengtheventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeRenameEventDetails](bearframework.app.data.itembeforerenameeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeSetEventDetails](bearframework.app.data.itembeforeseteventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeSetMetadataEventDetails](bearframework.app.data.itembeforesetmetadataeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemBeforeSetValueEventDetails](bearframework.app.data.itembeforesetvalueeventdetails.class.md)
 
 ### [BearFramework\App\Data\ItemChangeEventDetails](bearframework.app.data.itemchangeeventdetails.class.md)
 
@@ -109,6 +143,8 @@
 ### [BearFramework\App\Data\ItemGetMetadataEventDetails](bearframework.app.data.itemgetmetadataeventdetails.class.md)
 
 ### [BearFramework\App\Data\ItemGetValueEventDetails](bearframework.app.data.itemgetvalueeventdetails.class.md)
+
+### [BearFramework\App\Data\ItemGetValueLengthEventDetails](bearframework.app.data.itemgetvaluelengtheventdetails.class.md)
 
 ### [BearFramework\App\Data\ItemRenameEventDetails](bearframework.app.data.itemrenameeventdetails.class.md)
 
@@ -147,6 +183,10 @@
 ### [BearFramework\App\Logs](bearframework.app.logs.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs repository
+
+### [BearFramework\App\MemoryDataDriver](bearframework.app.memorydatadriver.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File based data driver
 
 ### [BearFramework\App\NullCacheDriver](bearframework.app.nullcachedriver.class.md)
 
@@ -254,6 +294,8 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shortcuts container for the application object.
 
+### [BearFramework\App\StringDataItemStreamWrapper](bearframework.app.stringdataitemstreamwrapper.class.md)
+
 ### [BearFramework\App\URLs](bearframework.app.urls.class.md)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URLs utilities.
@@ -262,15 +304,23 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base class for lists.
 
-### [BearFramework\DataList\Action](bearframework.datalist.action.class.md)
-
 ### [BearFramework\DataList\Context](bearframework.datalist.context.class.md)
 
+### [BearFramework\DataList\FilterAction](bearframework.datalist.filteraction.class.md)
+
 ### [BearFramework\DataList\FilterByAction](bearframework.datalist.filterbyaction.class.md)
+
+### [BearFramework\DataList\MapAction](bearframework.datalist.mapaction.class.md)
+
+### [BearFramework\DataList\ReverseAction](bearframework.datalist.reverseaction.class.md)
+
+### [BearFramework\DataList\ShuffleAction](bearframework.datalist.shuffleaction.class.md)
 
 ### [BearFramework\DataList\SliceAction](bearframework.datalist.sliceaction.class.md)
 
 ### [BearFramework\DataList\SlicePropertiesAction](bearframework.datalist.slicepropertiesaction.class.md)
+
+### [BearFramework\DataList\SortAction](bearframework.datalist.sortaction.class.md)
 
 ### [BearFramework\DataList\SortByAction](bearframework.datalist.sortbyaction.class.md)
 

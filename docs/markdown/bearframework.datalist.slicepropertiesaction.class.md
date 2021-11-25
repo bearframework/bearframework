@@ -4,12 +4,17 @@
 BearFramework\DataList\SlicePropertiesAction {
 
 	/* Properties */
+	public string $name
 	public array $properties
 
 }
 ```
 
 ## Properties
+
+##### public string $name
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the action.
 
 ##### public array $properties
 

@@ -7,7 +7,6 @@ BearFramework\App\FileDataItemStreamWrapper implements BearFramework\App\IDataIt
 	public __construct ( string $key , string $dir )
 	public void close ( void )
 	public bool eof ( void )
-	public bool exists ( void )
 	public bool flush ( void )
 	public bool open ( string $mode )
 	public string read ( int $count )
@@ -31,8 +30,6 @@ BearFramework\App\FileDataItemStreamWrapper implements BearFramework\App\IDataIt
 ##### public void [close](bearframework.app.filedataitemstreamwrapper.close.method.md) ( void )
 
 ##### public bool [eof](bearframework.app.filedataitemstreamwrapper.eof.method.md) ( void )
-
-##### public bool [exists](bearframework.app.filedataitemstreamwrapper.exists.method.md) ( void )
 
 ##### public bool [flush](bearframework.app.filedataitemstreamwrapper.flush.method.md) ( void )
 

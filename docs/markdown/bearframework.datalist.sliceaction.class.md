@@ -5,6 +5,7 @@ BearFramework\DataList\SliceAction {
 
 	/* Properties */
 	public int $limit
+	public string $name
 	public int $offset
 
 }
@@ -15,6 +16,10 @@ BearFramework\DataList\SliceAction {
 ##### public int $limit
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The limit.
+
+##### public string $name
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the action.
 
 ##### public int $offset
 

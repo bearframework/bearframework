@@ -18,7 +18,7 @@ BearFramework\App\URLs {
 
 ##### public string [get](bearframework.app.urls.get.method.md) ( [ string $path = '/' ] )
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a url for the path specified.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs an URL for the path specified.
 
 ## Details
 

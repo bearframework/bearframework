@@ -4,6 +4,7 @@
 BearFramework\DataList\SortByAction {
 
 	/* Properties */
+	public string $name
 	public string $order
 	public string $property
 
@@ -11,6 +12,10 @@ BearFramework\DataList\SortByAction {
 ```
 
 ## Properties
+
+##### public string $name
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the action.
 
 ##### public string $order
 

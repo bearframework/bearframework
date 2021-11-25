@@ -1,6 +1,6 @@
 # BearFramework\App\URLs::get
 
-Constructs a url for the path specified.
+Constructs an URL for the path specified.
 
 ```php
 public string get ( [ string $path = '/' ] )
@@ -10,7 +10,7 @@ public string get ( [ string $path = '/' ] )
 
 ##### path
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The path.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The path to use (will be encoded).
 
 ## Returns
 

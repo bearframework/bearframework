@@ -3,7 +3,7 @@
 Provides information about the request path.
 
 ```php
-BearFramework\App\Request\Path {
+BearFramework\App\Request\Path implements Stringable {
 
 	/* Methods */
 	public __construct ( [ string $path = '' ] )
@@ -14,6 +14,10 @@ BearFramework\App\Request\Path {
 
 }
 ```
+
+## Implements
+
+##### [Stringable](http://php.net/manual/en/class.stringable.php)
 
 ## Methods
 

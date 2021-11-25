@@ -1,7 +1,7 @@
 # BearFramework\App\Data\ItemGetMetadataEventDetails::__construct
 
 ```php
-public __construct ( string $key , string $name , string $value )
+public __construct ( string $key , string $name [, string $value ] )
 ```
 
 ## Parameters

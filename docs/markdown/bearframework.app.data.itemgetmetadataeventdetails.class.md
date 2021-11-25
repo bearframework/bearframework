@@ -6,10 +6,10 @@ BearFramework\App\Data\ItemGetMetadataEventDetails {
 	/* Properties */
 	public string $key
 	public string $name
-	public string $value
+	public string|null $value
 
 	/* Methods */
-	public __construct ( string $key , string $name , string $value )
+	public __construct ( string $key , string $name [, string $value ] )
 
 }
 ```
@@ -20,11 +20,11 @@ BearFramework\App\Data\ItemGetMetadataEventDetails {
 
 ##### public string $name
 
-##### public string $value
+##### public string|null $value
 
 ## Methods
 
-##### public [__construct](bearframework.app.data.itemgetmetadataeventdetails.__construct.method.md) ( string $key , string $name , string $value )
+##### public [__construct](bearframework.app.data.itemgetmetadataeventdetails.__construct.method.md) ( string $key , string $name [, string $value ] )
 
 ## Details
 

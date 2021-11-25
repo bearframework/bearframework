@@ -3,7 +3,7 @@
 Base class for lists.
 
 ```php
-BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable {
+BearFramework\DataList implements ArrayAccess, Iterator, Countable, Traversable {
 
 	/* Methods */
 	public __construct ( [ array|iterable|callback $dataSource ] )
@@ -38,9 +38,9 @@ BearFramework\DataList implements ArrayAccess, Iterator, Traversable, Countable 
 
 ##### [Iterator](http://php.net/manual/en/class.iterator.php)
 
-##### [Traversable](http://php.net/manual/en/class.traversable.php)
-
 ##### [Countable](http://php.net/manual/en/class.countable.php)
+
+##### [Traversable](http://php.net/manual/en/class.traversable.php)
 
 ## Methods
 

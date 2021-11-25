@@ -6,6 +6,9 @@ BearFramework\DataList\Context {
 	/* Properties */
 	public array $actions
 
+	/* Methods */
+	public void apply ( $list )
+
 }
 ```
 
@@ -14,6 +17,12 @@ BearFramework\DataList\Context {
 ##### public array $actions
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An array containing all the actions.
+
+## Methods
+
+##### public void [apply](bearframework.datalist.context.apply.method.md) ( $list )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apply the actions to the data list specified.
 
 ## Details
 

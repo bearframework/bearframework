@@ -1,7 +1,7 @@
 # BearFramework\App\Data\DataLockedException
 
 ```php
-BearFramework\App\Data\DataLockedException extends Exception implements Throwable {
+BearFramework\App\Data\DataLockedException extends Exception implements Stringable, Throwable {
 
 	/* Methods */
 	public __construct ( [ string $message = '' [, int $code = 0 [, Exception $previous ]]] )
@@ -14,6 +14,8 @@ BearFramework\App\Data\DataLockedException extends Exception implements Throwabl
 ##### [Exception](http://php.net/manual/en/class.exception.php)
 
 ## Implements
+
+##### [Stringable](http://php.net/manual/en/class.stringable.php)
 
 ##### [Throwable](http://php.net/manual/en/class.throwable.php)
 

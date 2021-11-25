@@ -3,7 +3,7 @@
 Calls the registered listeners (in order) for the event name specified.
 
 ```php
-public self dispatchEvent ( string $name [, mixed $details ] )
+public self dispatchEvent ( string $name [, mixed $details [, array $options = [] ]] )
 ```
 
 ## Parameters
@@ -15,6 +15,10 @@ public self dispatchEvent ( string $name [, mixed $details ] )
 ##### details
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional event data.
+
+##### options
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dispatch options. Available values: defaultListener.
 
 ## Returns
 
