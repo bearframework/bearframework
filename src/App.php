@@ -245,9 +245,9 @@ class App
             }
             $cookies = $response->cookies->getList();
             if ($cookies->count() > 0) {
-                $baseURLParts = parse_url($this->request->base);
+                $baseURLParts = $this->request->base !== null ? parse_url($this->request->base) : [];
                 foreach ($cookies as $cookie) {
-                    setcookie($cookie->name, $cookie->value, $cookie->expire, $cookie->path === null ? (isset($baseURLParts['path']) ? $baseURLParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseURLParts['host']) ? $baseURLParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : $cookie->secure, $cookie->httpOnly);
+                    setcookie($cookie->name, $cookie->value, (int)$cookie->expire, $cookie->path === null ? (isset($baseURLParts['path']) ? $baseURLParts['path'] . '/' : '/') : $cookie->path, $cookie->domain === null ? (isset($baseURLParts['host']) ? $baseURLParts['host'] : '') : $cookie->domain, $cookie->secure === null ? $this->request->scheme === 'https' : (bool)$cookie->secure, (bool)$cookie->httpOnly);
                 }
             }
         }

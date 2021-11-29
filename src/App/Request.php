@@ -38,8 +38,8 @@ class Request
     {
 
         $updateBase = function ($name, $value) {
-            $data = parse_url($this->base);
-            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? (strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
+            $data = $this->base !== null ? parse_url($this->base) : [];
+            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? ($value !== null && strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
         };
 
         $this
@@ -52,7 +52,7 @@ class Request
             ->defineProperty('scheme', [
                 'type' => '?string',
                 'get' => function () {
-                    $data = parse_url($this->base);
+                    $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['scheme']) ? $data['scheme'] : null;
                 },
                 'set' => function ($value) use (&$updateBase) {
@@ -65,7 +65,7 @@ class Request
             ->defineProperty('host', [
                 'type' => '?string',
                 'get' => function () {
-                    $data = parse_url($this->base);
+                    $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['host']) ? $data['host'] : null;
                 },
                 'set' => function ($value) use (&$updateBase) {
@@ -78,7 +78,7 @@ class Request
             ->defineProperty('port', [
                 'type' => '?int',
                 'get' => function () {
-                    $data = parse_url($this->base);
+                    $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['port']) ? $data['port'] : null;
                 },
                 'set' => function ($value) use (&$updateBase) {
