@@ -1866,13 +1866,24 @@ class DataTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
         copy('appdata://key1', 'appdata://key2');
-        $this->assertEquals($eventsLogs, [
-            ['request', 'key2', 'getValueLength'],
-            ['getValue', 'key1', $exampleValue2 . $exampleValue1],
-            ['request', 'key1', 'getValue'],
-            ['setValue', 'key2', $exampleValue2 . $exampleValue1],
-            ['change', 'key2', 'setValue'],
-        ]);
+        if (version_compare(PHP_VERSION, '8.1', '>=')) { // TODO: Research + test copy appdata://key3
+            $this->assertEquals($eventsLogs, [
+                ['request', 'key1', 'getValueLength'],
+                ['request', 'key2', 'getValueLength'],
+                ['getValue', 'key1', $exampleValue2 . $exampleValue1],
+                ['request', 'key1', 'getValue'],
+                ['setValue', 'key2', $exampleValue2 . $exampleValue1],
+                ['change', 'key2', 'setValue'],
+            ]);
+        } else {
+            $this->assertEquals($eventsLogs, [
+                ['request', 'key2', 'getValueLength'],
+                ['getValue', 'key1', $exampleValue2 . $exampleValue1],
+                ['request', 'key1', 'getValue'],
+                ['setValue', 'key2', $exampleValue2 . $exampleValue1],
+                ['change', 'key2', 'setValue'],
+            ]);
+        }
 
         $eventsLogs = [];
         rename('appdata://key2', 'appdata://key3');
