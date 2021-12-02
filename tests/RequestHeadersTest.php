@@ -39,6 +39,13 @@ class RequestHeadersTest extends BearFrameworkTestCase
         $this->assertFalse($headers->exists('Content-Type'));
         $list = $headers->getList();
         $this->assertEquals($list->count(), 1);
-    }
 
+        $headers = new Headers();
+        $headers->set($headers->make('name1', 'value1'));
+        $headers->set($headers->make('name2', 'value2'));
+        $headers->deleteAll();
+        $this->assertFalse($headers->exists('name1'));
+        $this->assertFalse($headers->exists('name2'));
+        $this->assertEquals($headers->getList()->count(), 0);
+    }
 }

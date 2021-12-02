@@ -39,6 +39,13 @@ class RequestCookiesTest extends BearFrameworkTestCase
         $this->assertFalse($cookies->exists('name1'));
         $list = $cookies->getList();
         $this->assertEquals($list->count(), 1);
-    }
 
+        $cookies = new Cookies();
+        $cookies->set($cookies->make('name1', 'value1'));
+        $cookies->set($cookies->make('name2', 'value2'));
+        $cookies->deleteAll();
+        $this->assertFalse($cookies->exists('name1'));
+        $this->assertFalse($cookies->exists('name2'));
+        $this->assertEquals($cookies->getList()->count(), 0);
+    }
 }

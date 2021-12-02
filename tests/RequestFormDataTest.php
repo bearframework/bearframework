@@ -39,6 +39,13 @@ class RequestFormDataTest extends BearFrameworkTestCase
         $this->assertFalse($formData->exists('name1'));
         $list = $formData->getList();
         $this->assertEquals($list->count(), 1);
-    }
 
+        $formData = new FormData();
+        $formData->set($formData->make('name1', 'value1'));
+        $formData->set($formData->make('name2', 'value2'));
+        $formData->deleteAll();
+        $this->assertFalse($formData->exists('name1'));
+        $this->assertFalse($formData->exists('name2'));
+        $this->assertEquals($formData->getList()->count(), 0);
+    }
 }

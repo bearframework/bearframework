@@ -70,6 +70,15 @@ class RequestTest extends BearFrameworkTestCase
         $this->assertTrue($request->port === null);
 
         $this->assertTrue($request->base === 'https://subdomain.example.com');
+
+        $request->base = 'http://example.com/base/path/';
+        $this->assertTrue($request->base === 'http://example.com/base/path/');
+
+        $request->base = 'http://example.com/?invalid';
+        $this->assertTrue($request->base === 'http://example.com/');
+
+        $request->base = 'http://example.com?invalid';
+        $this->assertTrue($request->base === 'http://example.com');
     }
 
     /**
@@ -77,22 +86,10 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testPath()
     {
-        $path = new \BearFramework\App\Request\Path('/part1/part2/');
-        $this->assertTrue((string) $path === '/part1/part2/');
-        $this->assertTrue($path->getSegment(0) === 'part1');
-        $this->assertTrue($path->getSegment(1) === 'part2');
-        $this->assertTrue($path->getSegment(2) === null);
-
-        $path = new \BearFramework\App\Request\Path('part1/part2');
-        $this->assertTrue($path->getSegment(0) === 'part1');
-        $this->assertTrue($path->getSegment(1) === 'part2');
-        $this->assertTrue($path->getSegment(2) === null);
-
-        $path = new \BearFramework\App\Request\Path('');
-        $this->assertTrue($path->getSegment(0) === null);
-
-        $path = new \BearFramework\App\Request\Path('/');
-        $this->assertTrue($path->getSegment(0) === null);
+        $request = new \BearFramework\App\Request();
+        $request->base = 'http://example.com';
+        $request->path->set('/part1/part2/');
+        $this->assertTrue((string) $request->getURL() === 'http://example.com/part1/part2/');
     }
 
     /**
@@ -100,20 +97,11 @@ class RequestTest extends BearFrameworkTestCase
      */
     function testQuery()
     {
-        $query = new \BearFramework\App\Request\Query();
-        $query->set($query->make('var1', '1'));
-        $query->set($query->make('var2', 'a'));
-        $this->assertTrue((string) $query === 'var1=1&var2=a');
-        $this->assertTrue($query->exists('var1'));
-        $this->assertTrue($query->exists('var2'));
-        $this->assertFalse($query->exists('var3'));
-        $this->assertTrue($query->getValue('var1') === '1');
-        $this->assertTrue($query->getValue('var2') === 'a');
-        $this->assertTrue($query->getValue('var3') === null);
-
-        $query = new \BearFramework\App\Request\Query();
-        $this->assertFalse($query->exists('var1'));
-        $this->assertTrue($query->getValue('var1') === null);
+        $request = new \BearFramework\App\Request();
+        $request->base = 'http://example.com';
+        $request->query->set($request->query->make('var1', '1'));
+        $request->query->set($request->query->make('var2', 'a'));
+        $this->assertTrue((string) $request->getURL() === 'http://example.com/?var1=1&var2=a');
     }
 
     /**
@@ -126,16 +114,6 @@ class RequestTest extends BearFrameworkTestCase
         $request->headers->set($request->headers->make('header1', '1'));
         $this->assertTrue($request->headers->getValue('header1') === '1');
     }
-
-    /**
-     * 
-     */
-//    function testInvalidHeaders()
-//    {
-//        $request = new \BearFramework\App\Request();
-//        $this->expectException('InvalidArgumentException');
-//        echo $request->headers = 1;
-//    }
 
     /**
      * 
@@ -180,12 +158,26 @@ class RequestTest extends BearFrameworkTestCase
     /**
      * 
      */
-    function testSetNewRequest()
+    function testSetURL()
     {
         $app = new \BearFramework\App();
         $app->request = new \BearFramework\App\Request();
-        $app->request->base = 'https://example.com/';
-        $this->assertEquals($app->request->host, 'example.com');
+
+        $url = 'https://example.com/път1/path2/?key1=value1&k[ey2]=v[alue1]&име3=стойност3';
+        $app->request->setURL($url);
+        $this->assertEquals(urldecode($app->request->getURL()), $url);
+
+        $url = 'http://example2.com/?key5=value5';
+        $app->request->setURL($url);
+        $this->assertEquals(urldecode($app->request->getURL()), $url);
+
+        $url = 'http://example3.com/';
+        $app->request->setURL($url);
+        $this->assertEquals(urldecode($app->request->getURL()), $url);
+
+        $url = 'http://example4.com/';
+        $app->request->setURL($url);
+        $this->assertEquals(urldecode($app->request->getURL()), $url);
     }
 
     /**
@@ -203,5 +195,4 @@ class RequestTest extends BearFrameworkTestCase
         $request->query->set($request->query->make('име3', 'стойност3'));
         $this->assertEquals($request->getURL(), 'https://example.com/%D0%BF%D1%8A%D1%821/path2/?key1=value1&k%5Bey2%5D=v%5Balue1%5D&%D0%B8%D0%BC%D0%B53=%D1%81%D1%82%D0%BE%D0%B9%D0%BD%D0%BE%D1%81%D1%823');
     }
-
 }

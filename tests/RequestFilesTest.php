@@ -50,5 +50,4 @@ class RequestFilesTest extends BearFrameworkTestCase
         $this->assertTrue($list->count() === 1);
         $this->assertTrue($formData->exists('name1') === false);
     }
-
 }

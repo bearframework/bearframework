@@ -39,6 +39,13 @@ class RequestQueryTest extends BearFrameworkTestCase
         $this->assertFalse($query->exists('name1'));
         $list = $query->getList();
         $this->assertEquals($list->count(), 1);
-    }
 
+        $query = new Query();
+        $query->set($query->make('name1', 'value1'));
+        $query->set($query->make('name2', 'value2'));
+        $query->deleteAll();
+        $this->assertFalse($query->exists('name1'));
+        $this->assertFalse($query->exists('name2'));
+        $this->assertEquals($query->getList()->count(), 0);
+    }
 }
