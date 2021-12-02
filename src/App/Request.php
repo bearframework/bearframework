@@ -36,10 +36,26 @@ class Request
      */
     public function __construct(bool $initializeFromEnvironment = false)
     {
+        $updateBase = function ($base, $name, $value): string {
+            if ($base !== null) {
+                $data =  parse_url($base);
+                if (empty($data)) {
+                    $schemeSeparatorIndex = strpos($base, '://');
+                    if ($schemeSeparatorIndex !== false) {
+                        $data = ['scheme' => substr($base, 0, $schemeSeparatorIndex)];
+                    }
+                }
+            } else {
+                $data = [];
+            }
+            return ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? ($value !== null && strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
+        };
 
-        $updateBase = function ($name, $value) {
-            $data = $this->base !== null ? parse_url($this->base) : [];
-            $this->base = ($name === 'scheme' ? $value : (isset($data['scheme']) ? $data['scheme'] : '')) . '://' . ($name === 'host' ? $value : (isset($data['host']) ? $data['host'] : '')) . ($name === 'port' ? ($value !== null && strlen($value) > 0 ? ':' . $value : '') : (isset($data['port']) ? ':' . $data['port'] : '')) . (isset($data['path']) ? $data['path'] : '');
+        $preventBaseUpdate = false;
+        $setBasePart = function ($name, $value) use (&$updateBase, &$preventBaseUpdate) {
+            $preventBaseUpdate = true;
+            $this->base = $updateBase($this->base, $name, $value);
+            $preventBaseUpdate = false;
         };
 
         $this
@@ -47,7 +63,13 @@ class Request
                 'type' => '?string'
             ])
             ->defineProperty('base', [
-                'type' => '?string'
+                'type' => '?string',
+                'set' => function ($value) use (&$updateBase, &$preventBaseUpdate) {
+                    if ($preventBaseUpdate) {
+                        return $value;
+                    }
+                    return $updateBase($value, '', '');
+                },
             ])
             ->defineProperty('scheme', [
                 'type' => '?string',
@@ -55,11 +77,11 @@ class Request
                     $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['scheme']) ? $data['scheme'] : null;
                 },
-                'set' => function ($value) use (&$updateBase) {
-                    $updateBase('scheme', $value);
+                'set' => function ($value) use (&$setBasePart) {
+                    $setBasePart('scheme', $value);
                 },
-                'unset' => function () use (&$updateBase) {
-                    $updateBase('scheme', '');
+                'unset' => function () use (&$setBasePart) {
+                    $setBasePart('scheme', '');
                 }
             ])
             ->defineProperty('host', [
@@ -68,11 +90,11 @@ class Request
                     $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['host']) ? $data['host'] : null;
                 },
-                'set' => function ($value) use (&$updateBase) {
-                    $updateBase('host', $value);
+                'set' => function ($value) use (&$setBasePart) {
+                    $setBasePart('host', $value);
                 },
-                'unset' => function () use (&$updateBase) {
-                    $updateBase('host', '');
+                'unset' => function () use (&$setBasePart) {
+                    $setBasePart('host', '');
                 }
             ])
             ->defineProperty('port', [
@@ -81,11 +103,11 @@ class Request
                     $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['port']) ? $data['port'] : null;
                 },
-                'set' => function ($value) use (&$updateBase) {
-                    $updateBase('port', $value);
+                'set' => function ($value) use (&$setBasePart) {
+                    $setBasePart('port', $value);
                 },
-                'unset' => function () use (&$updateBase) {
-                    $updateBase('port', '');
+                'unset' => function () use (&$setBasePart) {
+                    $setBasePart('port', '');
                 }
             ]);
 
@@ -135,20 +157,10 @@ class Request
             ])
             ->defineProperty('query', [
                 'init' => function () use ($initializeFromEnvironment) {
-                    $query = new App\Request\Query();
                     if ($initializeFromEnvironment && isset($_GET)) {
-                        $walkVariables = function ($variables, $parent = null) use (&$query, &$walkVariables) {
-                            foreach ($variables as $name => $value) {
-                                if (is_array($value)) {
-                                    $walkVariables($value, $name);
-                                    continue;
-                                }
-                                $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
-                            }
-                        };
-                        $walkVariables($_GET);
+                        return App\Request\Query::fromArray($_GET);
                     }
-                    return $query;
+                    return new App\Request\Query();
                 },
                 'readonly' => true
             ])
@@ -227,6 +239,33 @@ class Request
                 },
                 'readonly' => true
             ]);
+    }
+
+    /**
+     * Sets a new URL and overwrites the base, scheme, host, port, path and query properties.
+     * 
+     * @param string $url
+     * @return self Returns a reference to itself.
+     */
+    public function setURL(string $url): self
+    {
+        $data = parse_url($url);
+        $scheme = isset($data['scheme']) ? $data['scheme'] : 'http';
+        $host = isset($data['host']) ? $data['host'] : 'unknown';
+        $port = isset($data['port']) ? $data['port'] : '';
+        $this->base = $scheme . '://' . $host . ($port !== '' ? ':' . $port : '');
+        $this->path->set(isset($data['path']) ? $data['path'] : '');
+        $this->query->deleteAll();
+        if (isset($data['query'])) {
+            $queryData = [];
+            parse_str($data['query'], $queryData);
+            $query = App\Request\Query::fromArray($queryData);
+            $queryList = $query->getList();
+            foreach ($queryList as $queryItem) {
+                $this->query->set($queryItem);
+            }
+        }
+        return $this;
     }
 
     /**
