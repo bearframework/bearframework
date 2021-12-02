@@ -7,7 +7,9 @@ BearFramework\App\Request\Query implements Stringable {
 
 	/* Methods */
 	public self delete ( string $name )
+	public self deleteAll ( void )
 	public bool exists ( string $name )
+	public static Query fromArray ( array $array )
 	public BearFramework\App\Request\QueryItem|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Request\QueryItem[] getList ( void )
 	public string|null getValue ( string $name )
@@ -28,9 +30,17 @@ BearFramework\App\Request\Query implements Stringable {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a query item if exists.
 
+##### public self [deleteAll](bearframework.app.request.query.deleteall.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes all query items.
+
 ##### public bool [exists](bearframework.app.request.query.exists.method.md) ( string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns information whether a query item with the name specified exists.
+
+##### public static Query [fromArray](bearframework.app.request.query.fromarray.method.md) ( array $array )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new Query object from the data specified.
 
 ##### public [BearFramework\App\Request\QueryItem](bearframework.app.request.queryitem.class.md)|null [get](bearframework.app.request.query.get.method.md) ( string $name )
 

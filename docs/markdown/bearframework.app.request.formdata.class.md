@@ -7,6 +7,7 @@ BearFramework\App\Request\FormData {
 
 	/* Methods */
 	public self delete ( string $name )
+	public self deleteAll ( void )
 	public bool exists ( string $name )
 	public BearFramework\App\Request\FormDataItem|null get ( string $name )
 	public BearFramework\App\Request\FormDataFileItem|null getFile ( string $name )
@@ -23,6 +24,10 @@ BearFramework\App\Request\FormData {
 ##### public self [delete](bearframework.app.request.formdata.delete.method.md) ( string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a form data item if exists.
+
+##### public self [deleteAll](bearframework.app.request.formdata.deleteall.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes all form data.
 
 ##### public bool [exists](bearframework.app.request.formdata.exists.method.md) ( string $name )
 

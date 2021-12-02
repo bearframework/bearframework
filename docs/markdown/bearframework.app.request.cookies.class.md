@@ -7,6 +7,7 @@ BearFramework\App\Request\Cookies {
 
 	/* Methods */
 	public self delete ( string $name )
+	public self deleteAll ( void )
 	public bool exists ( string $name )
 	public BearFramework\App\Request\Cookie|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Request\Cookie[] getList ( void )
@@ -22,6 +23,10 @@ BearFramework\App\Request\Cookies {
 ##### public self [delete](bearframework.app.request.cookies.delete.method.md) ( string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a cookie if exists.
+
+##### public self [deleteAll](bearframework.app.request.cookies.deleteall.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes all cookies.
 
 ##### public bool [exists](bearframework.app.request.cookies.exists.method.md) ( string $name )
 

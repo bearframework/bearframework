@@ -20,6 +20,7 @@ BearFramework\App\Request {
 	/* Methods */
 	public __construct ( [ bool $initializeFromEnvironment = false ] )
 	public string|null getURL ( void )
+	public self setURL ( string $url )
 
 }
 ```
@@ -73,6 +74,10 @@ BearFramework\App\Request {
 ##### public string|null [getURL](bearframework.app.request.geturl.method.md) ( void )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the request URL or null if the base is empty.
+
+##### public self [setURL](bearframework.app.request.seturl.method.md) ( string $url )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets a new URL and overwrites the base, scheme, host, port, path and query properties.
 
 ## Details
 

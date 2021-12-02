@@ -7,6 +7,7 @@ BearFramework\App\Request\Headers {
 
 	/* Methods */
 	public self delete ( string $name )
+	public self deleteAll ( void )
 	public bool exists ( string $name )
 	public BearFramework\App\Request\Header|null get ( string $name )
 	public BearFramework\DataList|BearFramework\App\Request\Header[] getList ( void )
@@ -22,6 +23,10 @@ BearFramework\App\Request\Headers {
 ##### public self [delete](bearframework.app.request.headers.delete.method.md) ( string $name )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes a header if exists.
+
+##### public self [deleteAll](bearframework.app.request.headers.deleteall.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deletes all headers.
 
 ##### public bool [exists](bearframework.app.request.headers.exists.method.md) ( string $name )
 
