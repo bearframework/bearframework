@@ -127,6 +127,17 @@ class FormData
     }
 
     /**
+     * Deletes all form data.
+     * 
+     * @return self Returns a reference to itself.
+     */
+    public function deleteAll(): self
+    {
+        $this->data = [];
+        return $this;
+    }
+
+    /**
      * Returns a list of all form data items.
      * 
      * @return \BearFramework\DataList|\BearFramework\App\Request\FormDataItem[] An array containing all form data items.

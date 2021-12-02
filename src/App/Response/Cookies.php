@@ -99,6 +99,17 @@ class Cookies
     }
 
     /**
+     * Deletes all cookies.
+     * 
+     * @return self Returns a reference to itself.
+     */
+    public function deleteAll(): self
+    {
+        $this->data = [];
+        return $this;
+    }
+
+    /**
      * Returns a list of all cookies.
      * 
      * @return \BearFramework\DataList|\BearFramework\App\Response\Cookie[] An array containing all cookies.

@@ -113,6 +113,17 @@ class Query
     }
 
     /**
+     * Deletes all query items.
+     * 
+     * @return self Returns a reference to itself.
+     */
+    public function deleteAll(): self
+    {
+        $this->data = [];
+        return $this;
+    }
+
+    /**
      * Returns a list of all query items.
      * 
      * @return \BearFramework\DataList|\BearFramework\App\Request\QueryItem[] An array containing all query items.
@@ -148,5 +159,27 @@ class Query
             $temp[$queryItem->name] = $queryItem->value;
         }
         return http_build_query($temp);
+    }
+
+    /**
+     * Creates a new Query object from the data specified.
+     *
+     * @param array $array
+     * @return Query
+     */
+    static function fromArray(array $array): Query
+    {
+        $query = new Query();
+        $walkVariables = function ($variables, $parent = null) use (&$query, &$walkVariables) {
+            foreach ($variables as $name => $value) {
+                if (is_array($value)) {
+                    $walkVariables($value, $name);
+                    continue;
+                }
+                $query->set($query->make($parent === null ? $name : $parent . '[' . $name . ']', $value));
+            }
+        };
+        $walkVariables($array);
+        return $query;
     }
 }

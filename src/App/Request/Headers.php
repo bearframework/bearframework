@@ -113,6 +113,17 @@ class Headers
     }
 
     /**
+     * Deletes all headers.
+     * 
+     * @return self Returns a reference to itself.
+     */
+    public function deleteAll(): self
+    {
+        $this->data = [];
+        return $this;
+    }
+
+    /**
      * Returns a list of all headers.
      * 
      * @return \BearFramework\DataList|\BearFramework\App\Request\Header[] An array containing all headers.
