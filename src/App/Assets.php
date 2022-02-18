@@ -348,7 +348,7 @@ class Assets
                     }
                     if (substr($option, 0, 1) === 'o') {
                         $value = substr($option, 1);
-                        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
+                        $pathExtension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
                         $path = substr($path, 0, -strlen($pathExtension)) . $value;
                         $result['options']['outputType'] = $pathExtension;
                     }
@@ -462,25 +462,27 @@ class Assets
         }
 
         if (strlen($filename) > 0 && is_file($filename)) {
-            if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality'])) {
-                $result = $filename;
+            $fileExtension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $extension = $fileExtension;
+            if (isset($options['outputType'])) {
+                $extension = $options['outputType'];
+            }
+            if ($this->isSupportedOutputType($extension)) {
+                if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality']) && $extension === $fileExtension) {
+                    $result = $filename;
+                } else {
+                    $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+                    if (!is_file($tempFilename)) {
+                        $this->resize($filename, $tempFilename, [
+                            'width' => (isset($options['width']) ? $options['width'] : null),
+                            'height' => (isset($options['height']) ? $options['height'] : null),
+                            'quality' => (isset($options['quality']) ? $options['quality'] : null)
+                        ]);
+                    }
+                    $result = $tempFilename;
+                }
             } else {
-                $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                if ($extension === '') {
-                    $extension = 'tmp';
-                }
-                if (isset($options['outputType'])) {
-                    $extension = $options['outputType'];
-                }
-                $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
-                if (!is_file($tempFilename)) {
-                    $this->resize($filename, $tempFilename, [
-                        'width' => (isset($options['width']) ? $options['width'] : null),
-                        'height' => (isset($options['height']) ? $options['height'] : null),
-                        'quality' => (isset($options['quality']) ? $options['quality'] : null)
-                    ]);
-                }
-                $result = $tempFilename;
+                $result = null;
             }
         }
         if ($this->hasEventListeners('prepare')) {
@@ -605,7 +607,7 @@ class Assets
             $size = getimagesize($filename);
             if (is_array($size)) {
                 $result = [(int) $size[0], (int) $size[1]];
-            } elseif (pathinfo($filename, PATHINFO_EXTENSION) === 'webp' && function_exists('imagecreatefromwebp')) {
+            } elseif (strtolower(pathinfo($filename, PATHINFO_EXTENSION)) === 'webp' && function_exists('imagecreatefromwebp')) {
                 $sourceImage = imagecreatefromwebp($filename);
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
