@@ -280,6 +280,10 @@ class App
                 echo $response->content;
             }
         }
+        flush();
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
         if ($this->hasEventListeners('sendResponse')) {
             $this->dispatchEvent('sendResponse', new \BearFramework\App\SendResponseEventDetails($response));
         }
