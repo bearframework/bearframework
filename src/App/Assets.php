@@ -653,6 +653,8 @@ class Assets
                 $outputType = 'jpg';
             } elseif ($extension === 'webp') {
                 $outputType = 'webp';
+            } elseif ($extension === 'avif') {
+                $outputType = 'avif';
             }
         }
         $supportedOutputTypes = $this->getSupportedOutputTypes();
@@ -731,6 +733,8 @@ class Assets
                         imagegif($resultImage, $tempFilename);
                     } elseif ($outputType === 'webp') {
                         imagewebp($resultImage, $tempFilename, $quality);
+                    } elseif ($outputType === 'avif') {
+                        imageavif($resultImage, $tempFilename, $quality, 0);
                     }
                 }
                 imagedestroy($resultImage);
@@ -816,6 +820,7 @@ class Assets
                 'atx' => 'application/vnd.antix.game-component',
                 'au' => 'audio/basic',
                 'avi' => 'video/x-msvideo',
+                'avif' => 'image/avif',
                 'aw' => 'application/applixware',
                 'axd' => 'text/plain',
                 'azf' => 'application/vnd.airzip.filesecure.azf',
