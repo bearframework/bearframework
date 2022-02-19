@@ -191,7 +191,7 @@ class Assets
                 $optionsString .= '-o' . $pathInfo['extension'];
                 $fileBasename = substr($fileBasename, 0, -strlen($pathInfo['extension'])) . $options['outputType'];
             }
-            $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12);
+            $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12); // TODO add outputType to hash
 
             $fileDirCacheKey = '1' . $fileDir;
             if (!isset($this->cache[$fileDirCacheKey])) {
@@ -668,7 +668,7 @@ class Assets
                 $outputType = 'avif';
             }
         }
-        
+
         if (!$this->isSupportedOutputType($outputType)) {
             throw new \InvalidArgumentException('The output format is not supported!');
         }
