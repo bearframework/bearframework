@@ -467,10 +467,10 @@ class Assets
             if (isset($options['outputType'])) {
                 $extension = $options['outputType'];
             }
-            if ($this->isSupportedOutputType($extension)) {
-                if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality']) && $extension === $fileExtension) {
-                    $result = $filename;
-                } else {
+            if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality']) && $extension === $fileExtension) {
+                $result = $filename;
+            } else {
+                if ($this->isSupportedOutputType($extension === 'jpeg' ? 'jpg' : $extension)) {
                     $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
                     if (!is_file($tempFilename)) {
                         $this->resize($filename, $tempFilename, [
@@ -480,9 +480,9 @@ class Assets
                         ]);
                     }
                     $result = $tempFilename;
+                } else {
+                    $result = null;
                 }
-            } else {
-                $result = null;
             }
         }
         if ($this->hasEventListeners('prepare')) {
@@ -604,11 +604,22 @@ class Assets
     {
         $result = [null, null];
         try {
+            $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $size = getimagesize($filename);
             if (is_array($size)) {
-                $result = [(int) $size[0], (int) $size[1]];
-            } elseif (strtolower(pathinfo($filename, PATHINFO_EXTENSION)) === 'webp' && function_exists('imagecreatefromwebp')) {
+                if ($extension === 'avif' && (int) $size[0] === 0) {
+                    // continue
+                } else {
+                    return [(int) $size[0], (int) $size[1]];
+                }
+            }
+            if ($extension === 'webp' && function_exists('imagecreatefromwebp')) {
                 $sourceImage = imagecreatefromwebp($filename);
+                $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
+                imagedestroy($sourceImage);
+            }
+            if ($extension === 'avif' && function_exists('imagecreatefromavif')) {
+                $sourceImage = imagecreatefromavif($filename);
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
             }
@@ -657,8 +668,8 @@ class Assets
                 $outputType = 'avif';
             }
         }
-        $supportedOutputTypes = $this->getSupportedOutputTypes();
-        if (array_search($outputType, $supportedOutputTypes) === false) {
+        
+        if (!$this->isSupportedOutputType($outputType)) {
             throw new \InvalidArgumentException('The output format is not supported!');
         }
 

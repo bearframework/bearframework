@@ -458,6 +458,9 @@ class AssetsTest extends BearFrameworkTestCase
         if (function_exists('imagecreatefromwebp')) {
             $fileTypes[] = 'webp';
         }
+        if (function_exists('imagecreatefromavif')) {
+            $fileTypes[] = 'avif';
+        }
 
         foreach ($fileTypes as $fileType) {
             $filename = $app->config['appDir'] . '/assets/logo.' . $fileType;
@@ -600,6 +603,9 @@ class AssetsTest extends BearFrameworkTestCase
         if (function_exists('imagecreatefromwebp') && version_compare(PHP_VERSION, '7.3', '>=')) { // imagecreatefromstring() - webp is supported in 7.3.0
             $fileTypes[] = 'webp';
         }
+        if (function_exists('imagecreatefromavif')) {
+            $fileTypes[] = 'avif';
+        }
 
         foreach ($fileTypes as $fileType) {
             $sourceFilename = $app->config['appDir'] . '/assets/file1.' . $fileType;
@@ -678,19 +684,15 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
-    public function testResizeInvalidArgument10()
+    public function testResizeUnsupportedFormat()
     {
         $app = $this->getApp();
 
         $sourceFilename = $app->config['appDir'] . '/assets/logo.bmp';
         $destinationFilename = $app->config['appDir'] . '/assets/newlogo.bmp';
         $this->makeSampleFile($sourceFilename, 'bmp');
-        try {
-            $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
-            $this->assertTrue(false);
-        } catch (\Exception $e) {
-            $this->assertTrue(strpos($e->getMessage(), 'The output format is not supported') === 0);
-        }
+        $result = $app->assets->getContent($sourceFilename, ['width' => 100, 'height' => 100]);
+        $this->assertNull($result);
     }
 
     /**
