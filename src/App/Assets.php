@@ -191,6 +191,12 @@ class Assets
                 $optionsString .= '-o' . $pathInfo['extension'];
                 $fileBasename = substr($fileBasename, 0, -strlen($pathInfo['extension'])) . $options['outputType'];
             }
+            if (isset($options['svgFill']) && preg_match('/^#[a-fA-F0-9]{3,6}$/', $options['svgFill'])) {
+                $optionsString .= '-f' . substr($options['svgFill'], 1);
+            }
+            if (isset($options['svgStroke']) && preg_match('/^#[a-fA-F0-9]{3,6}$/', $options['svgStroke'])) {
+                $optionsString .= '-s' . substr($options['svgStroke'], 1);
+            }
             $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12); // TODO add outputType to hash
 
             $fileDirCacheKey = '1' . $fileDir;
@@ -352,6 +358,20 @@ class Assets
                         $path = substr($path, 0, -strlen($pathExtension)) . $value;
                         $result['options']['outputType'] = $pathExtension;
                     }
+                    if (substr($option, 0, 1) === 'f') {
+                        $value = (string) substr($option, 1);
+                        $valueLength = strlen($value);
+                        if ($valueLength >= 3 && $valueLength <= 6) {
+                            $result['options']['svgFill'] = '#' . $value;
+                        }
+                    }
+                    if (substr($option, 0, 1) === 's') {
+                        $value = (string) substr($option, 1);
+                        $valueLength = strlen($value);
+                        if ($valueLength >= 3 && $valueLength <= 6) {
+                            $result['options']['svgStroke'] = '#' . $value;
+                        }
+                    }
                 }
             }
 
@@ -467,7 +487,21 @@ class Assets
             if (isset($options['outputType'])) {
                 $extension = $options['outputType'];
             }
-            if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality']) && $extension === $fileExtension) {
+            if ($extension === 'svg' && (isset($options['svgFill']) || isset($options['svgStroke'])) && $extension === $fileExtension) {
+                $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
+                if (!is_file($tempFilename)) {
+                    $updates = [];
+                    if (isset($options['svgFill'])) {
+                        $updates['fill'] = $options['svgFill'];
+                    }
+                    if (isset($options['svgStroke'])) {
+                        $updates['stroke'] = $options['svgStroke'];
+                    }
+                    $newContent = $this->updateSvgContent(file_get_contents($filename), $updates);
+                    file_put_contents($tempFilename, $newContent);
+                }
+                $result = $tempFilename;
+            } else if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality']) && $extension === $fileExtension) {
                 $result = $filename;
             } else {
                 if ($this->isSupportedOutputType($extension === 'jpeg' ? 'jpg' : $extension)) {
@@ -538,6 +572,16 @@ class Assets
         if (isset($options['robotsNoIndex'])) {
             if (!is_bool($options['robotsNoIndex'])) {
                 throw new \InvalidArgumentException('The value of the robotsNoIndex option must be of type bool, ' . gettype($options['robotsNoIndex']) . ' given.');
+            }
+        }
+        if (isset($options['svgFill'])) {
+            if (!is_string($options['svgFill'])) {
+                throw new \InvalidArgumentException('The value of the svgFill option must be of type string, ' . gettype($options['svgFill']) . ' given.');
+            }
+        }
+        if (isset($options['svgStroke'])) {
+            if (!is_string($options['svgStroke'])) {
+                throw new \InvalidArgumentException('The value of the svgStroke option must be of type string, ' . gettype($options['svgStroke']) . ' given.');
             }
         }
     }
@@ -766,6 +810,41 @@ class Assets
                 throw new \Exception('Cannot resize image (' . $sourceFilename . ')');
             }
         }
+    }
+
+    /**
+     * Makes changes to the SVG content specified.
+     *
+     * @param string $content The SVG content.
+     * @param array $updates A list of updates to apply. Available values: ['fill'=>'#123456', 'stroke'=>'#123456']
+     * @return string
+     */
+    private function updateSvgContent(string $content, array $updates): string
+    {
+        $svgTagStartIndex = stripos($content, '<svg');
+        if ($svgTagStartIndex !== false) {
+            $svgTagEndIndex = stripos($content, '>', $svgTagStartIndex);
+            if ($svgTagEndIndex !== false) {
+                $svgTagContent = substr($content, $svgTagStartIndex, $svgTagEndIndex - $svgTagStartIndex);
+                $updateOrAddAttribute = function (string $name, string $value) use (&$svgTagContent) {
+                    $expression = '/' . $name . '=".*?"/';
+                    $attribute = $name . '="' . htmlentities($value) . '"';
+                    if (preg_match($expression, $svgTagContent)) {
+                        $svgTagContent = preg_replace($expression, $attribute, $svgTagContent);
+                    } else {
+                        $svgTagContent .= ' ' . $attribute;
+                    }
+                };
+                if (isset($updates['fill'])) {
+                    $updateOrAddAttribute('fill', $updates['fill']);
+                }
+                if (isset($updates['stroke'])) {
+                    $updateOrAddAttribute('stroke', $updates['stroke']);
+                }
+                return substr($content, 0, $svgTagStartIndex) . $svgTagContent . substr($content, $svgTagEndIndex);
+            }
+        }
+        return $content;
     }
 
     /**
