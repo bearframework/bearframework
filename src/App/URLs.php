@@ -38,6 +38,6 @@ class URLs
      */
     public function get(string $path = '/')
     {
-        return $this->base . implode('/', array_map('urlencode', explode('/', $path)));
+        return $this->base . implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 }

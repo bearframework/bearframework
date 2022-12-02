@@ -281,7 +281,7 @@ class Request
             foreach ($queryList as $queryItem) {
                 $list[$queryItem->name] = $queryItem->value;
             }
-            return $this->base . implode('/', array_map('urlencode', explode('/', (string) $this->path))) . (empty($list) ? '' : '?' . http_build_query($list));
+            return $this->base . implode('/', array_map('rawurlencode', explode('/', (string) $this->path))) . (empty($list) ? '' : '?' . http_build_query($list));
         }
         return null;
     }
