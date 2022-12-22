@@ -58,7 +58,7 @@ class AssetsTest extends BearFrameworkTestCase
         $app->assets->addDir($app->config['addonsDir'] . '/addon1/assets/');
         $app->assets->addDir('appdata://assets/');
 
-        $fileTypes = ['jpg', 'png', 'gif'];
+        $fileTypes = ['jpg', 'png', 'gif', 'svg'];
         $imageOptionsTypes = ['width', 'height', 'both'];
         $sizeModifiers = [0.5, 1, 2];
 
@@ -454,7 +454,7 @@ class AssetsTest extends BearFrameworkTestCase
     {
         $app = $this->getApp();
 
-        $fileTypes = ['jpg', 'png', 'gif'];
+        $fileTypes = ['jpg', 'png', 'gif', 'svg'];
         if (function_exists('imagecreatefromwebp')) {
             $fileTypes[] = 'webp';
         }
@@ -594,12 +594,48 @@ class AssetsTest extends BearFrameworkTestCase
     /**
      * 
      */
+    public function testSVGGetDetails()
+    {
+        $app = $this->getApp();
+
+        $filename = $app->config['appDir'] . '/file1.svg';
+        $this->makeFile($filename, '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="22" viewBox="0 0 33 44"></svg>');
+        $result = $app->assets->getDetails($filename, ['mimeType', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === 'image/svg+xml');
+        $this->assertTrue($result['width'] === 11);
+        $this->assertTrue($result['height'] === 22);
+
+        $filename = $app->config['appDir'] . '/file2.svg';
+        $this->makeFile($filename, '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="22"></svg>');
+        $result = $app->assets->getDetails($filename, ['mimeType', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === 'image/svg+xml');
+        $this->assertTrue($result['width'] === 11);
+        $this->assertTrue($result['height'] === 22);
+
+        $filename = $app->config['appDir'] . '/file3.svg';
+        $this->makeFile($filename, '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 44"></svg>');
+        $result = $app->assets->getDetails($filename, ['mimeType', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === 'image/svg+xml');
+        $this->assertTrue($result['width'] === 33);
+        $this->assertTrue($result['height'] === 44);
+
+        $filename = $app->config['appDir'] . '/file4.svg';
+        $this->makeFile($filename, '<svg xmlns="http://www.w3.org/2000/svg"></svg>');
+        $result = $app->assets->getDetails($filename, ['mimeType', 'width', 'height']);
+        $this->assertTrue($result['mimeType'] === 'image/svg+xml');
+        $this->assertTrue($result['width'] === null);
+        $this->assertTrue($result['height'] === null);
+    }
+
+    /**
+     * 
+     */
     public function testResize()
     {
         $app = $this->getApp();
         $app->assets->addDir($app->config['appDir'] . '/assets/');
 
-        $fileTypes = ['jpeg', 'jpg', 'png', 'gif'];
+        $fileTypes = ['jpeg', 'jpg', 'png', 'gif', 'svg'];
         if (function_exists('imagecreatefromwebp') && version_compare(PHP_VERSION, '7.3', '>=')) { // imagecreatefromstring() - webp is supported in 7.3.0
             $fileTypes[] = 'webp';
         }

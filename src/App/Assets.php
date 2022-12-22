@@ -265,7 +265,6 @@ class Assets
             if (isset($options['quality'])) {
                 $prepareOptions['quality'] = $options['quality'];
             }
-
             $resultFilename = $this->prepare($filename, $prepareOptions);
             if ($resultFilename !== null && is_file($resultFilename)) {
                 $content = file_get_contents($resultFilename);
@@ -442,6 +441,7 @@ class Assets
             if (function_exists('imageavif')) {
                 $result[] = 'avif';
             }
+            $result[] = 'svg';
             $this->cache[$cacheKey] = $result;
         }
         return $this->cache[$cacheKey];
@@ -490,14 +490,14 @@ class Assets
             if ($extension === 'svg' && (isset($options['svgFill']) || isset($options['svgStroke'])) && $extension === $fileExtension) {
                 $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
                 if (!is_file($tempFilename)) {
-                    $updates = [];
+                    $attributes = [];
                     if (isset($options['svgFill'])) {
-                        $updates['fill'] = $options['svgFill'];
+                        $attributes['fill'] = $options['svgFill'];
                     }
                     if (isset($options['svgStroke'])) {
-                        $updates['stroke'] = $options['svgStroke'];
+                        $attributes['stroke'] = $options['svgStroke'];
                     }
-                    $newContent = $this->updateSvgContent(file_get_contents($filename), $updates);
+                    $newContent = $this->updateSVGAttributes(file_get_contents($filename), $attributes);
                     file_put_contents($tempFilename, $newContent);
                 }
                 $result = $tempFilename;
@@ -651,7 +651,7 @@ class Assets
             $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $size = getimagesize($filename);
             if (is_array($size)) {
-                if ($extension === 'avif' && (int) $size[0] === 0) {
+                if (array_search($extension, ['webp', 'avif', 'svg']) !== false && (int) $size[0] === 0) {
                     // continue
                 } else {
                     return [(int) $size[0], (int) $size[1]];
@@ -667,9 +667,43 @@ class Assets
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
                 imagedestroy($sourceImage);
             }
+            if ($extension === 'svg') {
+                $result = $this->getSVGSize(file_get_contents($filename));
+            }
         } catch (\Exception $e) {
         }
         return $result;
+    }
+
+    /**
+     * Returns the size (if available) of the SVG content specified.
+     * 
+     * @param string $content The SVG content.
+     * @return array[int|null,int|null] The size of the SVG content specified.
+     */
+    private function getSVGSize(string $content): array
+    {
+        $content = strtolower($content);
+        $getAttributeValue = function (string $name) use ($content) {
+            $matches = [];
+            preg_match_all("/<svg(.*?)" . $name . "(.*?)=(.*?)\"(.*?)\"(.*?)>/", $content, $matches);
+            return isset($matches[4], $matches[4][0]) ? $matches[4][0] : null;
+        };
+        $width = $getAttributeValue('width');
+        $width = $width !== null && is_numeric($width) ? (int)$width : null;
+        $height = $getAttributeValue('height');
+        $height = $height !== null && is_numeric($height) ? (int)$height : null;
+        if ($width === null && $height === null) {
+            $viewbox = $getAttributeValue('viewbox');
+            if ($viewbox !== null) {
+                $viewboxParts = explode(' ', $viewbox);
+                if (sizeof($viewboxParts) === 4 && isset($viewboxParts[2], $viewboxParts[3])) {
+                    $width = is_numeric($viewboxParts[2]) ? (int)$viewboxParts[2] : null;
+                    $height = is_numeric($viewboxParts[3]) ? (int)$viewboxParts[3] : null;
+                }
+            }
+        }
+        return [$width, $height];
     }
 
     /**
@@ -696,40 +730,37 @@ class Assets
         if (isset($options['quality']) && (!is_int($options['quality']) || $options['quality'] < 0 || $options['quality'] > 100)) {
             throw new \InvalidArgumentException('The quality value must be >= 0 and <= 100');
         }
-        $outputType = null;
-        $destinationPathInfo = pathinfo($destinationFilename);
-        if (isset($destinationPathInfo['extension'])) {
-            $extension = strtolower($destinationPathInfo['extension']);
-            if ($extension === 'png') {
-                $outputType = 'png';
-            } elseif ($extension === 'gif') {
-                $outputType = 'gif';
-            } elseif ($extension === 'jpg' || $extension === 'jpeg') {
-                $outputType = 'jpg';
-            } elseif ($extension === 'webp') {
-                $outputType = 'webp';
-            } elseif ($extension === 'avif') {
-                $outputType = 'avif';
-            }
-        }
+        $sourceExtension = strtolower(pathinfo($sourceFilename, PATHINFO_EXTENSION));
+        $sourceType = $sourceExtension === 'jpeg' ? 'jpg' : $sourceExtension;
+        $destinationExtension = strtolower(pathinfo($destinationFilename, PATHINFO_EXTENSION));
+        $outputType = $destinationExtension === 'jpeg' ? 'jpg' : $destinationExtension;
 
         if (!$this->isSupportedOutputType($outputType)) {
-            throw new \InvalidArgumentException('The output format is not supported!');
+            throw new \InvalidArgumentException('The output type (' . $outputType . ') is not supported!');
+        }
+        if ($sourceType !== $outputType && ($sourceType === 'svg' || $outputType === 'svg')) {
+            throw new \InvalidArgumentException('The output type (' . $outputType . ') is not supported when the source is ' . $sourceType . '!');
         }
 
         $sourceContent = file_get_contents($sourceFilename);
-        try {
-            $sourceImage = @imagecreatefromstring($sourceContent);
-        } catch (\Error $e) {
-            $sourceImage = false;
-        } catch (\Exception $e) {
-            $sourceImage = false;
+
+        if ($outputType === 'svg') {
+            $sourceImage = null;
+            list($sourceWidth, $sourceHeight) = $this->getSVGSize($sourceContent);
+        } else {
+            try {
+                $sourceImage = @imagecreatefromstring($sourceContent);
+            } catch (\Error $e) {
+                $sourceImage = false;
+            } catch (\Exception $e) {
+                $sourceImage = false;
+            }
+            if ($sourceImage === false) {
+                throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
+            }
+            $sourceWidth = imagesx($sourceImage);
+            $sourceHeight = imagesy($sourceImage);
         }
-        if ($sourceImage === false) {
-            throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
-        }
-        $sourceWidth = imagesx($sourceImage);
-        $sourceHeight = imagesy($sourceImage);
 
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
@@ -759,43 +790,50 @@ class Assets
         }
 
         if ($sourceWidth === $width && $sourceHeight === $height && $quality === null) {
-            imagedestroy($sourceImage);
+            if ($sourceImage !== null) {
+                imagedestroy($sourceImage);
+            }
             file_put_contents($destinationFilename, $sourceContent);
         } else {
             $tempFilename = $this->appData->getFilename('.temp/assets/resize' . uniqid());
-            try {
-                $resultImage = imagecreatetruecolor($width, $height);
-                imagealphablending($resultImage, false);
-                imagesavealpha($resultImage, true);
-                imagefill($resultImage, 0, 0, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
-                $widthRatio = $sourceWidth / $width;
-                $heightRatio = $sourceHeight / $height;
-                $resizedImageHeight = $height;
-                $resizedImageWidth = $width;
-                if ($widthRatio > $heightRatio) {
-                    $resizedImageWidth = ceil($sourceWidth / $heightRatio);
-                } else {
-                    $resizedImageHeight = ceil($sourceHeight / $widthRatio);
-                }
-                $destinationX = - ($resizedImageWidth - $width) / 2;
-                $destinationY = - ($resizedImageHeight - $height) / 2;
-                if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
-                    if ($outputType === 'jpg') {
-                        imagejpeg($resultImage, $tempFilename, $quality);
-                    } elseif ($outputType === 'png') {
-                        imagepng($resultImage, $tempFilename, 9);
-                    } elseif ($outputType === 'gif') {
-                        imagegif($resultImage, $tempFilename);
-                    } elseif ($outputType === 'webp') {
-                        imagewebp($resultImage, $tempFilename, $quality);
-                    } elseif ($outputType === 'avif') {
-                        imageavif($resultImage, $tempFilename, $quality, 0);
+            if ($outputType === 'svg') {
+                $destinationContent = $this->updateSVGAttributes($sourceContent, ['width' => $width, 'height' => $height]);
+                file_put_contents($tempFilename, $destinationContent);
+            } else {
+                try {
+                    $resultImage = imagecreatetruecolor($width, $height);
+                    imagealphablending($resultImage, false);
+                    imagesavealpha($resultImage, true);
+                    imagefill($resultImage, 0, 0, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
+                    $widthRatio = $sourceWidth / $width;
+                    $heightRatio = $sourceHeight / $height;
+                    $resizedImageHeight = $height;
+                    $resizedImageWidth = $width;
+                    if ($widthRatio > $heightRatio) {
+                        $resizedImageWidth = ceil($sourceWidth / $heightRatio);
+                    } else {
+                        $resizedImageHeight = ceil($sourceHeight / $widthRatio);
                     }
+                    $destinationX = - ($resizedImageWidth - $width) / 2;
+                    $destinationY = - ($resizedImageHeight - $height) / 2;
+                    if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
+                        if ($outputType === 'jpg') {
+                            imagejpeg($resultImage, $tempFilename, $quality);
+                        } elseif ($outputType === 'png') {
+                            imagepng($resultImage, $tempFilename, 9);
+                        } elseif ($outputType === 'gif') {
+                            imagegif($resultImage, $tempFilename);
+                        } elseif ($outputType === 'webp') {
+                            imagewebp($resultImage, $tempFilename, $quality);
+                        } elseif ($outputType === 'avif') {
+                            imageavif($resultImage, $tempFilename, $quality, 0);
+                        }
+                    }
+                    imagedestroy($resultImage);
+                } catch (\Exception $e) {
                 }
-                imagedestroy($resultImage);
-            } catch (\Exception $e) {
+                imagedestroy($sourceImage);
             }
-            imagedestroy($sourceImage);
             if (is_file($tempFilename)) {
                 $exception = null;
                 try {
@@ -816,10 +854,10 @@ class Assets
      * Makes changes to the SVG content specified.
      *
      * @param string $content The SVG content.
-     * @param array $updates A list of updates to apply. Available values: ['fill'=>'#123456', 'stroke'=>'#123456']
+     * @param array $values A list of attributes to update/set. Example: ['fill'=>'#123456', 'stroke'=>'#123456']
      * @return string
      */
-    private function updateSvgContent(string $content, array $updates): string
+    private function updateSVGAttributes(string $content, array $values): string
     {
         $svgTagStartIndex = stripos($content, '<svg');
         if ($svgTagStartIndex !== false) {
@@ -835,11 +873,8 @@ class Assets
                         $svgTagContent .= ' ' . $attribute;
                     }
                 };
-                if (isset($updates['fill'])) {
-                    $updateOrAddAttribute('fill', $updates['fill']);
-                }
-                if (isset($updates['stroke'])) {
-                    $updateOrAddAttribute('stroke', $updates['stroke']);
+                foreach ($values as $name => $value) {
+                    $updateOrAddAttribute($name, $value);
                 }
                 return substr($content, 0, $svgTagStartIndex) . $svgTagContent . substr($content, $svgTagEndIndex);
             }
