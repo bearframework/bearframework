@@ -412,6 +412,7 @@ class Assets
                 $response->headers->set($response->headers->make('Content-Type', $mimeType));
             }
             $response->headers->set($response->headers->make('Content-Length', (string) filesize($filename)));
+            $response->headers->set($response->headers->make('Accept-Ranges', 'bytes'));
             return $response;
         }
     }
