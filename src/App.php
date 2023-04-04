@@ -198,7 +198,9 @@ class App
     public function send(\BearFramework\App\Response $response): void
     {
         if ($this->hasEventListeners('beforeSendResponse')) {
-            $this->dispatchEvent('beforeSendResponse', new \BearFramework\App\BeforeSendResponseEventDetails($response));
+            $eventDetails = new \BearFramework\App\BeforeSendResponseEventDetails($response);
+            $this->dispatchEvent('beforeSendResponse', $eventDetails);
+            $response = $eventDetails->response;
         }
         if (!$response->headers->exists('Content-Length')) {
             $response->headers->set($response->headers->make('Content-Length', ($response instanceof App\Response\FileReader ? (string) filesize($response->filename) : (string) strlen($response->content))));
