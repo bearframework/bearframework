@@ -10,8 +10,8 @@ BearFramework\Addon {
 
 	/* Methods */
 	public __construct ( string $id , string $dir , array $options )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 
 }
 ```
@@ -35,11 +35,11 @@ BearFramework\Addon {
 
 ##### public [__construct](bearframework.addon.__construct.method.md) ( string $id , string $dir , array $options )
 
-##### public array [toArray](bearframework.addon.toarray.method.md) ( void )
+##### public array [toArray](bearframework.addon.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.addon.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.addon.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

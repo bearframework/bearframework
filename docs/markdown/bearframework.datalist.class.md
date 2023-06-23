@@ -25,8 +25,8 @@ BearFramework\DataList implements ArrayAccess, Iterator, Countable, Traversable 
 	public mixed sliceProperties ( array $properties )
 	public self sort ( callable $callback )
 	public self sortBy ( string $property [, string $order = 'asc' ] )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 	public self unshift ( object|array $object )
 
 }
@@ -120,11 +120,11 @@ BearFramework\DataList implements ArrayAccess, Iterator, Countable, Traversable 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sorts the elements of the list by specific property.
 
-##### public array [toArray](bearframework.datalist.toarray.method.md) ( void )
+##### public array [toArray](bearframework.datalist.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the list data converted as an array.
 
-##### public string [toJSON](bearframework.datalist.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.datalist.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the list data converted as JSON.
 

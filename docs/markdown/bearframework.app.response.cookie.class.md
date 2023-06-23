@@ -14,8 +14,8 @@ BearFramework\App\Response\Cookie {
 
 	/* Methods */
 	public __construct ( void )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 
 }
 ```
@@ -54,11 +54,11 @@ BearFramework\App\Response\Cookie {
 
 ##### public [__construct](bearframework.app.response.cookie.__construct.method.md) ( void )
 
-##### public array [toArray](bearframework.app.response.cookie.toarray.method.md) ( void )
+##### public array [toArray](bearframework.app.response.cookie.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.app.response.cookie.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.app.response.cookie.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

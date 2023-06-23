@@ -12,8 +12,8 @@ BearFramework\App\DataItem {
 
 	/* Methods */
 	public __construct ( void )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 
 }
 ```
@@ -36,11 +36,11 @@ BearFramework\App\DataItem {
 
 ##### public [__construct](bearframework.app.dataitem.__construct.method.md) ( void )
 
-##### public array [toArray](bearframework.app.dataitem.toarray.method.md) ( void )
+##### public array [toArray](bearframework.app.dataitem.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.app.dataitem.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.app.dataitem.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

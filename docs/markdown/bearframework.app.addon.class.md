@@ -9,8 +9,8 @@ BearFramework\App\Addon {
 
 	/* Methods */
 	public __construct ( string $id , string $dir )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 
 }
 ```
@@ -29,11 +29,11 @@ BearFramework\App\Addon {
 
 ##### public [__construct](bearframework.app.addon.__construct.method.md) ( string $id , string $dir )
 
-##### public array [toArray](bearframework.app.addon.toarray.method.md) ( void )
+##### public array [toArray](bearframework.app.addon.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.app.addon.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.app.addon.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

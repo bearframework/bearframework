@@ -6,8 +6,8 @@ BearFramework\DataObject implements ArrayAccess {
 	/* Methods */
 	public static object fromArray ( array $data )
 	public static object fromJSON ( string $data )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 
 }
 ```
@@ -26,11 +26,11 @@ BearFramework\DataObject implements ArrayAccess {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates an object and fills its properties from the JSON specified.
 
-##### public array [toArray](bearframework.dataobject.toarray.method.md) ( void )
+##### public array [toArray](bearframework.dataobject.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.dataobject.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.dataobject.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

@@ -86,6 +86,7 @@ $classes = [
     'BearFramework\App\NullDataItemStreamWrapper' => 'src/App/NullDataItemStreamWrapper.php',
     'BearFramework\App\NullLogger' => 'src/App/NullLogger.php',
     'BearFramework\App\Request' => 'src/App/Request.php',
+    'BearFramework\App\Request\Client' => 'src/App/Request/Client.php',
     'BearFramework\App\Request\Cookie' => 'src/App/Request/Cookie.php',
     'BearFramework\App\Request\Cookies' => 'src/App/Request/Cookies.php',
     'BearFramework\App\Request\FormDataItem' => 'src/App/Request/FormDataItem.php',

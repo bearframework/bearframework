@@ -3,8 +3,14 @@
 Returns the object data converted as JSON.
 
 ```php
-public string toJSON ( void )
+public string toJSON ( [ array $options = [] ] )
 ```
+
+## Parameters
+
+##### options
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available options: ignoreReadonlyProperties, properties=>[]
 
 ## Returns
 

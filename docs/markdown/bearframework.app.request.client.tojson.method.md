@@ -1,4 +1,4 @@
-# BearFramework\App\Request\Header::toJSON
+# BearFramework\App\Request\Client::toJSON
 
 Returns the object data converted as JSON.
 
@@ -18,9 +18,9 @@ public string toJSON ( [ array $options = [] ] )
 
 ## Details
 
-Class: [BearFramework\App\Request\Header](bearframework.app.request.header.class.md)
+Class: [BearFramework\App\Request\Client](bearframework.app.request.client.class.md)
 
-Location: ~/src/App/Request/Header.php
+Location: ~/src/App/Request/Client.php
 
 ---
 

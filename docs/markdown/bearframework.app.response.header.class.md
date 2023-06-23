@@ -9,8 +9,8 @@ BearFramework\App\Response\Header {
 
 	/* Methods */
 	public __construct ( void )
-	public array toArray ( void )
-	public string toJSON ( void )
+	public array toArray ( [ array $options = [] ] )
+	public string toJSON ( [ array $options = [] ] )
 
 }
 ```
@@ -29,11 +29,11 @@ BearFramework\App\Response\Header {
 
 ##### public [__construct](bearframework.app.response.header.__construct.method.md) ( void )
 
-##### public array [toArray](bearframework.app.response.header.toarray.method.md) ( void )
+##### public array [toArray](bearframework.app.response.header.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.app.response.header.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.app.response.header.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 

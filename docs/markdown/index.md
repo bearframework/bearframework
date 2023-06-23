@@ -206,6 +206,10 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides information about the current request.
 
+### [BearFramework\App\Request\Client](bearframework.app.request.client.class.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides information about the client.
+
 ### [BearFramework\App\Request\Cookie](bearframework.app.request.cookie.class.md)
 
 ### [BearFramework\App\Request\Cookies](bearframework.app.request.cookies.class.md)

@@ -7,6 +7,7 @@ BearFramework\App\Request {
 
 	/* Properties */
 	public string|null $base
+	public readonly BearFramework\App\Request\Client $client
 	public readonly BearFramework\App\Request\Cookies $cookies
 	public readonly BearFramework\App\Request\FormData $formData
 	public readonly BearFramework\App\Request\Headers $headers
@@ -30,6 +31,10 @@ BearFramework\App\Request {
 ##### public string|null $base
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The base URL of the request.
+
+##### public readonly [BearFramework\App\Request\Client](bearframework.app.request.client.class.md) $client
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Client data.
 
 ##### public readonly [BearFramework\App\Request\Cookies](bearframework.app.request.cookies.class.md) $cookies
 

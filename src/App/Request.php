@@ -24,6 +24,7 @@ use BearFramework\App;
  * @property-read \BearFramework\App\Request\Headers $headers The request headers.
  * @property-read \BearFramework\App\Request\Cookies $cookies The request cookies.
  * @property-read \BearFramework\App\Request\FormData $formData The request POST data and files.
+ * @property-read \BearFramework\App\Request\Client $client Client data.
  */
 class Request
 {
@@ -137,6 +138,7 @@ class Request
                     }
                 }
             }
+            // TODO: Remove X_FORWARDED in v2. Let the app decide to use them. Maybe add helper function
             $scheme = (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && $_SERVER['HTTP_X_FORWARDED_PROTOCOL'] === 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
             $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
             $port = isset($_SERVER['HTTP_X_FORWARDED_PORT']) ? $_SERVER['HTTP_X_FORWARDED_PORT'] : (isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : '');
@@ -236,6 +238,16 @@ class Request
                         }
                     }
                     return $data;
+                },
+                'readonly' => true
+            ])
+            ->defineProperty('client', [
+                'init' => function () use ($path) {
+                    $client = new App\Request\Client();
+                    if (isset($_SERVER['REMOTE_ADDR'])) {
+                        $client->ip = $_SERVER['REMOTE_ADDR'];
+                    }
+                    return $client;
                 },
                 'readonly' => true
             ]);

@@ -38,11 +38,11 @@ BearFramework\App\Request\FormDataFileItem extends BearFramework\App\Request\For
 
 ### Inherited from [BearFramework\App\Request\FormDataItem](bearframework.app.request.formdataitem.class.md)
 
-##### public array [toArray](bearframework.app.request.formdataitem.toarray.method.md) ( void )
+##### public array [toArray](bearframework.app.request.formdataitem.toarray.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as an array.
 
-##### public string [toJSON](bearframework.app.request.formdataitem.tojson.method.md) ( void )
+##### public string [toJSON](bearframework.app.request.formdataitem.tojson.method.md) ( [ array $options = [] ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the object data converted as JSON.
 
