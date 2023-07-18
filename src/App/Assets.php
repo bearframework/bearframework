@@ -687,7 +687,15 @@ class Assets
         $content = strtolower($content);
         $getAttributeValue = function (string $name) use ($content) {
             $matches = [];
-            preg_match_all("/<svg(.*?)\s" . $name . "(.*?)=(.*?)\"(.*?)\"(.*?)>/", $content, $matches);
+            $startIndex = strpos($content, '<svg');
+            if ($startIndex === false) {
+                return null;
+            }
+            $length = strpos($content, '>', $startIndex);
+            if ($length === false) {
+                return null;
+            }
+            preg_match_all("/<svg(.*?)\s" . $name . "(.*?)=(.*?)\"(.*?)\"(.*?)>/", substr($content, $startIndex, $length + 1), $matches);
             return isset($matches[4], $matches[4][0]) ? $matches[4][0] : null;
         };
         $width = $getAttributeValue('width');
