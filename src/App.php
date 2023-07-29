@@ -12,7 +12,7 @@ namespace BearFramework;
 /**
  * The is the class used to instantiate you application.
  * 
- * @property-read \BearFramework\App\Request $request Provides information about the current request.
+ * @property \BearFramework\App\Request $request Provides information about the current request.
  * @property-read \BearFramework\App\Routes $routes Stores the data about the defined routes callbacks.
  * @property-read \BearFramework\App\Logs $logs Provides logging functionality.
  * @property-read \BearFramework\App\Addons $addons Provides a way to enable addons and manage their options.

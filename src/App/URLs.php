@@ -17,9 +17,9 @@ class URLs
 
     /**
      *
-     * @var string
+     * @var \BearFramework\App 
      */
-    private $base = null;
+    private $app = null;
 
     /**
      * 
@@ -27,7 +27,7 @@ class URLs
      */
     public function __construct(\BearFramework\App $app)
     {
-        $this->base = $app->request->base;
+        $this->app = $app; // dont cache request because it's not read only
     }
 
     /**
@@ -38,6 +38,6 @@ class URLs
      */
     public function get(string $path = '/')
     {
-        return $this->base . implode('/', array_map('rawurlencode', explode('/', $path)));
+        return $this->app->request->base . implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 }
