@@ -285,4 +285,27 @@ class MemoryDataDriver implements \BearFramework\App\IDataDriver
             }
         );
     }
+
+    /**
+     * Returns the available free space (in bytes) for data items.
+     *
+     * @return integer The available free space (in bytes) for data items.
+     */
+    public function getFreeSpace(): int
+    {
+        $getConfigMemoryLimit = function (): int {
+            $limit = trim(ini_get('memory_limit'));
+            $letter = strtolower(substr($limit, -1));
+            $number = substr($limit, 0, -1);
+            if ($letter === 'g') {
+                return (int) $number * 1024 * 1024 * 1024;
+            } elseif ($letter === 'm') {
+                return (int) $number * 1024 * 1024;
+            } elseif ($letter === 'k') {
+                return (int) $number * 1024;
+            }
+            return (int) $limit;
+        };
+        return $getConfigMemoryLimit() - memory_get_usage();
+    }
 }

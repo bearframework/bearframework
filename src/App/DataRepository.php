@@ -893,4 +893,15 @@ class DataRepository
     {
         return preg_match("/^[a-zA-Z0-9\.\-\_]*$/", $key) === 1;
     }
+
+    /**
+     * Returns the available free space (in bytes) for data items.
+     *
+     * @return integer The available free space (in bytes) for data items.
+     */
+    public function getFreeSpace(): int
+    {
+        $driver = $this->getDriver();
+        return $driver->getFreeSpace();
+    }
 }

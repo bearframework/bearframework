@@ -154,4 +154,11 @@ interface IDataDriver
      * @return \BearFramework\App\IDataItemStreamWrapper
      */
     public function getDataItemStreamWrapper(string $key, string $mode): \BearFramework\App\IDataItemStreamWrapper;
+
+    /**
+     * Returns the available free space (in bytes) for data items.
+     *
+     * @return integer The available free space (in bytes) for data items.
+     */
+    public function getFreeSpace(): int;
 }

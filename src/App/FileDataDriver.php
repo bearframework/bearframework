@@ -450,4 +450,19 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
     {
         return new \BearFramework\App\FileDataItemStreamWrapper($key, $this->dir);
     }
+
+    /**
+     * Returns the available free space (in bytes) for data items.
+     *
+     * @return integer The available free space (in bytes) for data items.
+     */
+    public function getFreeSpace(): int
+    {
+        $freeSpace = disk_free_space($this->dir);
+        $freeSpace -= 1024 * 1024 * 1024; // Leave 1 GB just in case
+        if ($freeSpace < 0) {
+            $freeSpace = 0;
+        }
+        return $freeSpace;
+    }
 }

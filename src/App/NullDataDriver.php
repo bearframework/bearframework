@@ -219,4 +219,14 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
     {
         return new \BearFramework\App\NullDataItemStreamWrapper();
     }
+
+    /**
+     * Returns the available free space (in bytes) for data items.
+     *
+     * @return integer The available free space (in bytes) for data items.
+     */
+    public function getFreeSpace(): int
+    {
+        return 1024 * 1024 * 1024; // 1 GB
+    }
 }
