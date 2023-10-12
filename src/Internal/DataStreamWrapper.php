@@ -66,6 +66,12 @@ class DataStreamWrapper
 
     /**
      * 
+     * @var null|resource
+     */
+    public $context = null; // Must be defined for PHP 8.2 (dynamic properties are deprecated)
+
+    /**
+     * 
      * @param string $path
      * @param string $mode
      * @param int $options

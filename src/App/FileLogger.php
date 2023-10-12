@@ -48,8 +48,15 @@ class FileLogger implements ILogger
         try {
             $microtimeParts = explode('.', (string)microtime(true));
             $logData = date('H:i:s', (int)$microtimeParts[0]) . ':' . str_pad(isset($microtimeParts[1]) ? $microtimeParts[1] : '', 4, '0', STR_PAD_RIGHT) . "\n" . trim($message) . (empty($data) ? '' : "\n" . trim(print_r($data, true))) . "\n\n";
-            $fileHandler = fopen($filename, 'ab');
-            fwrite($fileHandler, $logData);
+            $fileHandler = @fopen($filename, 'ab');
+            if ($fileHandler === false) {
+                throw new \Exception('');
+            }
+            $writeResult = @fwrite($fileHandler, $logData);
+            if ($writeResult === false) {
+                fclose($fileHandler);
+                throw new \Exception('');
+            }
             fclose($fileHandler);
         } catch (\Exception $e) {
             throw new \Exception('Cannot write log file (' . $filename . ')');

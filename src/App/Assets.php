@@ -650,7 +650,7 @@ class Assets
         $result = [null, null];
         try {
             $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            $size = getimagesize($filename);
+            $size = @getimagesize($filename);
             if (is_array($size)) {
                 if (array_search($extension, ['webp', 'avif', 'svg']) !== false && (int) $size[0] === 0) {
                     // continue
