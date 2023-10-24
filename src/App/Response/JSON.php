@@ -23,6 +23,6 @@ class JSON extends \BearFramework\App\Response
     {
         parent::__construct($content);
         $this->charset = 'UTF-8';
-        $this->headers->set($this->headers->make('Content-Type', 'text/json'));
+        $this->headers->set($this->headers->make('Content-Type', 'application/json'));
     }
 }
