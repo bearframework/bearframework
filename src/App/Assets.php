@@ -758,14 +758,24 @@ class Assets
             list($sourceWidth, $sourceHeight) = $this->getSVGSize($sourceContent);
         } else {
             try {
+                $errorText = '';
+                set_error_handler(function ($errno, $errstr) {
+                    if (strpos((string)$errstr, 'libpng warning') !== false) { // fix for "gd-png: libpng warning: iCCP: known incorrect sRGB profile"
+                        return true;
+                    }
+                    return false;
+                });
                 $sourceImage = @imagecreatefromstring($sourceContent);
+                restore_error_handler();
             } catch (\Error $e) {
+                $errorText = $e->getMessage();
                 $sourceImage = false;
             } catch (\Exception $e) {
+                $errorText = $e->getMessage();
                 $sourceImage = false;
             }
             if ($sourceImage === false) {
-                throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ')');
+                throw new \InvalidArgumentException('Cannot read the source image or unsupported format (' . $sourceFilename . ($errorText !== '' ? ', ' . $errorText : '') . ')');
             }
             $sourceWidth = imagesx($sourceImage);
             $sourceHeight = imagesy($sourceImage);
