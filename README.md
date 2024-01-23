@@ -6,11 +6,8 @@ An open-source **PHP framework** that can help you build successful projects bet
 
 Bear Framework provides all the basic tools you need to develop a modern website or application. You've got <a href="http://bearframework.com/docs/latest/routing/">routing</a>, <a href="http://bearframework.com/docs/latest/data/">data storage</a>, <a href="http://bearframework.com/docs/latest/addons/">addons</a>, <a href="http://bearframework.com/docs/latest/logs/">logs</a>, <a href="http://bearframework.com/docs/latest/assets/">assets helpers</a> and <a href="http://bearframework.com/docs/latest/">few more useful tools</a>.
 
-[![Build Status](https://travis-ci.org/bearframework/bearframework.svg)](https://travis-ci.org/bearframework/bearframework)
 [![Latest Stable Version](https://poser.pugx.org/bearframework/bearframework/v/stable)](https://packagist.org/packages/bearframework/bearframework)
-[![codecov.io](https://codecov.io/github/bearframework/bearframework/coverage.svg?branch=master)](https://codecov.io/github/bearframework/bearframework?branch=master)
 [![License](https://poser.pugx.org/bearframework/bearframework/license)](https://packagist.org/packages/bearframework/bearframework)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/36a41361218145539175d0fc7b153f0f)](https://www.codacy.com/app/ivo_2/bearframework)
 
 ## Simple and powerful
 
