@@ -103,7 +103,9 @@ class Contexts
             arsort($this->dirs);
             $indexFilename = $dir . '/index.php';
             if (is_file($indexFilename)) {
-                ob_start();
+                if (!ob_start()) {
+                    throw new \Exception('Cannot turn on output buffering!');
+                }
                 try {
                     (static function ($__filename) {
                         include $__filename;

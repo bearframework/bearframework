@@ -76,6 +76,7 @@ class Routes
      * Finds the matching callback and returns its result.
      * 
      * @param \BearFramework\App\Request $request The request object to match against.
+     * @throws \Exception
      * @return mixed The result of the matching callback. NULL if none.
      */
     public function getResponse(\BearFramework\App\Request $request)
@@ -93,7 +94,9 @@ class Routes
                 $patternPath = $matches[2];
                 if (preg_match('/^' . str_replace(['/', '?', '*'], ['\/', '[^\/]+?', '.+?'], $patternPath) . '$/u', $requestPath) === 1) {
                     foreach ($route[1] as $callable) {
-                        ob_start();
+                        if (!ob_start()) {
+                            throw new \Exception('Cannot turn on output buffering!');
+                        }
                         try {
                             $response = call_user_func($callable, $request);
                             ob_end_clean();
