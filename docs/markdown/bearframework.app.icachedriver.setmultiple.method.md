@@ -3,7 +3,7 @@
 Stores multiple values in the cache.
 
 ```php
-abstract public void setMultiple ( array $items [, int $ttl ] )
+abstract public void setMultiple ( array $items [, int|null $ttl ] )
 ```
 
 ## Parameters

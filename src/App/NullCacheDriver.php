@@ -19,11 +19,11 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      * Stores a value in the cache.
      * 
      * @param string $key The key under which to store the value.
-     * @param type $value The value to store.
-     * @param int $ttl Number of seconds to store value in the cache.
+     * @param mixed $value The value to store.
+     * @param int|null $ttl Number of seconds to store value in the cache.
      * @return void No value is returned.
      */
-    public function set(string $key, $value, int $ttl = null): void
+    public function set(string $key, $value, ?int $ttl = null): void
     {
     }
 
@@ -53,10 +53,10 @@ class NullCacheDriver implements \BearFramework\App\ICacheDriver
      * Stores multiple values in the cache.
      * 
      * @param array $items An array of key/value pairs to store in the cache.
-     * @param int $ttl Number of seconds to store values in the cache.
+     * @param int|null $ttl Number of seconds to store values in the cache.
      * @return void No value is returned.
      */
-    public function setMultiple(array $items, int $ttl = null): void
+    public function setMultiple(array $items, ?int $ttl = null): void
     {
     }
 

@@ -4,7 +4,7 @@
 BearFramework\App\Data\DataLockedException extends Exception implements Throwable, Stringable {
 
 	/* Methods */
-	public __construct ( [ string $message = '' [, int $code = 0 [, Exception $previous ]]] )
+	public __construct ( [ string $message = '' [, int $code = 0 [, Exception|null $previous ]]] )
 
 }
 ```
@@ -21,7 +21,7 @@ BearFramework\App\Data\DataLockedException extends Exception implements Throwabl
 
 ## Methods
 
-##### public [__construct](bearframework.app.data.datalockedexception.__construct.method.md) ( [ string $message = '' [, int $code = 0 [, [Exception](http://php.net/manual/en/class.exception.php) $previous ]]] )
+##### public [__construct](bearframework.app.data.datalockedexception.__construct.method.md) ( [ string $message = '' [, int $code = 0 [, [Exception](http://php.net/manual/en/class.exception.php)|null $previous ]]] )
 
 ### Inherited from [Exception](http://php.net/manual/en/class.exception.php)
 

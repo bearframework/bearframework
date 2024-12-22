@@ -159,7 +159,7 @@ class DataRepository
      * @return \BearFramework\App\DataItem Returns a new data item.
      * @throws \InvalidArgumentException
      */
-    public function make(string $key = null, string $value = null): \BearFramework\App\DataItem
+    public function make(?string $key = null, ?string $value = null): \BearFramework\App\DataItem
     {
         if ($this->newDataItemCache === null) {
             $this->newDataItemCache = new \BearFramework\App\DataItem();
@@ -204,6 +204,7 @@ class DataRepository
             }
             $driver = $this->getDriver();
             $driver->set($item);
+            unset($driver);
         };
         if ($this->hasEventListeners('itemBeforeSet')) {
             $eventDetails = new \BearFramework\App\Data\ItemBeforeSetEventDetails($item);
@@ -212,6 +213,7 @@ class DataRepository
                 'defaultListener' => $set
             ]);
             $preventCompleteEvents = $eventDetails->preventCompleteEvents;
+            unset($eventDetails);
         } else {
             $set();
         }

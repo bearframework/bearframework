@@ -14,7 +14,7 @@ public self sortBy ( string $property [, string $order = 'asc' ] )
 
 ##### order
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The sort order.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The sort order. Available values: asc and desc
 
 ## Returns
 

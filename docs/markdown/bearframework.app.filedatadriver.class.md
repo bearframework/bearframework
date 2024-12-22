@@ -14,6 +14,7 @@ BearFramework\App\FileDataDriver implements BearFramework\App\IDataDriver {
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
 	public BearFramework\App\IDataItemStreamWrapper getDataItemStreamWrapper ( string $key , string $mode )
+	public int getFreeSpace ( void )
 	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( [ BearFramework\DataList\Context|null $context ] )
 	public string|null getMetadata ( string $key , string $name )
 	public string|null getValue ( string $key )
@@ -64,6 +65,10 @@ BearFramework\App\FileDataDriver implements BearFramework\App\IDataDriver {
 ##### public [BearFramework\App\IDataItemStreamWrapper](bearframework.app.idataitemstreamwrapper.class.md) [getDataItemStreamWrapper](bearframework.app.filedatadriver.getdataitemstreamwrapper.method.md) ( string $key , string $mode )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a DataItemStreamWrapper for the key specified.
+
+##### public int [getFreeSpace](bearframework.app.filedatadriver.getfreespace.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the available free space (in bytes) for data items.
 
 ##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.filedatadriver.getlist.method.md) ( [ [BearFramework\DataList\Context](bearframework.datalist.context.class.md)|null $context ] )
 

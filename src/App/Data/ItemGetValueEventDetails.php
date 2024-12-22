@@ -22,7 +22,7 @@ class ItemGetValueEventDetails
      * @param string $key
      * @param string|null $value
      */
-    public function __construct(string $key, string $value = null)
+    public function __construct(string $key, ?string $value = null)
     {
         $this
             ->defineProperty('key', [

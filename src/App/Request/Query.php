@@ -32,7 +32,7 @@ class Query
      * @param string|null $value The value of the query item.
      * @return \BearFramework\App\Request\QueryItem Returns a new query item.
      */
-    public function make(string $name = null, string $value = null): \BearFramework\App\Request\QueryItem
+    public function make(?string $name = null, ?string $value = null): \BearFramework\App\Request\QueryItem
     {
         if ($this->newQueryItemCache === null) {
             $this->newQueryItemCache = new \BearFramework\App\Request\QueryItem();

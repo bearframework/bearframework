@@ -203,7 +203,7 @@ class NullDataDriver implements \BearFramework\App\IDataDriver
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function getList(\BearFramework\DataList\Context $context = null): \BearFramework\DataList
+    public function getList(?\BearFramework\DataList\Context $context = null): \BearFramework\DataList
     {
         return new \BearFramework\DataList();
     }

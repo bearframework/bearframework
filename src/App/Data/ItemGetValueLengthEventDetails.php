@@ -22,7 +22,7 @@ class ItemGetValueLengthEventDetails
      * @param string $key
      * @param int|null $length
      */
-    public function __construct(string $key, int $length = null)
+    public function __construct(string $key, ?int $length = null)
     {
         $this
             ->defineProperty('key', [

@@ -25,7 +25,7 @@ class GetURLEventDetails
      * @param array $options
      * @param string|null $url
      */
-    public function __construct(string $filename, array $options, string $url = null)
+    public function __construct(string $filename, array $options, ?string $url = null)
     {
         $this
             ->defineProperty('filename', [

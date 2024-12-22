@@ -14,7 +14,7 @@ BearFramework\App\CacheRepository {
 	public BearFramework\App\CacheItem|null get ( string $key )
 	public mixed getValue ( string $key )
 	public bool hasEventListeners ( string $name )
-	public BearFramework\App\CacheItem make ( [ string|null $key [, string|null $value ]] )
+	public BearFramework\App\CacheItem make ( [ string|null $key [, mixed $value ]] )
 	public self removeEventListener ( string $name , callable $listener )
 	public self set ( BearFramework\App\CacheItem $item )
 	public self setDriver ( BearFramework\App\ICacheDriver $driver )
@@ -58,7 +58,7 @@ BearFramework\App\CacheRepository {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns TRUE if there are registered event listeners for the name specified, FALSE otherwise.
 
-##### public [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md) [make](bearframework.app.cacherepository.make.method.md) ( [ string|null $key [, string|null $value ]] )
+##### public [BearFramework\App\CacheItem](bearframework.app.cacheitem.class.md) [make](bearframework.app.cacherepository.make.method.md) ( [ string|null $key [, mixed $value ]] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new cache item and returns it.
 

@@ -67,7 +67,9 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
         foreach ($metadataAsArray as $name => $value) {
             $command['metadata.' . $name] = $value;
         }
+        unset($metadataAsArray);
         $this->execute([$command]);
+        unset($command);
     }
 
     /**
@@ -348,7 +350,7 @@ class FileDataDriver implements \BearFramework\App\IDataDriver
      * @throws \Exception
      * @throws \BearFramework\App\Data\DataLockedException
      */
-    public function getList(\BearFramework\DataList\Context $context = null): \BearFramework\DataList
+    public function getList(?\BearFramework\DataList\Context $context = null): \BearFramework\DataList
     {
         $whereOptions = [];
         $resultKeys = [];

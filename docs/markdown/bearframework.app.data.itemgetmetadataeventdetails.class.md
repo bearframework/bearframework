@@ -9,7 +9,7 @@ BearFramework\App\Data\ItemGetMetadataEventDetails {
 	public string|null $value
 
 	/* Methods */
-	public __construct ( string $key , string $name [, string $value ] )
+	public __construct ( string $key , string $name [, string|null $value ] )
 
 }
 ```
@@ -24,7 +24,7 @@ BearFramework\App\Data\ItemGetMetadataEventDetails {
 
 ## Methods
 
-##### public [__construct](bearframework.app.data.itemgetmetadataeventdetails.__construct.method.md) ( string $key , string $name [, string $value ] )
+##### public [__construct](bearframework.app.data.itemgetmetadataeventdetails.__construct.method.md) ( string $key , string $name [, string|null $value ] )
 
 ## Details
 

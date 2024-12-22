@@ -16,6 +16,7 @@ BearFramework\App\DataRepository {
 	public bool exists ( string $key )
 	public BearFramework\App\DataItem|null get ( string $key )
 	public string getFilename ( string $key )
+	public int getFreeSpace ( void )
 	public BearFramework\DataList|BearFramework\App\DataItem[] getList ( void )
 	public string|null getMetadata ( string $key , string $name )
 	public string|null getValue ( string $key )
@@ -77,6 +78,10 @@ BearFramework\App\DataRepository {
 ##### public string [getFilename](bearframework.app.datarepository.getfilename.method.md) ( string $key )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the filename of the data item specified.
+
+##### public int [getFreeSpace](bearframework.app.datarepository.getfreespace.method.md) ( void )
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the available free space (in bytes) for data items.
 
 ##### public [BearFramework\DataList](bearframework.datalist.class.md)|[BearFramework\App\DataItem[]](bearframework.app.dataitem.class.md) [getList](bearframework.app.datarepository.getlist.method.md) ( void )
 

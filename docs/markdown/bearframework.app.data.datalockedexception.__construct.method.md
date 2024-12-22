@@ -1,7 +1,7 @@
 # BearFramework\App\Data\DataLockedException::__construct
 
 ```php
-public __construct ( [ string $message = '' [, int $code = 0 [, Exception $previous ]]] )
+public __construct ( [ string $message = '' [, int $code = 0 [, Exception|null $previous ]]] )
 ```
 
 ## Parameters

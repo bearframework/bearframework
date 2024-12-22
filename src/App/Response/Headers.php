@@ -32,7 +32,7 @@ class Headers
      * @param string|null $value The value of the header.
      * @return \BearFramework\App\Response\Header Returns a new header.
      */
-    public function make(string $name = null, string $value = null): \BearFramework\App\Response\Header
+    public function make(?string $name = null, ?string $value = null): \BearFramework\App\Response\Header
     {
         if ($this->newHeaderCache === null) {
             $this->newHeaderCache = new \BearFramework\App\Response\Header();

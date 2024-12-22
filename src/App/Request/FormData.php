@@ -32,7 +32,7 @@ class FormData
      * @param string|null $value The value of the form data item.
      * @return \BearFramework\App\Request\FormDataItem Returns a new form data item.
      */
-    public function make(string $name = null, string $value = null): \BearFramework\App\Request\FormDataItem
+    public function make(?string $name = null, ?string $value = null): \BearFramework\App\Request\FormDataItem
     {
         if ($this->newFormDataItemCache === null) {
             $this->newFormDataItemCache = new \BearFramework\App\Request\FormDataItem();

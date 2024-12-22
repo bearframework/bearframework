@@ -32,7 +32,7 @@ class Cookies
      * @param string|null $value The value of the cookie.
      * @return \BearFramework\App\Response\Cookie Returns a new cookie.
      */
-    public function make(string $name = null, string $value = null): \BearFramework\App\Response\Cookie
+    public function make(?string $name = null, ?string $value = null): \BearFramework\App\Response\Cookie
     {
         if ($this->newCookieCache === null) {
             $this->newCookieCache = new \BearFramework\App\Response\Cookie();

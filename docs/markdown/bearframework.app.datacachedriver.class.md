@@ -12,8 +12,8 @@ BearFramework\App\DataCacheDriver implements BearFramework\App\ICacheDriver {
 	public void deleteMultiple ( array $keys )
 	public mixed|null get ( string $key )
 	public array getMultiple ( array $keys )
-	public void set ( string $key , type $value [, int $ttl ] )
-	public void setMultiple ( array $items [, int $ttl ] )
+	public void set ( string $key , mixed $value [, int|null $ttl ] )
+	public void setMultiple ( array $items [, int|null $ttl ] )
 
 }
 ```
@@ -50,11 +50,11 @@ BearFramework\App\DataCacheDriver implements BearFramework\App\ICacheDriver {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieves multiple values from the cache.
 
-##### public void [set](bearframework.app.datacachedriver.set.method.md) ( string $key , type $value [, int $ttl ] )
+##### public void [set](bearframework.app.datacachedriver.set.method.md) ( string $key , mixed $value [, int|null $ttl ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores a value in the cache.
 
-##### public void [setMultiple](bearframework.app.datacachedriver.setmultiple.method.md) ( array $items [, int $ttl ] )
+##### public void [setMultiple](bearframework.app.datacachedriver.setmultiple.method.md) ( array $items [, int|null $ttl ] )
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stores multiple values in the cache.
 

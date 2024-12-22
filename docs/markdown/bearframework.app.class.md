@@ -13,7 +13,7 @@ BearFramework\App {
 	public readonly BearFramework\App\Contexts $contexts
 	public readonly BearFramework\App\DataRepository $data
 	public readonly BearFramework\App\Logs $logs
-	public readonly BearFramework\App\Request $request
+	public BearFramework\App\Request $request
 	public readonly BearFramework\App\Routes $routes
 	public readonly BearFramework\App\Shortcuts $shortcuts
 	public readonly BearFramework\App\URLs $urls
@@ -62,7 +62,7 @@ BearFramework\App {
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides logging functionality.
 
-##### public readonly [BearFramework\App\Request](bearframework.app.request.class.md) $request
+##### public [BearFramework\App\Request](bearframework.app.request.class.md) $request
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides information about the current request.
 

@@ -144,7 +144,7 @@ interface IDataDriver
      * @param \BearFramework\DataList\Context|null $context
      * @return \BearFramework\DataList|\BearFramework\App\DataItem[] A list of all items in the data storage.
      */
-    public function getList(\BearFramework\DataList\Context $context = null): \BearFramework\DataList;
+    public function getList(?\BearFramework\DataList\Context $context = null): \BearFramework\DataList;
 
     /**
      * Returns a DataItemStreamWrapper for the key specified.

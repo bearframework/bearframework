@@ -3,7 +3,7 @@
 Constructs a new cache item and returns it.
 
 ```php
-public BearFramework\App\CacheItem make ( [ string|null $key [, string|null $value ]] )
+public BearFramework\App\CacheItem make ( [ string|null $key [, mixed $value ]] )
 ```
 
 ## Parameters

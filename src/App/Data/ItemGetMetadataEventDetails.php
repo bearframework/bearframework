@@ -23,9 +23,9 @@ class ItemGetMetadataEventDetails
      * 
      * @param string $key
      * @param string $name
-     * @param string $value
+     * @param string|null $value
      */
-    public function __construct(string $key, string $name, string $value = null)
+    public function __construct(string $key, string $name, ?string $value = null)
     {
         $this
             ->defineProperty('key', [

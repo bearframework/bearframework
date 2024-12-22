@@ -3,7 +3,7 @@
 Stores a value in the cache.
 
 ```php
-abstract public void set ( string $key , type $value [, int $ttl ] )
+abstract public void set ( string $key , mixed $value [, int|null $ttl ] )
 ```
 
 ## Parameters

@@ -97,10 +97,10 @@ class CacheRepository
      * Constructs a new cache item and returns it.
      * 
      * @param string|null $key The key of the cache item.
-     * @param string|null $value The value of the cache item.
+     * @param mixed $value The value of the cache item.
      * @return \BearFramework\App\CacheItem Returns a new cache item.
      */
-    public function make(string $key = null, $value = null): \BearFramework\App\CacheItem
+    public function make(?string $key = null, $value = null): \BearFramework\App\CacheItem
     {
         if ($this->newCacheItemCache === null) {
             $this->newCacheItemCache = new CacheItem();

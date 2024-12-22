@@ -25,7 +25,7 @@ class GetContentEventDetails
      * @param array $options
      * @param string|null $returnValue
      */
-    public function __construct(string $filename, array $options, string $returnValue = null)
+    public function __construct(string $filename, array $options, ?string $returnValue = null)
     {
         $this
             ->defineProperty('filename', [
