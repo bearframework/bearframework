@@ -75,7 +75,7 @@ class Classes
     {
         $filename = $this->getFilename($class);
         if ($filename !== null) {
-            (static function ($__filename) {
+            (static function ($__filename): void {
                 include_once $__filename;
             })($filename);
         }

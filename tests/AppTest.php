@@ -201,7 +201,7 @@ $app->routes->add(\'/\', function() {
     function testBeforeSendResponseEvent()
     {
         $app = $this->getApp();
-        $app->addEventListener('beforeSendResponse', function (\BearFramework\App\BeforeSendResponseEventDetails $details) {
+        $app->addEventListener('beforeSendResponse', function (\BearFramework\App\BeforeSendResponseEventDetails $details): void {
             $details->response->content .= '2';
         });
         $this->expectOutputString('Hi2');
@@ -214,7 +214,7 @@ $app->routes->add(\'/\', function() {
     function testSendResponseEvent()
     {
         $app = $this->getApp();
-        $app->addEventListener('sendResponse', function (\BearFramework\App\SendResponseEventDetails $details) {
+        $app->addEventListener('sendResponse', function (\BearFramework\App\SendResponseEventDetails $details): void {
             $details->response->content .= '2';
         });
         $this->expectOutputString('Hi');

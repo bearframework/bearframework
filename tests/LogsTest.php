@@ -61,5 +61,4 @@ class LogsTest extends BearFrameworkTestCase
         $app->logs->log('error', 'message');
         $this->assertTrue(true);
     }
-
 }

@@ -175,7 +175,7 @@ class BearFrameworkTestCase extends PHPUnit\Framework\TestCase
         if (isset($pathinfo['dirname']) && $pathinfo['dirname'] !== '.') {
             $this->makeDir($pathinfo['dirname']);
         }
-        $index = sizeof($this->lockedFiles);
+        $index = count($this->lockedFiles);
         $this->lockedFiles[$index] = fopen($filename, "c+");
         flock($this->lockedFiles[$index], LOCK_EX | LOCK_NB);
     }

@@ -195,7 +195,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config['appDir'] . '/assets/file2.svg';
         $this->makeFile($filename2, 'sample-svg-content-2');
 
-        $app->assets->addEventListener('beforePrepare', function (\BearFramework\App\Assets\BeforePrepareEventDetails $details) use ($filename2) {
+        $app->assets->addEventListener('beforePrepare', function (\BearFramework\App\Assets\BeforePrepareEventDetails $details) use ($filename2): void {
             $details->filename = $filename2;
         });
         $content = $app->assets->getContent($filename1);
@@ -216,7 +216,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename2 = $app->config['appDir'] . '/assets/file2.svg';
         $this->makeFile($filename2, 'sample-svg-content-2');
 
-        $app->assets->addEventListener('prepare', function (\BearFramework\App\Assets\PrepareEventDetails $details) use ($filename2) {
+        $app->assets->addEventListener('prepare', function (\BearFramework\App\Assets\PrepareEventDetails $details) use ($filename2): void {
             $details->returnValue = $filename2;
         });
         $content = $app->assets->getContent($filename1);
@@ -235,7 +235,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config['appDir'] . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
 
-        $app->assets->addEventListener('beforeGetURL', function (\BearFramework\App\Assets\BeforeGetURLEventDetails $details) {
+        $app->assets->addEventListener('beforeGetURL', function (\BearFramework\App\Assets\BeforeGetURLEventDetails $details): void {
             $details->returnValue = 'http://example.com/file.svg';
         });
         $url = $app->assets->getURL($filename);
@@ -254,7 +254,7 @@ class AssetsTest extends BearFrameworkTestCase
         $filename = $app->config['appDir'] . '/assets/file.svg';
         $this->makeFile($filename, 'sample-svg-content');
 
-        $app->assets->addEventListener('getURL', function (\BearFramework\App\Assets\GetURLEventDetails $details) {
+        $app->assets->addEventListener('getURL', function (\BearFramework\App\Assets\GetURLEventDetails $details): void {
             $details->url = 'http://example.com/file.svg';
         });
 
@@ -271,7 +271,7 @@ class AssetsTest extends BearFrameworkTestCase
 
         $filename = $app->config['appDir'] . '/missing/file.svg';
 
-        $app->assets->addEventListener('getURL', function (\BearFramework\App\Assets\GetURLEventDetails $details) {
+        $app->assets->addEventListener('getURL', function (\BearFramework\App\Assets\GetURLEventDetails $details): void {
             $this->assertTrue($details->url === null);
             $details->url = 'http://example.com/file.svg';
         });
@@ -476,7 +476,7 @@ class AssetsTest extends BearFrameworkTestCase
     public function testBeforeGetDetailsEvent1()
     {
         $app = $this->getApp();
-        $app->assets->addEventListener('beforeGetDetails', function (\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details) {
+        $app->assets->addEventListener('beforeGetDetails', function (\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details): void {
             $details->returnValue = ['width' => 200, 'height' => 100];
         });
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 200);
@@ -492,7 +492,7 @@ class AssetsTest extends BearFrameworkTestCase
 
         $filename = $app->config['appDir'] . '/assets/logo.jpg';
         $this->makeSampleFile($filename, 'jpg');
-        $app->assets->addEventListener('beforeGetDetails', function (\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details) use ($filename) {
+        $app->assets->addEventListener('beforeGetDetails', function (\BearFramework\App\Assets\BeforeGetDetailsEventDetails $details) use ($filename): void {
             $details->filename = $filename;
         });
         $this->assertTrue($app->assets->getDetails('samplefile.jpg', ['width'])['width'] === 100);
@@ -507,7 +507,7 @@ class AssetsTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $imageWidth = null;
-        $app->assets->addEventListener('getDetails', function (\BearFramework\App\Assets\GetDetailsEventDetails $details) use (&$imageWidth) {
+        $app->assets->addEventListener('getDetails', function (\BearFramework\App\Assets\GetDetailsEventDetails $details) use (&$imageWidth): void {
             $imageWidth = $details->returnValue['width'];
         });
         $filename = $app->config['appDir'] . '/assets/logo.jpg';
@@ -522,7 +522,7 @@ class AssetsTest extends BearFrameworkTestCase
     public function testBeforeGetContentEvent1()
     {
         $app = $this->getApp();
-        $app->assets->addEventListener('beforeGetContent', function (\BearFramework\App\Assets\BeforeGetContentEventDetails $details) {
+        $app->assets->addEventListener('beforeGetContent', function (\BearFramework\App\Assets\BeforeGetContentEventDetails $details): void {
             $details->returnValue = 'changed';
         });
         $this->assertTrue($app->assets->getContent('samplefile.jpg') === 'changed');
@@ -539,7 +539,7 @@ class AssetsTest extends BearFrameworkTestCase
         $this->makeSampleFile($filename1, 'png');
         $filename2 = $app->config['appDir'] . '/assets/samplefile1.jpg';
         $this->makeSampleFile($filename2, 'jpg');
-        $app->assets->addEventListener('beforeGetContent', function (\BearFramework\App\Assets\BeforeGetContentEventDetails $details) use ($filename2) {
+        $app->assets->addEventListener('beforeGetContent', function (\BearFramework\App\Assets\BeforeGetContentEventDetails $details) use ($filename2): void {
             $details->filename = $filename2;
         });
         $this->assertTrue($app->assets->getContent($filename1) === file_get_contents($filename2));
@@ -553,7 +553,7 @@ class AssetsTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $imageContent = null;
-        $app->assets->addEventListener('getContent', function (\BearFramework\App\Assets\GetContentEventDetails $details) use (&$imageContent) {
+        $app->assets->addEventListener('getContent', function (\BearFramework\App\Assets\GetContentEventDetails $details) use (&$imageContent): void {
             $imageContent = $details->returnValue;
         });
         $filename = $app->config['appDir'] . '/assets/samplefile1.png';

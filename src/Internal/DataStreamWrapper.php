@@ -119,7 +119,7 @@ class DataStreamWrapper
             $eventDetails = new \BearFramework\App\Data\ItemBeforeGetStreamWrapperEventDetails($this->key, $mode);
             $dataRepository->dispatchEvent('itemBeforeGetStreamWrapper', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($dataDriver) {
+                'defaultListener' => function ($eventDetails) use ($dataDriver): void {
                     $eventDetails->returnValue = $dataDriver->getDataItemStreamWrapper($eventDetails->key, $eventDetails->mode);
                 }
             ]);
@@ -462,7 +462,7 @@ class DataStreamWrapper
             $this->dirPointer++;
             return $this->dirFiles[$this->dirPointer - 1];
         } else {
-            $this->dirPointer = sizeof($this->dirFiles);
+            $this->dirPointer = count($this->dirFiles);
             return false;
         }
     }
@@ -517,7 +517,7 @@ class DataStreamWrapper
     private function getPathInfo(string $path)
     {
         $pathParts = explode('://', $path, 2);
-        if (sizeof($pathParts) !== 2) {
+        if (count($pathParts) !== 2) {
             return false;
         }
         $protocol = $pathParts[0];

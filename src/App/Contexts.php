@@ -107,7 +107,7 @@ class Contexts
                     throw new \Exception('Cannot turn on output buffering!');
                 }
                 try {
-                    (static function ($__filename) {
+                    (static function ($__filename): void {
                         include $__filename;
                     })($indexFilename);
                     ob_end_clean();

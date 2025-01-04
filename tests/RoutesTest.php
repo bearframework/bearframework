@@ -515,7 +515,7 @@ class RoutesTest extends BearFrameworkTestCase
         $app = $this->getApp();
 
         $this->expectException('InvalidArgumentException');
-        $app->routes->add([], function() {
+        $app->routes->add([], function(): void {
             
         });
     }

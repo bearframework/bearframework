@@ -307,7 +307,7 @@ class Assets
             }
             $path = substr($path, strlen($this->internalPathPrefix));
             $partParts = explode('/', $path, 2);
-            if (sizeof($partParts) !== 2) {
+            if (count($partParts) !== 2) {
                 return null;
             }
             $result = [
@@ -706,7 +706,7 @@ class Assets
             $viewbox = $getAttributeValue('viewbox');
             if ($viewbox !== null) {
                 $viewboxParts = explode(' ', $viewbox);
-                if (sizeof($viewboxParts) === 4 && isset($viewboxParts[2], $viewboxParts[3])) {
+                if (count($viewboxParts) === 4 && isset($viewboxParts[2], $viewboxParts[3])) {
                     $width = is_numeric($viewboxParts[2]) ? (int)$viewboxParts[2] : null;
                     $height = is_numeric($viewboxParts[3]) ? (int)$viewboxParts[3] : null;
                 }
@@ -883,7 +883,7 @@ class Assets
             $svgTagEndIndex = stripos($content, '>', $svgTagStartIndex);
             if ($svgTagEndIndex !== false) {
                 $svgTagContent = substr($content, $svgTagStartIndex, $svgTagEndIndex - $svgTagStartIndex);
-                $updateOrAddAttribute = function (string $name, string $value) use (&$svgTagContent) {
+                $updateOrAddAttribute = function (string $name, string $value) use (&$svgTagContent): void {
                     $expression = '/' . $name . '=".*?"/';
                     $attribute = $name . '="' . htmlentities($value) . '"';
                     if (preg_match($expression, $svgTagContent)) {

@@ -91,35 +91,35 @@ class CacheTest extends BearFrameworkTestCase
 
         $eventsLogs = [];
 
-        $app->cache->addEventListener('itemChange', function (\BearFramework\App\Cache\ItemChangeEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemChange', function (\BearFramework\App\Cache\ItemChangeEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['change', $details->key, $details->action];
         });
 
-        $app->cache->addEventListener('itemRequest', function (\BearFramework\App\Cache\ItemRequestEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemRequest', function (\BearFramework\App\Cache\ItemRequestEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['request', $details->key, $details->action];
         });
 
-        $app->cache->addEventListener('itemSet', function (\BearFramework\App\Cache\ItemSetEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemSet', function (\BearFramework\App\Cache\ItemSetEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['set', $details->item->key, $details->item->value];
         });
 
-        $app->cache->addEventListener('itemGet', function (\BearFramework\App\Cache\ItemGetEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemGet', function (\BearFramework\App\Cache\ItemGetEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['get', $details->item->key, $details->item->value];
         });
 
-        $app->cache->addEventListener('itemGetValue', function (\BearFramework\App\Cache\ItemGetValueEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemGetValue', function (\BearFramework\App\Cache\ItemGetValueEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['getValue', $details->key, $details->value];
         });
 
-        $app->cache->addEventListener('itemExists', function (\BearFramework\App\Cache\ItemExistsEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemExists', function (\BearFramework\App\Cache\ItemExistsEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['exists', $details->key, $details->exists];
         });
 
-        $app->cache->addEventListener('itemDelete', function (\BearFramework\App\Cache\ItemDeleteEventDetails $details) use (&$eventsLogs) {
+        $app->cache->addEventListener('itemDelete', function (\BearFramework\App\Cache\ItemDeleteEventDetails $details) use (&$eventsLogs): void {
             $eventsLogs[] = ['delete', $details->key];
         });
 
-        $app->cache->addEventListener('clear', function () use (&$eventsLogs) {
+        $app->cache->addEventListener('clear', function () use (&$eventsLogs): void {
             $eventsLogs[] = ['clear'];
         });
 

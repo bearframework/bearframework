@@ -84,7 +84,7 @@ class ErrorHandler
 
                 $isSimpleLog = $i === 0 || $i === 2;
                 $log = '';
-                $addContent = function (string $title, string $data) use (&$log) {
+                $addContent = function (string $title, string $data) use (&$log): void {
                     if (isset($log[0])) {
                         $log .= "\n\n";
                     }
@@ -94,7 +94,7 @@ class ErrorHandler
                     $addContent('Log key', $logKey);
                 }
 
-                $errorsCount = sizeof($errors);
+                $errorsCount = count($errors);
                 foreach ($errors as $j => $error) {
                     $message = isset($error['message']) ? $error['message'] : '';
                     $trace = isset($error['trace']) ? $error['trace'] : [];

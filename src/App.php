@@ -120,7 +120,7 @@ class App
             ])
             ->defineProperty('shortcuts', [
                 'init' => function () {
-                    return new App\Shortcuts(function (string $name, callable $callback) {
+                    return new App\Shortcuts(function (string $name, callable $callback): void {
                         if (isset($this->$name)) {
                             throw new \Exception('A property/shortcut named "' . $name . '" already exists!');
                         }
@@ -160,16 +160,16 @@ class App
         if ($this->errorHandlerEnabled) {
             throw new \Exception('The error handler is already enabled!');
         }
-        set_exception_handler(function ($exception) use ($options) {
+        set_exception_handler(function ($exception) use ($options): void {
             \BearFramework\Internal\ErrorHandler::handleException($this, $exception, $options);
         });
-        register_shutdown_function(function () use ($options) {
+        register_shutdown_function(function () use ($options): void {
             $errorData = error_get_last();
             if (is_array($errorData)) {
                 \BearFramework\Internal\ErrorHandler::handleFatalError($this, $errorData, $options);
             }
         });
-        set_error_handler(function ($errorNumber, $errorMessage, $errorFile, $errorLine) {
+        set_error_handler(function ($errorNumber, $errorMessage, $errorFile, $errorLine): void {
             throw new \ErrorException($errorMessage, 0, $errorNumber, $errorFile, $errorLine);
         });
         $this->errorHandlerEnabled = true;

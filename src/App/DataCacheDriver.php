@@ -99,7 +99,7 @@ class DataCacheDriver implements \BearFramework\App\ICacheDriver
      * @param int|null $ttl Number of seconds to store values in the cache.
      * @return void No value is returned.
      */
-    public function setMultiple(array $items, int $ttl = null): void
+    public function setMultiple(array $items, ?int $ttl = null): void
     {
         foreach ($items as $key => $value) {
             $this->set($key, $value, $ttl);

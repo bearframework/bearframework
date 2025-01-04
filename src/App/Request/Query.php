@@ -170,7 +170,7 @@ class Query
     static function fromArray(array $array): Query
     {
         $query = new Query();
-        $walkVariables = function ($variables, $parent = null) use (&$query, &$walkVariables) {
+        $walkVariables = function ($variables, $parent = null) use (&$query, &$walkVariables): void {
             foreach ($variables as $name => $value) {
                 if (is_array($value)) {
                     $walkVariables($value, $name);

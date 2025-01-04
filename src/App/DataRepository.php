@@ -198,7 +198,7 @@ class DataRepository
             }
         }
         $preventCompleteEvents = false;
-        $set = function () use ($item, $metadataAsArray) {
+        $set = function () use ($item, $metadataAsArray): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'set', $item->key, $item->value, $metadataAsArray);
             }
@@ -244,7 +244,7 @@ class DataRepository
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $setValue = function () use ($key, $value) {
+        $setValue = function () use ($key, $value): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'setValue', $key, $value);
             }
@@ -299,7 +299,7 @@ class DataRepository
             $eventDetails = new \BearFramework\App\Data\ItemBeforeGetEventDetails($key);
             $this->dispatchEvent('itemBeforeGet', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($get) {
+                'defaultListener' => function ($eventDetails) use ($get): void {
                     $eventDetails->returnValue = $get();
                 }
             ]);
@@ -346,7 +346,7 @@ class DataRepository
             $eventDetails = new \BearFramework\App\Data\ItemBeforeGetValueEventDetails($key);
             $this->dispatchEvent('itemBeforeGetValue', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($getValue) {
+                'defaultListener' => function ($eventDetails) use ($getValue): void {
                     $eventDetails->returnValue = $getValue();
                 }
             ]);
@@ -393,7 +393,7 @@ class DataRepository
             $eventDetails = new \BearFramework\App\Data\ItemBeforeGetValueLengthEventDetails($key);
             $this->dispatchEvent('itemBeforeGetValueLength', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($getValueLength) {
+                'defaultListener' => function ($eventDetails) use ($getValueLength): void {
                     $eventDetails->returnValue = $getValueLength();
                 }
             ]);
@@ -440,7 +440,7 @@ class DataRepository
             $eventDetails = new \BearFramework\App\Data\ItemBeforeExistsEventDetails($key);
             $this->dispatchEvent('itemBeforeExists', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($exists) {
+                'defaultListener' => function ($eventDetails) use ($exists): void {
                     $eventDetails->returnValue = $exists();
                 }
             ]);
@@ -476,7 +476,7 @@ class DataRepository
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $append = function () use ($key, $content) {
+        $append = function () use ($key, $content): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'append', $key, $content);
             }
@@ -523,7 +523,7 @@ class DataRepository
             throw new \InvalidArgumentException('The key provided (' . $destinationKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $duplicate = function () use ($sourceKey, $destinationKey) {
+        $duplicate = function () use ($sourceKey, $destinationKey): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'duplicate', $sourceKey, $destinationKey);
             }
@@ -573,7 +573,7 @@ class DataRepository
             throw new \InvalidArgumentException('The key provided (' . $destinationKey . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $rename = function () use ($sourceKey, $destinationKey) {
+        $rename = function () use ($sourceKey, $destinationKey): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'rename', $sourceKey, $destinationKey);
             }
@@ -617,7 +617,7 @@ class DataRepository
             throw new \InvalidArgumentException('The key provided (' . $key . ') is not valid! It may contain only the following characters: "a-z", "0-9", ".", "/", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $delete = function () use ($key) {
+        $delete = function () use ($key): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'delete', $key);
             }
@@ -665,7 +665,7 @@ class DataRepository
             throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $setMetadata = function () use ($key, $name, $value) {
+        $setMetadata = function () use ($key, $name, $value): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'setMetadata', $key, $name, $value);
             }
@@ -724,7 +724,7 @@ class DataRepository
             $eventDetails = new \BearFramework\App\Data\ItemBeforeGetMetadataEventDetails($key, $name);
             $this->dispatchEvent('itemBeforeGetMetadata', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($getMetadata) {
+                'defaultListener' => function ($eventDetails) use ($getMetadata): void {
                     $eventDetails->returnValue = $getMetadata();
                 }
             ]);
@@ -763,7 +763,7 @@ class DataRepository
             throw new \InvalidArgumentException('The metadata name provided (' . $name . ') is not valid! It may contain only the following characters: "a-z", "A-Z", "0-9", ".", "-" and "_".');
         }
         $preventCompleteEvents = false;
-        $deleteMetadata = function () use ($key, $name) {
+        $deleteMetadata = function () use ($key, $name): void {
             if (defined('BEARFRAMEWORK_DATA_ACCESS_CALLBACK')) {
                 call_user_func(BEARFRAMEWORK_DATA_ACCESS_CALLBACK, 'deleteMetadata', $key, $name);
             }
@@ -835,7 +835,7 @@ class DataRepository
             $eventDetails = new \BearFramework\App\Data\BeforeGetListEventDetails();
             $this->dispatchEvent('beforeGetList', $eventDetails, [
                 'cancelable' => true,
-                'defaultListener' => function ($eventDetails) use ($getList) {
+                'defaultListener' => function ($eventDetails) use ($getList): void {
                     $eventDetails->returnValue = $getList();
                 }
             ]);

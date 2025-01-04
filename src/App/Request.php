@@ -53,7 +53,7 @@ class Request
         };
 
         $preventBaseUpdate = false;
-        $setBasePart = function ($name, $value) use (&$updateBase, &$preventBaseUpdate) {
+        $setBasePart = function ($name, $value) use (&$updateBase, &$preventBaseUpdate): void {
             $preventBaseUpdate = true;
             $this->base = $updateBase($this->base, $name, $value);
             $preventBaseUpdate = false;
@@ -78,10 +78,10 @@ class Request
                     $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['scheme']) ? $data['scheme'] : null;
                 },
-                'set' => function ($value) use (&$setBasePart) {
+                'set' => function ($value) use (&$setBasePart): void {
                     $setBasePart('scheme', $value);
                 },
-                'unset' => function () use (&$setBasePart) {
+                'unset' => function () use (&$setBasePart): void {
                     $setBasePart('scheme', '');
                 }
             ])
@@ -91,10 +91,10 @@ class Request
                     $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['host']) ? $data['host'] : null;
                 },
-                'set' => function ($value) use (&$setBasePart) {
+                'set' => function ($value) use (&$setBasePart): void {
                     $setBasePart('host', $value);
                 },
-                'unset' => function () use (&$setBasePart) {
+                'unset' => function () use (&$setBasePart): void {
                     $setBasePart('host', '');
                 }
             ])
@@ -104,10 +104,10 @@ class Request
                     $data = $this->base !== null ? parse_url($this->base) : [];
                     return isset($data['port']) ? $data['port'] : null;
                 },
-                'set' => function ($value) use (&$setBasePart) {
+                'set' => function ($value) use (&$setBasePart): void {
                     $setBasePart('port', $value);
                 },
-                'unset' => function () use (&$setBasePart) {
+                'unset' => function () use (&$setBasePart): void {
                     $setBasePart('port', '');
                 }
             ]);
@@ -212,7 +212,7 @@ class Request
                 'init' => function () use ($initializeFromEnvironment) {
                     $data = new App\Request\FormData();
                     if ($initializeFromEnvironment && isset($_POST, $_FILES)) {
-                        $walkVariables = function ($variables, $parent = null) use (&$data, &$walkVariables) {
+                        $walkVariables = function ($variables, $parent = null) use (&$data, &$walkVariables): void {
                             foreach ($variables as $name => $value) {
                                 if (is_array($value)) {
                                     $walkVariables($value, $name);

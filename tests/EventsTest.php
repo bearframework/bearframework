@@ -25,10 +25,10 @@ class EventsTest extends BearFrameworkTestCase
 
         $result = '';
 
-        $listener1 = function () use (&$result) {
+        $listener1 = function () use (&$result): void {
             $result .= '1';
         };
-        $listener2 = function () use (&$result) {
+        $listener2 = function () use (&$result): void {
             $result .= '2';
         };
 
@@ -71,7 +71,7 @@ class EventsTest extends BearFrameworkTestCase
 
         $result = '';
 
-        $object->addEventListener('done', function () use (&$result) {
+        $object->addEventListener('done', function () use (&$result): void {
             $result .= '1';
         });
         $object->dispatchEvent('done');
@@ -95,7 +95,7 @@ class EventsTest extends BearFrameworkTestCase
             'event2Dispached' => 0,
         ];
 
-        $object->addEventListener('event1', function () use (&$result) {
+        $object->addEventListener('event1', function () use (&$result): void {
             $result['event1Handled'] = 1;
         });
         if ($object->hasEventListeners('event1')) {
@@ -129,7 +129,7 @@ class EventsTest extends BearFrameworkTestCase
 
         $result = '';
 
-        $object->addEventListener('done', function ($details) use (&$result) {
+        $object->addEventListener('done', function ($details) use (&$result): void {
             $result .= $details->value;
         });
         $object->dispatchEvent('done', $details);
@@ -147,12 +147,12 @@ class EventsTest extends BearFrameworkTestCase
             use \BearFramework\EventsTrait;
         };
 
-        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+        $object->addEventListener('test', function ($eventDetails, $dispatcher): void {
             $dispatcher->continue();
             $eventDetails->value .= '1';
         });
 
-        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+        $object->addEventListener('test', function ($eventDetails, $dispatcher): void {
             $eventDetails->value .= '2';
         });
 
@@ -160,7 +160,7 @@ class EventsTest extends BearFrameworkTestCase
         $eventDetails->value = '';
 
         $object->dispatchEvent('test', $eventDetails, [
-            'defaultListener' => function ($eventDetails) {
+            'defaultListener' => function ($eventDetails): void {
                 $eventDetails->value .= '3';
             }
         ]);
@@ -178,7 +178,7 @@ class EventsTest extends BearFrameworkTestCase
             use \BearFramework\EventsTrait;
         };
 
-        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+        $object->addEventListener('test', function ($eventDetails, $dispatcher): void {
             $eventDetails->value .= '1';
             $dispatcher->cancel();
         });
@@ -188,7 +188,7 @@ class EventsTest extends BearFrameworkTestCase
 
         $object->dispatchEvent('test', $eventDetails, [
             'cancelable' => true,
-            'defaultListener' => function ($eventDetails) {
+            'defaultListener' => function ($eventDetails): void {
                 $eventDetails->value .= '3';
             }
         ]);
@@ -206,11 +206,11 @@ class EventsTest extends BearFrameworkTestCase
             use \BearFramework\EventsTrait;
         };
 
-        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+        $object->addEventListener('test', function ($eventDetails, $dispatcher): void {
             $eventDetails->value .= '1';
         });
 
-        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+        $object->addEventListener('test', function ($eventDetails, $dispatcher): void {
             $dispatcher->continue();
             $eventDetails->value .= '2';
         });
@@ -233,7 +233,7 @@ class EventsTest extends BearFrameworkTestCase
             use \BearFramework\EventsTrait;
         };
 
-        $object->addEventListener('test', function ($eventDetails, $dispatcher) {
+        $object->addEventListener('test', function ($eventDetails, $dispatcher): void {
             $eventDetails->value = '1';
             $dispatcher->cancel();
         });
