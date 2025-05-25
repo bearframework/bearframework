@@ -110,9 +110,13 @@ class Contexts
                     (static function ($__filename): void {
                         include $__filename;
                     })($indexFilename);
-                    ob_end_clean();
+                    if (ob_get_level() > 0) {
+                        ob_end_clean();
+                    }
                 } catch (\Exception $e) {
-                    ob_end_clean();
+                    if (ob_get_level() > 0) {
+                        ob_end_clean();
+                    }
                     throw $e;
                 }
             } else {
