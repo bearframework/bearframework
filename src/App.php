@@ -182,11 +182,13 @@ class App
      */
     public function run(): void
     {
+        $previousValue = ignore_user_abort(true);
         $response = $this->routes->getResponse($this->request);
         if (!($response instanceof App\Response)) {
             $response = new App\Response\NotFound();
         }
         $this->send($response);
+        ignore_user_abort($previousValue);
     }
 
     /**
