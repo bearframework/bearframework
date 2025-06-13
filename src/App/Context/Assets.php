@@ -54,7 +54,7 @@ class Assets
      * Returns a public URL for the specified filename in the current context.
      * 
      * @param string $filename The filename.
-     * @param array $options URL options. You can resize the file by providing "width", "height" or both.
+     * @param array $options URL options. You can modify the file by providing "width", "height" or both. You can also provide "quality", "rorate" and "cropX", "cropY", "cropWidth" and "cropHeight".
      * @return string The URL for the specified filename and options.
      */
     public function getURL(string $filename, array $options = []): string
@@ -66,7 +66,7 @@ class Assets
      * Returns the content of the file specified in the current context.
      * 
      * @param string $filename The filename.
-     * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64 or data-uri).
+     * @param array $options List of options. You can modify the file by providing "width", "height" or both. You can also provide "quality", "rorate" and "cropX", "cropY", "cropWidth" and "cropHeight". You can specify encoding too (base64 or data-uri).
      * @return string|null The content of the file or null if file does not exists.
      */
     public function getContent(string $filename, array $options = []): ?string

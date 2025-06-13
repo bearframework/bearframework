@@ -128,7 +128,7 @@ class Assets
      * Returns a public URL for the specified filename.
      * 
      * @param string $filename The filename.
-     * @param array $options URL options. You can resize the file by providing "width", "height" or both.
+     * @param array $options URL options. You can modify the file by providing "width", "height" or both. You can also provide "quality", "rorate" and "cropX", "cropY", "cropWidth" and "cropHeight".
      * @throws \InvalidArgumentException
      * @return string The URL for the specified filename and options.
      */
@@ -197,7 +197,18 @@ class Assets
             if (isset($options['svgStroke']) && preg_match('/^#[a-fA-F0-9]{3,6}$/', $options['svgStroke'])) {
                 $optionsString .= '-s' . substr($options['svgStroke'], 1);
             }
-            $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12); // TODO add outputType to hash
+            if (isset($options['rotate'])) {
+                $optionsString .= '-t' . $options['rotate'];
+            }
+            if (
+                isset($options['cropX']) && preg_match('/^[0-9]{1,6}$/', $options['cropX']) &&
+                isset($options['cropY']) && preg_match('/^[0-9]{1,6}$/', $options['cropY']) &&
+                isset($options['cropWidth']) && preg_match('/^[0-9]{1,6}$/', $options['cropWidth']) &&
+                isset($options['cropHeight']) && preg_match('/^[0-9]{1,6}$/', $options['cropHeight'])
+            ) {
+                $optionsString .= '-x' . $options['cropX'] . 'x' . $options['cropY'] . 'x' . $options['cropWidth'] . 'x' . $options['cropHeight'];
+            }
+            $hash = substr(md5(md5($filename) . md5($optionsString)), 0, 12); // TODO add outputType to hash, use base_convert
 
             $fileDirCacheKey = '1' . $fileDir;
             if (!isset($this->cache[$fileDirCacheKey])) {
@@ -231,7 +242,7 @@ class Assets
      * Returns the content of the file specified.
      * 
      * @param string $filename The filename.
-     * @param array $options List of options. You can resize the file by providing "width", "height" or both. You can specify encoding too (base64, data-uri, data-uri-base64).
+     * @param array $options List of options. You can modify the file by providing "width", "height" or both. You can also provide "quality", "rorate" and "cropX", "cropY", "cropWidth" and "cropHeight". You can specify encoding too (base64, data-uri, data-uri-base64).
      * @throws \InvalidArgumentException
      * @return string|null The content of the file or null if file does not exists.
      */
@@ -371,6 +382,27 @@ class Assets
                             $result['options']['svgStroke'] = '#' . $value;
                         }
                     }
+                    if (substr($option, 0, 1) === 't') {
+                        $value = (int) substr($option, 1);
+                        if (array_search($value, [0, 90, 180, 270]) !== false) {
+                            $result['options']['rotate'] = $value;
+                        }
+                    }
+                    if (substr($option, 0, 1) === 'x') {
+                        $valueParts = explode('x', (string) substr($option, 1));
+                        if (
+                            sizeof($valueParts) === 4 &&
+                            preg_match('/^[0-9]{1,6}$/', $valueParts[0]) &&
+                            preg_match('/^[0-9]{1,6}$/', $valueParts[1]) &&
+                            preg_match('/^[0-9]{1,6}$/', $valueParts[2]) &&
+                            preg_match('/^[0-9]{1,6}$/', $valueParts[3])
+                        ) {
+                            $result['options']['cropX'] = (int)$valueParts[0];
+                            $result['options']['cropY'] = (int)$valueParts[1];
+                            $result['options']['cropWidth'] = (int)$valueParts[2];
+                            $result['options']['cropHeight'] = (int)$valueParts[3];
+                        }
+                    }
                 }
             }
 
@@ -502,22 +534,27 @@ class Assets
                     file_put_contents($tempFilename, $newContent);
                 }
                 $result = $tempFilename;
-            } else if (!isset($options['width']) && !isset($options['height']) && !isset($options['quality']) && $extension === $fileExtension) {
-                $result = $filename;
-            } else {
+            } else if (isset($options['width']) || isset($options['height']) || isset($options['quality']) || isset($options['rotate']) || isset($options['cropX']) || isset($options['cropY']) || isset($options['cropWidth']) || isset($options['cropHeight']) || $extension !== $fileExtension) {
                 if ($this->isSupportedOutputType($extension === 'jpeg' ? 'jpg' : $extension)) {
                     $tempFilename = $this->appData->getFilename('.temp/assets/' . md5(md5($filename) . md5(json_encode($options))) . '.' . $extension);
                     if (!is_file($tempFilename)) {
-                        $this->resize($filename, $tempFilename, [
+                        $this->modify($filename, $tempFilename, [
                             'width' => (isset($options['width']) ? $options['width'] : null),
                             'height' => (isset($options['height']) ? $options['height'] : null),
-                            'quality' => (isset($options['quality']) ? $options['quality'] : null)
+                            'quality' => (isset($options['quality']) ? $options['quality'] : null),
+                            'rotate' => (isset($options['rotate']) ? $options['rotate'] : null),
+                            'cropX' => (isset($options['cropX']) ? $options['cropX'] : null),
+                            'cropY' => (isset($options['cropY']) ? $options['cropY'] : null),
+                            'cropWidth' => (isset($options['cropWidth']) ? $options['cropWidth'] : null),
+                            'cropHeight' => (isset($options['cropHeight']) ? $options['cropHeight'] : null)
                         ]);
                     }
                     $result = $tempFilename;
                 } else {
                     $result = null;
                 }
+            } else {
+                $result = $filename;
             }
         }
         if ($this->hasEventListeners('prepare')) {
@@ -583,6 +620,55 @@ class Assets
         if (isset($options['svgStroke'])) {
             if (!is_string($options['svgStroke'])) {
                 throw new \InvalidArgumentException('The value of the svgStroke option must be of type string, ' . gettype($options['svgStroke']) . ' given.');
+            }
+        }
+        if (isset($options['rotate'])) {
+            if (!is_int($options['rotate']) || array_search($options['rotate'], [0, 90, 180, 270]) === false) {
+                throw new \InvalidArgumentException('The value of the rotate option must be of type int, ' . gettype($options['rotate']) . ' given. It must be 0, 90, 180 or 270.');
+            }
+        }
+        if (isset($options['cropX'])) {
+            if (!is_int($options['cropX'])) {
+                throw new \InvalidArgumentException('The value of the cropX option must be of type int, ' . gettype($options['cropX']) . ' given.');
+            }
+            if ($options['cropX'] < 1) {
+                throw new \InvalidArgumentException('The value of the cropX option cannot be lower than 1.');
+            }
+            if ($options['cropX'] > 100000) {
+                throw new \InvalidArgumentException('The value of the cropX option cannot be higher than 100000.');
+            }
+        }
+        if (isset($options['cropY'])) {
+            if (!is_int($options['cropY'])) {
+                throw new \InvalidArgumentException('The value of the cropY option must be of type int, ' . gettype($options['cropY']) . ' given.');
+            }
+            if ($options['cropY'] < 1) {
+                throw new \InvalidArgumentException('The value of the cropY option cannot be lower than 1.');
+            }
+            if ($options['cropY'] > 100000) {
+                throw new \InvalidArgumentException('The value of the cropY option cannot be higher than 100000.');
+            }
+        }
+        if (isset($options['cropWidth'])) {
+            if (!is_int($options['cropWidth'])) {
+                throw new \InvalidArgumentException('The value of the cropWidth option must be of type int, ' . gettype($options['cropWidth']) . ' given.');
+            }
+            if ($options['cropWidth'] < 1) {
+                throw new \InvalidArgumentException('The value of the cropWidth option cannot be lower than 1.');
+            }
+            if ($options['cropWidth'] > 100000) {
+                throw new \InvalidArgumentException('The value of the cropWidth option cannot be higher than 100000.');
+            }
+        }
+        if (isset($options['cropHeight'])) {
+            if (!is_int($options['cropHeight'])) {
+                throw new \InvalidArgumentException('The value of the cropHeight option must be of type int, ' . gettype($options['cropHeight']) . ' given.');
+            }
+            if ($options['cropHeight'] < 1) {
+                throw new \InvalidArgumentException('The value of the cropHeight option cannot be lower than 1.');
+            }
+            if ($options['cropHeight'] > 100000) {
+                throw new \InvalidArgumentException('The value of the cropHeight option cannot be higher than 100000.');
             }
         }
     }
@@ -716,16 +802,16 @@ class Assets
     }
 
     /**
-     * Resizes an asset file.
+     * Modify an asset file.
      * 
-     * @param string $sourceFilename The asset file to resize.
+     * @param string $sourceFilename The asset file to modify.
      * @param string $destinationFilename The filename where the result asset will be saved.
-     * @param array $options Resize options. You can resize the file by providing "width", "height" or both. You can also provide "quality".
+     * @param array $options Modify options. You can modify the file by providing "width", "height" or both. You can also provide "quality", "rorate" and "cropX", "cropY", "cropWidth" and "cropHeight".
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @return void No value is returned.
      */
-    private function resize(string $sourceFilename, string $destinationFilename, array $options = []): void
+    private function modify(string $sourceFilename, string $destinationFilename, array $options = []): void
     {
         if (!is_file($sourceFilename)) {
             throw new \InvalidArgumentException('The sourceFilename specified does not exist (' . $sourceFilename . ')');
@@ -738,6 +824,21 @@ class Assets
         }
         if (isset($options['quality']) && (!is_int($options['quality']) || $options['quality'] < 0 || $options['quality'] > 100)) {
             throw new \InvalidArgumentException('The quality value must be >= 0 and <= 100');
+        }
+        if (isset($options['rotate']) && (!is_int($options['rotate']) || array_search($options['rotate'], [0, 90, 180, 270]) === false)) {
+            throw new \InvalidArgumentException('The rotate value must be 0, 90, 180 or 270.');
+        }
+        if (isset($options['cropX']) && (!is_int($options['cropX']) || $options['cropX'] < 1 || $options['cropX'] > 100000)) {
+            throw new \InvalidArgumentException('The cropX value must be higher than 0 and lower than 100001');
+        }
+        if (isset($options['cropY']) && (!is_int($options['cropY']) || $options['cropY'] < 1 || $options['cropY'] > 100000)) {
+            throw new \InvalidArgumentException('The cropY value must be higher than 0 and lower than 100001');
+        }
+        if (isset($options['cropWidth']) && (!is_int($options['cropWidth']) || $options['cropWidth'] < 1 || $options['cropWidth'] > 100000)) {
+            throw new \InvalidArgumentException('The cropWidth value must be higher than 0 and lower than 100001');
+        }
+        if (isset($options['cropHeight']) && (!is_int($options['cropHeight']) || $options['cropHeight'] < 1 || $options['cropHeight'] > 100000)) {
+            throw new \InvalidArgumentException('The cropHeight value must be higher than 0 and lower than 100001');
         }
         $sourceExtension = strtolower(pathinfo($sourceFilename, PATHINFO_EXTENSION));
         $sourceType = $sourceExtension === 'jpeg' ? 'jpg' : $sourceExtension;
@@ -784,6 +885,20 @@ class Assets
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
         $quality = isset($options['quality']) ? $options['quality'] : 100;
+        $rotate = isset($options['rotate']) ? $options['rotate'] : null;
+        if (isset($options['cropX'], $options['cropY'], $options['cropWidth'], $options['cropHeight'])) {
+            $hasCrop = true;
+            $cropX = $options['cropX'];
+            $cropY = $options['cropY'];
+            $cropWidth = $options['cropWidth'];
+            $cropHeight = $options['cropHeight'];
+        } else {
+            $hasCrop = false;
+            $cropX = null;
+            $cropY = null;
+            $cropWidth = null;
+            $cropHeight = null;
+        }
 
         if ($width === null && $height === null) {
             $width = $sourceWidth;
@@ -808,13 +923,13 @@ class Assets
             $height = 1;
         }
 
-        if ($sourceWidth === $width && $sourceHeight === $height && $quality === null) {
+        if ($sourceWidth === $width && $sourceHeight === $height && $quality === null && $rotate === null && $hasCrop === false) {
             if ($sourceImage !== null) {
                 imagedestroy($sourceImage);
             }
             file_put_contents($destinationFilename, $sourceContent);
         } else {
-            $tempFilename = $this->appData->getFilename('.temp/assets/resize' . uniqid());
+            $tempFilename = $this->appData->getFilename('.temp/assets/modify' . uniqid());
             if ($outputType === 'svg') {
                 $destinationContent = $this->updateSVGAttributes($sourceContent, ['width' => $width, 'height' => $height]);
                 file_put_contents($tempFilename, $destinationContent);
@@ -836,6 +951,20 @@ class Assets
                     $destinationX = - ($resizedImageWidth - $width) / 2;
                     $destinationY = - ($resizedImageHeight - $height) / 2;
                     if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
+                        if ($rotate !== null) {
+                            $rotatedImage = imagerotate($resultImage, 360 - $rotate, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
+                            imagedestroy($resultImage);
+                            $resultImage = $rotatedImage;
+                        }
+                        if ($hasCrop) {
+                            $croppedImage = imagecreatetruecolor($cropWidth, $cropHeight);
+                            imagealphablending($croppedImage, false);
+                            imagesavealpha($croppedImage, true);
+                            imagefill($croppedImage, 0, 0, imagecolorallocatealpha($croppedImage, 0, 0, 0, 127));
+                            imagecopy($croppedImage, $resultImage, 0, 0, $cropX, $cropY, $cropWidth, $cropHeight);
+                            imagedestroy($resultImage);
+                            $resultImage = $croppedImage;
+                        }
                         if ($outputType === 'jpg') {
                             imagejpeg($resultImage, $tempFilename, $quality);
                         } elseif ($outputType === 'png') {
@@ -864,7 +993,7 @@ class Assets
                     throw $exception;
                 }
             } else {
-                throw new \Exception('Cannot resize image (' . $sourceFilename . ')');
+                throw new \Exception('Cannot apply modifications to image (' . $sourceFilename . ')');
             }
         }
     }
