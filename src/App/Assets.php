@@ -631,8 +631,8 @@ class Assets
             if (!is_int($options['cropX'])) {
                 throw new \InvalidArgumentException('The value of the cropX option must be of type int, ' . gettype($options['cropX']) . ' given.');
             }
-            if ($options['cropX'] < 1) {
-                throw new \InvalidArgumentException('The value of the cropX option cannot be lower than 1.');
+            if ($options['cropX'] < 0) {
+                throw new \InvalidArgumentException('The value of the cropX option cannot be lower than 0.');
             }
             if ($options['cropX'] > 100000) {
                 throw new \InvalidArgumentException('The value of the cropX option cannot be higher than 100000.');
@@ -642,8 +642,8 @@ class Assets
             if (!is_int($options['cropY'])) {
                 throw new \InvalidArgumentException('The value of the cropY option must be of type int, ' . gettype($options['cropY']) . ' given.');
             }
-            if ($options['cropY'] < 1) {
-                throw new \InvalidArgumentException('The value of the cropY option cannot be lower than 1.');
+            if ($options['cropY'] < 0) {
+                throw new \InvalidArgumentException('The value of the cropY option cannot be lower than 0.');
             }
             if ($options['cropY'] > 100000) {
                 throw new \InvalidArgumentException('The value of the cropY option cannot be higher than 100000.');
@@ -828,10 +828,10 @@ class Assets
         if (isset($options['rotate']) && (!is_int($options['rotate']) || array_search($options['rotate'], [0, 90, 180, 270]) === false)) {
             throw new \InvalidArgumentException('The rotate value must be 0, 90, 180 or 270.');
         }
-        if (isset($options['cropX']) && (!is_int($options['cropX']) || $options['cropX'] < 1 || $options['cropX'] > 100000)) {
+        if (isset($options['cropX']) && (!is_int($options['cropX']) || $options['cropX'] < 0 || $options['cropX'] > 100000)) {
             throw new \InvalidArgumentException('The cropX value must be higher than 0 and lower than 100001');
         }
-        if (isset($options['cropY']) && (!is_int($options['cropY']) || $options['cropY'] < 1 || $options['cropY'] > 100000)) {
+        if (isset($options['cropY']) && (!is_int($options['cropY']) || $options['cropY'] < 0 || $options['cropY'] > 100000)) {
             throw new \InvalidArgumentException('The cropY value must be higher than 0 and lower than 100001');
         }
         if (isset($options['cropWidth']) && (!is_int($options['cropWidth']) || $options['cropWidth'] < 1 || $options['cropWidth'] > 100000)) {
@@ -884,117 +884,150 @@ class Assets
 
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
+        $hasResize = $width !== null || $height !== null;
+
         $quality = isset($options['quality']) ? $options['quality'] : 100;
+
         $rotate = isset($options['rotate']) ? $options['rotate'] : null;
+        $hasRotate = $rotate !== null;
+
         if (isset($options['cropX'], $options['cropY'], $options['cropWidth'], $options['cropHeight'])) {
-            $hasCrop = true;
             $cropX = $options['cropX'];
             $cropY = $options['cropY'];
             $cropWidth = $options['cropWidth'];
             $cropHeight = $options['cropHeight'];
+            $hasCrop = true;
         } else {
-            $hasCrop = false;
             $cropX = null;
             $cropY = null;
             $cropWidth = null;
             $cropHeight = null;
+            $hasCrop = false;
         }
 
-        if ($width === null && $height === null) {
-            $width = $sourceWidth;
-            $height = $sourceHeight;
-        } elseif ($width === null && $height !== null) {
-            if ($height === $sourceHeight) {
+        $getResultSize = function (?int $width, ?int $height, int $sourceWidth, int $sourceHeight): array {
+            if ($width === null && $height === null) {
                 $width = $sourceWidth;
-            } else {
-                $width = (int) floor($sourceWidth / $sourceHeight * $height);
-            }
-        } elseif ($height === null && $width !== null) {
-            if ($width === $sourceWidth) {
                 $height = $sourceHeight;
-            } else {
-                $height = (int) floor($sourceHeight / $sourceWidth * $width);
+            } elseif ($width === null && $height !== null) {
+                if ($height === $sourceHeight) {
+                    $width = $sourceWidth;
+                } else {
+                    $width = (int) floor($sourceWidth / $sourceHeight * $height);
+                }
+            } elseif ($height === null && $width !== null) {
+                if ($width === $sourceWidth) {
+                    $height = $sourceHeight;
+                } else {
+                    $height = (int) floor($sourceHeight / $sourceWidth * $width);
+                }
             }
-        }
-        if ($width === 0) {
-            $width = 1;
-        }
-        if ($height === 0) {
-            $height = 1;
-        }
+            if ($width === 0) {
+                $width = 1;
+            }
+            if ($height === 0) {
+                $height = 1;
+            }
+            return [$width, $height];
+        };
 
-        if ($sourceWidth === $width && $sourceHeight === $height && $quality === null && $rotate === null && $hasCrop === false) {
-            if ($sourceImage !== null) {
-                imagedestroy($sourceImage);
-            }
-            file_put_contents($destinationFilename, $sourceContent);
+        $tempFilename = $this->appData->getFilename('.temp/assets/modify' . uniqid());
+        if ($outputType === 'svg') {
+            list($width, $height) = $getResultSize($width, $height, $sourceWidth, $sourceHeight);
+            $destinationContent = $this->updateSVGAttributes($sourceContent, ['width' => $width, 'height' => $height]);
+            file_put_contents($tempFilename, $destinationContent);
         } else {
-            $tempFilename = $this->appData->getFilename('.temp/assets/modify' . uniqid());
-            if ($outputType === 'svg') {
-                $destinationContent = $this->updateSVGAttributes($sourceContent, ['width' => $width, 'height' => $height]);
-                file_put_contents($tempFilename, $destinationContent);
-            } else {
-                try {
-                    $resultImage = imagecreatetruecolor($width, $height);
-                    imagealphablending($resultImage, false);
-                    imagesavealpha($resultImage, true);
-                    imagefill($resultImage, 0, 0, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
-                    $widthRatio = $sourceWidth / $width;
-                    $heightRatio = $sourceHeight / $height;
+            try {
+
+                $createImage = function ($width, $height) {
+                    $image = imagecreatetruecolor($width, $height);
+                    if ($image === false) {
+                        throw new \Exception('Cannot create image');
+                    }
+                    imagealphablending($image, false);
+                    imagesavealpha($image, true);
+                    imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
+                    return $image;
+                };
+
+                $resultImage = $createImage($sourceWidth, $sourceHeight);
+                if (imagecopy($resultImage, $sourceImage, 0, 0, 0, 0, $sourceWidth, $sourceHeight) === false) {
+                    throw new \Exception('Cannot copy image');
+                }
+
+                // Rotate
+                if ($hasRotate) {
+                    $rotatedImage = imagerotate($resultImage, 360 - $rotate, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
+                    if ($rotatedImage === false) {
+                        throw new \Exception('Cannot rotate image');
+                    }
+                    imagedestroy($resultImage);
+                    $resultImage = $rotatedImage;
+                }
+
+                // Crop
+                if ($hasCrop) {
+                    $croppedImage = $createImage($cropWidth, $cropHeight);
+                    if (imagecopy($croppedImage, $resultImage, 0, 0, $cropX, $cropY, $cropWidth, $cropHeight) === false) {
+                        throw new \Exception('Cannot crop image');
+                    }
+                    imagedestroy($resultImage);
+                    $resultImage = $croppedImage;
+                }
+
+                // Resize
+                if ($hasResize) {
+                    $resultImageWidth = imagesx($resultImage);
+                    $resultImageHeight = imagesy($resultImage);
+                    list($width, $height) = $getResultSize($width, $height, $resultImageWidth, $resultImageHeight);
+                    $resizedImage = $createImage($width, $height);
+                    $widthRatio = $resultImageWidth / $width;
+                    $heightRatio = $resultImageHeight / $height;
                     $resizedImageHeight = $height;
                     $resizedImageWidth = $width;
                     if ($widthRatio > $heightRatio) {
-                        $resizedImageWidth = ceil($sourceWidth / $heightRatio);
+                        $resizedImageWidth = ceil($resultImageWidth / $heightRatio);
                     } else {
-                        $resizedImageHeight = ceil($sourceHeight / $widthRatio);
+                        $resizedImageHeight = ceil($resultImageHeight / $widthRatio);
                     }
                     $destinationX = - ($resizedImageWidth - $width) / 2;
                     $destinationY = - ($resizedImageHeight - $height) / 2;
-                    if (imagecopyresampled($resultImage, $sourceImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $sourceWidth, $sourceHeight)) {
-                        if ($rotate !== null) {
-                            $rotatedImage = imagerotate($resultImage, 360 - $rotate, imagecolorallocatealpha($resultImage, 0, 0, 0, 127));
-                            imagedestroy($resultImage);
-                            $resultImage = $rotatedImage;
-                        }
-                        if ($hasCrop) {
-                            $croppedImage = imagecreatetruecolor($cropWidth, $cropHeight);
-                            imagealphablending($croppedImage, false);
-                            imagesavealpha($croppedImage, true);
-                            imagefill($croppedImage, 0, 0, imagecolorallocatealpha($croppedImage, 0, 0, 0, 127));
-                            imagecopy($croppedImage, $resultImage, 0, 0, $cropX, $cropY, $cropWidth, $cropHeight);
-                            imagedestroy($resultImage);
-                            $resultImage = $croppedImage;
-                        }
-                        if ($outputType === 'jpg') {
-                            imagejpeg($resultImage, $tempFilename, $quality);
-                        } elseif ($outputType === 'png') {
-                            imagepng($resultImage, $tempFilename, 9);
-                        } elseif ($outputType === 'gif') {
-                            imagegif($resultImage, $tempFilename);
-                        } elseif ($outputType === 'webp') {
-                            imagewebp($resultImage, $tempFilename, $quality);
-                        } elseif ($outputType === 'avif') {
-                            imageavif($resultImage, $tempFilename, $quality, 0);
-                        }
+                    if (imagecopyresampled($resizedImage, $resultImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $resultImageWidth, $resultImageHeight) === false) {
+                        throw new \Exception('Cannot resize image');
                     }
                     imagedestroy($resultImage);
-                } catch (\Exception $e) {
+                    $resultImage = $resizedImage;
                 }
-                imagedestroy($sourceImage);
+
+                if ($outputType === 'jpg') {
+                    imagejpeg($resultImage, $tempFilename, $quality);
+                } elseif ($outputType === 'png') {
+                    imagepng($resultImage, $tempFilename, 9);
+                } elseif ($outputType === 'gif') {
+                    imagegif($resultImage, $tempFilename);
+                } elseif ($outputType === 'webp') {
+                    imagewebp($resultImage, $tempFilename, $quality);
+                } elseif ($outputType === 'avif') {
+                    imageavif($resultImage, $tempFilename, $quality, 0);
+                }
+                imagedestroy($resultImage);
+            } catch (\Exception $e) {
+                // ignore error
             }
-            if (is_file($tempFilename)) {
-                $exception = null;
-                try {
-                    copy($tempFilename, $destinationFilename);
-                } catch (\Exception $exception) {
-                }
-                unlink($tempFilename);
-                if ($exception !== null) {
-                    throw $exception;
-                }
-            } else {
-                throw new \Exception('Cannot apply modifications to image (' . $sourceFilename . ')');
+            imagedestroy($sourceImage);
+        }
+        if (is_file($tempFilename)) {
+            $exception = null;
+            try {
+                copy($tempFilename, $destinationFilename);
+            } catch (\Exception $exception) {
             }
+            unlink($tempFilename);
+            if ($exception !== null) {
+                throw $exception;
+            }
+        } else {
+            throw new \Exception('Cannot apply modifications to image (' . $sourceFilename . ')');
         }
     }
 
