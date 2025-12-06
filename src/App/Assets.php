@@ -747,12 +747,12 @@ class Assets
             if ($extension === 'webp' && function_exists('imagecreatefromwebp')) {
                 $sourceImage = imagecreatefromwebp($filename);
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
-                imagedestroy($sourceImage);
+                // imagedestroy($sourceImage); // not needed since PHP 8.0
             }
             if ($extension === 'avif' && function_exists('imagecreatefromavif')) {
                 $sourceImage = imagecreatefromavif($filename);
                 $result = [(int) imagesx($sourceImage), (int) imagesy($sourceImage)];
-                imagedestroy($sourceImage);
+                // imagedestroy($sourceImage); // not needed since PHP 8.0
             }
             if ($extension === 'svg') {
                 $result = $this->getSVGSize(file_get_contents($filename));
@@ -961,7 +961,7 @@ class Assets
                     if ($rotatedImage === false) {
                         throw new \Exception('Cannot rotate image');
                     }
-                    imagedestroy($resultImage);
+                    // imagedestroy($resultImage); // not needed since PHP 8.0
                     $resultImage = $rotatedImage;
                 }
 
@@ -971,7 +971,7 @@ class Assets
                     if (imagecopy($croppedImage, $resultImage, 0, 0, $cropX, $cropY, $cropWidth, $cropHeight) === false) {
                         throw new \Exception('Cannot crop image');
                     }
-                    imagedestroy($resultImage);
+                    // imagedestroy($resultImage); // not needed since PHP 8.0
                     $resultImage = $croppedImage;
                 }
 
@@ -995,7 +995,7 @@ class Assets
                     if (imagecopyresampled($resizedImage, $resultImage, floor($destinationX), floor($destinationY), 0, 0, $resizedImageWidth, $resizedImageHeight, $resultImageWidth, $resultImageHeight) === false) {
                         throw new \Exception('Cannot resize image');
                     }
-                    imagedestroy($resultImage);
+                    // imagedestroy($resultImage); // not needed since PHP 8.0
                     $resultImage = $resizedImage;
                 }
 
@@ -1010,11 +1010,11 @@ class Assets
                 } elseif ($outputType === 'avif') {
                     imageavif($resultImage, $tempFilename, $quality, 0);
                 }
-                imagedestroy($resultImage);
+                // imagedestroy($resultImage); // not needed since PHP 8.0
             } catch (\Exception $e) {
                 // ignore error
             }
-            imagedestroy($sourceImage);
+            // imagedestroy($sourceImage); // not needed since PHP 8.0
         }
         if (is_file($tempFilename)) {
             $exception = null;
