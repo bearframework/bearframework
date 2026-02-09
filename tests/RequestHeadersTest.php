@@ -48,4 +48,22 @@ class RequestHeadersTest extends BearFrameworkTestCase
         $this->assertFalse($headers->exists('name2'));
         $this->assertEquals($headers->getList()->count(), 0);
     }
+
+    /**
+     * 
+     * @return void
+     */
+    function testCaseSensitivity()
+    {
+        $headers = new Headers();
+        $headers->set($headers->make('Name1', 'Value1'));
+        $this->assertEquals($headers->get('Name1')->value, 'Value1');
+        $this->assertEquals($headers->get('name1')->value, 'Value1');
+        $this->assertEquals($headers->getValue('Name1'), 'Value1');
+        $this->assertEquals($headers->getValue('name1'), 'Value1');
+        $this->assertTrue($headers->exists('Name1'));
+        $this->assertTrue($headers->exists('name1'));
+        $headers->delete('name1');
+        $this->assertFalse($headers->exists('name1'));
+    }
 }

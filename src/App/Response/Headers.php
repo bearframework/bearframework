@@ -37,7 +37,7 @@ class Headers
         if ($this->newHeaderCache === null) {
             $this->newHeaderCache = new \BearFramework\App\Response\Header();
         }
-        $object = clone ($this->newHeaderCache);
+        $object = clone($this->newHeaderCache);
         if ($name !== null) {
             $object->name = $name;
         }
@@ -55,6 +55,7 @@ class Headers
      */
     public function set(\BearFramework\App\Response\Header $header): self
     {
+        // TODO Delete previous header with same name before set in v2 (prevent case sensitive headers)
         $this->data[$header->name] = $header;
         return $this;
     }
@@ -68,7 +69,12 @@ class Headers
     public function get(string $name): ?\BearFramework\App\Response\Header
     {
         if (isset($this->data[$name])) {
-            return clone ($this->data[$name]);
+            return clone($this->data[$name]);
+        }
+        foreach ($this->data as $headerName => $header) {
+            if (strcasecmp($headerName, $name) === 0) {
+                return clone($header);
+            }
         }
         return null;
     }
@@ -84,6 +90,11 @@ class Headers
         if (isset($this->data[$name])) {
             return $this->data[$name]->value;
         }
+        foreach ($this->data as $headerName => $header) {
+            if (strcasecmp($headerName, $name) === 0) {
+                return $header->value;
+            }
+        }
         return null;
     }
 
@@ -95,7 +106,15 @@ class Headers
      */
     public function exists(string $name): bool
     {
-        return isset($this->data[$name]);
+        if (isset($this->data[$name])) {
+            return true;
+        }
+        foreach ($this->data as $headerName => $header) {
+            if (strcasecmp($headerName, $name) === 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -108,6 +127,11 @@ class Headers
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
+        } else {
+            foreach ($this->data as $headerName => $header) {
+                unset($this->data[$headerName]);
+                break;
+            }
         }
         return $this;
     }
@@ -132,7 +156,7 @@ class Headers
     {
         $list = new \BearFramework\DataList();
         foreach ($this->data as $header) {
-            $list[] = clone ($header);
+            $list[] = clone($header);
         }
         return $list;
     }
