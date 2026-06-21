@@ -39,7 +39,7 @@ class Request
     {
         $updateBase = function ($base, $name, $value): string {
             if ($base !== null) {
-                $data =  parse_url($base);
+                $data = parse_url($base);
                 if (empty($data)) {
                     $schemeSeparatorIndex = strpos($base, '://');
                     if ($schemeSeparatorIndex !== false) {
