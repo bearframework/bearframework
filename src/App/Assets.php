@@ -158,15 +158,29 @@ class Assets
                 $fileBasename = $pathInfo['basename'];
             }
             $optionsString = '';
+            $search = [];
+            $replace = [];
+            $hasSearchReplace = false;
             if (!empty($options)) {
                 $optionsCacheKey = 'guvo' . serialize($options);
                 if (!isset($this->cache[$optionsCacheKey])) {
                     $this->validateOptions($options);
+                    $processWidthOrHeightOption = function (string $type, $value) use (&$optionsString, &$search, &$replace, &$hasSearchReplace) {
+                        if (is_int($value)) {
+                            $optionsString .= '-' . $type . $value;
+                        } elseif (is_array($value)) {
+                            $templateKey = '---' . $type . '---';
+                            $optionsString .= '-' . $type . $templateKey . 'x' . $value['min'] . 'x' . $value['max'] . 'x' . $value['step'];
+                            $search[] = $templateKey;
+                            $replace[] = $value['template'];
+                            $hasSearchReplace = true;
+                        }
+                    };
                     if (isset($options['width'])) {
-                        $optionsString .= '-w' . $options['width'];
+                        $processWidthOrHeightOption('w', $options['width']);
                     }
                     if (isset($options['height'])) {
-                        $optionsString .= '-h' . $options['height'];
+                        $processWidthOrHeightOption('h', $options['height']);
                     }
                     if (isset($options['cacheMaxAge'])) {
                         $optionsString .= '-c' . $options['cacheMaxAge'];
@@ -228,6 +242,9 @@ class Assets
                 }
             }
             $url = $this->cache[$fileDirCacheKey] === false ? null : $this->appURLs->get($this->internalPathPrefix . $hash . $optionsString . $this->cache[$fileDirCacheKey] . $fileBasename);
+            if ($url !== null && $hasSearchReplace) {
+                $url = str_replace($search, $replace, $url);
+            }
         }
 
         if ($this->hasEventListeners('getURL')) {
@@ -321,31 +338,68 @@ class Assets
                 return null;
             }
             $path = substr($path, strlen($this->internalPathPrefix));
-            $partParts = explode('/', $path, 2);
-            if (count($partParts) !== 2) {
+            $pathParts = explode('/', $path, 2);
+            if (count($pathParts) !== 2) {
                 return null;
             }
             $result = [
                 'filename' => null,
                 'options' => []
             ];
-            $hash = substr($partParts[0], 0, 12);
-            $optionsString = (string) substr($partParts[0], 12);
-            $path = $partParts[1];
+            $hash = substr($pathParts[0], 0, 12);
+            $optionsString = (string) substr($pathParts[0], 12);
+            $optionsStringForHashCheck = $optionsString;
+            $path = $pathParts[1];
 
             if ($optionsString !== '') {
                 $options = explode('-', trim($optionsString, '-'));
                 foreach ($options as $option) {
+                    $processWidthOrHeightOption = function (string $type, string $option, string $value) use (&$result, &$optionsStringForHashCheck) {
+                        if (is_numeric($value)) {
+                            $value = (int)$value;
+                            if ($value >= 1 && $value <= 100000) {
+                                $result['options'][$option] = $value;
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            $valueParts = explode('x', $value);
+                            if (
+                                sizeof($valueParts) === 4 &&
+                                preg_match('/^[0-9]{1,6}$/', $valueParts[0]) &&
+                                preg_match('/^[0-9]{1,6}$/', $valueParts[1]) &&
+                                preg_match('/^[0-9]{1,6}$/', $valueParts[2]) &&
+                                preg_match('/^[0-9]{1,6}$/', $valueParts[3])
+                            ) {
+                                $value = [
+                                    'value' => (int)$valueParts[0],
+                                    'min' => (int)$valueParts[1],
+                                    'max' => (int)$valueParts[2],
+                                    'step' => (int)$valueParts[3],
+                                    'template' => '---temp---'
+                                ];
+                                if ($value['value'] < $value['min']) {
+                                    return false;
+                                }
+                                if ($value['value'] > $value['max']) {
+                                    return false;
+                                }
+                                if (($value['value'] - $value['min']) % $value['step'] !== 0) {
+                                    return false;
+                                }
+                                $result['options'][$option] = $value;
+                                $optionsStringForHashCheck = str_replace('-' . $type . $valueParts[0] . 'x', '-' . $type . '---' . $type . '---x', $optionsStringForHashCheck);
+                            }
+                        }
+                    };
                     if (substr($option, 0, 1) === 'w') {
-                        $value = (int) substr($option, 1);
-                        if ($value >= 1 && $value <= 100000) {
-                            $result['options']['width'] = $value;
+                        if ($processWidthOrHeightOption('w', 'width', substr($option, 1)) === false) {
+                            return null;
                         }
                     }
                     if (substr($option, 0, 1) === 'h') {
-                        $value = (int) substr($option, 1);
-                        if ($value >= 1 && $value <= 100000) {
-                            $result['options']['height'] = $value;
+                        if ($processWidthOrHeightOption('h', 'height', substr($option, 1)) === false) {
+                            return null;
                         }
                     }
                     if (substr($option, 0, 1) === 'c') {
@@ -414,7 +468,7 @@ class Assets
                 $this->optimizeDirs();
             }
             foreach ($this->optimizedDirs as $dir) {
-                if ($hash === substr(md5(md5($dir . $path) . md5($optionsString)), 0, 12)) {
+                if ($hash === substr(md5(md5($dir . $path) . md5($optionsStringForHashCheck)), 0, 12)) {
                     $result['filename'] = $dir . $path;
                     return $result;
                 }
@@ -578,27 +632,36 @@ class Assets
      */
     private function validateOptions(array $options): void
     {
+        $validateWidthOrHeightOption = function (string $type, $value) {
+            if (is_int($value)) {
+                if ($value < 1) {
+                    throw new \InvalidArgumentException('The value of the ' . $type . ' option cannot be lower than 1.');
+                }
+                if ($value > 100000) {
+                    throw new \InvalidArgumentException('The value of the ' . $type . ' option cannot be higher than 100000.');
+                }
+            } else if (is_array($value)) {
+                if (!isset($value['min']) || !is_int($value['min']) || $value['min'] < 1) {
+                    throw new \InvalidArgumentException('The value of the min value of the ' . $type . ' option must be int and not lower than 1.');
+                }
+                if (!isset($value['max']) || !is_int($value['max']) || $value['max'] > 100000) {
+                    throw new \InvalidArgumentException('The value of the max value of the ' . $type . ' option must be int and not higher than 100000.');
+                }
+                if (!isset($value['step']) || !is_int($value['step']) || $value['step'] < 1 || $value['step'] > 100000) {
+                    throw new \InvalidArgumentException('The value of the step value of the ' . $type . ' option must be int between 1 and 100000.');
+                }
+                if (!isset($value['template']) || !is_string($value['template'])) {
+                    throw new \InvalidArgumentException('The value of the template value of the ' . $type . ' option must be string.');
+                }
+            } else {
+                throw new \InvalidArgumentException('The value of the ' . $type . ' option must be of type int or array [min=>int, max=>int, step=>int, template=>string], ' . gettype($value) . ' given.');
+            }
+        };
         if (isset($options['width'])) {
-            if (!is_int($options['width'])) {
-                throw new \InvalidArgumentException('The value of the width option must be of type int, ' . gettype($options['width']) . ' given.');
-            }
-            if ($options['width'] < 1) {
-                throw new \InvalidArgumentException('The value of the width option cannot be lower than 1.');
-            }
-            if ($options['width'] > 100000) {
-                throw new \InvalidArgumentException('The value of the width option cannot be higher than 100000.');
-            }
+            $validateWidthOrHeightOption('width', $options['width']);
         }
         if (isset($options['height'])) {
-            if (!is_int($options['height'])) {
-                throw new \InvalidArgumentException('The value of the height option must be of type int, ' . gettype($options['height']) . ' given.');
-            }
-            if ($options['height'] < 1) {
-                throw new \InvalidArgumentException('The value of the height option cannot be lower than 1.');
-            }
-            if ($options['height'] > 100000) {
-                throw new \InvalidArgumentException('The value of the height option cannot be higher than 100000.');
-            }
+            $validateWidthOrHeightOption('height', $options['height']);
         }
         if (isset($options['encoding'])) {
             if ($options['encoding'] !== 'base64' && $options['encoding'] !== 'data-uri' && $options['encoding'] !== 'data-uri-base64') {
@@ -824,30 +887,7 @@ class Assets
         if (!is_file($sourceFilename)) {
             throw new \InvalidArgumentException('The sourceFilename specified does not exist (' . $sourceFilename . ')');
         }
-        if (isset($options['width']) && (!is_int($options['width']) || $options['width'] < 1 || $options['width'] > 100000)) {
-            throw new \InvalidArgumentException('The width value must be higher than 0 and lower than 100001');
-        }
-        if (isset($options['height']) && (!is_int($options['height']) || $options['height'] < 1 || $options['height'] > 100000)) {
-            throw new \InvalidArgumentException('The height value must be higher than 0 and lower than 100001');
-        }
-        if (isset($options['quality']) && (!is_int($options['quality']) || $options['quality'] < 0 || $options['quality'] > 100)) {
-            throw new \InvalidArgumentException('The quality value must be >= 0 and <= 100');
-        }
-        if (isset($options['rotate']) && (!is_int($options['rotate']) || array_search($options['rotate'], [0, 90, 180, 270]) === false)) {
-            throw new \InvalidArgumentException('The rotate value must be 0, 90, 180 or 270.');
-        }
-        if (isset($options['cropX']) && (!is_int($options['cropX']) || $options['cropX'] < 0 || $options['cropX'] > 100000)) {
-            throw new \InvalidArgumentException('The cropX value must be higher than 0 and lower than 100001');
-        }
-        if (isset($options['cropY']) && (!is_int($options['cropY']) || $options['cropY'] < 0 || $options['cropY'] > 100000)) {
-            throw new \InvalidArgumentException('The cropY value must be higher than 0 and lower than 100001');
-        }
-        if (isset($options['cropWidth']) && (!is_int($options['cropWidth']) || $options['cropWidth'] < 1 || $options['cropWidth'] > 100000)) {
-            throw new \InvalidArgumentException('The cropWidth value must be higher than 0 and lower than 100001');
-        }
-        if (isset($options['cropHeight']) && (!is_int($options['cropHeight']) || $options['cropHeight'] < 1 || $options['cropHeight'] > 100000)) {
-            throw new \InvalidArgumentException('The cropHeight value must be higher than 0 and lower than 100001');
-        }
+        $this->validateOptions($options);
         $sourceExtension = strtolower(pathinfo($sourceFilename, PATHINFO_EXTENSION));
         $sourceType = $sourceExtension === 'jpeg' ? 'jpg' : $sourceExtension;
         $destinationExtension = strtolower(pathinfo($destinationFilename, PATHINFO_EXTENSION));
@@ -893,6 +933,7 @@ class Assets
         $width = isset($options['width']) ? $options['width'] : null;
         $height = isset($options['height']) ? $options['height'] : null;
         $hasResize = $width !== null || $height !== null;
+
 
         $quality = isset($options['quality']) ? $options['quality'] : 100;
 
