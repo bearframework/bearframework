@@ -934,6 +934,12 @@ class Assets
         $height = isset($options['height']) ? $options['height'] : null;
         $hasResize = $width !== null || $height !== null;
 
+        if (is_array($width)) {
+            $width = $width['value'];
+        }
+        if (is_array($height)) {
+            $height = $height['value'];
+        }
 
         $quality = isset($options['quality']) ? $options['quality'] : 100;
 
