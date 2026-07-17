@@ -158,12 +158,13 @@ class Assets
                 $fileBasename = $pathInfo['basename'];
             }
             $optionsString = '';
-            $search = [];
-            $replace = [];
             $hasSearchReplace = false;
             if (!empty($options)) {
                 $optionsCacheKey = 'guvo' . serialize($options);
                 if (!isset($this->cache[$optionsCacheKey])) {
+                    $search = [];
+                    $replace = [];
+                    $hasSearchReplace = false;
                     $this->validateOptions($options);
                     $processWidthOrHeightOption = function (string $type, $value) use (&$optionsString, &$search, &$replace, &$hasSearchReplace) {
                         if (is_int($value)) {
@@ -211,9 +212,9 @@ class Assets
                     ) {
                         $optionsString .= '-x' . $options['cropX'] . 'x' . $options['cropY'] . 'x' . $options['cropWidth'] . 'x' . $options['cropHeight'];
                     }
-                    $this->cache[$optionsCacheKey] = $optionsString;
+                    $this->cache[$optionsCacheKey] = [$optionsString, $hasSearchReplace, $search, $replace];
                 } else {
-                    $optionsString = $this->cache[$optionsCacheKey];
+                    list($optionsString, $hasSearchReplace, $search, $replace) = $this->cache[$optionsCacheKey];
                 }
             }
             if (isset($options['version'])) {
