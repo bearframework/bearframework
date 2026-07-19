@@ -987,7 +987,7 @@ class Assets
             return [$width, $height];
         };
 
-        $tempFilename = $this->appData->getFilename('.temp/assets/modify' . uniqid());
+        $tempFilename = $this->appData->getFilename('.temp/assets/modify-' . bin2hex(random_bytes(10)));
         if ($outputType === 'svg') {
             list($width, $height) = $getResultSize($width, $height, $sourceWidth, $sourceHeight);
             $destinationContent = $this->updateSVGAttributes($sourceContent, ['width' => $width, 'height' => $height]);
